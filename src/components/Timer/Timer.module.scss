@@ -1,0 +1,21 @@
+@import '../../mixins/flexbox';
+
+.timer {
+    @include flexbox(row, space-between, center, nowrap);
+
+    &__pause {
+        width: 20px;
+        height: 20px;
+        @include flexbox(row, center, center, nowrap);
+    }
+
+    &__time {
+        margin: 0 10px;
+    }
+
+    &__reset {
+        width: 20px;
+        height: 20px;
+        @include flexbox(row, center, center, nowrap);
+    }
+}
