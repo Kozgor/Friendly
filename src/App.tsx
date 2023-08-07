@@ -1,6 +1,7 @@
 import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import './App.css';
 import axios from 'axios';
+import Board from './components/Board/Board';
 
 const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/'
 interface UserProfile {
@@ -45,7 +46,7 @@ function App() {
 
   const handleSignInSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    
+
     try {
       const response = await axios.post(`${FRIENDLY_LINK}auth/login`, {
         email,
@@ -62,7 +63,7 @@ function App() {
 
   const handleSignUpSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    
+
     try {
       const response = await axios.post(`${FRIENDLY_LINK}auth/register`, {
         fullName,
@@ -85,15 +86,16 @@ function App() {
     <div>
       <header>
         {!veryfiedProfile &&
-        <span>
-          <input onClick={handleClickSignIn} type='button' value='Sign in'/>
-          <input onClick={handleClickSignIn} type='button' value='Sig up'/>
-        </span>}
+          <span>
+            <input onClick={handleClickSignIn} type='button' value='Sign in' />
+            <input onClick={handleClickSignIn} type='button' value='Sig up' />
+          </span>}
         {veryfiedProfile &&
-        <span>
-          <span>Hello, {veryfiedProfile.fullName}</span>
-          <input onClick={handleClickSignOut} type='button' value='Sig out'/>
-        </span>}
+          <span>
+            <Board />
+            <span>Hello, {veryfiedProfile.fullName}</span>
+            <input onClick={handleClickSignOut} type='button' value='Sig out' />
+          </span>}
       </header>
       <main>
         {(!isNewUser && !veryfiedProfile) &&

@@ -1,0 +1,8 @@
+@import '../../mixins/flexbox';
+
+.board {
+    height: 90vh;
+    padding: 20px;
+    background-color: gray;
+    @include flexbox(row, center, center, nowrap);
+}
