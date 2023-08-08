@@ -2,6 +2,12 @@ import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import Board from './components/Board/Board';
+import Button from '@mui/joy/Button';
+import Input from '@mui/joy/Input';
+import { Card, CardActions, CardOverflow, List, ListItem } from '@mui/joy';
+import CardContent from '@mui/joy/CardContent';
+import ButtonGroup from '@mui/joy/ButtonGroup';
+import Typography from '@mui/joy/Typography';
 
 const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/'
 interface UserProfile {
@@ -23,12 +29,12 @@ function App() {
   const [password, setPassword] = useState('');
   const [veryfiedProfile, setVerifyiedProfile] = useState<UserProfile | null>(null);
 
-  const handleClickSignIn: MouseEventHandler<HTMLInputElement> = (event) => {
+  const handleClickSignIn: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.currentTarget.value === 'Sign in'
       ? setNewUserRequest(false)
       : setNewUserRequest(true);
   };
-  const handleClickSignOut: MouseEventHandler<HTMLInputElement> = () => {
+  const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
     setVerifyiedProfile(null);
   };
   const handleFullNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -83,61 +89,119 @@ function App() {
     }
   };
   return (
-    <div>
-      <header>
-        {!veryfiedProfile &&
-          <span>
-            <input onClick={handleClickSignIn} type='button' value='Sign in' />
-            <input onClick={handleClickSignIn} type='button' value='Sig up' />
-          </span>}
-        {veryfiedProfile &&
-          <span>
-            <Board />
-            <span>Hello, {veryfiedProfile.fullName}</span>
-            <input onClick={handleClickSignOut} type='button' value='Sig out' />
-          </span>}
-      </header>
-      <main>
-        {(!isNewUser && !veryfiedProfile) &&
-          <div>
+    <div className='auth'>
+      {veryfiedProfile &&
+        <span>
+          <Board />
+          <span>Hello, {veryfiedProfile.fullName}</span>
+          <Button variant="solid" onClick={handleClickSignOut}>Sig out</Button>
+        </span>}
+
+        <Card
+          sx={{
+            width: 320,
+            maxWidth: '100%',
+            boxShadow: 'lg',
+          }}
+        >
+          <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+            <Typography fontSize="lg" fontWeight="lg">
+              Welcome!
+            </Typography>
+          {(!isNewUser && !veryfiedProfile) &&
             <form onSubmit={handleSignInSubmit}>
               <div>
-                <label htmlFor="">Email</label>
-                <input onChange={handleEmailChange} type="text" value={email} />
+                <Input
+                  variant="outlined"
+                  color="primary"
+                  value={email}
+                  onChange={handleEmailChange}
+                  slotProps={{ input: { placeholder: 'Email', type: 'email' } }}
+                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                />
               </div>
               <div>
-                <label htmlFor="">Password</label>
-                <input onChange={handlePasswordChange} type="text" value={password} />
+                <Input
+                  variant="outlined"
+                  color="primary"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  slotProps={{ input: { placeholder: 'Password', type: 'password' } }}
+                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                />
               </div>
-              <input type="submit" value='send' />
+              <Button
+                variant="soft"
+                type="submit"
+              >Submit</Button>
             </form>
-          </div>
         }
         {(isNewUser && !veryfiedProfile) &&
-          <div>
-            <form onSubmit={handleSignUpSubmit}>
-              <div>
-                <label htmlFor="">Full name</label>
-                <input onChange={handleFullNameChange} type="text" value={fullName} />
-              </div>
-              <div>
-                <label htmlFor="">Password</label>
-                <input onChange={handlePasswordChange} type="text" value={password} />
-              </div>
-              <div>
-                <label htmlFor="">Email</label>
-                <input onChange={handleEmailChange} type="text" value={email} />
-              </div>
-              <div>
-                <label htmlFor="">Description</label>
-                <input onChange={handleDescriptionChange} type="text" value={description} />
-              </div>
-              <input type="submit" value='send' />
-            </form>
-          </div>
+          <form onSubmit={handleSignUpSubmit}>
+            <div>
+              <Input
+                  variant="outlined"
+                  color="primary"
+                  value={fullName}
+                  onChange={handleFullNameChange}
+                  slotProps={{ input: { placeholder: 'Full name' } }}
+                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+              />
+            </div>
+            <div>
+              <Input
+                variant="outlined"
+                color="primary"
+                value={password}
+                onChange={handlePasswordChange}
+                slotProps={{ input: { placeholder: 'Password', type: 'password' } }}
+                sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+              />
+            </div>
+            <div>
+              <Input
+                variant="outlined"
+                color="primary"
+                value={email}
+                onChange={handleEmailChange}
+                slotProps={{ input: { placeholder: 'Email' } }}
+                sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+              />
+            </div>
+            <div>
+              <Input
+                variant="outlined"
+                color="primary"
+                value={description}
+                onChange={handleDescriptionChange}
+                slotProps={{ input: { placeholder: 'Description' } }}
+                sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+              />
+            </div>
+            <Button
+              variant="soft"
+              type="submit"
+            >Submit</Button>
+          </form>
         }
-      </main>
-      <footer></footer>
+        {!veryfiedProfile &&
+          <CardOverflow sx={{ bgcolor: 'background.level1' }}>
+            <CardActions buttonFlex="1">
+              <ButtonGroup
+                variant="soft"
+                color='primary'
+                aria-label="outlined primary button group"
+                buttonFlex="0 1 200px"
+                sx={{ width: '100%', justifyContent: 'center' }}
+              >
+                <Button variant="solid" onClick={handleClickSignIn} value="Sign in">Sign in</Button>
+                <Button variant="solid" onClick={handleClickSignIn} value="Sign up">Sign up</Button>
+              </ButtonGroup>
+            </CardActions>
+          </CardOverflow>
+        }
+        </CardContent>
+      </Card>
     </div>
   );
 }
