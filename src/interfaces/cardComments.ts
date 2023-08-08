@@ -1,5 +1,5 @@
 export interface ICardComments {
-    commentId: String,
-    commentMessage: String,
-    commentAuthor: String
+  commentId: string;
+  commentMessage: string;
+  commentAuthor: string;
 }

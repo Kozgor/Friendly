@@ -1,4 +1,4 @@
 export interface IReaction {
-    reactionAuthor: String,
-    reactionCode: String
+  reactionAuthor: string;
+  reactionCode: string;
 }

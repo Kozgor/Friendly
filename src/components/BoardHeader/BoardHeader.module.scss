@@ -1,8 +1,9 @@
-@import '../../mixins/flexbox';
+@import "../../mixins/flexbox";
 
 .header {
-    height: 10vh;
-    background-color: #fff;
-    box-shadow: 0 0 5px 0 #000;
-    @include flexbox(row, center, center, nowrap);
+  height: 10vh;
+  background-color: #fff;
+  box-shadow: 0 0 5px 0 #000;
+
+  @include flexbox(row, center, center, nowrap);
 }

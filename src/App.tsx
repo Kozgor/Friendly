@@ -1,9 +1,9 @@
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
-import './App.css';
-import axios from 'axios';
-import Board from './components/Board/Board';
+import { ChangeEvent, MouseEventHandler, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import Board from "./components/Board/Board";
 
-const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/'
+const FRIENDLY_LINK = "https://friendly-server-nf3k.onrender.com/";
 interface UserProfile {
   _id: string;
   fullName: string;
@@ -17,14 +17,16 @@ interface UserProfile {
 
 function App() {
   const [isNewUser, setNewUserRequest] = useState(true);
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [description, setDescription] = useState('');
-  const [password, setPassword] = useState('');
-  const [veryfiedProfile, setVerifyiedProfile] = useState<UserProfile | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [description, setDescription] = useState("");
+  const [password, setPassword] = useState("");
+  const [veryfiedProfile, setVerifyiedProfile] = useState<UserProfile | null>(
+    null
+  );
 
   const handleClickSignIn: MouseEventHandler<HTMLInputElement> = (event) => {
-    event.currentTarget.value === 'Sign in'
+    event.currentTarget.value === "Sign in"
       ? setNewUserRequest(false)
       : setNewUserRequest(true);
   };
@@ -53,11 +55,11 @@ function App() {
         password,
       });
 
-      setVerifyiedProfile(response.data)
-      setEmail('');
-      setPassword('');
+      setVerifyiedProfile(response.data);
+      setEmail("");
+      setPassword("");
     } catch (error) {
-      console.error('Error submitting form data:', error);
+      console.error("Error submitting form data:", error);
     }
   };
 
@@ -69,36 +71,38 @@ function App() {
         fullName,
         password,
         email,
-        description
+        description,
       });
 
-      setVerifyiedProfile(response.data)
-      setFullName('');
-      setPassword('');
-      setEmail('');
-      setDescription('');
-      setNewUserRequest(false)
+      setVerifyiedProfile(response.data);
+      setFullName("");
+      setPassword("");
+      setEmail("");
+      setDescription("");
+      setNewUserRequest(false);
     } catch (error) {
-      console.error('Error submitting form data:', error);
+      console.error("Error submitting form data:", error);
     }
   };
   return (
     <div>
       <header>
-        {!veryfiedProfile &&
+        {!veryfiedProfile && (
           <span>
-            <input onClick={handleClickSignIn} type='button' value='Sign in' />
-            <input onClick={handleClickSignIn} type='button' value='Sig up' />
-          </span>}
-        {veryfiedProfile &&
+            <input onClick={handleClickSignIn} type="button" value="Sign in" />
+            <input onClick={handleClickSignIn} type="button" value="Sig up" />
+          </span>
+        )}
+        {veryfiedProfile && (
           <span>
             <Board />
             <span>Hello, {veryfiedProfile.fullName}</span>
-            <input onClick={handleClickSignOut} type='button' value='Sig out' />
-          </span>}
+            <input onClick={handleClickSignOut} type="button" value="Sig out" />
+          </span>
+        )}
       </header>
       <main>
-        {(!isNewUser && !veryfiedProfile) &&
+        {!isNewUser && !veryfiedProfile && (
           <div>
             <form onSubmit={handleSignInSubmit}>
               <div>
@@ -107,22 +111,34 @@ function App() {
               </div>
               <div>
                 <label htmlFor="">Password</label>
-                <input onChange={handlePasswordChange} type="text" value={password} />
+                <input
+                  onChange={handlePasswordChange}
+                  type="text"
+                  value={password}
+                />
               </div>
-              <input type="submit" value='send' />
+              <input type="submit" value="send" />
             </form>
           </div>
-        }
-        {(isNewUser && !veryfiedProfile) &&
+        )}
+        {isNewUser && !veryfiedProfile && (
           <div>
             <form onSubmit={handleSignUpSubmit}>
               <div>
                 <label htmlFor="">Full name</label>
-                <input onChange={handleFullNameChange} type="text" value={fullName} />
+                <input
+                  onChange={handleFullNameChange}
+                  type="text"
+                  value={fullName}
+                />
               </div>
               <div>
                 <label htmlFor="">Password</label>
-                <input onChange={handlePasswordChange} type="text" value={password} />
+                <input
+                  onChange={handlePasswordChange}
+                  type="text"
+                  value={password}
+                />
               </div>
               <div>
                 <label htmlFor="">Email</label>
@@ -130,12 +146,16 @@ function App() {
               </div>
               <div>
                 <label htmlFor="">Description</label>
-                <input onChange={handleDescriptionChange} type="text" value={description} />
+                <input
+                  onChange={handleDescriptionChange}
+                  type="text"
+                  value={description}
+                />
               </div>
-              <input type="submit" value='send' />
+              <input type="submit" value="send" />
             </form>
           </div>
-        }
+        )}
       </main>
       <footer></footer>
     </div>
