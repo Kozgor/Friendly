@@ -1,13 +1,15 @@
+import classes from './App.module.scss';
 import { ChangeEvent, MouseEventHandler, useState } from 'react';
-import './App.css';
 import axios from 'axios';
 import Board from './components/Board/Board';
 import Button from '@mui/joy/Button';
-import Input from '@mui/joy/Input';
-import { Card, CardActions, CardOverflow, List, ListItem } from '@mui/joy';
+import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
-import ButtonGroup from '@mui/joy/ButtonGroup';
 import Typography from '@mui/joy/Typography';
+import Input from '@mui/joy/Input';
+import CardOverflow from '@mui/joy/CardOverflow';
+import ButtonGroup from '@mui/joy/ButtonGroup';
+import CardActions from '@mui/joy/CardActions';
 
 const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/'
 interface UserProfile {
@@ -89,119 +91,131 @@ function App() {
     }
   };
   return (
-    <div className='auth'>
+    <div className={classes.app}>
       {veryfiedProfile &&
         <span>
+          <span className={classes.userBlock}>Hello, {veryfiedProfile.fullName}
+            <Button variant="plain" onClick={handleClickSignOut}>Sig out</Button>
+          </span>
           <Board />
-          <span>Hello, {veryfiedProfile.fullName}</span>
-          <Button variant="solid" onClick={handleClickSignOut}>Sig out</Button>
+          
         </span>}
-
-        <Card
-          sx={{
-            width: 320,
-            maxWidth: '100%',
-            boxShadow: 'lg',
-          }}
-        >
-          <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-            <Typography fontSize="lg" fontWeight="lg">
-              Welcome!
-            </Typography>
-          {(!isNewUser && !veryfiedProfile) &&
-            <form onSubmit={handleSignInSubmit}>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={email}
-                  onChange={handleEmailChange}
-                  slotProps={{ input: { placeholder: 'Email', type: 'email' } }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  slotProps={{ input: { placeholder: 'Password', type: 'password' } }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
-              <Button
-                variant="soft"
-                type="submit"
-              >Submit</Button>
-            </form>
+        {(!isNewUser && !veryfiedProfile) &&
+          <Card
+            sx={{
+              width: 320,
+              maxWidth: '100%',
+              boxShadow: 'lg',
+            }}
+          >
+            <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+              <Typography fontSize="lg" fontWeight="lg">
+                Welcome!
+              </Typography>
+              <form onSubmit={handleSignInSubmit}>
+                <div>
+                  <Input
+                    variant="outlined"
+                    color="primary"
+                    value={email}
+                    onChange={handleEmailChange}
+                    slotProps={{ input: { placeholder: 'Email', type: 'email' } }}
+                    sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                </div>
+                <div>
+                  <Input
+                    variant="outlined"
+                    color="primary"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    slotProps={{ input: { placeholder: 'Password', type: 'password' } }}
+                    sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                </div>
+                <Button
+                  variant="soft"
+                  type="submit"
+                >Submit</Button>
+              </form>
+            </CardContent>
+          </Card>
         }
+
         {(isNewUser && !veryfiedProfile) &&
-          <form onSubmit={handleSignUpSubmit}>
-            <div>
-              <Input
-                  variant="outlined"
-                  color="primary"
-                  value={fullName}
-                  onChange={handleFullNameChange}
-                  slotProps={{ input: { placeholder: 'Full name' } }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-              />
-            </div>
-            <div>
-              <Input
-                variant="outlined"
-                color="primary"
-                value={password}
-                onChange={handlePasswordChange}
-                slotProps={{ input: { placeholder: 'Password', type: 'password' } }}
-                sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-              />
-            </div>
-            <div>
-              <Input
-                variant="outlined"
-                color="primary"
-                value={email}
-                onChange={handleEmailChange}
-                slotProps={{ input: { placeholder: 'Email' } }}
-                sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-              />
-            </div>
-            <div>
-              <Input
-                variant="outlined"
-                color="primary"
-                value={description}
-                onChange={handleDescriptionChange}
-                slotProps={{ input: { placeholder: 'Description' } }}
-                sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-              />
-            </div>
-            <Button
-              variant="soft"
-              type="submit"
-            >Submit</Button>
-          </form>
+          <Card
+            sx={{
+              width: 320,
+              maxWidth: '100%',
+              boxShadow: 'lg',
+            }}
+          >
+            <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+              <Typography fontSize="lg" fontWeight="lg">
+                Welcome!
+              </Typography>
+              <form onSubmit={handleSignUpSubmit}>
+                <div>
+                  <Input
+                      variant="outlined"
+                      color="primary"
+                      value={fullName}
+                      onChange={handleFullNameChange}
+                      slotProps={{ input: { placeholder: 'Full name' } }}
+                      sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                </div>
+                <div>
+                  <Input
+                    variant="outlined"
+                    color="primary"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    slotProps={{ input: { placeholder: 'Password', type: 'password' } }}
+                    sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                </div>
+                <div>
+                  <Input
+                    variant="outlined"
+                    color="primary"
+                    value={email}
+                    onChange={handleEmailChange}
+                    slotProps={{ input: { placeholder: 'Email' } }}
+                    sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                </div>
+                <div>
+                  <Input
+                    variant="outlined"
+                    color="primary"
+                    value={description}
+                    onChange={handleDescriptionChange}
+                    slotProps={{ input: { placeholder: 'Description' } }}
+                    sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                </div>
+                <Button
+                  variant="soft"
+                  type="submit"
+                >Submit</Button>
+              </form>
+            </CardContent>
+          </Card>
         }
         {!veryfiedProfile &&
-          <CardOverflow sx={{ bgcolor: 'background.level1' }}>
-            <CardActions buttonFlex="1">
-              <ButtonGroup
-                variant="soft"
-                color='primary'
-                aria-label="outlined primary button group"
-                buttonFlex="0 1 200px"
-                sx={{ width: '100%', justifyContent: 'center' }}
-              >
-                <Button variant="solid" onClick={handleClickSignIn} value="Sign in">Sign in</Button>
-                <Button variant="solid" onClick={handleClickSignIn} value="Sign up">Sign up</Button>
-              </ButtonGroup>
-            </CardActions>
-          </CardOverflow>
+
+            <ButtonGroup
+              variant="soft"
+              color='primary'
+              aria-label="outlined primary button group"
+              buttonFlex="0 1 160px"
+              sx={{ width: '100%', justifyContent: 'center' }}
+            >
+              <Button variant="solid" onClick={handleClickSignIn} value="Sign in">Sign in</Button>
+              <Button variant="solid" onClick={handleClickSignIn} value="Sign up">Sign up</Button>
+            </ButtonGroup>
         }
-        </CardContent>
-      </Card>
     </div>
   );
 }
