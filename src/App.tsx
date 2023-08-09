@@ -9,7 +9,7 @@ import Typography from '@mui/joy/Typography';
 import Input from '@mui/joy/Input';
 import ButtonGroup from '@mui/joy/ButtonGroup';
 
-const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/'
+const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/';
 interface UserProfile {
   _id: string;
   fullName: string;
@@ -27,7 +27,9 @@ function App() {
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
   const [password, setPassword] = useState('');
-  const [veryfiedProfile, setVerifyiedProfile] = useState<UserProfile | null>(null);
+  const [veryfiedProfile, setVerifyiedProfile] = useState<UserProfile | null>(
+    null
+  );
 
   const handleClickSignIn: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.currentTarget.value === 'Sign in'
@@ -56,10 +58,10 @@ function App() {
     try {
       const response = await axios.post(`${FRIENDLY_LINK}auth/login`, {
         email,
-        password,
+        password
       });
 
-      setVerifyiedProfile(response.data)
+      setVerifyiedProfile(response.data);
       setEmail('');
       setPassword('');
     } catch (error) {
@@ -78,12 +80,12 @@ function App() {
         description
       });
 
-      setVerifyiedProfile(response.data)
+      setVerifyiedProfile(response.data);
       setFullName('');
       setPassword('');
       setEmail('');
       setDescription('');
-      setNewUserRequest(false)
+      setNewUserRequest(false);
     } catch (error) {
       console.error('Error submitting form data:', error);
     }
@@ -96,14 +98,14 @@ function App() {
             <Button variant="plain" onClick={handleClickSignOut}>Sig out</Button>
           </span>
           <Board />
-          
+
         </span>}
         {(!isNewUser && !veryfiedProfile) &&
           <Card
             sx={{
               width: 320,
               maxWidth: '100%',
-              boxShadow: 'lg',
+              boxShadow: 'lg'
             }}
           >
             <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
@@ -145,7 +147,7 @@ function App() {
             sx={{
               width: 320,
               maxWidth: '100%',
-              boxShadow: 'lg',
+              boxShadow: 'lg'
             }}
           >
             <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>

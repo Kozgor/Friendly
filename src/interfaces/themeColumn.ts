@@ -1,7 +1,7 @@
 export interface IThemeColumn {
-    columnId: String,
-    columnTitle: String,
-    columnSubtitle: String,
-    columnAvatar: String,
-    columnColor: String
+  columnId: string;
+  columnTitle: string;
+  columnSubtitle: string;
+  columnAvatar: string;
+  columnColor: string;
 }
