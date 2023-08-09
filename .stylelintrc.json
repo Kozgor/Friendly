@@ -5,5 +5,10 @@
     "stylelint-config-standard-scss"
   ],
   "plugins": ["stylelint-scss"],
-  "rules": {}
+  "rules": {
+    "declaration-empty-line-before": "never",
+    "selector-class-pattern": null,
+    "media-feature-name-value-no-unknown": true,
+    "declaration-no-important": true
+  }
 }

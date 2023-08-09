@@ -33,7 +33,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:ts": "eslint .",
+    "lint:ts:fix": "eslint . --fix",
     "lint:scss": "stylelint **/*.scss",
+    "lint": "npm run lint:scss && npm run lint:ts",
     "lint:watch": "onchange . -- npm run lint"
   },
   "eslintConfig": {

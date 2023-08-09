@@ -11,8 +11,6 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended"
-    // "plugin:prettier/recommended"
-    // "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -25,7 +23,43 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier", "eslint-plugin-react"],
   "rules": {
-    // "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "array-callback-return": ["error", { "allowImplicit": true }],
+    "no-duplicate-imports": "error",
+    "no-self-compare": "error",
+    "no-template-curly-in-string": "error",
+    "no-use-before-define": "error",
+    "arrow-body-style": ["error", "as-needed"],
+    "camelcase": "warn",
+    "complexity": ["warn", 7],
+    "curly": "error",
+    "default-case": "error",
+    "eqeqeq": "error",
+    "max-lines": ["warn", 200],
+    "max-params": ["error", 7],
+    "no-alert": "error",
+    "no-console": "warn",
+    "no-eval": "warn",
+    "no-magic-numbers": "warn",
+    "no-multi-assign": "error",
+    "no-param-reassign": "error",
+    "no-return-assign": "error",
+    "no-script-url": "error",
+    "no-unneeded-ternary": "error",
+    "no-useless-constructor": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "require-await": "warn",
+    "arrow-spacing": "error",
+    "block-spacing": "error",
+    "comma-dangle": ["error", "never"],
+    "eol-last": "error",
+    "max-len": ["error", { "code": 150 }],
+    "no-multi-spaces": "error",
+    "no-multiple-empty-lines": "error",
+    "no-trailing-spaces": "error",
+    "quotes": ["error", "double"],
+    "semi": "error",
+    "prefer-destructuring": "warn",
     "@typescript-eslint/ban-types": "off"
   }
 }
