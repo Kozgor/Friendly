@@ -1,0 +1,15 @@
+{
+  "extends": [
+  
+    "stylelint-config-prettier",
+    "stylelint-config-standard-scss"
+  ],
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-empty-line-before": "never",
+    "selector-class-pattern": null,
+    "media-feature-name-no-unknown": true,
+    "declaration-no-important": true
+  }
+}

@@ -1,5 +1,5 @@
 export interface IThemeCard {
-    card_id: String,
-    cardColor: String,
-    textColor: string
+  card_id: string;
+  cardColor: string;
+  textColor: string;
 }
