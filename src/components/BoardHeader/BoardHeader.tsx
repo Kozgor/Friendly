@@ -1,5 +1,5 @@
-import Timer from "../Timer/Timer";
-import classes from "./BoardHeader.module.scss";
+import Timer from '../Timer/Timer';
+import classes from './BoardHeader.module.scss';
 
 const BoardHeader = () => (
   <header className={classes.header}>

@@ -1,4 +1,4 @@
-import { ICardComments } from "./cardComments";
+import { ICardComments } from './cardComments';
 
 export interface IColumnCard {
   cardId: String;

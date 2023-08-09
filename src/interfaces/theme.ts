@@ -1,4 +1,4 @@
-import { ICustomUserStyles } from "./customUserStyles";
+import { ICustomUserStyles } from './customUserStyles';
 
 export interface ITheme {
   sessionTheme: String;

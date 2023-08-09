@@ -1,10 +1,10 @@
-import BoardHeader from "../BoardHeader/BoardHeader";
-import Column from "../Column/Column";
+import BoardHeader from '../BoardHeader/BoardHeader';
+import Column from '../Column/Column';
 
-import classes from "./Board.module.scss";
+import classes from './Board.module.scss';
 
 const Board = () => {
-  const columns = [{ _id: "test" }];
+  const columns = [{ _id: 'test' }];
 
   return (
     <>

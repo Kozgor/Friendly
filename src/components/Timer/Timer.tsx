@@ -1,4 +1,4 @@
-import classes from "./Timer.module.scss";
+import classes from './Timer.module.scss';
 
 const Timer = () => (
   <div className={classes.timer}>

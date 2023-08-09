@@ -1,7 +1,7 @@
-import { IActionItem } from "./actionItem";
-import { IColumn } from "./column";
-import { ITheme } from "./theme";
-import { IUser } from "./user";
+import { IActionItem } from './actionItem';
+import { IColumn } from './column';
+import { ITheme } from './theme';
+import { IUser } from './user';
 
 export interface ISession {
   _id: String;
