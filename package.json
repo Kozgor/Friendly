@@ -79,29 +79,5 @@
     "stylelint-config-standard-scss": "^5.0.0",
     "stylelint-scss": "^5.0.1",
     "ts-jest": "^29.1.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx lint-staged",
-      "pre-push": "npm run test"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.ts": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.tsx": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{json,md}": [
-      "prettier --write",
-      "git add"
-    ]
   }
 }

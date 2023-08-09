@@ -1,4 +1,4 @@
-@import './mixins/flexbox';
+@import "./mixins/flexbox";
 
 .app {
   @include flexbox(column, center, center, nowrap);

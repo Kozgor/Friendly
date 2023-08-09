@@ -7,7 +7,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
 import Input from '@mui/joy/Input';
-import ButtonGroup from "@mui/joy/ButtonGroup";
+import ButtonGroup from '@mui/joy/ButtonGroup';
 
 const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/';
 interface UserProfile {
