@@ -1,6 +1,6 @@
 import { ICustomUserStyles } from './customUserStyles';
 
 export interface ITheme {
-  sessionTheme: String;
+  sessionTheme: string;
   customUserStyles: ICustomUserStyles;
 }
