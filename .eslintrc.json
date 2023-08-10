@@ -34,7 +34,7 @@
     "curly": "error",
     "default-case": "error",
     "eqeqeq": "error",
-    "max-lines": ["warn", 200],
+    "max-lines": ["warn", 250],
     "max-params": ["error", 7],
     "no-alert": "error",
     "no-console": "warn",

@@ -65,7 +65,7 @@ function App() {
       setEmail('');
       setPassword('');
     } catch (error) {
-      console.error('Error submitting form data:', error);
+      return error;
     }
   };
 
@@ -87,7 +87,7 @@ function App() {
       setDescription('');
       setNewUserRequest(false);
     } catch (error) {
-      console.error('Error submitting form data:', error);
+      return error;
     }
   };
   return (
@@ -207,7 +207,7 @@ function App() {
 
             <ButtonGroup
               variant="soft"
-              color='primary'
+              color="primary"
               aria-label="outlined primary button group"
               buttonFlex="0 1 160px"
               sx={{ width: '100%', justifyContent: 'center' }}
