@@ -54,6 +54,33 @@ function App() {
     setDescription(event.target.value);
   };
 
+  const signInputsCollection = [
+    {
+      key: 'fullName',
+      value: fullName,
+      onChange: handleFullNameChange,
+      inputParams: { placeholder: 'Full name' }
+    },
+    {
+      key: 'Email',
+      value: email,
+      onChange: handleEmailChange,
+      inputParams: { placeholder: 'Email' }
+    },
+    {
+      key: 'Password',
+      value: password,
+      onChange: handlePasswordChange,
+      inputParams: { placeholder: 'Password', type: 'password' }
+    },
+    {
+      key: 'Description',
+      value: description,
+      onChange: handleDescriptionChange,
+      inputParams: { placeholder: 'Description' }
+    }
+  ];
+
   const handleSignInSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -113,28 +140,22 @@ function App() {
               Welcome!
             </Typography>
             <form className={classes.signForm} onSubmit={handleSignInSubmit}>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={email}
-                  onChange={handleEmailChange}
-                  slotProps={{ input: { placeholder: 'Email', type: 'email' } }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  slotProps={{
-                    input: { placeholder: 'Password', type: 'password' }
-                  }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
+              {signInputsCollection.map(input => {
+                if (input.key === 'Email' || input.key === 'Password') {
+                  return (
+                    <Input
+                      key={input.key}
+                      variant="outlined"
+                      color="primary"
+                      value={input.value}
+                      onChange={input.onChange}
+                      slotProps={{ input: input.inputParams }}
+                      sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                    />
+                  );
+                }
+                return;
+              })}
               <Button variant="soft" type="submit" aria-label="submit the form">
                 Submit
               </Button>
@@ -156,48 +177,17 @@ function App() {
               Welcome!
             </Typography>
             <form className={classes.signForm} onSubmit={handleSignUpSubmit}>
-              <div>
+              {signInputsCollection.map(input => (
                 <Input
+                  key={input.key}
                   variant="outlined"
                   color="primary"
-                  value={fullName}
-                  onChange={handleFullNameChange}
-                  slotProps={{ input: { placeholder: 'Full name' } }}
+                  value={input.value}
+                  onChange={input.onChange}
+                  slotProps={{ input: input.inputParams }}
                   sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
                 />
-              </div>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  slotProps={{
-                    input: { placeholder: 'Password', type: 'password' }
-                  }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={email}
-                  onChange={handleEmailChange}
-                  slotProps={{ input: { placeholder: 'Email' } }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
-              <div>
-                <Input
-                  variant="outlined"
-                  color="primary"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  slotProps={{ input: { placeholder: 'Description' } }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              </div>
+              ))}
               <Button variant="soft" type="submit" aria-label="submit the form">
                 Submit
               </Button>
@@ -213,10 +203,20 @@ function App() {
           buttonFlex="0 1 160px"
           sx={{ width: '100%', justifyContent: 'center' }}
         >
-          <Button variant="solid" onClick={handleClickSignIn} value="Sign In" aria-label='Sign In'>
+          <Button
+            variant="solid"
+            onClick={handleClickSignIn}
+            value="Sign In"
+            aria-label='Sign In'
+          >
             Sign In
           </Button>
-          <Button variant="solid" onClick={handleClickSignIn} value="Sign Up" aria-label='Sign Up'>
+          <Button
+            variant="solid"
+            onClick={handleClickSignIn}
+            value="Sign Up"
+            aria-label='Sign Up'
+          >
             Sign Up
           </Button>
         </ButtonGroup>
