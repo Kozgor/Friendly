@@ -60,6 +60,7 @@
     "quotes": ["error", "single"],
     "semi": "error",
     "prefer-destructuring": "warn",
+    "sort-imports": "error",
     "@typescript-eslint/ban-types": "off"
   }
 }
