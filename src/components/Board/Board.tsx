@@ -1,9 +1,9 @@
-import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
+import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
+import { IColumn } from '../../interfaces/column';
 
 import classes from './Board.module.scss';
-import { IColumn } from '../../interfaces/column';
 
 const Board = (props: IBoardHeaderProps) => {
   const mockColumnsValue: IColumn[] = [

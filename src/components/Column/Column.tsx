@@ -1,5 +1,5 @@
-import { IColumn } from '../../interfaces/column';
 import Comment from '../Comment/Comment';
+import { IColumn } from '../../interfaces/column';
 
 import classes from './Column.module.scss';
 

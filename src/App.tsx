@@ -1,13 +1,13 @@
 import { ChangeEvent, MouseEventHandler, useState } from 'react';
-import axios from 'axios';
+import Board from './components/Board/Board';
 import Button from '@mui/joy/Button';
+import ButtonGroup from '@mui/joy/ButtonGroup';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
-import Typography from '@mui/joy/Typography';
 import Input from '@mui/joy/Input';
-import ButtonGroup from '@mui/joy/ButtonGroup';
+import Typography from '@mui/joy/Typography';
 
-import Board from './components/Board/Board';
+import axios from 'axios';
 
 import classes from './App.module.scss';
 

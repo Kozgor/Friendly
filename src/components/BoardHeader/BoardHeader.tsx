@@ -1,8 +1,9 @@
 import Button from '@mui/joy/Button';
 
-import Timer from '../Timer/Timer';
-import classes from './BoardHeader.module.scss';
 import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
+import Timer from '../Timer/Timer';
+
+import classes from './BoardHeader.module.scss';
 
 const BoardHeader = (props: IBoardHeaderProps) => (
   <header className={classes.header}>
