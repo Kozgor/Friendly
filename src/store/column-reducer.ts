@@ -1,5 +1,4 @@
 import { Action } from '@reduxjs/toolkit';
-import { initialGlobalState } from './column-context';
 
 const ColumnReducer = (state: any, action: Action) => {
   switch (action.type) {
