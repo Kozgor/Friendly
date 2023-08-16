@@ -60,7 +60,13 @@
     "quotes": ["error", "single"],
     "semi": "error",
     "prefer-destructuring": "warn",
-    "sort-imports": "error",
+    "sort-imports": [
+      "error",
+      {
+        "allowSeparatedGroups": true,
+        "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+      }
+    ],
     "@typescript-eslint/ban-types": "off"
   }
 }

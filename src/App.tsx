@@ -1,4 +1,3 @@
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import Board from './components/Board/Board';
 import Button from '@mui/joy/Button';
 import ButtonGroup from '@mui/joy/ButtonGroup';
@@ -6,6 +5,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
+import { ChangeEvent, MouseEventHandler, useState } from 'react';
 
 import axios from 'axios';
 
