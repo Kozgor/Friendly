@@ -3,4 +3,5 @@ import { IThemeColumn } from './themeColumn';
 
 export interface IColumn extends IThemeColumn {
   columnCards: IColumnCard[];
+  isAddingDisabled: boolean;
 }

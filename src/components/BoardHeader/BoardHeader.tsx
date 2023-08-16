@@ -8,7 +8,7 @@ import classes from './BoardHeader.module.scss';
 const BoardHeader = (props: IBoardHeaderProps) => (
   <header className={classes.header}>
     <span className={classes.userBlock}>Hello, {props.fullName}</span>
-    <Timer />
+    <Timer time={600000} />
     <Button
       variant="plain"
       onClick={props.onSignOut}

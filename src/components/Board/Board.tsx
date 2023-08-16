@@ -4,8 +4,11 @@ import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
 import { IColumn } from '../../interfaces/column';
 
 import classes from './Board.module.scss';
+import { ColumnContext } from '../../store/column-context';
+import { useContext } from 'react';
 
 const Board = (props: IBoardHeaderProps) => {
+  const { isAddingDisabled } = useContext(ColumnContext);
   const mockColumnsValue: IColumn[] = [
     {
       columnId: 'start',
@@ -13,7 +16,8 @@ const Board = (props: IBoardHeaderProps) => {
       columnSubtitle: 'What our team should start doing.',
       columnAvatar: '',
       columnColor: '',
-      columnCards: []
+      columnCards: [],
+      isAddingDisabled: true
     },
     {
       columnId: 'stop',
@@ -21,7 +25,8 @@ const Board = (props: IBoardHeaderProps) => {
       columnSubtitle: 'What our team should stop doing.',
       columnAvatar: '',
       columnColor: '',
-      columnCards: []
+      columnCards: [],
+      isAddingDisabled: true
     },
     {
       columnId: 'continue',
@@ -29,7 +34,8 @@ const Board = (props: IBoardHeaderProps) => {
       columnSubtitle: 'What out team should keep doing.',
       columnAvatar: '',
       columnColor: '',
-      columnCards: []
+      columnCards: [],
+      isAddingDisabled: true
     }
   ];
 
@@ -47,7 +53,9 @@ const Board = (props: IBoardHeaderProps) => {
             columnSubtitle={column.columnSubtitle}
             columnColor={column.columnColor}
             columnAvatar={column.columnAvatar}
-            columnCards={column.columnCards} />
+            columnCards={column.columnCards}
+            isAddingDisabled={isAddingDisabled}
+          />
         ))}
       </main>
     </>

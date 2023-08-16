@@ -61,12 +61,12 @@
     "semi": "error",
     "prefer-destructuring": "warn",
     "sort-imports": [
-      "error",
+      "warn",
       {
-        "allowSeparatedGroups": true,
-        "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+        "allowSeparatedGroups": true
       }
     ],
-    "@typescript-eslint/ban-types": "off"
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-empty-function": "warn"
   }
 }

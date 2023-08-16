@@ -5,7 +5,9 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
+
 import { ChangeEvent, MouseEventHandler, useState } from 'react';
+import { ColumnProvider } from './store/column-context';
 
 import axios from 'axios';
 
@@ -120,108 +122,110 @@ function App() {
     }
   };
   return (
-    <div className={classes.app}>
-      {verifiedProfile && (
-        <Board
-          fullName={verifiedProfile.fullName}
-          onSignOut={handleClickSignOut}
-        />
-      )}
-      {!isNewUser && !verifiedProfile && (
-        <Card
-          sx={{
-            width: 320,
-            maxWidth: '100%',
-            boxShadow: 'lg'
-          }}
-        >
-          <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-            <Typography fontSize="lg" fontWeight="lg">
-              Welcome!
-            </Typography>
-            <form className={classes.signForm} onSubmit={handleSignInSubmit}>
-              {signInputsCollection.map(input => {
-                if (input.key === 'Email' || input.key === 'Password') {
-                  return (
-                    <Input
-                      key={input.key}
-                      variant="outlined"
-                      color="primary"
-                      value={input.value}
-                      onChange={input.onChange}
-                      slotProps={{ input: input.inputParams }}
-                      sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                    />
-                  );
-                }
-                return;
-              })}
-              <Button variant="soft" type="submit" aria-label="submit the form">
-                Submit
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      )}
+    <ColumnProvider>
+      <div className={classes.app}>
+        {verifiedProfile && (
+          <Board
+            fullName={verifiedProfile.fullName}
+            onSignOut={handleClickSignOut}
+          />
+        )}
+        {!isNewUser && !verifiedProfile && (
+          <Card
+            sx={{
+              width: 320,
+              maxWidth: '100%',
+              boxShadow: 'lg'
+            }}
+          >
+            <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+              <Typography fontSize="lg" fontWeight="lg">
+                Welcome!
+              </Typography>
+              <form className={classes.signForm} onSubmit={handleSignInSubmit}>
+                {signInputsCollection.map(input => {
+                  if (input.key === 'Email' || input.key === 'Password') {
+                    return (
+                      <Input
+                        key={input.key}
+                        variant="outlined"
+                        color="primary"
+                        value={input.value}
+                        onChange={input.onChange}
+                        slotProps={{ input: input.inputParams }}
+                        sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                      />
+                    );
+                  }
+                  return;
+                })}
+                <Button variant="soft" type="submit" aria-label="submit the form">
+                  Submit
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        )}
 
-      {isNewUser && !verifiedProfile && (
-        <Card
-          sx={{
-            width: 320,
-            maxWidth: '100%',
-            boxShadow: 'lg'
-          }}
-        >
-          <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-            <Typography fontSize="lg" fontWeight="lg">
-              Welcome!
-            </Typography>
-            <form className={classes.signForm} onSubmit={handleSignUpSubmit}>
-              {signInputsCollection.map(input => (
-                <Input
-                  key={input.key}
-                  variant="outlined"
-                  color="primary"
-                  value={input.value}
-                  onChange={input.onChange}
-                  slotProps={{ input: input.inputParams }}
-                  sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                />
-              ))}
-              <Button variant="soft" type="submit" aria-label="submit the form">
-                Submit
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-      {!verifiedProfile && (
-        <ButtonGroup
-          variant="soft"
-          color="primary"
-          aria-label="outlined primary button group"
-          buttonFlex="0 1 160px"
-          sx={{ width: '100%', justifyContent: 'center' }}
-        >
-          <Button
-            variant="solid"
-            onClick={handleClickSignIn}
-            value="Sign In"
-            aria-label='Sign In'
+        {isNewUser && !verifiedProfile && (
+          <Card
+            sx={{
+              width: 320,
+              maxWidth: '100%',
+              boxShadow: 'lg'
+            }}
           >
-            Sign In
-          </Button>
-          <Button
-            variant="solid"
-            onClick={handleClickSignIn}
-            value="Sign Up"
-            aria-label='Sign Up'
+            <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+              <Typography fontSize="lg" fontWeight="lg">
+                Welcome!
+              </Typography>
+              <form className={classes.signForm} onSubmit={handleSignUpSubmit}>
+                {signInputsCollection.map(input => (
+                  <Input
+                    key={input.key}
+                    variant="outlined"
+                    color="primary"
+                    value={input.value}
+                    onChange={input.onChange}
+                    slotProps={{ input: input.inputParams }}
+                    sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                  />
+                ))}
+                <Button variant="soft" type="submit" aria-label="submit the form">
+                  Submit
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        )}
+        {!verifiedProfile && (
+          <ButtonGroup
+            variant="soft"
+            color="primary"
+            aria-label="outlined primary button group"
+            buttonFlex="0 1 160px"
+            sx={{ width: '100%', justifyContent: 'center' }}
           >
-            Sign Up
-          </Button>
-        </ButtonGroup>
-      )}
-    </div>
+            <Button
+              variant="solid"
+              onClick={handleClickSignIn}
+              value="Sign In"
+              aria-label='Sign In'
+            >
+              Sign In
+            </Button>
+            <Button
+              variant="solid"
+              onClick={handleClickSignIn}
+              value="Sign Up"
+              aria-label='Sign Up'
+            >
+              Sign Up
+            </Button>
+          </ButtonGroup>
+        )}
+      </div>
+    </ColumnProvider>
   );
 }
 
