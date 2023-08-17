@@ -1,12 +1,11 @@
 import { RenderResult, render, screen } from '@testing-library/react';
+import Comment from './Comment';
 
-import App from './App';
-
-describe('App component', () => {
+describe('Comment component', () => {
   let component: RenderResult;
 
   beforeEach(() => {
-    component = render(<App />);
+    component = render(<Comment />);
   });
 
   afterEach(async () => {
@@ -18,8 +17,9 @@ describe('App component', () => {
   });
 
   test('renders text', () => {
-    const text = screen.getByText(/Welcome!/i);
+    const text = screen.getByText(/Some text/i);
 
     expect(text).toBeInTheDocument();
+    expect(text).toHaveClass('comment__message');
   });
 });

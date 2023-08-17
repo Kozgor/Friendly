@@ -44,7 +44,7 @@ const Board = (props: IBoardHeaderProps) => {
   return (
     <>
       <BoardHeader fullName={props.fullName} onSignOut={props.onSignOut} />
-      <main className={classes.board}>
+      <main className={classes.board} data-testid="board">
         {columns.map((column) => (
           <Column
             key={column.columnId}

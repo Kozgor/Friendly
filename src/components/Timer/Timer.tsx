@@ -78,6 +78,7 @@ const Timer = (props: ITimerProps) => {
         daysInHours
         date={date}
         onComplete={onComplete}
+        aria-description="timer"
       ></Countdown>
     ),
     [countdownTimer.isTimerChanged]
@@ -97,22 +98,44 @@ const Timer = (props: ITimerProps) => {
       )}
 
       {countdownTimer.isTimerStarted && !countdownTimer.isTimerCompleted && (
-        <div className={classes.timer}>
+        <div
+          className={classes.timer}
+          aria-description="timer section"
+          data-testid="timer"
+        >
           {!countdownTimer.isTimerPaused && (
-            <div className={classes.timer__pause} onClick={pauseTimer}>
+            <div
+              className={classes.timer__pause}
+              onClick={pauseTimer}
+              aria-label="pause button"
+              role="button"
+              data-testid="pause"
+            >
               <i className="bi bi-pause-circle-fill"></i>
             </div>
           )}
 
           {countdownTimer.isTimerPaused && (
-            <div className={classes.timer__start} onClick={startTimer}>
+            <div
+              className={classes.timer__start}
+              onClick={startTimer}
+              aria-label="start button"
+              role="button"
+              data-testid="continue"
+            >
               <i className="bi bi-play-fill"></i>
             </div>
           )}
 
           {countdown}
 
-          <div className={classes.timer__reset} onClick={resetTimer}>
+          <div
+            className={classes.timer__reset}
+            onClick={resetTimer}
+            aria-label="reset button"
+            role="button"
+            data-testid="reset"
+          >
             <i className="bi bi-square-fill"></i>
           </div>
         </div>
@@ -123,6 +146,8 @@ const Timer = (props: ITimerProps) => {
           type="submit"
           aria-label="submit the form"
           onClick={submitForm}
+          role="button"
+          data-testid="submit"
         >
           Submit
         </Button>

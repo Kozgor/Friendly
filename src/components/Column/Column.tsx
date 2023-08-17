@@ -14,7 +14,11 @@ const Column = (props: IColumn) => {
         <p>{props.columnSubtitle}</p>
       </div>
       <div className={classes['column__adding']}>
-        <Button disabled={props.isAddingDisabled}>
+        <Button
+          disabled={props.isAddingDisabled}
+          role="button"
+          aria-label="Add new comment"
+        >
           <i className="bi bi-plus"></i>
           <h4>Add comment</h4>
         </Button>
