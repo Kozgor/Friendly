@@ -1,3 +1,4 @@
+import Button from '@mui/joy/Button';
 import Comment from '../Comment/Comment';
 import { IColumn } from '../../interfaces/column';
 
@@ -13,8 +14,14 @@ const Column = (props: IColumn) => {
         <p>{props.columnSubtitle}</p>
       </div>
       <div className={classes['column__adding']}>
-        <i className="bi bi-plus"></i>
-        <h4>Add comment</h4>
+        <Button
+          disabled={props.isAddingDisabled}
+          role="button"
+          aria-label="Add new comment"
+        >
+          <i className="bi bi-plus"></i>
+          <h4>Add comment</h4>
+        </Button>
       </div>
       <div className={classes['column__comments']}>
         {comments.map((comment) => (
