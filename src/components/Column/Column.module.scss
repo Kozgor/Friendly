@@ -3,10 +3,11 @@
 .column {
   height: 100%;
   width: 360px;
+  min-width: 220px;
   padding: 10px;
   background-color: #fff;
   border-radius: 15px;
-  margin: 5px 15px;
+  margin: 0 15px;
 
   &__header {
     height: 85px;
