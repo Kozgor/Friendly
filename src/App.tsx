@@ -179,7 +179,7 @@ function App() {
               <Typography fontSize="lg" fontWeight="lg">
                 Welcome!
               </Typography>
-              <form className={classes.signForm} onSubmit={handleSignUpSubmit}>
+              <form data-testid="signUpForm" className={classes.signForm} onSubmit={handleSignUpSubmit}>
                 {signInputsCollection.map(input => (
                   <Input
                     key={input.key}

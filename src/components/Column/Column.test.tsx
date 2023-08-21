@@ -46,7 +46,7 @@ describe('Column component', () => {
     expect(text).toBeInTheDocument();
   });
 
-  test('render enabled button if isAddingDisabled properrty is false', async () => {
+  test('render enabled button if isAddingDisabled property is false', async () => {
     await component.unmount();
 
     render(

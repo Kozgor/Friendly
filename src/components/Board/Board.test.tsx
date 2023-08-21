@@ -24,11 +24,12 @@ describe('Board component', () => {
     expect(username).toBeInTheDocument();
   });
 
-  test('renders 3 columns', () => {
+  test('renders columns', () => {
+    const columnsAmount = 3;
     const board = screen.getByTestId('board');
 
     expect(board).toBeInTheDocument();
     expect(board).toHaveClass('board');
-    expect(board.children.length).toBe(3);
+    expect(board.children.length).toBe(columnsAmount);
   });
 });

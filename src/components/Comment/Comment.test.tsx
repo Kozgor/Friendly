@@ -16,10 +16,10 @@ describe('Comment component', () => {
     expect(component).toBeTruthy();
   });
 
-  test('renders text', () => {
-    const text = screen.getByText(/Some text/i);
+  test('renders comment message', () => {
+    const message = screen.getByText(/Some text/i);
 
-    expect(text).toBeInTheDocument();
-    expect(text).toHaveClass('comment__message');
+    expect(message).toBeInTheDocument();
+    expect(message).toHaveClass('comment__message');
   });
 });

@@ -59,7 +59,7 @@ describe('Timer component', () => {
       expect(enableAdding).toHaveBeenCalled();
     });
 
-    test('`pause` button should be shown when timer is appear', () => {
+    test('`pause` button should be shown when timer is appeared', () => {
       const pauseButton = screen.getByTestId('pause');
 
       expect(timer).toBeInTheDocument();

@@ -17,9 +17,11 @@ describe('App component', () => {
     expect(component).toBeTruthy();
   });
 
-  test('renders text', () => {
-    const text = screen.getByText(/Welcome!/i);
+  test('renders greeting and `Sign Up` form', () => {
+    const greeting = screen.getByText(/Welcome!/i);
+    const form = screen.getByTestId('signUpForm');
 
-    expect(text).toBeInTheDocument();
+    expect(greeting).toBeInTheDocument();
+    expect(form).toBeInTheDocument();
   });
 });
