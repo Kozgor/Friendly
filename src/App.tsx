@@ -1,3 +1,4 @@
+import AdminPage from './pages/Admin';
 import Board from './components/Board/Board';
 import Button from '@mui/joy/Button';
 import ButtonGroup from '@mui/joy/ButtonGroup';
@@ -13,17 +14,8 @@ import axios from 'axios';
 
 import classes from './App.module.scss';
 
-const FRIENDLY_LINK = 'https://friendly-server-nf3k.onrender.com/';
-interface UserProfile {
-  _id: string;
-  fullName: string;
-  email: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  token: string;
-}
+import { IUserProfile } from './interfaces/user';
+import { environment } from './environment';
 
 function App() {
   const [isNewUser, setNewUserRequest] = useState(true);
@@ -31,7 +23,7 @@ function App() {
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
   const [password, setPassword] = useState('');
-  const [verifiedProfile, setVerifiedProfile] = useState<UserProfile | null>(
+  const [verifiedProfile, setVerifiedProfile] = useState<IUserProfile | null>(
     null
   );
 
@@ -87,10 +79,13 @@ function App() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${FRIENDLY_LINK}auth/login`, {
-        email,
-        password
-      });
+      const response = await axios.post(
+        `${environment.FRIENDLY_LINK}auth/login`,
+        {
+          email,
+          password
+        }
+      );
 
       setVerifiedProfile(response.data);
       setEmail('');
@@ -104,12 +99,15 @@ function App() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${FRIENDLY_LINK}auth/register`, {
-        fullName,
-        password,
-        email,
-        description
-      });
+      const response = await axios.post(
+        `${environment.FRIENDLY_LINK}auth/register`,
+        {
+          fullName,
+          password,
+          email,
+          description
+        }
+      );
 
       setVerifiedProfile(response.data);
       setFullName('');
@@ -124,12 +122,14 @@ function App() {
   return (
     <ColumnProvider>
       <div className={classes.app}>
-        {verifiedProfile && (
+        {verifiedProfile && verifiedProfile.role === 'user' && (
           <Board
             fullName={verifiedProfile.fullName}
+            isTimerVisible={true}
             onSignOut={handleClickSignOut}
           />
         )}
+        {verifiedProfile && verifiedProfile.role === 'admin' && <AdminPage onSignOut={handleClickSignOut} />}
         {!isNewUser && !verifiedProfile && (
           <Card
             sx={{
@@ -143,7 +143,7 @@ function App() {
                 Welcome!
               </Typography>
               <form className={classes.signForm} onSubmit={handleSignInSubmit}>
-                {signInputsCollection.map(input => {
+                {signInputsCollection.map((input) => {
                   if (input.key === 'Email' || input.key === 'Password') {
                     return (
                       <Input
@@ -159,7 +159,11 @@ function App() {
                   }
                   return;
                 })}
-                <Button variant="soft" type="submit" aria-label="submit the form">
+                <Button
+                  variant="soft"
+                  type="submit"
+                  aria-label="submit the form"
+                >
                   Submit
                 </Button>
               </form>
@@ -179,8 +183,12 @@ function App() {
               <Typography fontSize="lg" fontWeight="lg">
                 Welcome!
               </Typography>
-              <form data-testid="signUpForm" className={classes.signForm} onSubmit={handleSignUpSubmit}>
-                {signInputsCollection.map(input => (
+              <form
+                data-testid="signUpForm"
+                className={classes.signForm}
+                onSubmit={handleSignUpSubmit}
+              >
+                {signInputsCollection.map((input) => (
                   <Input
                     key={input.key}
                     variant="outlined"
@@ -191,7 +199,11 @@ function App() {
                     sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
                   />
                 ))}
-                <Button variant="soft" type="submit" aria-label="submit the form">
+                <Button
+                  variant="soft"
+                  type="submit"
+                  aria-label="submit the form"
+                >
                   Submit
                 </Button>
               </form>
@@ -210,7 +222,7 @@ function App() {
               variant="solid"
               onClick={handleClickSignIn}
               value="Sign In"
-              aria-label='Sign In'
+              aria-label="Sign In"
             >
               Sign In
             </Button>
@@ -218,7 +230,7 @@ function App() {
               variant="solid"
               onClick={handleClickSignIn}
               value="Sign Up"
-              aria-label='Sign Up'
+              aria-label="Sign Up"
             >
               Sign Up
             </Button>

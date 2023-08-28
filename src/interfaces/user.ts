@@ -1,9 +1,12 @@
-export interface IUser {
-  firstName: string;
-  lastName: string;
-  userId: string;
-  userAvatar: string;
+export interface IUserProfile {
+  fullName: string;
+  _id: string;
+  avatar: string;
   role: string;
   email: string;
-  password: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  token: string;
 }

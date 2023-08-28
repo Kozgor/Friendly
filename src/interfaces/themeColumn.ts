@@ -3,5 +3,5 @@ export interface IThemeColumn {
   columnTitle: string;
   columnSubtitle: string;
   columnAvatar: string;
-  columnColor: string;
+  columnStyle: string;
 }

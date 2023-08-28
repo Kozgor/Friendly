@@ -7,7 +7,7 @@ describe('Board component', () => {
   const onSignMock = jest.fn();
 
   beforeEach(() => {
-    component = render(<Board fullName="Jack" onSignOut={onSignMock} />);
+    component = render(<Board fullName="Jack" isTimerVisible={true} onSignOut={onSignMock} />);
   });
 
   afterEach(async () => {

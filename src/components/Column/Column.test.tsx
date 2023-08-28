@@ -10,7 +10,7 @@ describe('Column component', () => {
       <Column
         columnAvatar=""
         columnCards={[]}
-        columnColor=""
+        columnStyle=""
         columnId="start"
         columnSubtitle="What our team should start doing."
         columnTitle="Start"
@@ -53,7 +53,7 @@ describe('Column component', () => {
       <Column
         columnAvatar=""
         columnCards={[]}
-        columnColor=""
+        columnStyle=""
         columnId=""
         columnSubtitle=""
         columnTitle=""

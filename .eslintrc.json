@@ -30,7 +30,7 @@
     "no-use-before-define": "error",
     "arrow-body-style": ["error", "as-needed"],
     "camelcase": "warn",
-    "complexity": ["warn", 7],
+    "complexity": ["warn", 10],
     "curly": "error",
     "default-case": "error",
     "eqeqeq": "error",

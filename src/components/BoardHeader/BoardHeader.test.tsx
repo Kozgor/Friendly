@@ -12,7 +12,7 @@ describe('BoardHeader component', () => {
   const onSignMock = jest.fn();
 
   beforeEach(() => {
-    component = render(<BoardHeader fullName="Jack" onSignOut={onSignMock} />);
+    component = render(<BoardHeader fullName="Jack" isTimerVisible={true} onSignOut={onSignMock} />);
   });
 
   afterEach(async () => {

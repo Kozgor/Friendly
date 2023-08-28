@@ -11,7 +11,7 @@ const BoardHeader = (props: IBoardHeaderProps) => {
   return (
     <header className={classes.header}>
       <span className={classes.userBlock}>Hello, {props.fullName}</span>
-      <Timer time={time} />
+      {props.isTimerVisible && <Timer time={time} />}
       <Button
         variant="plain"
         onClick={props.onSignOut}
