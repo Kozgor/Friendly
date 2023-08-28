@@ -1,21 +1,19 @@
-import AdminPage from './pages/Admin';
-import Board from './components/Board/Board';
+import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import Button from '@mui/joy/Button';
 import ButtonGroup from '@mui/joy/ButtonGroup';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
-
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
-import { ColumnProvider } from './store/column-context';
-
 import axios from 'axios';
 
-import classes from './App.module.scss';
-
+import AdminPage from './pages/Admin';
+import Board from './components/Board/Board';
+import { ColumnProvider } from './store/column-context';
 import { IUserProfile } from './interfaces/user';
 import { environment } from './environment';
+
+import classes from './App.module.scss';
 
 function App() {
   const [isNewUser, setNewUserRequest] = useState(true);

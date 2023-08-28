@@ -9,11 +9,11 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import axios from 'axios';
 
+import BoardHeader from '../components/BoardHeader/BoardHeader';
 import { IColumn } from '../interfaces/column';
 import { environment } from '../environment';
 
 import classes from './Admin.module.scss';
-import BoardHeader from '../components/BoardHeader/BoardHeader';
 
 const AdminPage = (props: { onSignOut: () => void }) => {
   const timeRef = useRef<HTMLInputElement>(null);
@@ -140,9 +140,52 @@ const AdminPage = (props: { onSignOut: () => void }) => {
     setIsModalOpen(false);
   };
 
+  const modal = (
+    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <ModalDialog
+        aria-labelledby="basic-modal-dialog-title"
+        aria-describedby="basic-modal-dialog-description"
+      >
+        <Typography id="basic-modal-dialog-title" level="h2">
+          Add new column
+        </Typography>
+        <Typography id="basic-modal-dialog-description">
+          Fill in all inputs.
+        </Typography>
+        <form>
+          <Stack spacing={2}>
+            {columnInputsCollection.map((columnInput) => (
+              <FormControl
+                key={columnInput.key}
+                className={classes[columnInput.key]}
+              >
+                <FormLabel htmlFor={columnInput.key}>
+                  {columnInput.label}
+                </FormLabel>
+                <Input
+                  className={classes.input}
+                  id={columnInput.key}
+                  type={columnInput.type}
+                  placeholder={columnInput.placeholder}
+                  value={columnInput.value}
+                  onChange={columnInput.onChange}
+                />
+              </FormControl>
+            ))}
+            <Button onClick={addNewColumn}>Add Column</Button>
+          </Stack>
+        </form>
+      </ModalDialog>
+    </Modal>
+  );
+
   return (
     <>
-      <BoardHeader fullName={'Admin'} isTimerVisible={false} onSignOut={props.onSignOut} />
+      <BoardHeader
+        fullName={'Admin'}
+        isTimerVisible={false}
+        onSignOut={props.onSignOut}
+      />
       <form className={classes.settings} onSubmit={handleSubmitChangeSettings}>
         <FormControl className={classes.time}>
           <FormLabel htmlFor="time">Time: (minutes)</FormLabel>
@@ -187,42 +230,7 @@ const AdminPage = (props: { onSignOut: () => void }) => {
             ))}
           </div>
         </section>
-        <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <ModalDialog
-            aria-labelledby="basic-modal-dialog-title"
-            aria-describedby="basic-modal-dialog-description"
-          >
-            <Typography id="basic-modal-dialog-title" level="h2">
-              Add new column
-            </Typography>
-            <Typography id="basic-modal-dialog-description">
-              Fill in all inputs.
-            </Typography>
-            <form>
-              <Stack spacing={2}>
-                {columnInputsCollection.map((columnInput) => (
-                  <FormControl
-                    key={columnInput.key}
-                    className={classes[columnInput.key]}
-                  >
-                    <FormLabel htmlFor={columnInput.key}>
-                      {columnInput.label}
-                    </FormLabel>
-                    <Input
-                      className={classes.input}
-                      id={columnInput.key}
-                      type={columnInput.type}
-                      placeholder={columnInput.placeholder}
-                      value={columnInput.value}
-                      onChange={columnInput.onChange}
-                    />
-                  </FormControl>
-                ))}
-                <Button onClick={addNewColumn}>Add Column</Button>
-              </Stack>
-            </form>
-          </ModalDialog>
-        </Modal>
+        {modal}
         <Button type="submit">Save</Button>
       </form>
     </>

@@ -1,11 +1,12 @@
 import { useContext, useMemo, useRef, useState } from 'react';
+import Button from '@mui/joy/Button';
+import Countdown from 'react-countdown';
+import moment from 'moment';
+
 import { ColumnContext } from '../../store/column-context';
 import { ITimerProps } from '../../interfaces/timerProps';
 
-import Button from '@mui/joy/Button';
-import Countdown from 'react-countdown';
 import classes from './Timer.module.scss';
-import moment from 'moment';
 
 const Timer = (props: ITimerProps) => {
   const initialTimerState = {
