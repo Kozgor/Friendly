@@ -1,0 +1,6 @@
+@import "../../mixins/flexbox";
+
+.userBlock {
+  @include flexbox(row, space-between, center, nowrap);
+  margin-bottom: 1rem;
+}

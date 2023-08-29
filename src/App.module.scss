@@ -3,8 +3,3 @@
 .app {
   @include flexbox(column, center, center, nowrap);
 }
-
-.userBlock {
-  @include flexbox(row, space-between, center, nowrap);
-  margin-bottom: 1rem;
-}
