@@ -6,12 +6,6 @@
   @include flexbox(column, center, center, nowrap);
 }
 
-.userBlock {
-  margin-bottom: 1rem;
-
-  @include flexbox(row, space-between, center, nowrap);
-}
-
 .signForm {
   margin-top: 10px;
 }
