@@ -1,0 +1,7 @@
+@import "../../mixins/flexbox";
+
+.boardCatalog {
+  border: solid 2px black;
+
+  @include flexbox(column, center, center, nowrap);
+}

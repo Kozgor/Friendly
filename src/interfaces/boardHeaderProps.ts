@@ -1,4 +1,6 @@
+import { MouseEventHandler } from 'react';
+
 export interface IBoardHeaderProps {
   fullName: string;
-  onSignOut: () => void;
+  onSignOut: MouseEventHandler<HTMLButtonElement>;
 }

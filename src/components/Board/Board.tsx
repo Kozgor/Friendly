@@ -1,10 +1,11 @@
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
+import { ColumnContext } from '../../store/column-context';
 import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
 import { IColumn } from '../../interfaces/column';
 
 import classes from './Board.module.scss';
-import { ColumnContext } from '../../store/column-context';
+
 import { useContext } from 'react';
 
 const Board = (props: IBoardHeaderProps) => {
