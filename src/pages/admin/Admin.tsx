@@ -1,17 +1,26 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import Box from '@mui/material/Box';
 import Button from '@mui/joy/Button';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import axios from 'axios';
 
-import BoardHeader from '../components/BoardHeader/BoardHeader';
-import { IColumn } from '../interfaces/column';
-import { environment } from '../environment';
+import BoardHeader from '../../components/BoardHeader/BoardHeader';
+import DefaultBoard from './defaultBoard/DefaultBoard';
+import { IColumn } from '../../interfaces/column';
+// import { ITheme } from '../../interfaces/theme';
+import { environment } from '../../environment';
 
 import classes from './Admin.module.scss';
 
@@ -29,6 +38,8 @@ const AdminPage = (props: { onSignOut: () => void }) => {
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [themes, setThemes] = useState<ITheme[]>([]);
+  const [isDefaultBoardActive, setIsDefaultBoardActive] = useState(false);
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({
@@ -132,12 +143,16 @@ const AdminPage = (props: { onSignOut: () => void }) => {
       {
         ...column,
         columnId: Math.random().toString(),
-        columnStyle: !column.columnStyle ? '#000000' : column.columnStyle
+        columnStyle: !column.columnStyle ? '#000' : column.columnStyle
       }
     ]);
     console.log(column);
     clearInputs();
     setIsModalOpen(false);
+  };
+
+  const openDefaultBoard = () => {
+    setIsDefaultBoardActive(true);
   };
 
   const modal = (
@@ -179,6 +194,8 @@ const AdminPage = (props: { onSignOut: () => void }) => {
     </Modal>
   );
 
+  const drawerWidth = 240;
+
   return (
     <>
       <BoardHeader
@@ -186,7 +203,69 @@ const AdminPage = (props: { onSignOut: () => void }) => {
         isTimerVisible={false}
         onSignOut={props.onSignOut}
       />
-      <form className={classes.settings} onSubmit={handleSubmitChangeSettings}>
+      <Stack className={classes.main} direction="row" spacing={2}>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              position: 'relative',
+              backgroundColor: 'darkgray',
+              borderRight: '1px solid black'
+            }
+          }}
+          variant="permanent"
+          anchor="left"
+        >
+          <Divider />
+          <List className={classes['newBoard']}>
+            {['New'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          {/* <List>
+            {['My Boards'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List> */}
+        </Drawer>
+        {!isDefaultBoardActive && (
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              bgcolor: 'background.default',
+              p: 3,
+              marginLeft: 0
+            }}
+          >
+            {/* <div className={classes.customBoard}></div>
+                  <h3>Custom Board</h3>
+
+                  <Divider className={classes.divider} /> */}
+
+            <h2>TEMPLATES</h2>
+            <div className={classes.defaultBoard} onClick={openDefaultBoard}>
+              <div className={classes['defaultBoard__column']}></div>
+              <div className={classes['defaultBoard__column']}></div>
+              <div className={classes['defaultBoard__column']}></div>
+            </div>
+            <h3>Default Board</h3>
+          </Box>
+        )}
+        { isDefaultBoardActive && <DefaultBoard /> }
+      </Stack>
+      {/* <form className={classes.settings} onSubmit={handleSubmitChangeSettings}>
         <FormControl className={classes.time}>
           <FormLabel htmlFor="time">Time: (minutes)</FormLabel>
           <Input
@@ -230,9 +309,18 @@ const AdminPage = (props: { onSignOut: () => void }) => {
             ))}
           </div>
         </section>
-        {modal}
-        <Button type="submit">Save</Button>
-      </form>
+        <section className={classes.themes}>
+          <h3>Themes:</h3>
+          {themes.map((theme) => (
+            <div key={theme.name} className={classes.theme}>
+              <div className={classes['theme-context']}>{theme.name}</div>
+            </div>
+          ))}
+        </section>
+        <Button className={classes.submitButton} type="submit">
+          Save
+        </Button>
+      </form> */}
     </>
   );
 };

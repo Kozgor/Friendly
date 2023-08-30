@@ -5,6 +5,7 @@
   height: 10vh;
   background-color: #fff;
   padding: 15px;
+  border-bottom: 1px solid black;
 
   @include flexbox(row, space-between, center, nowrap);
 }

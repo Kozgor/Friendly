@@ -7,7 +7,7 @@ import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import axios from 'axios';
 
-import AdminPage from './pages/Admin';
+import AdminPage from './pages/admin/Admin';
 import Board from './components/Board/Board';
 import { ColumnProvider } from './store/column-context';
 import { IUserProfile } from './interfaces/user';

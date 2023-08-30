@@ -7,7 +7,7 @@
   background-color: gray;
   overflow-y: auto;
 
-  @include flexbox(row, unset, center, nowrap);
+  @include flexbox(row, space-around, center, nowrap);
 
   .addingColumn {
     width: 360px;

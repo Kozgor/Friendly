@@ -1,0 +1,5 @@
+@import "../../../mixins/flexbox";
+
+.navbar {
+  @include flexbox(row, space-between, center, nowrap);
+}
