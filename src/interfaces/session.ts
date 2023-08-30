@@ -4,8 +4,8 @@ import { ITheme } from './theme';
 import { IUser } from './user';
 
 export interface ISession {
-  _id: String;
-  sessionName: String;
+  _id: string;
+  sessionName: string;
   theme: ITheme;
   users: IUser[];
   columns: IColumn[];

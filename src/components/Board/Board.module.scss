@@ -1,9 +1,25 @@
 @import "../../mixins/flexbox";
 
 .board {
+  width: 100%;
   height: 90vh;
-  padding: 20px;
+  padding: 20px 0;
   background-color: gray;
+  overflow-y: auto;
 
-  @include flexbox(row, center, center, nowrap);
+  @include flexbox(row, unset, center, nowrap);
+
+  .addingColumn {
+    width: 360px;
+    margin: 15px;
+
+    button {
+      width: inherit;
+      line-height: inherit;
+    }
+
+    i {
+      margin-right: 5px;
+    }
+  }
 }

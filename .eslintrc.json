@@ -60,6 +60,13 @@
     "quotes": ["error", "single"],
     "semi": "error",
     "prefer-destructuring": "warn",
-    "@typescript-eslint/ban-types": "off"
+    "sort-imports": [
+      "warn",
+      {
+        "allowSeparatedGroups": true
+      }
+    ],
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-empty-function": "warn"
   }
 }

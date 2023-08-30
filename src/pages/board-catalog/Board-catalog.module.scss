@@ -1,6 +1,7 @@
 @import "../../mixins/flexbox";
 
-.userBlock {
-  @include flexbox(row, space-between, center, nowrap);
-  margin-bottom: 1rem;
+.boardCatalog {
+  border: solid 2px black;
+
+  @include flexbox(column, center, center, nowrap);
 }

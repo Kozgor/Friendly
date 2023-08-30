@@ -1,7 +1,8 @@
 import { IThemeCard } from './themeCard';
+import { IThemeColumn } from './themeColumn';
 
 export interface ICustomUserStyles {
-  userId: String;
+  userId: string;
   card: IThemeCard;
-  column: '';
+  column: IThemeColumn;
 }

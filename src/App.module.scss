@@ -1,5 +1,11 @@
 @import "./mixins/flexbox";
 
 .app {
+  height: 100vh;
+
   @include flexbox(column, center, center, nowrap);
+}
+
+.signForm {
+  margin-top: 10px;
 }
