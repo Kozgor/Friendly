@@ -16,5 +16,13 @@ module.exports = {
       '<rootDir>/fileMocks.js'
   },
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect']
+  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx,js,jsx}',
+    '!src/**/*.d.ts',
+    '!src/**/__tests__/**',
+  ],
+  coverageReporters: ['lcov', 'text-summary']
 };
