@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
@@ -7,8 +8,7 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 
-import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import classes from './Login.module.scss';
 
@@ -59,8 +59,10 @@ function Login() {
 
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('fullName', response.data.fullName);
-
-          navigate('/board-catalog');
+          localStorage.setItem('role', response.data.role);
+          response.data.role === 'user'
+            ? navigate('/board-catalog')
+            : navigate('/admin');
         } catch (error) {
           setIsLoginRequest(false);
 

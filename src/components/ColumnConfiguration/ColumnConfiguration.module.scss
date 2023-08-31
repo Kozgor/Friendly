@@ -1,0 +1,31 @@
+.column {
+  height: 380px;
+  width: 320px;
+  border: 2px solid gray;
+  padding: 10px;
+  position: relative;
+  border-radius: 15px;
+
+  &__header {
+    text-align: center;
+    border: 1px solid gray;
+    padding-top: 10px;
+    border-radius: 10px;
+  }
+
+  &__subtitle {
+    margin: 10px;
+    border: none !important; // find better solution
+    background-color: #fff !important;
+  }
+
+  &__addIcon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  h2 {
+    cursor: context-menu;
+  }
+}

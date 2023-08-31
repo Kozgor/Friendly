@@ -1,11 +1,12 @@
 import { useContext, useMemo, useRef, useState } from 'react';
+import Button from '@mui/joy/Button';
+import Countdown from 'react-countdown';
+import moment from 'moment';
+
 import { ColumnContext } from '../../store/column-context';
 import { ITimerProps } from '../../interfaces/timerProps';
 
-import Button from '@mui/joy/Button';
-import Countdown from 'react-countdown';
 import classes from './Timer.module.scss';
-import moment from 'moment';
 
 const Timer = (props: ITimerProps) => {
   const initialTimerState = {
@@ -89,11 +90,12 @@ const Timer = (props: ITimerProps) => {
       {!countdownTimer.isTimerStarted && (
         <Button
           variant="solid"
+          color='neutral'
           type="submit"
-          aria-label="submit the form"
+          aria-label="solid neutral button for enabling and starting timer"
           onClick={showTimer}
         >
-          Start
+          Start Timer
         </Button>
       )}
 
@@ -104,47 +106,45 @@ const Timer = (props: ITimerProps) => {
           data-testid="timer"
         >
           {!countdownTimer.isTimerPaused && (
-            <div
+            <button
               className={classes.timer__pause}
               onClick={pauseTimer}
-              aria-label="pause button"
-              role="button"
+              aria-label="button for pausing timer"
               data-testid="pause"
             >
               <i className="bi bi-pause-circle-fill"></i>
-            </div>
+            </button>
           )}
 
           {countdownTimer.isTimerPaused && (
-            <div
+            <button
               className={classes.timer__start}
               onClick={startTimer}
-              aria-label="start button"
-              role="button"
+              aria-label="button for starting timer"
               data-testid="continue"
             >
               <i className="bi bi-play-fill"></i>
-            </div>
+            </button>
           )}
 
           {countdown}
 
-          <div
+          <button
             className={classes.timer__reset}
             onClick={resetTimer}
-            aria-label="reset button"
-            role="button"
+            aria-label="button for resetting timer"
             data-testid="reset"
           >
             <i className="bi bi-square-fill"></i>
-          </div>
+          </button>
         </div>
       )}
       {countdownTimer.isTimerCompleted && (
         <Button
           variant="solid"
+          color='neutral'
           type="submit"
-          aria-label="submit the form"
+          aria-label="solid neutral button for submitting the form"
           onClick={submitForm}
           role="button"
           data-testid="submit"

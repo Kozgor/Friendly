@@ -11,7 +11,15 @@
   }
 
   &__time {
+    color: #636b74;
     margin: 0 10px;
+  }
+
+  &__pause,
+  &__start,
+  &__reset {
+    border: none;
+    background-color: #f5f6f7;
   }
 
   &__reset {
