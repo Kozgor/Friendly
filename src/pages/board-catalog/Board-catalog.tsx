@@ -17,11 +17,7 @@ const BoardCatalog = () => {
   return (
     <>
       <div className={classes.boardCatalog}>
-        <Board
-          fullName={fullName}
-          isTimerVisible={true}
-          onSignOut={handleClickSignOut}
-        />
+        <Board fullName={fullName} onSignOut={handleClickSignOut} />
       </div>
     </>
   );

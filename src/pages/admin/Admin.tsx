@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import Button from '@mui/joy/Button';
@@ -15,7 +15,6 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-// import axios from 'axios';
 
 import BoardHeader from '../../components/BoardHeader/BoardHeader';
 import { IColumn } from '../../interfaces/column';
@@ -24,8 +23,6 @@ import classes from './Admin.module.scss';
 
 const Admin = () => {
   const navigate = useNavigate();
-  const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
-  const timeRef = useRef<HTMLInputElement>(null);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const columnInitValue = {
     id: '',
@@ -37,7 +34,6 @@ const Admin = () => {
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [themes, setThemes] = useState<ITheme[]>([]);
 
   const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
     localStorage.removeItem('token');
@@ -111,16 +107,6 @@ const Admin = () => {
     }
   ];
 
-  useEffect(() => {
-    try {
-      // axios.get(`${FRIENDLY_DOMAIN}boards`).then(boards => {
-      //   console.log(boards);
-      // });
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
   const clearInputs = () => {
     setColumn(columnInitValue);
   };
@@ -138,7 +124,6 @@ const Admin = () => {
         columnStyle: !column.style ? '#000' : column.style
       }
     ]);
-    console.log(column);
     clearInputs();
     setIsModalOpen(false);
   };
@@ -175,7 +160,7 @@ const Admin = () => {
                 />
               </FormControl>
             ))}
-            <Button onClick={addNewColumn}>Add Column</Button>
+            <Button aria-label='button for adding new column' onClick={addNewColumn}>Add Column</Button>
           </Stack>
         </form>
       </ModalDialog>
@@ -186,7 +171,9 @@ const Admin = () => {
     <>
       <BoardHeader
         fullName={'Admin'}
+        boardName=''
         isTimerVisible={false}
+        time={0}
         onSignOut={handleClickSignOut}
       />
       <Stack className={classes.main} direction="row" spacing={2}>
@@ -205,7 +192,7 @@ const Admin = () => {
         >
           <Divider />
           <List className={classes['newBoard']}>
-            {['New Board'].map((text, index) => (
+            {['New Board'].map((text) => (
               <ListItem key={text} disablePadding onClick={openNewBoardTab}>
                 <ListItemButton>
                   <ListItemText primary={text} />
@@ -214,7 +201,7 @@ const Admin = () => {
             ))}
           </List>
           {/* <List>
-            {['My Boards'].map((text, index) => (
+            {['My Boards'].map((text) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton>
                   <ListItemText primary={text} />

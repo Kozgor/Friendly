@@ -6,6 +6,7 @@ import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import ColumnConfiguration from '../../../components/ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../../interfaces/boardSettings';
@@ -95,15 +96,18 @@ const DefaultBoard = () => {
     setColumns(updatedColumns);
   };
 
-  const publishSettings = async () => {
-    console.log(boardSettings);
-    try {
-      // const response = await axios.post(`${FRIENDLY_DOMAIN}boards/new-board`, {boardSettings});
-
-      navigate('/admin');
-    } catch (error) {
-      return error;
-    }
+  const publishSettings = () => {
+    axios
+      .post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings)
+      .then(() => {
+        navigate('/admin');
+        toast.success(
+          `${boardSettings.name} board was successfully published. Now your team can play with it.`
+        );
+      })
+      .catch((error) => {
+        toast.error(error?.message);
+      });
   };
 
   return (
@@ -128,7 +132,7 @@ const DefaultBoard = () => {
           color="neutral"
           variant="solid"
           type="button"
-          aria-label="publish the board"
+          aria-label="solid neutral button for publishing the board"
           onClick={publishSettings}
         >
           Publish
@@ -146,6 +150,7 @@ const DefaultBoard = () => {
               value={setting.value}
               onChange={setting.onChange}
               disabled={setting.disabled}
+              aria-label={`input for ${setting.label}`}
             />
           </div>
         ))}
@@ -153,7 +158,12 @@ const DefaultBoard = () => {
           <p>Columns:</p>
           <section className={classes.columns}>
             {initialSettingsValue.columns.map((column) => (
-              <ColumnConfiguration key={column.id} columnId={column.id} columns={columns} onUpdateColumns={columnsUpdateHandler} />
+              <ColumnConfiguration
+                key={column.id}
+                columnId={column.id}
+                columns={columns}
+                onUpdateColumns={columnsUpdateHandler}
+              />
             ))}
           </section>
         </div>

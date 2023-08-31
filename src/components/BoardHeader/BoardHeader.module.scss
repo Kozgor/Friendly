@@ -3,9 +3,29 @@
 .header {
   width: 100%;
   height: 10vh;
-  background-color: #fff;
+  background-color: #f5f6f7;
   padding: 15px;
   border-bottom: 1px solid black;
 
   @include flexbox(row, space-between, center, nowrap);
+
+  .boardName {
+    color: #e5b02b;
+    cursor: context-menu;
+  }
+
+  .userBox {
+    @include flexbox(row, unset, center, nowrap);
+
+    span {
+      color: #45505f;
+      line-height: 40px;
+      cursor: context-menu;
+      margin-right: 5px;
+    }
+  }
+
+  .signOut {
+    padding: 0 10px;
+  }
 }

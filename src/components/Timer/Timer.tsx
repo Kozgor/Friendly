@@ -90,11 +90,12 @@ const Timer = (props: ITimerProps) => {
       {!countdownTimer.isTimerStarted && (
         <Button
           variant="solid"
+          color='neutral'
           type="submit"
-          aria-label="submit the form"
+          aria-label="solid neutral button for enabling and starting timer"
           onClick={showTimer}
         >
-          Start
+          Start Timer
         </Button>
       )}
 
@@ -108,7 +109,7 @@ const Timer = (props: ITimerProps) => {
             <div
               className={classes.timer__pause}
               onClick={pauseTimer}
-              aria-label="pause button"
+              aria-label="button for pausing timer"
               role="button"
               data-testid="pause"
             >
@@ -120,7 +121,7 @@ const Timer = (props: ITimerProps) => {
             <div
               className={classes.timer__start}
               onClick={startTimer}
-              aria-label="start button"
+              aria-label="button for starting timer"
               role="button"
               data-testid="continue"
             >
@@ -133,7 +134,7 @@ const Timer = (props: ITimerProps) => {
           <div
             className={classes.timer__reset}
             onClick={resetTimer}
-            aria-label="reset button"
+            aria-label="button for resetting timer"
             role="button"
             data-testid="reset"
           >
@@ -144,8 +145,9 @@ const Timer = (props: ITimerProps) => {
       {countdownTimer.isTimerCompleted && (
         <Button
           variant="solid"
+          color='neutral'
           type="submit"
-          aria-label="submit the form"
+          aria-label="solid neutral button for submitting the form"
           onClick={submitForm}
           role="button"
           data-testid="submit"

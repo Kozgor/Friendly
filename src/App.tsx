@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Admin from './pages/admin/Admin';
 import BoardCatalog from './pages/board-catalog/Board-catalog';
@@ -9,6 +10,7 @@ import NotFound from './pages/not-found/Not-fount';
 
 import { ColumnProvider } from './store/column-context';
 
+import 'react-toastify/dist/ReactToastify.css';
 import classes from './App.module.scss';
 
 function App() {
@@ -42,6 +44,15 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        draggable
+        closeOnClick
+        pauseOnHover={false}
+        hideProgressBar={false}
+        theme="colored"
+      />
     </ColumnProvider>
   );
 }

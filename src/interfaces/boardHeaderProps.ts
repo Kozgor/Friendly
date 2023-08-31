@@ -2,6 +2,8 @@ import { MouseEventHandler } from 'react';
 
 export interface IBoardHeaderProps {
   fullName: string;
-  isTimerVisible: boolean | null;
+  boardName: string;
+  isTimerVisible: boolean;
+  time: number;
   onSignOut: MouseEventHandler<HTMLButtonElement>;
 }

@@ -2,6 +2,10 @@
 
 .navbar {
   @include flexbox(row, space-between, center, nowrap);
+
+  h3 {
+    cursor: context-menu;
+  }
 }
 
 .link {
@@ -34,5 +38,9 @@
     margin-top: 10px;
 
     @include flexbox(row, space-between, center, nowrap);
+  }
+
+  p {
+    cursor: context-menu;
   }
 }

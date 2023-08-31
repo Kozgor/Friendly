@@ -7,7 +7,7 @@
   padding: 10px;
   border-radius: 15px;
   margin: 0 15px;
-  border: 1px solid black;
+  border: 2px solid #45505f;
 
   &__header {
     height: 85px;
@@ -15,10 +15,18 @@
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid gray;
+    border: 1px solid #636b74;
 
     h2 {
-      margin-bottom: 5px;
+      color: #34363b;
+      margin-bottom: 10px;
+      text-align: center;
+      cursor: context-menu;
+    }
+
+    p {
+      color: #636b74;
+      cursor: context-menu;
     }
   }
 
