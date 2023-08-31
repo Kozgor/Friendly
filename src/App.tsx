@@ -45,6 +45,7 @@ function App() {
         </BrowserRouter>
       </div>
       <ToastContainer
+        role="alert"
         position="top-right"
         autoClose={3000}
         draggable

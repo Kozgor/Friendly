@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import ColumnConfiguration from '../../../components/ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../../interfaces/boardSettings';
 import { IColumn } from '../../../interfaces/column';
+import Toastr from '../../../components/Toastr/Toastr';
 
 import classes from './DefaultBoard.module.scss';
 
@@ -102,7 +103,10 @@ const DefaultBoard = () => {
       .then(() => {
         navigate('/admin');
         toast.success(
-          `${boardSettings.name} board was successfully published. Now your team can play with it.`
+          <Toastr
+            itemName={boardSettings.name}
+            message="board was successfully published. Now your team can play with it."
+          />
         );
       })
       .catch((error) => {
