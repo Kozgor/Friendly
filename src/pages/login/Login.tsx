@@ -1,57 +1,32 @@
-/* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
 import axios from 'axios';
 
 import Button from '@mui/joy/Button';
-import ButtonGroup from '@mui/joy/ButtonGroup';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
+import CircularProgress from '@mui/joy/CircularProgress';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import classes from './Login.module.scss';
 
 function Login() {
     const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
-
     const navigate = useNavigate();
-    const [isNewUser, setNewUserRequest] = useState(true);
-    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
-    const [description, setDescription] = useState('');
     const [password, setPassword] = useState('');
-    const [verifiedProfile, setVerifiedProfile] = useState(null);
+    const [isLoginRequest, setIsLoginRequest] = useState(false);
 
-    const handleClickSignIn: MouseEventHandler<HTMLButtonElement> = (event) => {
-      event.currentTarget.value === 'Sign In'
-        ? setNewUserRequest(false)
-        : setNewUserRequest(true);
-    };
-
-    const handleFullNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setFullName(event.target.value);
-    };
     const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
       setEmail(event.target.value);
     };
     const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
       setPassword(event.target.value);
     };
-    const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setDescription(event.target.value);
-    };
 
     const signInputsList = [
-      {
-        key: 'fullName',
-        value: fullName,
-        onChange: handleFullNameChange,
-        inputParams: { placeholder: 'Full name' }
-      },
       {
         key: 'Email',
         value: email,
@@ -63,65 +38,41 @@ function Login() {
         value: password,
         onChange: handlePasswordChange,
         inputParams: { placeholder: 'Password', type: 'password' }
-      },
-      {
-        key: 'Description',
-        value: description,
-        onChange: handleDescriptionChange,
-        inputParams: { placeholder: 'Description' }
       }
     ];
 
     const handleSignInSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
 
-      try {
-        const response = await axios.post(`${FRIENDLY_DOMAIN}auth/login`, {
-          email,
-          password
-        });
+      if (email.length && password.length) {
+        setIsLoginRequest(true);
 
-        setVerifiedProfile(response.data);
-        setEmail('');
-        setPassword('');
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('fullName', response.data.fullName);
-        navigate('/board-catalog');
+        try {
+          const response = await axios.post(`${FRIENDLY_DOMAIN}auth/login`, {
+            email,
+            password
+          });
 
-      } catch (error) {
-        return error;
+          setEmail('');
+          setPassword('');
+          setIsLoginRequest(false);
+
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('fullName', response.data.fullName);
+
+          navigate('/board-catalog');
+        } catch (error) {
+          setIsLoginRequest(false);
+
+          return error;
+        }
       }
+
+      return;
     };
 
-    const handleSignUpSubmit = async (event: React.FormEvent) => {
-      event.preventDefault();
-
-      try {
-        const response = await axios.post(`${FRIENDLY_DOMAIN}auth/register`, {
-          fullName,
-          password,
-          email,
-          description,
-          avatar: ''
-        });
-
-        setVerifiedProfile(response.data);
-        console.log('verified profile', response.data);
-        setFullName('');
-        setPassword('');
-        setEmail('');
-        setDescription('');
-        setNewUserRequest(false);
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('fullName', response.data.fullName);
-        navigate('/board-catalog');
-      } catch (error) {
-        return error;
-      }
-    };
     return (
         <>
-          {!isNewUser && !verifiedProfile && (
           <Card
             sx={{
               width: 320,
@@ -131,91 +82,34 @@ function Login() {
           >
             <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
               <Typography fontSize="lg" fontWeight="lg">
-                Welcome!
+                Welcome to Friendly
               </Typography>
-              <form className={classes.signForm} onSubmit={handleSignInSubmit}>
-                {signInputsList.map(input => {
-                  if (input.key === 'Email' || input.key === 'Password') {
-                    return (
-                      <Input
-                        key={input.key}
-                        variant="outlined"
-                        color="primary"
-                        value={input.value}
-                        onChange={input.onChange}
-                        slotProps={{ input: input.inputParams }}
-                        sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
-                      />
-                    );
-                  }
-                  return;
-                })}
-                <Button variant="soft" type="submit" aria-label="submit the form">
-                  Submit
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-          )}
-
-          {isNewUser && !verifiedProfile && (
-          <Card
-            sx={{
-              width: 320,
-              maxWidth: '100%',
-              boxShadow: 'lg'
-            }}
-          >
-            <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-              <Typography fontSize="lg" fontWeight="lg">
-                Welcome!
-              </Typography>
-              <form data-testid="signUpForm" className={classes.signForm} onSubmit={handleSignUpSubmit}>
+              <form className={classes.signForm} data-testid="loginForm" onSubmit={handleSignInSubmit}>
                 {signInputsList.map(input => (
                   <Input
                     key={input.key}
                     variant="outlined"
-                    color="primary"
+                    color="neutral"
                     value={input.value}
                     onChange={input.onChange}
                     slotProps={{ input: input.inputParams }}
                     sx={{ mb: 1, fontSize: 'var(--joy-fontSize-sm)' }}
+                    disabled={isLoginRequest}
+                    data-testid={`loginInput${input.key}`}
                   />
                 ))}
-                <Button variant="soft" type="submit" aria-label="submit the form">
-                  Submit
+                <Button
+                  variant="soft"
+                  type="submit"
+                  color="neutral"
+                  aria-label="submit the form"
+                  data-testid="submitBtn"
+                >
+                  {isLoginRequest ? <CircularProgress data-testid="submitProgress" /> : 'Login'}
                 </Button>
               </form>
             </CardContent>
           </Card>
-          )}
-
-          {!verifiedProfile && (
-          <ButtonGroup
-            variant="soft"
-            color="primary"
-            aria-label="outlined primary button group"
-            buttonFlex="0 1 160px"
-            sx={{ width: '100%', justifyContent: 'center' }}
-          >
-            <Button
-              variant="solid"
-              onClick={handleClickSignIn}
-              value="Sign In"
-              aria-label='Sign In'
-            >
-              Sign In
-            </Button>
-            <Button
-              variant="solid"
-              onClick={handleClickSignIn}
-              value="Sign Up"
-              aria-label='Sign Up'
-            >
-              Sign Up
-            </Button>
-          </ButtonGroup>
-          )}
         </>
     );
 }
