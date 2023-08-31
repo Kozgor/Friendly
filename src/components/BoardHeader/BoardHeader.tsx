@@ -10,7 +10,7 @@ const BoardHeader = (props: IBoardHeaderProps) => {
 
   return (
     <header className={classes.header}>
-      <span className={classes.userBlock}>Hello, {props.fullName}</span>
+      <p>Hello, {props.fullName}</p>
       {props.isTimerVisible && <Timer time={time} />}
       <Button
         variant="plain"

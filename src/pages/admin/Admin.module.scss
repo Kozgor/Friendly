@@ -59,8 +59,7 @@
     border-bottom: 1px solid black;
   }
 
-  .customBoard,
-  .defaultBoard {
+  .customBoard {
     width: 250px;
     height: 170px;
     border: 1px solid black;
@@ -68,8 +67,7 @@
     cursor: pointer;
   }
 
-  .customBoard + h3,
-  .defaultBoard + h3 {
+  .customBoard + h3 {
     margin-bottom: 10px;
   }
 
@@ -81,17 +79,5 @@
 
   .divider + h2 {
     margin-bottom: 15px;
-  }
-
-  .defaultBoard {
-    padding: 30px 10px 10px;
-
-    @include flexbox(row, space-evenly, center, nowrap);
-
-    &__column {
-      width: 45px;
-      height: 115px;
-      border: 1px solid lightgray;
-    }
   }
 }

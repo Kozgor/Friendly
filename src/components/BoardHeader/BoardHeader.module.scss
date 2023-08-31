@@ -9,9 +9,3 @@
 
   @include flexbox(row, space-between, center, nowrap);
 }
-
-.userBlock {
-  margin-bottom: 1rem;
-
-  @include flexbox(row, space-between, center, nowrap);
-}

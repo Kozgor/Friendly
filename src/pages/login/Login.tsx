@@ -1,7 +1,5 @@
-/* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
-import axios from 'axios';
+import { ChangeEvent, MouseEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '@mui/joy/Button';
 import ButtonGroup from '@mui/joy/ButtonGroup';
@@ -9,9 +7,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
-
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import classes from './Login.module.scss';
 
@@ -86,7 +82,8 @@ function Login() {
         setPassword('');
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('fullName', response.data.fullName);
-        navigate('/board-catalog');
+        localStorage.setItem('role', response.data.role);
+        response.data.role === 'user' ? navigate('/board-catalog') : navigate('/admin');
 
       } catch (error) {
         return error;
@@ -114,6 +111,7 @@ function Login() {
         setNewUserRequest(false);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('fullName', response.data.fullName);
+        localStorage.setItem('role', response.data.role);
         navigate('/board-catalog');
       } catch (error) {
         return error;

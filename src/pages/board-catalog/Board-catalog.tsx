@@ -10,6 +10,7 @@ const BoardCatalog = () => {
   const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('fullName');
+    localStorage.removeItem('role');
     navigate('/auth');
   };
   const fullName = localStorage.getItem('fullName') || '';

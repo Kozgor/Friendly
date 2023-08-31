@@ -1,5 +1,6 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import Box from '@mui/material/Box';
+import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+
 import Button from '@mui/joy/Button';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -14,32 +15,36 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import axios from 'axios';
+// import axios from 'axios';
 
 import BoardHeader from '../../components/BoardHeader/BoardHeader';
-import DefaultBoard from './defaultBoard/DefaultBoard';
 import { IColumn } from '../../interfaces/column';
-// import { ITheme } from '../../interfaces/theme';
-import { environment } from '../../environment';
 
 import classes from './Admin.module.scss';
 
-const AdminPage = (props: { onSignOut: () => void }) => {
+const Admin = () => {
+  const navigate = useNavigate();
+  const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const timeRef = useRef<HTMLInputElement>(null);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const columnInitValue = {
-    columnId: '',
-    columnTitle: '',
-    columnSubtitle: '',
-    columnStyle: '',
-    columnAvatar: '',
-    columnCards: [],
-    isAddingDisabled: true
+    id: '',
+    title: '',
+    subtitle: '',
+    style: '',
+    avatar: '',
+    cards: []
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [themes, setThemes] = useState<ITheme[]>([]);
-  const [isDefaultBoardActive, setIsDefaultBoardActive] = useState(false);
+
+  const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('fullName');
+    localStorage.removeItem('role');
+    navigate('/auth');
+  };
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({
@@ -76,7 +81,7 @@ const AdminPage = (props: { onSignOut: () => void }) => {
       key: 'columnTitle',
       label: 'Column title:',
       type: 'input',
-      value: column.columnTitle,
+      value: column.title,
       onChange: columnTitleChangeHandler,
       placeholder: 'Please enter the column title:'
     },
@@ -84,7 +89,7 @@ const AdminPage = (props: { onSignOut: () => void }) => {
       key: 'columnSubtitle',
       label: 'Column subtitle:',
       type: 'input',
-      value: column.columnSubtitle,
+      value: column.subtitle,
       onChange: columnSubTitleChangeHandler,
       placeholder: 'Please enter the column subtitle:'
     },
@@ -92,7 +97,7 @@ const AdminPage = (props: { onSignOut: () => void }) => {
       key: 'columnStyle',
       label: 'Column style:',
       type: 'color',
-      value: column.columnStyle,
+      value: column.style,
       onChange: columnStyleChangeHandler,
       placeholder: 'Please choose the column style:'
     },
@@ -100,7 +105,7 @@ const AdminPage = (props: { onSignOut: () => void }) => {
       key: 'columnAvatar',
       label: 'Column avatar:',
       type: 'input',
-      value: column.columnAvatar,
+      value: column.avatar,
       onChange: columnAvatarChangeHandler,
       placeholder: 'Please choose the column avatar:'
     }
@@ -108,33 +113,20 @@ const AdminPage = (props: { onSignOut: () => void }) => {
 
   useEffect(() => {
     try {
-      // axios.get(`${environment.FRIENDLY_LINK}admin/settings`).then(data => {
-      //   console.log(data);
+      // axios.get(`${FRIENDLY_DOMAIN}boards`).then(boards => {
+      //   console.log(boards);
       // });
     } catch (err) {
       console.log(err);
     }
   }, []);
 
-  const handleSubmitChangeSettings = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    try {
-      const time = (timeRef.current?.children[0] as HTMLInputElement)?.value;
-
-      const response = await axios.post(
-        `${environment.FRIENDLY_LINK}admin/settings`,
-        { columns, time }
-      );
-      const responseData = response.data;
-      console.log(responseData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const clearInputs = () => {
     setColumn(columnInitValue);
+  };
+
+  const openNewBoardTab = () => {
+    navigate('/admin');
   };
 
   const addNewColumn = () => {
@@ -143,16 +135,12 @@ const AdminPage = (props: { onSignOut: () => void }) => {
       {
         ...column,
         columnId: Math.random().toString(),
-        columnStyle: !column.columnStyle ? '#000' : column.columnStyle
+        columnStyle: !column.style ? '#000' : column.style
       }
     ]);
     console.log(column);
     clearInputs();
     setIsModalOpen(false);
-  };
-
-  const openDefaultBoard = () => {
-    setIsDefaultBoardActive(true);
   };
 
   const modal = (
@@ -194,22 +182,18 @@ const AdminPage = (props: { onSignOut: () => void }) => {
     </Modal>
   );
 
-  const drawerWidth = 240;
-
   return (
     <>
       <BoardHeader
         fullName={'Admin'}
         isTimerVisible={false}
-        onSignOut={props.onSignOut}
+        onSignOut={handleClickSignOut}
       />
       <Stack className={classes.main} direction="row" spacing={2}>
         <Drawer
           sx={{
-            width: drawerWidth,
-            flexShrink: 0,
             '& .MuiDrawer-paper': {
-              width: drawerWidth,
+              width: 240,
               boxSizing: 'border-box',
               position: 'relative',
               backgroundColor: 'darkgray',
@@ -221,8 +205,8 @@ const AdminPage = (props: { onSignOut: () => void }) => {
         >
           <Divider />
           <List className={classes['newBoard']}>
-            {['New'].map((text, index) => (
-              <ListItem key={text} disablePadding>
+            {['New Board'].map((text, index) => (
+              <ListItem key={text} disablePadding onClick={openNewBoardTab}>
                 <ListItemButton>
                   <ListItemText primary={text} />
                 </ListItemButton>
@@ -239,90 +223,10 @@ const AdminPage = (props: { onSignOut: () => void }) => {
             ))}
           </List> */}
         </Drawer>
-        {!isDefaultBoardActive && (
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              bgcolor: 'background.default',
-              p: 3,
-              marginLeft: 0
-            }}
-          >
-            {/* <div className={classes.customBoard}></div>
-                  <h3>Custom Board</h3>
-
-                  <Divider className={classes.divider} /> */}
-
-            <h2>TEMPLATES</h2>
-            <div className={classes.defaultBoard} onClick={openDefaultBoard}>
-              <div className={classes['defaultBoard__column']}></div>
-              <div className={classes['defaultBoard__column']}></div>
-              <div className={classes['defaultBoard__column']}></div>
-            </div>
-            <h3>Default Board</h3>
-          </Box>
-        )}
-        { isDefaultBoardActive && <DefaultBoard /> }
+        <Outlet />
       </Stack>
-      {/* <form className={classes.settings} onSubmit={handleSubmitChangeSettings}>
-        <FormControl className={classes.time}>
-          <FormLabel htmlFor="time">Time: (minutes)</FormLabel>
-          <Input
-            className={classes.input}
-            id="time"
-            type="number"
-            placeholder="Please enter the retrospective time"
-            ref={timeRef}
-            required
-            defaultValue={10}
-            slotProps={{
-              input: {
-                ref: timeRef,
-                min: 1
-              }
-            }}
-          />
-        </FormControl>
-        <section className={classes.columns}>
-          <div className={classes['columns__header']}>
-            <h3>Columns:</h3>
-            <Button onClick={() => setIsModalOpen(true)}>Add Column</Button>
-          </div>
-          <div className={classes['columns__content']}>
-            {columns.map((column) => (
-              <div
-                key={column.columnId}
-                className={classes.column}
-                style={{ backgroundColor: column.columnStyle }}
-              >
-                <img
-                  className={classes['column__avatar']}
-                  src={column.columnAvatar}
-                  alt="avatar for column"
-                />
-                <div className={classes['column__info']}>
-                  <h4>{column.columnTitle}</h4>
-                  <p>{column.columnSubtitle}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-        <section className={classes.themes}>
-          <h3>Themes:</h3>
-          {themes.map((theme) => (
-            <div key={theme.name} className={classes.theme}>
-              <div className={classes['theme-context']}>{theme.name}</div>
-            </div>
-          ))}
-        </section>
-        <Button className={classes.submitButton} type="submit">
-          Save
-        </Button>
-      </form> */}
     </>
   );
 };
 
-export default AdminPage;
+export default Admin;

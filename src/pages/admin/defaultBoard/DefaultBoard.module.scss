@@ -3,3 +3,36 @@
 .navbar {
   @include flexbox(row, space-between, center, nowrap);
 }
+
+.link {
+  color: gray;
+  text-decoration: none;
+}
+
+.boardSettings {
+  padding-left: 0.75rem;
+}
+
+.name,
+.theme,
+.timer {
+  height: 30px;
+  width: 320px;
+
+  @include flexbox(row, space-between, center, nowrap);
+
+  .input {
+    border: none;
+    background-color: #fff;
+  }
+}
+
+.columnsBox {
+  padding-top: 5px;
+
+  .columns {
+    margin-top: 10px;
+
+    @include flexbox(row, space-between, center, nowrap);
+  }
+}
