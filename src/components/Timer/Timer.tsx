@@ -106,40 +106,37 @@ const Timer = (props: ITimerProps) => {
           data-testid="timer"
         >
           {!countdownTimer.isTimerPaused && (
-            <div
+            <button
               className={classes.timer__pause}
               onClick={pauseTimer}
               aria-label="button for pausing timer"
-              role="button"
               data-testid="pause"
             >
               <i className="bi bi-pause-circle-fill"></i>
-            </div>
+            </button>
           )}
 
           {countdownTimer.isTimerPaused && (
-            <div
+            <button
               className={classes.timer__start}
               onClick={startTimer}
               aria-label="button for starting timer"
-              role="button"
               data-testid="continue"
             >
               <i className="bi bi-play-fill"></i>
-            </div>
+            </button>
           )}
 
           {countdown}
 
-          <div
+          <button
             className={classes.timer__reset}
             onClick={resetTimer}
             aria-label="button for resetting timer"
-            role="button"
             data-testid="reset"
           >
             <i className="bi bi-square-fill"></i>
-          </div>
+          </button>
         </div>
       )}
       {countdownTimer.isTimerCompleted && (

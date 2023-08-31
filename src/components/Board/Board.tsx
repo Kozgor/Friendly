@@ -25,7 +25,6 @@ const Board = (props: {
   useEffect(() => {
     try {
       axios.get(`${FRIENDLY_DOMAIN}boards/active`).then((res) => {
-        console.log(res);
         setBoardSettings(res.data);
       });
     } catch (err) {

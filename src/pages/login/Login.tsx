@@ -104,7 +104,6 @@ function Login() {
       });
 
       setVerifiedProfile(response.data);
-      console.log('verified profile', response.data);
       setFullName('');
       setPassword('');
       setEmail('');

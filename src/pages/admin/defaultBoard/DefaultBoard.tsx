@@ -105,7 +105,7 @@ const DefaultBoard = () => {
         toast.success(
           <Toastr
             itemName={boardSettings.name}
-            message="board was successfully published. Now your team can play with it."
+            message="board was successfully published. Now your team can play with it"
           />
         );
       })
