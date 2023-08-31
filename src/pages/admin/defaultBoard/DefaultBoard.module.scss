@@ -21,7 +21,7 @@
 .theme,
 .timer {
   height: 30px;
-  width: 320px;
+  width: 400px;
 
   @include flexbox(row, space-between, center, nowrap);
 
