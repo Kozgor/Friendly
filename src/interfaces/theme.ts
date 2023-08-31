@@ -1,6 +1,9 @@
-import { ICustomUserStyles } from './customUserStyles';
+import { IThemeObject } from './themeObject';
 
 export interface ITheme {
-  sessionTheme: string;
-  customUserStyles: ICustomUserStyles;
+  name: string;
+  header: IThemeObject;
+  board: IThemeObject;
+  comment: IThemeObject;
+  button: IThemeObject;
 }

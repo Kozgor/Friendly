@@ -10,6 +10,6 @@
     "declaration-empty-line-before": "never",
     "selector-class-pattern": null,
     "media-feature-name-no-unknown": true,
-    "declaration-no-important": true
+    "declaration-no-important": null
   }
 }

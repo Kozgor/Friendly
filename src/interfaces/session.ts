@@ -1,13 +1,13 @@
 import { IActionItem } from './actionItem';
 import { IColumn } from './column';
 import { ITheme } from './theme';
-import { IUser } from './user';
+import { IUserProfile } from './user';
 
 export interface ISession {
   _id: string;
   sessionName: string;
   theme: ITheme;
-  users: IUser[];
+  users: IUserProfile[];
   columns: IColumn[];
   actionItems: IActionItem[];
 }
