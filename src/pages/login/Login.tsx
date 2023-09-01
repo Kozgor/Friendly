@@ -6,9 +6,11 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Input from '@mui/joy/Input';
+import Toastr from '../../components/Toastr/Toastr';
 import Typography from '@mui/joy/Typography';
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import classes from './Login.module.scss';
 
@@ -65,6 +67,12 @@ function Login() {
             : navigate('/admin');
         } catch (error) {
           setIsLoginRequest(false);
+          toast.error(
+            <Toastr
+              itemName='Login error'
+              message='Wrong login or password'
+            />
+          );
 
           return error;
         }
