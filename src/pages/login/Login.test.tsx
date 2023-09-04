@@ -1,9 +1,40 @@
 import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import Login from './Login';
+
 import { MemoryRouter } from 'react-router-dom';
 
-describe('Board component', () => {
+import axios from 'axios';
+
+const mockUserLogin = jest.fn(() =>
+  Promise.resolve({
+    data: {
+      token: 'mockToken',
+      fullName: 'Test User',
+      role: 'user'
+    }
+  })
+);
+
+const mockAdminLogin = jest.fn(() =>
+  Promise.resolve({
+    data: {
+      token: 'mockToken',
+      fullName: 'Test Admin',
+      role: 'admin'
+    }
+  })
+);
+
+const mockLoginError = jest.fn(() =>
+  Promise.reject({
+    data: {
+      message :'Wrong login or password'
+    }
+  })
+);
+
+describe('Login component', () => {
   let component: RenderResult;
 
   beforeEach(() => {
@@ -14,8 +45,9 @@ describe('Board component', () => {
     );
   });
 
-  afterEach(async () => {
-    await component.unmount();
+  afterEach(() => {
+    component.unmount();
+    jest.clearAllMocks();
   });
 
   test('Should mount component properly', () => {
@@ -50,20 +82,72 @@ describe('Board component', () => {
     expect(passwordField).toBeInTheDocument();
   });
 
-//   ToDo: Update test suite with input values
-//   test('Should render \'Circular progress\' after click on login button', async () => {
-//     const login = screen.getByText(/Login/);
-//     const submitBtn = screen.getByTestId('submitBtn');
+  test('Should change value in \'Email\' field', () => {
+    const emailInputDiv = screen.getByTestId('loginInputEmail');
+    const inputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
 
-//     expect(login).toBeInTheDocument();
-//     expect(submitBtn).toBeInTheDocument();
+    fireEvent.change(inputElement, { target: { value: 'test@mail.com' } });
 
-//     fireEvent.click(submitBtn);
+    expect(inputElement.value).toBe('test@mail.com');
+  });
 
-//     await waitFor(() => {
-//       const circularProgress = screen.getByTestId('submitProgress');
+  test('Should change value in \'Password\' field', () => {
+    const emailInputDiv = screen.getByTestId('loginInputPassword');
+    const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
 
-//       expect(circularProgress).toBeInTheDocument();
-//     });
-//   });
+    fireEvent.change(emailInputElement, { target: { value: 'qwerty123' } });
+
+    expect(emailInputElement.value).toBe('qwerty123');
+  });
+
+  test('Should login user', () => {
+    const emailInputDiv = screen.getByTestId('loginInputEmail');
+    const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
+    const passwordInputDiv = screen.getByTestId('loginInputPassword');
+    const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
+    const post = jest.spyOn(axios, 'post').mockImplementation(mockUserLogin);
+    const submitBtn = screen.getByTestId('submitBtn');
+    const expectedCallCount = 1;
+
+    fireEvent.change(emailInputElement, { target: { value: 'user@mail.com' } });
+    fireEvent.change(passwordInputElement, { target: { value: 'qwerty123' } });
+    fireEvent.click(submitBtn);
+
+    expect(post).toHaveBeenCalled();
+    expect(post).toHaveBeenCalledTimes(expectedCallCount);
+  });
+
+  test('Should login admin', () => {
+    const emailInputDiv = screen.getByTestId('loginInputEmail');
+    const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
+    const passwordInputDiv = screen.getByTestId('loginInputPassword');
+    const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
+    const post = jest.spyOn(axios, 'post').mockImplementation(mockAdminLogin);
+    const submitBtn = screen.getByTestId('submitBtn');
+    const expectedCallCount = 1;
+
+    fireEvent.change(emailInputElement, { target: { value: 'user@mail.com' } });
+    fireEvent.change(passwordInputElement, { target: { value: 'qwerty123' } });
+    fireEvent.click(submitBtn);
+
+    expect(post).toHaveBeenCalled();
+    expect(post).toHaveBeenCalledTimes(expectedCallCount);
+  });
+
+  test('Should show error toast message', () => {
+    const submitBtn = screen.getByTestId('submitBtn');
+    const emailInputDiv = screen.getByTestId('loginInputEmail');
+    const passwordInputDiv = screen.getByTestId('loginInputPassword');
+    const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
+    const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
+    const post = jest.spyOn(axios, 'post').mockImplementation(mockLoginError);
+    const expectedCallCount = 1;
+
+    fireEvent.change(emailInputElement, { target: { value: 'user@mail.com' } });
+    fireEvent.change(passwordInputElement, { target: { value: 'qwerty123' } });
+    fireEvent.click(submitBtn);
+
+    expect(post).toHaveBeenCalled();
+    expect(post).toHaveBeenCalledTimes(expectedCallCount);
+  });
 });
