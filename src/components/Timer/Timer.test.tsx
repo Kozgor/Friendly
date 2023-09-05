@@ -56,6 +56,8 @@ describe('Timer component', () => {
     test('renders timer', () => {
       expect(startButton).not.toBeInTheDocument();
       expect(timer).toBeInTheDocument();
+      expect(timer).toHaveClass('timer');
+      expect(timer).toHaveAttribute('aria-description', 'timer section');
       expect(enableAdding).toHaveBeenCalled();
     });
 

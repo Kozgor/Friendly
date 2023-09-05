@@ -189,11 +189,12 @@ const Admin = () => {
           }}
           variant="permanent"
           anchor="left"
+          data-testid="drawer"
         >
-          <Divider />
+          <Divider data-testid="divider" />
           <List className={classes['newBoard']}>
             {['New Board'].map((text) => (
-              <ListItem key={text} disablePadding onClick={openNewBoardTab}>
+              <ListItem key={text} disablePadding onClick={openNewBoardTab} data-testid="newBoardTab">
                 <ListItemButton>
                   <ListItemText primary={text} />
                 </ListItemButton>
