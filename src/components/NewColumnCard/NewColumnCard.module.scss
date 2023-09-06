@@ -1,0 +1,37 @@
+.card__header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.card__header__tags {
+  width: 100%;
+}
+
+.card__body {
+  display: flex;
+}
+
+.card__body__user-section {
+  display: flex;
+  width: 15%;
+  align-items: start;
+}
+
+.card__body__message-section {
+  display: flex;
+  width: 85%;
+}
+
+.card__body__message-section--textarea {
+  width: 100%;
+}
+
+.card__body__user-section--avatar {
+  display: flex;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: flex-end;
+}
