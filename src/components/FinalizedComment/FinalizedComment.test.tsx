@@ -12,6 +12,7 @@ describe('FinalizedComment component', () => {
         cardAuthor=""
         cardMessage=""
         onRemoveCard={jest.fn()}
+        onEditCard={jest.fn()}
         onSaveCard={jest.fn()}
         cardComments={[]}
         cardReactions={[]}

@@ -8,5 +8,5 @@ export interface IColumnCard {
   cardReactions?: string[];
   cardComments?: ICardComments[];
   onSaveCard: (newCard: IColumnCard) => void;
-  onRemoveCard: (cancelCard: string) => void
+  onRemoveCard: (cardId: string) => void
 }

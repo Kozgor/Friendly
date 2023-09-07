@@ -8,16 +8,28 @@
 .header {
   margin-bottom: 1rem;
   position: relative;
+
+  .actionsButton:hover {
+    background-color: unset;
+  }
 }
 
 .footer {
   margin-top: 1rem;
 }
 
-.message {
+.message > p {
   overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.message p {
+  margin-bottom: 0;
+}
+
+.message span {
+  display: list-item;
 }
 
 .showButton {
@@ -32,27 +44,4 @@
 .author {
   float: left;
   margin-right: 10px;
-}
-
-.actions {
-  width: 25px;
-  height: 25px;
-
-  &Box {
-    width: 240px;
-    background-color: gray;
-    position: absolute;
-    top: 35px;
-    right: 0;
-    z-index: 1024;
-
-    & > ul {
-      list-style: none;
-
-      & > li {
-        padding: 10px;
-        cursor: pointer;
-      }
-    }
-  }
 }

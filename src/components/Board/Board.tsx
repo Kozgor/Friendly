@@ -41,7 +41,7 @@ const Board = (props: {
         time={boardSettings.timer}
         onSignOut={props.onSignOut}
       />
-      <main className={classes.board} data-testid="board">
+      <main className={`container ${classes.board}`} data-testid="board">
         {boardSettings?.columns.map((column) => (
           <Column
             key={column.id}

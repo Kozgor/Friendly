@@ -2,7 +2,6 @@
 
 .column {
   height: 100%;
-  width: 420px;
   min-width: 270px;
   padding: 15px;
   border-radius: 15px;
@@ -18,7 +17,6 @@
 
     h2 {
       color: #34363b;
-      margin-bottom: 10px;
       text-align: center;
       cursor: context-menu;
     }
@@ -26,6 +24,7 @@
     p {
       color: #636b74;
       cursor: context-menu;
+      margin-bottom: 0;
     }
   }
 
@@ -37,8 +36,9 @@
     @include flexbox(row, center, center, nowrap);
     margin-bottom: 15px;
 
-    h4 {
+    h5 {
       margin-left: 10px;
+      margin-bottom: 0;
     }
   }
 }

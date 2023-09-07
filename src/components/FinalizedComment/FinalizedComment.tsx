@@ -1,17 +1,25 @@
-import { Avatar, Badge, Button, Card, Chip } from '@mui/joy';
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Chip,
+  Dropdown,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem
+} from '@mui/joy';
+import MoreVert from '@mui/icons-material/MoreVert';
+import { useState } from 'react';
 
-import { IColumnCard } from '../../interfaces/columnCard';
+import { IFinalizedColumnCard } from '../../interfaces/finalizedColumnCard';
 
 import classes from './FinalizedComment.module.scss';
 
-const FinalizedComment = (props: IColumnCard) => {
+const FinalizedComment = (props: IFinalizedColumnCard) => {
   const [isShownAllText, setIsShownAllText] = useState(false);
-  const [isShowActions, setIsShowActions] = useState(false);
-  const [displayShowButton, setDisplayShowButton] = useState(
-    props.cardMessage.length > 110
-  );
-  const actionsRef = useRef<HTMLDivElement>(null);
+  const [displayShowButton] = useState(props.cardMessage.length > 110);
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -21,80 +29,38 @@ const FinalizedComment = (props: IColumnCard) => {
     setIsShownAllText(false);
   };
 
-  const toggleActions = () => {
-    setIsShowActions(!isShowActions);
+  const deleteComment = () => {
+    props.onRemoveCard(props.cardId);
   };
 
-  function useOutsideAlerter(ref: any) {
-    useEffect(() => {
-      const handleClickOutside = (event: Event) => {
-        const target = event.target as
-          | HTMLDivElement
-          | HTMLInputElement
-          | HTMLParagraphElement
-          | HTMLButtonElement
-          | HTMLHeadingElement;
-        console.log(target);
-        if (
-          (ref.current &&
-            target.contains(ref.current) &&
-            target !== actionsRef.current) ||
-          (ref.current && !ref.current.contains(target))
-        ) {
-          setIsShowActions(false);
-          console.log('You clicked outside of me!');
-        }
-      };
-      // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [ref]);
-  }
-  useOutsideAlerter(actionsRef);
+  const editComment = () => {
+    props.onEditCard(props.cardId);
+  };
 
-  const actions = (
-    <div className={classes.actionsBox}>
-      <ul>
-        <li>Edit Text</li>
-        <li>Add Tag</li>
-        <li>Delete</li>
-      </ul>
-    </div>
-  );
-
-  // eslint-disable-next-line max-len
-  // const messageMock = 'We would benefit from analyzing our key metrics as a team, every weak. We would benefit from analyzing our key metrics as a team, every weak. We would benefit from analyzing our key metrics as a team, every weak. We would benefit from analyzing our key metrics as a team, every weak.';
-  // eslint-disable-next-line max-len
-  // const messageMock = 'We would benefit from analyzing our key metrics as a team, every weak. We would benefit from analyzing our key metrics as a team, every weak. We would benefit from analyzing our key metrics as a team, every weak. We would benefit from analyzing our key metrics as a team, every weak. We';
+  // message mock
+  // 'We would benefit from analyzing our key metrics as a team, every weak.';
 
   const displayMessage = (message: string) => {
-    console.log(props.cardTags);
     let row = '';
     const words = message.split(' ');
     const rows: string[] = [];
     words.forEach((word, index) => {
       row += `${word} `;
-      // console.log(row, index);
       if (
-        (rows.length < 2 && row.length > 35) ||
-        (rows.length === 2 && row.length > 30) ||
-        (rows.length > 2 && row.length > 40) ||
-        (index === words.length - 2 && row.length > 30) ||
+        (rows.length === 2 && row.length > 25) ||
+        (rows.length !== 2 && row.length > 36) ||
+        // (index === words.length - 2 && row.length > 30) ||
         index === words.length - 1
       ) {
         rows.push(row);
         row = '';
       }
     });
-    // console.log(rows);
 
     return (
       <>
         {rows.map((row, index) => (
-          <p key={index}>{row}</p>
+          <span key={index}>{row}</span>
         ))}
       </>
     );
@@ -105,7 +71,8 @@ const FinalizedComment = (props: IColumnCard) => {
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
-        marginBottom: 2
+        marginBottom: 2,
+        minHeight: 210
       }}
     >
       <div className={classes.header}>
@@ -116,27 +83,35 @@ const FinalizedComment = (props: IColumnCard) => {
             </Chip>
           ))}
         </div>
-        <div
-          className={classes.actions}
-          onClick={toggleActions}
-          ref={actionsRef}
-        >
-          <i className="bi bi-three-dots-vertical"></i>
-        </div>
-        {isShowActions && actions}
+        <Dropdown>
+          <MenuButton
+            className={classes.actionsButton}
+            title="actions"
+            slots={{ root: IconButton }}
+            slotProps={{ root: { variant: 'outlined', color: 'neutral' } }}
+            sx={{
+              border: 'unset'
+            }}
+          >
+            <MoreVert />
+          </MenuButton>
+          <Menu>
+            <MenuItem onClick={editComment}>Edit</MenuItem>
+            <MenuItem onClick={deleteComment}>Delete</MenuItem>
+          </Menu>
+        </Dropdown>
       </div>
-      <div
-        id="message"
-        className={classes.message}
-        style={{
-          display: isShownAllText ? 'block' : '-webkit-box'
-        }}
-      >
+      <div id="message" className={classes.message}>
         <Avatar className={classes.author} alt="user">
           {props.cardAuthor.slice(0, 2)}
         </Avatar>
-        {displayMessage(props.cardMessage)}
-        {/* {displayMessage(messageMock)} */}
+        <p
+          style={{
+            display: isShownAllText ? 'block' : '-webkit-box'
+          }}
+        >
+          {displayMessage(props.cardMessage)}
+        </p>
       </div>
       {displayShowButton && !isShownAllText && (
         <Button
@@ -165,14 +140,14 @@ const FinalizedComment = (props: IColumnCard) => {
             paddingBottom: 0,
             height: 30,
             minHeight: 'unset',
-            top: -28,
+            top: -27,
             left: 10
           }}
         >
           Show less
         </Button>
       )}
-      <div className={classes.footer}>
+      {/* <div className={classes.footer}>
         <Avatar
           className={classes.author}
           alt="reactions"
@@ -185,7 +160,7 @@ const FinalizedComment = (props: IColumnCard) => {
         >
           <Button>Reply</Button>
         </Badge>
-      </div>
+      </div> */}
     </Card>
   );
 };

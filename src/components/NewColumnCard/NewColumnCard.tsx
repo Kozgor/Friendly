@@ -10,7 +10,7 @@ import classes from './NewColumnCard.module.scss';
 const ColumnCard = (props: IColumnCard) => {
   const isPropsIncognito = () => props.cardAuthor === 'Incognito';
   const [isIncognito, setIncognito] = useState(isPropsIncognito);
-  const [cardComment, setCardCommentMessage] = useState('');
+  const [cardComment, setCardCommentMessage] = useState(props.cardMessage);
 
   const onHandleSwitchToggle = () => {
     setIncognito(!isIncognito);
@@ -25,9 +25,8 @@ const ColumnCard = (props: IColumnCard) => {
   };
 
   const onSaveCard = () => {
-    console.log(props.cardTags);
     const newCard: IColumnCard = {
-      cardId: 'newCardId',
+      cardId: props.cardId,
       cardMessage: cardComment,
       cardAuthor: isIncognito ? 'Incognito' : props.cardAuthor,
       onSaveCard,
