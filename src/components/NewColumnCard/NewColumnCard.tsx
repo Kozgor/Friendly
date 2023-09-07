@@ -25,12 +25,14 @@ const ColumnCard = (props: IColumnCard) => {
   };
 
   const onSaveCard = () => {
+    console.log(props.cardTags);
     const newCard: IColumnCard = {
       cardId: 'newCardId',
       cardMessage: cardComment,
       cardAuthor: isIncognito ? 'Incognito' : props.cardAuthor,
       onSaveCard,
-      onRemoveCard
+      onRemoveCard,
+      cardTags: props.cardTags
     };
 
     props.onSaveCard(newCard);
@@ -41,9 +43,12 @@ const ColumnCard = (props: IColumnCard) => {
       color="neutral"
       orientation="vertical"
       variant="outlined"
+      sx={{
+        marginBottom: 2
+      }}
     >
       <div className={classes['card__header']}>
-        {props.cardTags&& <div className={classes['card__header__tags']}>
+        {props.cardTags && <div className={classes['card__header__tags']}>
           <Autocomplete
             multiple
             placeholder='Tags'

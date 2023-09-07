@@ -8,6 +8,7 @@ import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import classes from './Column.module.scss';
+import FinalizedComment from '../FinalizedComment/FinalizedComment';
 
 const Column = (props: IColumn) => {
   const { isAddingDisabled } = useContext(ColumnContext);
@@ -20,7 +21,8 @@ const Column = (props: IColumn) => {
 
   const handleSaveCard = (newCard: IColumnCard) => {
     setIsNewCard(false);
-    setFinalizedCards(prevCards => [...prevCards, newCard]);
+    setFinalizedCards(prevCards => [newCard, ...prevCards]);
+    console.log(newCard);
   };
 
   const handleCancelCard = (cardId: string) => {
@@ -60,11 +62,12 @@ const Column = (props: IColumn) => {
         }
         {/* ToDo: render finalizedCards with Finalized component */}
         {finalizedCards?.map(card => (
-            <ColumnCard
-              key={card.cardId}
+            <FinalizedComment
+              key={Date.now()}
               cardId={card.cardId}
               cardMessage={card.cardMessage}
               cardAuthor={card.cardAuthor}
+              cardTags={card.cardTags}
               onSaveCard={handleSaveCard}
               onRemoveCard={handleCancelCard}
             />
