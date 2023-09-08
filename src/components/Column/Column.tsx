@@ -4,7 +4,7 @@ import { ColumnContext } from '../../store/column-context';
 import Button from '@mui/joy/Button';
 
 import ColumnCard from '../NewColumnCard/NewColumnCard';
-import FinalizedComment from '../FinalizedComment/FinalizedComment';
+import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
@@ -13,13 +13,13 @@ import classes from './Column.module.scss';
 const Column = (props: IColumn) => {
   const initialCard = {
     cardId: '',
-    cardMessage: '',
-    cardAuthor: '',
+    cardComment: '',
+    cardAuthor: 'Redux Prisoner',
     cardTags: [],
     cardReactions: [],
-    cardComments: [],
-    onSaveCard: () => {},
-    onRemoveCard: () => {}
+    cardReplies: [],
+    isEditable: true,
+    onAction: () => {}
   };
   const { isAddingDisabled } = useContext(ColumnContext);
   const [isNewCard, setIsNewCard] = useState(false);
@@ -28,32 +28,47 @@ const Column = (props: IColumn) => {
 
   const onCreateCard = () => {
     setIsNewCard(true);
+    setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
   };
 
-  const handleSaveCard = (newCard: IColumnCard) => {
-    setIsNewCard(false);
-    setFinalizedCards((prevCards) => [newCard, ...prevCards]);
-    setEditableCard(initialCard);
-  };
+  const handleAction = (
+    actionType: string,
+    cardId: string,
+    handledCard: IColumnCard
+  ) => {
+    const finCards = [...finalizedCards];
+    setIsNewCard(actionType === 'edit');
+    console.log(finCards);
 
-  const handleCancelCard = (cardId: string) => {
-    setIsNewCard(false);
-    if (editableCard.cardId) {
-      setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
-      setEditableCard(initialCard);
-      return;
+    if (actionType === 'edit') {
+      const editCard = finCards.filter((card) => card.cardId === cardId)[0];
+      setEditableCard({ ...editCard, isEditable: true });
+      const editableIndex = finCards.indexOf(editCard);
+      finCards.splice(editableIndex, 1, { ...editCard, isEditable: true });
+      setFinalizedCards(finCards);
     }
-    setFinalizedCards((prevCards) =>
-      prevCards.filter((card) => card.cardId !== cardId)
-    );
-  };
 
-  const handleEditCard = (cardId: string) => {
-    setIsNewCard(true);
-    setEditableCard(finalizedCards.filter((card) => card.cardId === cardId)[0]);
-    setFinalizedCards((prevCards) =>
-      prevCards.filter((card) => card.cardId !== cardId)
-    );
+    if (actionType === 'cancel' || actionType === 'remove') {
+      setFinalizedCards((prevCards) =>
+        editableCard.cardId
+          ? finCards.map((card) => ({ ...card, isEditable: false }))
+          : prevCards.filter((card) => !card.isEditable)
+      );
+      setEditableCard(initialCard);
+    }
+
+    if (actionType === 'save') {
+      const editableIndex = finCards.indexOf(
+        finCards.filter((card) => card.isEditable)[0]
+      );
+
+      setFinalizedCards((prevCards) => {
+        const filteredCards = prevCards.filter((card) => !card.isEditable);
+        finCards.splice(editableIndex, 1, { ...handledCard, isEditable: false });
+        return editableCard.cardId ? finCards : [handledCard, ...filteredCards];
+      });
+      setEditableCard(initialCard);
+    }
   };
 
   return (
@@ -73,29 +88,30 @@ const Column = (props: IColumn) => {
           <h5>Add comment</h5>
         </Button>
       </div>
-      <div className={classes['column__comments']}>
-        {isNewCard && (
-          <ColumnCard
-            cardId={editableCard.cardId || `${Date.now()}`}
-            cardMessage={editableCard.cardMessage || ''}
-            cardAuthor={editableCard.cardAuthor || 'Redux Prisoner'}
-            cardTags={['primary', 'danger']}
-            onSaveCard={handleSaveCard}
-            onRemoveCard={handleCancelCard}
-          />
+      <div id="comments" className={classes['column__comments']}>
+        {}
+        {finalizedCards?.map(
+          (card) =>
+            (isNewCard && card.isEditable && (
+              <ColumnCard
+                key={`${Date.now()}`}
+                cardId={editableCard.cardId || `${Date.now()}`}
+                cardComment={editableCard.cardComment}
+                cardAuthor={editableCard.cardAuthor}
+                cardTags={['primary', 'danger']}
+                onAction={handleAction}
+              />
+            )) || (
+              <FinalizedCard
+                key={card.cardId}
+                cardId={card.cardId}
+                cardComment={card.cardComment}
+                cardAuthor={card.cardAuthor}
+                cardTags={card.cardTags}
+                onAction={handleAction}
+              />
+            )
         )}
-        {finalizedCards?.map((card) => (
-          <FinalizedComment
-            key={card.cardId}
-            cardId={card.cardId}
-            cardMessage={card.cardMessage}
-            cardAuthor={card.cardAuthor}
-            cardTags={card.cardTags}
-            onSaveCard={handleSaveCard}
-            onEditCard={handleEditCard}
-            onRemoveCard={handleCancelCard}
-          />
-        ))}
       </div>
     </section>
   );

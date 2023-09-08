@@ -18,27 +18,23 @@
   margin-top: 1rem;
 }
 
-.message > p {
-  overflow: hidden;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
+.card {
+  .message {
+    p {
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      margin-bottom: 0;
+    }
 
-.message p {
-  margin-bottom: 0;
-}
+    span {
+      display: list-item;
+    }
+  }
 
-.message span {
-  display: list-item;
-}
-
-.showButton {
-  width: 110px;
-  margin: 0 0 0 auto !important;
-}
-
-.showButton:hover {
-  background-color: unset !important;
+  .showButton:hover {
+    background-color: unset;
+  }
 }
 
 .author {

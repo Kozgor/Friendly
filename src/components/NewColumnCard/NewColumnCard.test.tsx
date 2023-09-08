@@ -1,7 +1,7 @@
 import { RenderResult, render } from '@testing-library/react';
-import ColumnCard from './NewColumnCard';
 
-import { COMMENTS } from '../../mocks/cardComments';
+import ColumnCard from './NewColumnCard';
+import { REPLIES } from '../../mocks/cardReplies';
 
 describe('Comment component', () => {
   let component: RenderResult;
@@ -9,14 +9,13 @@ describe('Comment component', () => {
 
   beforeEach(() => {
     component = render(<ColumnCard
-      cardId={COMMENTS[commentNumber].cardId}
-      cardMessage={COMMENTS[commentNumber].cardMessage}
-      cardAuthor={COMMENTS[commentNumber].cardAuthor}
-      cardTags={COMMENTS[commentNumber].cardTags}
-      cardComments={[]}
+      cardId={REPLIES[commentNumber].cardId}
+      cardComment={REPLIES[commentNumber].cardComment}
+      cardAuthor={REPLIES[commentNumber].cardAuthor}
+      cardTags={REPLIES[commentNumber].cardTags}
+      cardReplies={[]}
       cardReactions={[]}
-      onSaveCard={jest.fn()}
-      onRemoveCard={jest.fn()}
+      onAction={jest.fn()}
     />);
   });
 

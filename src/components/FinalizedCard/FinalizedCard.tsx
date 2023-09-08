@@ -13,13 +13,13 @@ import {
 import MoreVert from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 
-import { IFinalizedColumnCard } from '../../interfaces/finalizedColumnCard';
+import { IColumnCard } from '../../interfaces/columnCard';
 
-import classes from './FinalizedComment.module.scss';
+import classes from './FinalizedCard.module.scss';
 
-const FinalizedComment = (props: IFinalizedColumnCard) => {
+const FinalizedCard = (props: IColumnCard) => {
   const [isShownAllText, setIsShownAllText] = useState(false);
-  const [displayShowButton] = useState(props.cardMessage.length > 110);
+  const [displayShowButton] = useState(props.cardComment.length > 110);
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -30,26 +30,35 @@ const FinalizedComment = (props: IFinalizedColumnCard) => {
   };
 
   const deleteComment = () => {
-    props.onRemoveCard(props.cardId);
+    props.onAction('remove', props.cardId, {
+      cardId: props.cardId,
+      cardAuthor: props.cardAuthor,
+      cardComment: props.cardComment,
+      onAction: props.onAction
+    });
   };
 
   const editComment = () => {
-    props.onEditCard(props.cardId);
+    props.onAction('edit', props.cardId, {
+      cardId: props.cardId,
+      cardAuthor: props.cardAuthor,
+      cardComment: props.cardComment,
+      onAction: props.onAction,
+      isEditable: true
+    });
   };
-
-  // message mock
-  // 'We would benefit from analyzing our key metrics as a team, every weak.';
 
   const displayMessage = (message: string) => {
     let row = '';
     const words = message.split(' ');
     const rows: string[] = [];
+
     words.forEach((word, index) => {
       row += `${word} `;
+
       if (
         (rows.length === 2 && row.length > 25) ||
         (rows.length !== 2 && row.length > 36) ||
-        // (index === words.length - 2 && row.length > 30) ||
         index === words.length - 1
       ) {
         rows.push(row);
@@ -68,6 +77,7 @@ const FinalizedComment = (props: IFinalizedColumnCard) => {
 
   return (
     <Card
+      className={classes.card}
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
@@ -110,7 +120,7 @@ const FinalizedComment = (props: IFinalizedColumnCard) => {
             display: isShownAllText ? 'block' : '-webkit-box'
           }}
         >
-          {displayMessage(props.cardMessage)}
+          {displayMessage(props.cardComment)}
         </p>
       </div>
       {displayShowButton && !isShownAllText && (
@@ -119,12 +129,17 @@ const FinalizedComment = (props: IFinalizedColumnCard) => {
           variant="plain"
           onClick={showMoreText}
           sx={{
+            width: 110,
             paddingTop: 0,
             paddingBottom: 0,
             height: 30,
             minHeight: 'unset',
-            top: -28,
-            left: 10
+            top: -27,
+            left: 10,
+            marginTop: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            marginLeft: 'auto'
           }}
         >
           Show more
@@ -136,12 +151,17 @@ const FinalizedComment = (props: IFinalizedColumnCard) => {
           variant="plain"
           onClick={showLessText}
           sx={{
+            width: 110,
             paddingTop: 0,
             paddingBottom: 0,
             height: 30,
             minHeight: 'unset',
             top: -27,
-            left: 10
+            left: 10,
+            marginTop: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            marginLeft: 'auto'
           }}
         >
           Show less
@@ -165,4 +185,4 @@ const FinalizedComment = (props: IFinalizedColumnCard) => {
   );
 };
 
-export default FinalizedComment;
+export default FinalizedCard;

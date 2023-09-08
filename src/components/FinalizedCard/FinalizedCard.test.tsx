@@ -1,20 +1,18 @@
 import { RenderResult, render } from '@testing-library/react';
 
-import FinalizedComment from './FinalizedComment';
+import FinalizedCard from './FinalizedCard';
 
-describe('FinalizedComment component', () => {
+describe('FinalizedCard component', () => {
   let component: RenderResult;
 
   beforeEach(() => {
     component = render(
-      <FinalizedComment
+      <FinalizedCard
         cardId=""
         cardAuthor=""
-        cardMessage=""
-        onRemoveCard={jest.fn()}
-        onEditCard={jest.fn()}
-        onSaveCard={jest.fn()}
-        cardComments={[]}
+        cardComment=""
+        onAction={jest.fn()}
+        cardReplies={[]}
         cardReactions={[]}
         cardTags={[]}
       />
