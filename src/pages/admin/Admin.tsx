@@ -21,6 +21,8 @@ import { IColumn } from '../../interfaces/column';
 
 import classes from './Admin.module.scss';
 
+import { useStoreUser } from '../../utils/userManager';
+
 const Admin = () => {
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
@@ -34,11 +36,10 @@ const Admin = () => {
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { removeUserFromStore } = useStoreUser();
 
   const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('role');
+    removeUserFromStore();
     navigate('/auth');
   };
 

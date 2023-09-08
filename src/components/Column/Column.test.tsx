@@ -2,7 +2,7 @@ import { RenderResult, render, screen } from '@testing-library/react';
 
 import { BaseProps } from '../../interfaces/baseProps';
 import Column from './Column';
-import { ColumnContext } from '../../store/column-context';
+import { BoardContext } from '../../context/board/board-context';
 
 describe('Column component', () => {
   let component: RenderResult;
@@ -52,7 +52,7 @@ describe('Column component', () => {
   xtest('render enabled button if isAddingDisabled property is false', async () => {
     await component.unmount();
     const wrapper = ({ children }: BaseProps) => (
-      <ColumnContext.Provider
+      <BoardContext.Provider
         value={{
           isAddingDisabled: false,
           enableAdding,
@@ -60,7 +60,7 @@ describe('Column component', () => {
         }}
       >
         {children}
-      </ColumnContext.Provider>
+      </BoardContext.Provider>
     );
 
     render(

@@ -3,17 +3,20 @@ import Board from '../../components/Board/Board';
 import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useStoreUser } from '../../utils/userManager';
+
 import classes from './Board-catalog.module.scss';
 
 const BoardCatalog = () => {
   const navigate = useNavigate();
+  const { removeUserFromStore, getUserFromStore } = useStoreUser();
   const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('role');
+    removeUserFromStore();
     navigate('/auth');
   };
-  const fullName = localStorage.getItem('fullName') || '';
+  const user = getUserFromStore();
+  const fullName = user.fullName || '';
+
   return (
     <>
       <div className={classes.boardCatalog}>

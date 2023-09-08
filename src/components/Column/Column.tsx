@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { ColumnContext } from '../../store/column-context';
+import { BoardContext } from '../../context/board/board-context';
 
 import Button from '@mui/joy/Button';
 
@@ -10,7 +10,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import classes from './Column.module.scss';
 
 const Column = (props: IColumn) => {
-  const { isAddingDisabled } = useContext(ColumnContext);
+  const { isAddingDisabled } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
 

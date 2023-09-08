@@ -5,6 +5,8 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 
+import { BoardProvider } from '../../context/board/board-context';
+
 import classes from './Board.module.scss';
 
 const Board = (props: {
@@ -21,7 +23,6 @@ const Board = (props: {
   };
   const [boardSettings, setBoardSettings] =
     useState<IBoardSettings>(initSettings);
-
   useEffect(() => {
     try {
       axios.get(`${FRIENDLY_DOMAIN}boards/active`).then((res) => {
@@ -33,28 +34,30 @@ const Board = (props: {
   }, [FRIENDLY_DOMAIN]);
 
   return (
-    <>
-      <BoardHeader
-        fullName={props.fullName}
-        boardName={boardSettings.name}
-        isTimerVisible={true}
-        time={boardSettings.timer}
-        onSignOut={props.onSignOut}
-      />
-      <main className={classes.board} data-testid="board">
-        {boardSettings?.columns.map((column) => (
-          <Column
-            key={column.id}
-            id={column.id}
-            title={column.title}
-            subtitle={column.subtitle}
-            style={column.style}
-            avatar={column.avatar}
-            cards={column.cards}
-          />
-        ))}
-      </main>
-    </>
+    <div className={classes['board-container']}>
+      <BoardProvider>
+        <BoardHeader
+          fullName={props.fullName}
+          boardName={boardSettings.name}
+          isTimerVisible={true}
+          time={boardSettings.timer}
+          onSignOut={props.onSignOut}
+        />
+        <main className={classes.board} data-testid="board">
+          {boardSettings?.columns.map((column) => (
+            <Column
+              key={column.id}
+              id={column.id}
+              title={column.title}
+              subtitle={column.subtitle}
+              style={column.style}
+              avatar={column.avatar}
+              cards={column.cards}
+            />
+          ))}
+        </main>
+      </BoardProvider>
+    </div>
   );
 };
 

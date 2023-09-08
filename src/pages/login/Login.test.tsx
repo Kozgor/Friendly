@@ -1,10 +1,12 @@
-import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { RenderResult, fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import Login from './Login';
 
-import { MemoryRouter } from 'react-router-dom';
-
 import axios from 'axios';
+
+import store from '../../store/store';
 
 const mockUserLogin = jest.fn(() =>
   Promise.resolve({
@@ -39,9 +41,11 @@ describe('Login component', () => {
 
   beforeEach(() => {
     component = render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Login />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
