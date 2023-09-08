@@ -1,6 +1,8 @@
 
 import { ChangeEvent, useState } from 'react';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { Autocomplete, Avatar, Button, Card, Textarea } from '@mui/joy';
 
 import { IColumnCard } from '../../interfaces/columnCard';
@@ -9,8 +11,9 @@ import classes from './NewColumnCard.module.scss';
 
 const ColumnCard = (props: IColumnCard) => {
   const isPropsIncognito = () => props.cardAuthor === 'Incognito';
+  const cardId = uuidv4();
   const [isIncognito, setIncognito] = useState(isPropsIncognito);
-  const [cardComment, setCardCommentMessage] = useState('');
+  const [cardMessage, setCardCommentMessage] = useState('');
 
   const onHandleSwitchToggle = () => {
     setIncognito(!isIncognito);
@@ -26,8 +29,8 @@ const ColumnCard = (props: IColumnCard) => {
 
   const onSaveCard = () => {
     const newCard: IColumnCard = {
-      cardId: 'newCardId',
-      cardMessage: cardComment,
+      cardId: cardId,
+      cardMessage: cardMessage,
       cardAuthor: isIncognito ? 'Incognito' : props.cardAuthor,
       onSaveCard,
       onRemoveCard
@@ -77,7 +80,7 @@ const ColumnCard = (props: IColumnCard) => {
               variant='outlined'
               placeholder='Type something…'
               onChange={onHandleTextarea}
-              value={cardComment}
+              value={cardMessage}
             />
           </div>
         </div>
