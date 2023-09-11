@@ -1,14 +1,14 @@
 import { Action } from '@reduxjs/toolkit';
 
-interface ColumnState {
+interface BoardState {
   isAddingDisabled: boolean;
 }
 
-const initialState: ColumnState = {
+const initialState: BoardState = {
   isAddingDisabled: false
 };
 
-const ColumnReducer = (state: ColumnState = initialState, action: Action) => {
+const BoardReducer = (state: BoardState = initialState, action: Action) => {
   switch (action.type) {
     case 'ADDING_ENABLE':
       return {
@@ -25,4 +25,4 @@ const ColumnReducer = (state: ColumnState = initialState, action: Action) => {
   }
 };
 
-export default ColumnReducer;
+export default BoardReducer;
