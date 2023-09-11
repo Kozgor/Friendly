@@ -12,12 +12,12 @@ describe('Column component', () => {
   beforeEach(() => {
     component = render(
       <Column
-        id="start"
-        title="Start"
-        subtitle="What our team should start doing."
-        avatar=""
-        style=""
-        cards={[]}
+        columnId="start"
+        columnTitle="Start"
+        columnSubtitle="What our team should start doing."
+        columnAvatar=""
+        columnStyle=""
+        columnCards={[]}
       />
     );
   });
@@ -36,20 +36,15 @@ describe('Column component', () => {
     expect(title).toBeInTheDocument();
   });
 
-  xtest('renders button for adding new comments', () => {
+  test('renders button for adding new comments', () => {
     const button = screen.getByRole('button');
 
     expect(button).toBeInTheDocument();
     expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-label', 'Add new comment');
   });
 
-  xtest('renders Comment component and its values', () => {
-    const text = screen.getByText('Some text');
-
-    expect(text).toBeInTheDocument();
-  });
-
-  xtest('render enabled button if isAddingDisabled property is false', async () => {
+  test('render enabled button if isAddingDisabled property is false', async () => {
     await component.unmount();
     const wrapper = ({ children }: BaseProps) => (
       <ColumnContext.Provider
@@ -64,7 +59,7 @@ describe('Column component', () => {
     );
 
     render(
-      <Column id="" title="" subtitle="" avatar="" style="" cards={[]} />,
+      <Column columnId="" columnTitle="" columnSubtitle="" columnAvatar="" columnStyle="" columnCards={[]} />,
       { wrapper }
     );
 

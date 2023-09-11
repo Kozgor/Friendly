@@ -106,8 +106,8 @@ const Column = (props: IColumn) => {
   return (
     <section className={`${classes.column} col-4`}>
       <div className={classes['column__header']}>
-        <h2>{props.title}</h2>
-        <p>{props.subtitle}</p>
+        <h2>{props.columnTitle}</h2>
+        <p>{props.columnSubtitle}</p>
       </div>
       <div className={classes['column__adding']}>
         <Button
