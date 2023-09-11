@@ -1,6 +1,6 @@
 import { RenderResult, render } from '@testing-library/react';
+import NewCard from './NewCard';
 
-import ColumnCard from './NewColumnCard';
 import { REPLIES } from '../../mocks/cardReplies';
 
 describe('Comment component', () => {
@@ -8,7 +8,7 @@ describe('Comment component', () => {
   const commentNumber = 0;
 
   beforeEach(() => {
-    component = render(<ColumnCard
+    component = render(<NewCard
       cardId={REPLIES[commentNumber].cardId}
       cardComment={REPLIES[commentNumber].cardComment}
       cardAuthor={REPLIES[commentNumber].cardAuthor}

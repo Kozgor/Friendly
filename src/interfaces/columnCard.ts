@@ -1,10 +1,12 @@
 import { ICardReply } from './columnCardReply';
 
+import { CardTag } from '../types/cardTags';
+
 export interface IColumnCard {
   cardId: string;
   cardComment: string;
   cardAuthor: string;
-  cardTags?: ('primary' | 'neutral' | 'danger' | 'success' | 'warning')[];
+  cardTags?: CardTag[]
   cardReactions?: string[];
   cardReplies?: ICardReply[];
   isEditable?: boolean;

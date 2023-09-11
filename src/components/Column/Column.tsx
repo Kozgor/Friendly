@@ -3,10 +3,15 @@ import { ColumnContext } from '../../store/column-context';
 
 import Button from '@mui/joy/Button';
 
-import ColumnCard from '../NewColumnCard/NewColumnCard';
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
+import NewCard from '../NewCard/NewCard';
+
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
+
+import { CardTag, cardTags } from '../../types/cardTags';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import classes from './Column.module.scss';
 
@@ -25,6 +30,10 @@ const Column = (props: IColumn) => {
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
+  const defaultCardTags: CardTag[] = [...cardTags];
+  const defaultMessage = '';
+  const defaultCardAuthor = localStorage.getItem('fullName') || 'Incognito';
+  const cardId = uuidv4();
 
   const onCreateCard = () => {
     setIsNewCard(true);
@@ -121,11 +130,10 @@ const Column = (props: IColumn) => {
         </Button>
       </div>
       <div id="comments" className={classes['column__comments']}>
-        {}
         {finalizedCards?.map(
           (card) =>
             (isNewCard && card.isEditable && (
-              <ColumnCard
+              <NewCard
                 key={`${Date.now()}`}
                 cardId={editableCard.cardId || `${Date.now()}`}
                 cardComment={editableCard.cardComment}

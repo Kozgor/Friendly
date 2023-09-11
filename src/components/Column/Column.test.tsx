@@ -8,6 +8,7 @@ describe('Column component', () => {
   let component: RenderResult;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const setBoardId = jest.fn();
 
   beforeEach(() => {
     component = render(
@@ -17,7 +18,6 @@ describe('Column component', () => {
         columnSubtitle="What our team should start doing."
         columnAvatar=""
         columnStyle=""
-        columnCards={[]}
       />
     );
   });
@@ -49,9 +49,11 @@ describe('Column component', () => {
     const wrapper = ({ children }: BaseProps) => (
       <ColumnContext.Provider
         value={{
+          boardId: '',
           isAddingDisabled: false,
           enableAdding,
-          disableAdding
+          disableAdding,
+          setBoardId
         }}
       >
         {children}
@@ -59,7 +61,7 @@ describe('Column component', () => {
     );
 
     render(
-      <Column columnId="" columnTitle="" columnSubtitle="" columnAvatar="" columnStyle="" columnCards={[]} />,
+      <Column columnId="" columnTitle="" columnSubtitle="" columnAvatar="" columnStyle="" />,
       { wrapper }
     );
 

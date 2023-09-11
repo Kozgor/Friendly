@@ -1,8 +1,9 @@
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { MouseEventHandler, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
+import { ColumnContext } from '../../store/column-context';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 
 import classes from './Board.module.scss';
@@ -21,11 +22,13 @@ const Board = (props: {
   };
   const [boardSettings, setBoardSettings] =
     useState<IBoardSettings>(initSettings);
+  const { setBoardId } = useContext(ColumnContext);
 
   useEffect(() => {
     try {
       axios.get(`${FRIENDLY_DOMAIN}boards/active`).then((res) => {
         setBoardSettings(res.data);
+        setBoardId(res.data._id);
       });
     } catch (err) {
       console.log(err);
@@ -50,7 +53,7 @@ const Board = (props: {
             columnSubtitle={column.columnSubtitle}
             columnStyle={column.columnStyle}
             columnAvatar={column.columnAvatar}
-            columnCards={column.columnCards}
+            // columnCards={column.columnCards}
           />
         ))}
       </main>

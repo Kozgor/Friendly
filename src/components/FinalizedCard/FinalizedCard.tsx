@@ -29,7 +29,7 @@ const FinalizedCard = (props: IColumnCard) => {
     setIsShownAllText(false);
   };
 
-  const deleteComment = () => {
+  const deleteCard = () => {
     props.onAction('remove', {
       cardId: props.cardId,
       cardAuthor: props.cardAuthor,
@@ -38,7 +38,7 @@ const FinalizedCard = (props: IColumnCard) => {
     });
   };
 
-  const editComment = () => {
+  const editCard = () => {
     props.onAction('edit', {
       cardId: props.cardId,
       cardAuthor: props.cardAuthor,
@@ -106,8 +106,8 @@ const FinalizedCard = (props: IColumnCard) => {
             <MoreVert />
           </MenuButton>
           <Menu>
-            <MenuItem onClick={editComment}>Edit</MenuItem>
-            <MenuItem onClick={deleteComment}>Delete</MenuItem>
+            <MenuItem onClick={editCard}>Edit</MenuItem>
+            <MenuItem onClick={deleteCard}>Delete</MenuItem>
           </Menu>
         </Dropdown>
       </div>
