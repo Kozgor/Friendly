@@ -31,44 +31,76 @@ const Column = (props: IColumn) => {
     setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
   };
 
-  const handleAction = (
-    actionType: string,
-    cardId: string,
-    handledCard: IColumnCard
+  const onSaveHandler = (
+    cards: IColumnCard[],
+    handledCard: IColumnCard,
+    cardIndex: number
   ) => {
+    setFinalizedCards((prevCards) => {
+      const filteredCards = prevCards.filter((card) => !card.isEditable);
+      cards.splice(cardIndex, 1, {
+        ...handledCard,
+        isEditable: false
+      });
+      return editableCard.cardId ? cards : [handledCard, ...filteredCards];
+    });
+  };
+
+  const onEditHandler = (
+    cards: IColumnCard[],
+    handledCard: IColumnCard,
+    cardIndex: number
+  ) => {
+    setFinalizedCards(() => {
+      cards.splice(cardIndex, 1, { ...handledCard, isEditable: true });
+      return cards;
+    });
+  };
+
+  const onCancelHandler = (cards: IColumnCard[]) => {
+    setFinalizedCards((prevCards) =>
+      editableCard.cardId
+        ? cards.map((card) => ({ ...card, isEditable: false }))
+        : prevCards.filter((card) => !card.isEditable)
+    );
+  };
+
+  const onRemoveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
+    setFinalizedCards((prevCards) =>
+      prevCards.filter((card) => card.cardId !== handledCard.cardId)
+    );
+  };
+
+  const handleAction = (actionType: string, handledCard: IColumnCard) => {
+    const actionsMap: Record<
+      string,
+      (
+        cards: IColumnCard[],
+        handledCard: IColumnCard,
+        cardIndex: number
+      ) => void
+    > = {
+      save: onSaveHandler,
+      edit: onEditHandler,
+      cancel: onCancelHandler,
+      remove: onRemoveHandler
+    };
+
     const finCards = [...finalizedCards];
     setIsNewCard(actionType === 'edit');
-    console.log(finCards);
+    const editableIndex = finCards.findIndex(
+      (card) => card.cardId === handledCard.cardId
+    );
 
-    if (actionType === 'edit') {
-      const editCard = finCards.filter((card) => card.cardId === cardId)[0];
-      setEditableCard({ ...editCard, isEditable: true });
-      const editableIndex = finCards.indexOf(editCard);
-      finCards.splice(editableIndex, 1, { ...editCard, isEditable: true });
-      setFinalizedCards(finCards);
-    }
+    Reflect.apply(actionsMap[actionType], this, [
+      finCards,
+      handledCard,
+      editableIndex
+    ]);
 
-    if (actionType === 'cancel' || actionType === 'remove') {
-      setFinalizedCards((prevCards) =>
-        editableCard.cardId
-          ? finCards.map((card) => ({ ...card, isEditable: false }))
-          : prevCards.filter((card) => !card.isEditable)
-      );
-      setEditableCard(initialCard);
-    }
-
-    if (actionType === 'save') {
-      const editableIndex = finCards.indexOf(
-        finCards.filter((card) => card.isEditable)[0]
-      );
-
-      setFinalizedCards((prevCards) => {
-        const filteredCards = prevCards.filter((card) => !card.isEditable);
-        finCards.splice(editableIndex, 1, { ...handledCard, isEditable: false });
-        return editableCard.cardId ? finCards : [handledCard, ...filteredCards];
-      });
-      setEditableCard(initialCard);
-    }
+    setEditableCard(
+      actionType === 'edit' ? { ...handledCard, isEditable: true } : initialCard
+    );
   };
 
   return (

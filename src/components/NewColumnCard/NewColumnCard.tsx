@@ -20,8 +20,8 @@ const ColumnCard = (props: IColumnCard) => {
     setCardCommentMessage(event.target.value);
   };
 
-  const onRemoveCard = () => {
-    props.onAction('remove', props.cardId, {
+  const onCancelCard = () => {
+    props.onAction('cancel', {
       cardId: props.cardId,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment,
@@ -38,7 +38,7 @@ const ColumnCard = (props: IColumnCard) => {
       onAction: () => {}
     };
 
-    props.onAction('save', newCard.cardId, newCard);
+    props.onAction('save', newCard);
   };
 
   return (
@@ -95,7 +95,7 @@ const ColumnCard = (props: IColumnCard) => {
           <Button
             variant='plain'
             color='neutral'
-            onClick={onRemoveCard}
+            onClick={onCancelCard}
           >
             Cancel
           </Button>

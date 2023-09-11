@@ -30,7 +30,7 @@ const FinalizedCard = (props: IColumnCard) => {
   };
 
   const deleteComment = () => {
-    props.onAction('remove', props.cardId, {
+    props.onAction('remove', {
       cardId: props.cardId,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment,
@@ -39,12 +39,12 @@ const FinalizedCard = (props: IColumnCard) => {
   };
 
   const editComment = () => {
-    props.onAction('edit', props.cardId, {
+    props.onAction('edit', {
       cardId: props.cardId,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment,
-      onAction: props.onAction,
-      isEditable: true
+      cardTags: props.cardTags,
+      onAction: () => {}
     });
   };
 

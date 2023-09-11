@@ -8,5 +8,5 @@ export interface IColumnCard {
   cardReactions?: string[];
   cardReplies?: ICardReply[];
   isEditable?: boolean;
-  onAction: (actionType: string, cardId: string, newCard: IColumnCard) => void;
+  onAction: (actionType: string, newCard: IColumnCard) => void;
 }
