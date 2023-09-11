@@ -15,8 +15,8 @@ describe('Comment component', () => {
       cardTags={COMMENTS[commentNumber].cardTags}
       cardComments={[]}
       cardReactions={[]}
-      onSaveCard={jest.fn()}
-      onRemoveCard={jest.fn()}
+      saveCard={jest.fn()}
+      removeCard={jest.fn()}
     />);
   });
 

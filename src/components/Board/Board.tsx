@@ -44,13 +44,13 @@ const Board = (props: {
       <main className={classes.board} data-testid="board">
         {boardSettings?.columns.map((column) => (
           <Column
-            key={column.id}
-            id={column.id}
-            title={column.title}
-            subtitle={column.subtitle}
-            style={column.style}
-            avatar={column.avatar}
-            cards={column.cards}
+            key={column.columnId}
+            columnId={column.columnId}
+            columnTitle={column.columnTitle}
+            columnSubtitle={column.columnSubtitle}
+            columnStyle={column.columnStyle}
+            columnAvatar={column.columnAvatar}
+            columnCards={column.columnCards}
           />
         ))}
       </main>

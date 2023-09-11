@@ -7,8 +7,8 @@ export const COMMENTS: IColumnCard[] = [
       cardTags: ['danger', 'primary'],
       cardComments: [],
       cardReactions: [],
-      onSaveCard: () => {},
-      onRemoveCard: () => {}
+      saveCard: () => {},
+      removeCard: () => {}
     }, {
       cardId: 'test comment 2',
       cardMessage: 'Dummy message 2',
@@ -16,7 +16,7 @@ export const COMMENTS: IColumnCard[] = [
       cardTags: ['warning'],
       cardComments: [],
       cardReactions: [],
-      onSaveCard: () => {},
-      onRemoveCard: () => {}
+      saveCard: () => {},
+      removeCard: () => {}
     }
 ];

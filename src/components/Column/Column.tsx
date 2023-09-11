@@ -7,12 +7,20 @@ import ColumnCard from '../NewColumnCard/NewColumnCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
+import { CardTag, cardTags } from '../../types/cardTags';
+
+import { v4 as uuidv4 } from 'uuid';
+
 import classes from './Column.module.scss';
 
 const Column = (props: IColumn) => {
   const { isAddingDisabled } = useContext(ColumnContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
+  const defaultCardTags: CardTag[] = [...cardTags];
+  const defaultMessage = '';
+  const defaultCardAuthor = localStorage.getItem('fullName') || 'Incognito';
+  const cardId = uuidv4();
 
   const onCreateCard = () => {
     setIsNewCard(true);
@@ -20,21 +28,21 @@ const Column = (props: IColumn) => {
 
   const handleSaveCard = (newCard: IColumnCard) => {
     setIsNewCard(false);
-    setFinalizedCards(prevCards => [...prevCards, newCard]);
+    setFinalizedCards((prevCards) => [...prevCards, newCard]);
   };
 
   const handleCancelCard = (cardId: string) => {
     setIsNewCard(false);
-    setFinalizedCards(prevCards =>
-      prevCards.filter(card => card.cardId !== cardId)
+    setFinalizedCards((prevCards) =>
+      prevCards.filter((card) => card.cardId !== cardId)
     );
   };
 
   return (
     <section className={classes.column}>
       <div className={classes['column__header']}>
-        <h2>{props.title}</h2>
-        <p>{props.subtitle}</p>
+        <h2>{props.columnTitle}</h2>
+        <p>{props.columnSubtitle}</p>
       </div>
       <div className={classes['column__adding']}>
         <Button
@@ -48,26 +56,27 @@ const Column = (props: IColumn) => {
         </Button>
       </div>
       <div className={classes['column__comments']}>
-        {isNewCard &&
+        {isNewCard && (
           <ColumnCard
-            cardId='dummyId'
-            cardMessage=''
-            cardAuthor='Redux Prisoner'
-            cardTags={['primary', 'danger']}
-            onSaveCard={handleSaveCard}
-            onRemoveCard={handleCancelCard}
+            cardId={cardId}
+            cardMessage={defaultMessage}
+            cardAuthor={defaultCardAuthor}
+            cardTags={defaultCardTags}
+            saveCard={handleSaveCard}
+            removeCard={handleCancelCard}
           />
-        }
+        )}
         {/* ToDo: render finalizedCards with Finalized component */}
-        {finalizedCards?.map(card => (
-            <ColumnCard
-              key={card.cardId}
-              cardId={card.cardId}
-              cardMessage={card.cardMessage}
-              cardAuthor={card.cardAuthor}
-              onSaveCard={handleSaveCard}
-              onRemoveCard={handleCancelCard}
-            />
+        {finalizedCards?.map((card) => (
+          <ColumnCard
+            key={card.cardId}
+            cardId={card.cardId}
+            cardMessage={card.cardMessage}
+            cardAuthor={card.cardAuthor}
+            cardTags={card.cardTags}
+            saveCard={handleSaveCard}
+            removeCard={handleCancelCard}
+          />
         ))}
       </div>
     </section>
