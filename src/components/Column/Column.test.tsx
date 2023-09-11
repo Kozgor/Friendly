@@ -12,12 +12,12 @@ describe('Column component', () => {
   beforeEach(() => {
     component = render(
       <Column
-        id="start"
-        title="Start"
-        subtitle="What our team should start doing."
-        avatar=""
-        style=""
-        cards={[]}
+        columnId="start"
+        columnTitle="Start"
+        columnSubtitle="What our team should start doing."
+        columnAvatar=""
+        columnStyle=""
+        columnCards={[]}
       />
     );
   });
@@ -64,7 +64,7 @@ describe('Column component', () => {
     );
 
     render(
-      <Column id="" title="" subtitle="" avatar="" style="" cards={[]} />,
+      <Column columnId="" columnTitle="" columnSubtitle="" columnAvatar="" columnStyle="" columnCards={[]} />,
       { wrapper }
     );
 

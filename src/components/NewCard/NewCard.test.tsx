@@ -1,5 +1,5 @@
 import { RenderResult, render } from '@testing-library/react';
-import ColumnCard from './NewColumnCard';
+import NewCard from './NewCard';
 
 import { COMMENTS } from '../../mocks/cardComments';
 
@@ -8,15 +8,15 @@ describe('Comment component', () => {
   const commentNumber = 0;
 
   beforeEach(() => {
-    component = render(<ColumnCard
+    component = render(<NewCard
       cardId={COMMENTS[commentNumber].cardId}
       cardMessage={COMMENTS[commentNumber].cardMessage}
       cardAuthor={COMMENTS[commentNumber].cardAuthor}
       cardTags={COMMENTS[commentNumber].cardTags}
       cardComments={[]}
       cardReactions={[]}
-      onSaveCard={jest.fn()}
-      onRemoveCard={jest.fn()}
+      saveCard={jest.fn()}
+      removeCard={jest.fn()}
     />);
   });
 

@@ -1,6 +1,10 @@
 import { IColumnCard } from './columnCard';
-import { IThemeColumn } from './themeColumn';
 
-export interface IColumn extends IThemeColumn {
-  cards: IColumnCard[];
+export interface IColumn {
+  columnId: string;
+  columnTitle: string;
+  columnSubtitle: string;
+  columnAvatar: string;
+  columnStyle: string;
+  columnCards: IColumnCard[];
 }
