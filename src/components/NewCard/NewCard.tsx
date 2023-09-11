@@ -5,9 +5,9 @@ import { IColumnCard } from '../../interfaces/columnCard';
 
 import { CardTag } from '../../types/cardTags';
 
-import classes from './NewColumnCard.module.scss';
+import classes from './NewCard.module.scss';
 
-const ColumnCard = (props: IColumnCard) => {
+const NewCard = (props: IColumnCard) => {
   const { cardId, cardAuthor, cardMessage, cardTags } = props;
   const [cardMessageState, setCardMessage] = useState(cardMessage);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
@@ -100,4 +100,4 @@ const ColumnCard = (props: IColumnCard) => {
   );
 };
 
-export default ColumnCard;
+export default NewCard;

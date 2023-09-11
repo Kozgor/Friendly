@@ -3,7 +3,8 @@ import { ColumnContext } from '../../store/column-context';
 
 import Button from '@mui/joy/Button';
 
-import ColumnCard from '../NewColumnCard/NewColumnCard';
+import NewCard from '../NewCard/NewCard';
+
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
@@ -57,7 +58,7 @@ const Column = (props: IColumn) => {
       </div>
       <div className={classes['column__comments']}>
         {isNewCard && (
-          <ColumnCard
+          <NewCard
             cardId={cardId}
             cardMessage={defaultMessage}
             cardAuthor={defaultCardAuthor}
@@ -68,7 +69,7 @@ const Column = (props: IColumn) => {
         )}
         {/* ToDo: render finalizedCards with Finalized component */}
         {finalizedCards?.map((card) => (
-          <ColumnCard
+          <NewCard
             key={card.cardId}
             cardId={card.cardId}
             cardMessage={card.cardMessage}
