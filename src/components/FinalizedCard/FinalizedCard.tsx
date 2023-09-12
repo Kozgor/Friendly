@@ -30,21 +30,19 @@ const FinalizedCard = (props: IColumnCard) => {
   };
 
   const deleteCard = () => {
-    props.onAction('remove', {
-      cardId: props.cardId,
+    props.onAction!('remove', {
+      _id: props._id,
       cardAuthor: props.cardAuthor,
-      cardComment: props.cardComment,
-      onAction: props.onAction
+      cardComment: props.cardComment
     });
   };
 
   const editCard = () => {
-    props.onAction('edit', {
-      cardId: props.cardId,
+    props.onAction!('edit', {
+      _id: props._id,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment,
-      cardTags: props.cardTags,
-      onAction: () => {}
+      cardTags: props.cardTags
     });
   };
 
@@ -88,7 +86,7 @@ const FinalizedCard = (props: IColumnCard) => {
       <div className={classes.header}>
         <div className={classes.tags}>
           {props.cardTags?.map((tag) => (
-            <Chip key={tag} sx={{ marginRight: 1 }}>
+            <Chip key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
               {tag}
             </Chip>
           ))}
@@ -113,7 +111,11 @@ const FinalizedCard = (props: IColumnCard) => {
       </div>
       <div id="message" className={classes.message}>
         <Avatar className={classes.author} alt="user">
-          {props.cardAuthor.slice(0, 2)}
+          {props.cardAuthor === 'Incognito' ? (
+            <i className="bi bi-incognito"></i>
+          ) : (
+            props.cardAuthor[0]
+          )}
         </Avatar>
         <p
           style={{

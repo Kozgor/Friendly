@@ -3,45 +3,53 @@ import { ChangeEvent, useState } from 'react';
 import { Autocomplete, Avatar, Button, Card, Textarea } from '@mui/joy';
 import { IColumnCard } from '../../interfaces/columnCard';
 
-import { CardTag } from '../../types/cardTags';
+import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
 
 const NewCard = (props: IColumnCard) => {
-  const { cardId, cardAuthor, cardComment, cardTags } = props;
+  const { cardAuthor, cardComment, cardTags } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
 
   const onHandleSwitchToggle = () => {
-    cardAuthorState === 'Incognito' ?
-    setCardAuthor(cardAuthor) : setCardAuthor('Incognito');
+    if (!props._id) {
+      cardAuthorState === 'Incognito'
+        ? setCardAuthor(cardAuthor)
+        : setCardAuthor('Incognito');
+    }
   };
 
   const onCancelCard = () => {
-    props.onAction('cancel', {
-      cardId: props.cardId,
+    props.onAction!('cancel', {
+      _id: props._id,
       cardAuthor: props.cardAuthor,
-      cardComment: props.cardComment,
-      onAction: props.onAction
+      cardComment: props.cardComment
     });
   };
 
-  // ToDo: Add reactions and comments via cardReactionsState, cardCommentsState
+  // ToDo: Add reactions and replies via cardReactionsState, cardRepliesState
   const onSaveCard = () => {
     const newCard: IColumnCard = {
-      cardId: props.cardId,
+      _id: props._id,
       cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
-      cardTags: props.cardTags,
-      onAction: () => {}
+      cardTags: cardTagsState
     };
 
-    props.onAction('save', newCard);
+    props.onAction!('save', newCard);
   };
 
   return (
-    <Card color="neutral" orientation="vertical" variant="outlined">
+    <Card
+      color="neutral"
+      orientation="vertical"
+      variant="outlined"
+      sx={{
+        marginBottom: 2
+      }}
+    >
       <div className={classes['card__header']}>
         {cardTagsState && (
           <div className={classes['card__header__tags']}>
@@ -50,11 +58,9 @@ const NewCard = (props: IColumnCard) => {
               placeholder="Tags"
               size="sm"
               variant="outlined"
-              options={cardTags || []}
+              options={possibleCardTags || []}
               value={cardTagsState}
-              onChange={(event, newValue) =>
-                setCardTags([...newValue])
-              }
+              onChange={(event, newValue) => setCardTags([...newValue])}
             />
           </div>
         )}
@@ -71,7 +77,11 @@ const NewCard = (props: IColumnCard) => {
               }}
             >
               {/* ToDo: To improve with author avatar */}
-              {cardAuthorState === 'Incognito' ? <i className="bi bi-incognito"></i> : cardAuthor[0]}
+              {cardAuthorState === 'Incognito' ? (
+                <i className="bi bi-incognito"></i>
+              ) : (
+                cardAuthor[0]
+              )}
             </Avatar>
           </div>
         </div>
@@ -97,7 +107,7 @@ const NewCard = (props: IColumnCard) => {
           </Button>
         </div>
         <div className={classes['card__footer--save-button']}>
-          <Button variant="plain" color="neutral" onClick={onSaveCard}>
+          <Button variant="solid" color="primary" onClick={onSaveCard}>
             Save
           </Button>
         </div>

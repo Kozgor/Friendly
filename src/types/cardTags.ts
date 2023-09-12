@@ -1,6 +1,6 @@
 export type CardTag = 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
 
-export const cardTags: CardTag[] = [
+export const possibleCardTags: CardTag[] = [
   'primary',
   'neutral',
   'danger',
