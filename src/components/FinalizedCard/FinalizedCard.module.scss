@@ -1,0 +1,43 @@
+@import "../../mixins/flexbox";
+
+.header,
+.footer {
+  @include flexbox(row, space-between, center, nowrap);
+}
+
+.header {
+  margin-bottom: 1rem;
+  position: relative;
+
+  .actionsButton:hover {
+    background-color: unset;
+  }
+}
+
+.footer {
+  margin-top: 1rem;
+}
+
+.card {
+  .message {
+    p {
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      margin-bottom: 0;
+    }
+
+    span {
+      display: list-item;
+    }
+  }
+
+  .showButton:hover {
+    background-color: unset;
+  }
+}
+
+.author {
+  float: left;
+  margin-right: 10px;
+}

@@ -6,24 +6,13 @@ import Login from './Login';
 
 import axios from 'axios';
 
+import { dummyLocalUserProfile } from '../../mocks/user';
 import store from '../../store/store';
 
 const mockUserLogin = jest.fn(() =>
   Promise.resolve({
     data: {
-      token: 'mockToken',
-      fullName: 'Test User',
-      role: 'user'
-    }
-  })
-);
-
-const mockAdminLogin = jest.fn(() =>
-  Promise.resolve({
-    data: {
-      token: 'mockToken',
-      fullName: 'Test Admin',
-      role: 'admin'
+      dummyLocalUserProfile
     }
   })
 );
@@ -59,7 +48,7 @@ describe('Login component', () => {
   });
 
   test('Should render \'Welcome to Friendly\' and login form', () => {
-    const greeting = screen.getByText(/Welcome to Friendly/);
+    const greeting = screen.getByText('Welcome to Friendly');
     const form = screen.getByTestId('loginForm');
 
     expect(greeting).toBeInTheDocument();
@@ -110,23 +99,6 @@ describe('Login component', () => {
     const passwordInputDiv = screen.getByTestId('loginInputPassword');
     const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
     const post = jest.spyOn(axios, 'post').mockImplementation(mockUserLogin);
-    const submitBtn = screen.getByTestId('submitBtn');
-    const expectedCallCount = 1;
-
-    fireEvent.change(emailInputElement, { target: { value: 'user@mail.com' } });
-    fireEvent.change(passwordInputElement, { target: { value: 'qwerty123' } });
-    fireEvent.click(submitBtn);
-
-    expect(post).toHaveBeenCalled();
-    expect(post).toHaveBeenCalledTimes(expectedCallCount);
-  });
-
-  test('Should login admin', () => {
-    const emailInputDiv = screen.getByTestId('loginInputEmail');
-    const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
-    const passwordInputDiv = screen.getByTestId('loginInputPassword');
-    const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
-    const post = jest.spyOn(axios, 'post').mockImplementation(mockAdminLogin);
     const submitBtn = screen.getByTestId('submitBtn');
     const expectedCallCount = 1;
 

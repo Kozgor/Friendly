@@ -10,3 +10,10 @@ export interface IUserProfile {
   __v: number;
   token: string;
 }
+
+export interface IUserLocalProfile {
+  fullName: string;
+  role: string;
+  avatar: string;
+  token: string;
+}

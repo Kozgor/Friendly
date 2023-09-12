@@ -1,14 +1,7 @@
-import { Action } from '@reduxjs/toolkit';
+import { IAction } from '../../interfaces/action';
+import { IGlobalState } from '../../interfaces/globalState';
 
-interface BoardState {
-  isAddingDisabled: boolean;
-}
-
-const initialState: BoardState = {
-  isAddingDisabled: false
-};
-
-const BoardReducer = (state: BoardState = initialState, action: Action) => {
+const BoardReducer = (state: IGlobalState, action: IAction) => {
   switch (action.type) {
     case 'ADDING_ENABLE':
       return {
@@ -19,6 +12,11 @@ const BoardReducer = (state: BoardState = initialState, action: Action) => {
       return {
         ...state,
         isAddingDisabled: true
+      };
+    case 'SET_BOARDID':
+      return {
+        ...state,
+        boardId: action.payload
       };
     default:
       return state;

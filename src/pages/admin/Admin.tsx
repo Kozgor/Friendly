@@ -21,27 +21,19 @@ import { IColumn } from '../../interfaces/column';
 
 import classes from './Admin.module.scss';
 
-import { useStoreUser } from '../../utils/userManager';
-
 const Admin = () => {
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
   const columnInitValue = {
-    id: '',
-    title: '',
-    subtitle: '',
-    style: '',
-    avatar: '',
-    cards: []
+    columnId: '',
+    columnTitle: '',
+    columnSubtitle: '',
+    columnStyle: '',
+    columnAvatar: '',
+    columnCards: []
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { removeUserFromStore } = useStoreUser();
-
-  const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
-    removeUserFromStore();
-    navigate('/auth');
-  };
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({
@@ -78,7 +70,7 @@ const Admin = () => {
       key: 'columnTitle',
       label: 'Column title:',
       type: 'input',
-      value: column.title,
+      value: column.columnTitle,
       onChange: columnTitleChangeHandler,
       placeholder: 'Please enter the column title:'
     },
@@ -86,7 +78,7 @@ const Admin = () => {
       key: 'columnSubtitle',
       label: 'Column subtitle:',
       type: 'input',
-      value: column.subtitle,
+      value: column.columnSubtitle,
       onChange: columnSubTitleChangeHandler,
       placeholder: 'Please enter the column subtitle:'
     },
@@ -94,7 +86,7 @@ const Admin = () => {
       key: 'columnStyle',
       label: 'Column style:',
       type: 'color',
-      value: column.style,
+      value: column.columnStyle,
       onChange: columnStyleChangeHandler,
       placeholder: 'Please choose the column style:'
     },
@@ -102,7 +94,7 @@ const Admin = () => {
       key: 'columnAvatar',
       label: 'Column avatar:',
       type: 'input',
-      value: column.avatar,
+      value: column.columnAvatar,
       onChange: columnAvatarChangeHandler,
       placeholder: 'Please choose the column avatar:'
     }
@@ -122,7 +114,7 @@ const Admin = () => {
       {
         ...column,
         columnId: Math.random().toString(),
-        columnStyle: !column.style ? '#000' : column.style
+        columnStyle: !column.columnStyle ? '#000' : column.columnStyle
       }
     ]);
     clearInputs();
@@ -171,11 +163,9 @@ const Admin = () => {
   return (
     <>
       <BoardHeader
-        fullName={'Admin'}
         boardName=''
         isTimerVisible={false}
         time={0}
-        onSignOut={handleClickSignOut}
       />
       <Stack className={classes.main} direction="row" spacing={2}>
         <Drawer

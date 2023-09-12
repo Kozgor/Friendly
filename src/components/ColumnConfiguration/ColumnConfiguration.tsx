@@ -10,11 +10,11 @@ const ColumnConfiguration = (props: {
   columnId: string;
   onUpdateColumns: (columns: IColumn[]) => void;
 }) => {
-  const column = props.columns.find((column) => column.id === props.columnId);
+  const column = props.columns.find((column) => column.columnId === props.columnId);
   const subtitleHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const updatedColumns = props.columns.map((column) => {
-      if (column.id === event.target.id) {
-        column.subtitle = event.target.value;
+      if (column.columnId === event.target.id) {
+        column.columnSubtitle = event.target.value;
       }
       return column;
     });
@@ -24,18 +24,18 @@ const ColumnConfiguration = (props: {
   return (
     <div className={classes.column}>
       <div className={classes['column__header']}>
-        <h2>{column?.title}</h2>
+        <h2>{column?.columnTitle}</h2>
         {/* <div className={classes['column__addIcon']}>
         <i className="bi bi-plus-circle"></i>
       </div> */}
         <Textarea
           className={classes['column__subtitle']}
           placeholder="Type column description here..."
-          value={column?.subtitle}
+          value={column?.columnSubtitle}
           onChange={subtitleHandler}
           slotProps={{
             textarea: {
-              id: `${column?.id}`
+              id: `${column?.columnId}`
             }
           }}
         />

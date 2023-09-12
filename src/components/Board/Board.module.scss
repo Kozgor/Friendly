@@ -10,7 +10,6 @@
   width: 100%;
   height: 90vh;
   padding: 20px 0;
-  overflow-y: auto;
 
   @include flexbox(row, space-around, center, nowrap);
 

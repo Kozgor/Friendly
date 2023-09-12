@@ -7,7 +7,9 @@ import { Button, Card, CardContent, CircularProgress, Input, Typography } from '
 
 import axios from 'axios';
 
-import { useStoreUser } from '../../utils/userManager';
+import { useStoreUser } from '../../utils/storeUserManager';
+
+import { localStorageManager } from '../../utils/localUserManager';
 
 import Toastr from '../../components/Toastr/Toastr';
 
@@ -17,6 +19,7 @@ function Login() {
     const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
     const navigate = useNavigate();
     const { addUserToStore } = useStoreUser();
+    const { saveLocalUserData } = localStorageManager();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoginRequest, setIsLoginRequest] = useState(false);
@@ -59,11 +62,13 @@ function Login() {
           setPassword('');
           setIsLoginRequest(false);
           addUserToStore(response.data);
+          saveLocalUserData(response.data);
 
           response.data.role === 'user'
             ? navigate('/board-catalog')
             : navigate('/admin');
         } catch (error) {
+          console.log(error);
           setIsLoginRequest(false);
           toast.error(
             <Toastr

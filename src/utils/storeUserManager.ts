@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addUser, removeUser } from '../store/store';
@@ -14,7 +13,7 @@ export const useStoreUser = () => {
   const removeUserFromStore = () => {
     dispatch(removeUser());
   };
-  const getUserFromStore = () => useSelector((state: RootStateInterface) => state.user);
+  const getUserFromStore = useSelector((state: RootStateInterface) => state.user);
 
   return {
     addUserToStore,

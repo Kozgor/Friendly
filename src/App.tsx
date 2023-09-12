@@ -2,7 +2,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { useStoreUser } from './utils/userManager';
+import { useStoreUser } from './utils/storeUserManager';
 
 import Admin from './pages/admin/Admin';
 import BoardCatalog from './pages/board-catalog/Board-catalog';
@@ -17,7 +17,7 @@ import classes from './App.module.scss';
 
 function App() {
   const { getUserFromStore } = useStoreUser();
-  const user = getUserFromStore();
+  const user = getUserFromStore;
   const { token, role } = user;
 
   return (

@@ -1,12 +1,14 @@
-import { ICardComments } from './columnCardComment';
+import { ICardReply } from './columnCardReply';
+
+import { CardTag } from '../types/cardTags';
 
 export interface IColumnCard {
-  cardId: string;
-  cardMessage: string;
+  _id: string;
+  cardComment: string;
   cardAuthor: string;
-  cardTags?: ('primary' | 'neutral' | 'danger' | 'success' | 'warning')[];
+  cardTags?: CardTag[];
   cardReactions?: string[];
-  cardComments?: ICardComments[];
-  onSaveCard: (newCard: IColumnCard) => void;
-  onRemoveCard: (cancelCard: string) => void
+  cardReplies?: ICardReply[];
+  isEditable?: boolean;
+  onAction?: (actionType: string, newCard: IColumnCard) => void;
 }

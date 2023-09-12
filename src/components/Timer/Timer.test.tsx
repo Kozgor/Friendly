@@ -15,13 +15,16 @@ describe('Timer component', () => {
   let startButton: HTMLElement;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const setBoardId = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
     <BoardContext.Provider
       value={{
+        boardId: '',
         isAddingDisabled: true,
         enableAdding,
-        disableAdding
+        disableAdding,
+        setBoardId
       }}
     >
       {children}
