@@ -107,7 +107,7 @@ const NewCard = (props: IColumnCard) => {
           </Button>
         </div>
         <div className={classes['card__footer--save-button']}>
-          <Button variant="solid" color="primary" onClick={onSaveCard}>
+          <Button variant="solid" color="primary" onClick={onSaveCard} disabled={!cardCommentState}>
             Save
           </Button>
         </div>
