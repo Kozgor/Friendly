@@ -19,7 +19,6 @@ describe('FinalizedCard component', () => {
       <FinalizedCard
         _id={REPLIES[0]._id}
         cardAuthor={REPLIES[0].cardAuthor}
-        // eslint-disable-next-line max-len
         cardComment={commentMock}
         onAction={onActionMock}
         cardReplies={REPLIES[0].cardReplies}
@@ -53,7 +52,7 @@ describe('FinalizedCard component', () => {
     expect(showLess).toBeInTheDocument();
   });
 
-  test('should run onAction function with edit action when user click on edit button', () => {
+  test('should run onAction when User clicks on Edit button', () => {
     const cardMenuButton = screen.getByTestId('cardMenuButton');
 
     fireEvent.click(cardMenuButton);
@@ -70,7 +69,7 @@ describe('FinalizedCard component', () => {
     });
   });
 
-  test('should run onAction function with delete action when user click on delete button', () => {
+  test('should run onAction when User clicks on Delete button', () => {
     const cardMenuButton = screen.getByTestId('cardMenuButton');
 
     fireEvent.click(cardMenuButton);
