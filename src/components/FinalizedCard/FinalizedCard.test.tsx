@@ -41,17 +41,7 @@ describe('FinalizedCard component', () => {
     expect(tags.length).toBe(REPLIES[0].cardTags?.length);
   });
 
-  test('showMore button should disappear when user click on it', () => {
-    const showMoreButton = screen.getByTestId('showMoreButton');
-
-    fireEvent.click(showMoreButton);
-
-    const newShowMoreButton = screen.queryByTestId('showMoreButton');
-
-    expect(newShowMoreButton).toBeNull();
-  });
-
-  test('showLess button should appear when user click on showMore button', () => {
+  test('showMore button should be replaced with showLess button', () => {
     const showMoreButton = screen.getByTestId('showMoreButton');
 
     fireEvent.click(showMoreButton);
