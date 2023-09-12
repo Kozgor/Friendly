@@ -22,7 +22,7 @@ const NewCard = (props: IColumnCard) => {
   };
 
   const onCancelCard = () => {
-    props.onAction!('cancel', {
+    props.onAction?.('cancel', {
       _id: props._id,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment
@@ -38,7 +38,7 @@ const NewCard = (props: IColumnCard) => {
       cardTags: cardTagsState
     };
 
-    props.onAction!('save', newCard);
+    props.onAction?.('save', newCard);
   };
 
   return (

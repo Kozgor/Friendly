@@ -20,10 +20,7 @@ const Column = (props: IColumn) => {
     cardComment: '',
     cardAuthor: localStorage.getItem('fullName') || 'Incognito',
     cardTags: [],
-    cardReactions: [],
-    cardReplies: [],
-    isEditable: true,
-    onAction: () => {}
+    isEditable: true
   };
   const { isAddingDisabled, boardId } = useContext(ColumnContext);
   const [isNewCard, setIsNewCard] = useState(false);

@@ -30,7 +30,7 @@ const FinalizedCard = (props: IColumnCard) => {
   };
 
   const deleteCard = () => {
-    props.onAction!('remove', {
+    props.onAction?.('remove', {
       _id: props._id,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment
@@ -38,7 +38,7 @@ const FinalizedCard = (props: IColumnCard) => {
   };
 
   const editCard = () => {
-    props.onAction!('edit', {
+    props.onAction?.('edit', {
       _id: props._id,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment,
