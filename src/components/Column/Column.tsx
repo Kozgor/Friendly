@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ColumnContext } from '../../store/column-context';
 
 import Button from '@mui/joy/Button';
@@ -22,14 +22,20 @@ const Column = (props: IColumn) => {
     cardTags: [],
     isEditable: true
   };
-  const { isAddingDisabled, boardId } = useContext(ColumnContext);
+  const { boardId, isAddingDisabled } = useContext(ColumnContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    setIsButtonDisabled(isAddingDisabled);
+  }, [isAddingDisabled]);
 
   const onCreateCard = () => {
     setIsNewCard(true);
     setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
+    setIsButtonDisabled(true);
   };
 
   const onSaveHandler = (
@@ -134,6 +140,7 @@ const Column = (props: IColumn) => {
     setEditableCard(
       actionType === 'edit' ? { ...handledCard, isEditable: true } : initialCard
     );
+    setIsButtonDisabled(actionType === 'edit');
   };
 
   return (
@@ -144,7 +151,7 @@ const Column = (props: IColumn) => {
       </div>
       <div className={classes['column__adding']}>
         <Button
-          disabled={isAddingDisabled}
+          disabled={isButtonDisabled}
           role="button"
           aria-label="Add new comment"
           onClick={onCreateCard}
