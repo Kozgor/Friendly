@@ -3,9 +3,11 @@ import { BaseProps } from '../interfaces/baseProps';
 import ColumnReducer from './column-reducer';
 
 export const initialGlobalState = {
+  boardId: '',
   isAddingDisabled: true,
   enableAdding: () => {},
-  disableAdding: () => {}
+  disableAdding: () => {},
+  setBoardId: (id: string) => {}
 };
 
 export const ColumnContext = createContext(initialGlobalState);
@@ -18,9 +20,17 @@ export const ColumnProvider = ({ children }: BaseProps) => {
       type: 'ADDING_ENABLE'
     });
   };
+
   const disableAdding = () => {
     dispatch({
       type: 'ADDING_DISABLE'
+    });
+  };
+
+  const setBoardId = (id: string) => {
+    dispatch({
+      type: 'SET_BOARDID',
+      payload: id
     });
   };
 
@@ -28,8 +38,10 @@ export const ColumnProvider = ({ children }: BaseProps) => {
     <ColumnContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
+        boardId: state.boardId,
         enableAdding,
-        disableAdding
+        disableAdding,
+        setBoardId
       }}
     >
       {children}

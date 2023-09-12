@@ -1,4 +1,4 @@
-export interface ICardComments {
+export interface ICardReply {
   commentId: string;
   commentMessage: string;
   commentAuthor: string;

@@ -1,14 +1,14 @@
-import { ICardComments } from './columnCardComment';
+import { ICardReply } from './columnCardReply';
 
 import { CardTag } from '../types/cardTags';
 
 export interface IColumnCard {
   cardId: string;
-  cardMessage: string;
+  cardComment: string;
   cardAuthor: string;
   cardTags?: CardTag[]
   cardReactions?: string[];
-  cardComments?: ICardComments[];
-  saveCard: (newCard: IColumnCard) => void;
-  removeCard: (cardId: string) => void
+  cardReplies?: ICardReply[];
+  isEditable?: boolean;
+  onAction: (actionType: string, newCard: IColumnCard) => void;
 }

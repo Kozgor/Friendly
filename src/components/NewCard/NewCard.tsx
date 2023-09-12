@@ -8,8 +8,8 @@ import { CardTag } from '../../types/cardTags';
 import classes from './NewCard.module.scss';
 
 const NewCard = (props: IColumnCard) => {
-  const { cardId, cardAuthor, cardMessage, cardTags } = props;
-  const [cardMessageState, setCardMessage] = useState(cardMessage);
+  const { cardId, cardAuthor, cardComment, cardTags } = props;
+  const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
 
@@ -18,20 +18,26 @@ const NewCard = (props: IColumnCard) => {
     setCardAuthor(cardAuthor) : setCardAuthor('Incognito');
   };
 
-  const onRemoveCard = () => {
-    props.removeCard(cardId);
+  const onCancelCard = () => {
+    props.onAction('cancel', {
+      cardId: props.cardId,
+      cardAuthor: props.cardAuthor,
+      cardComment: props.cardComment,
+      onAction: props.onAction
+    });
   };
 
   // ToDo: Add reactions and comments via cardReactionsState, cardCommentsState
   const onSaveCard = () => {
-    const updatedCard: IColumnCard = {
-      ...props,
-      cardMessage: cardMessageState,
+    const newCard: IColumnCard = {
+      cardId: props.cardId,
+      cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
-      cardTags: cardTagsState
+      cardTags: props.cardTags,
+      onAction: () => {}
     };
 
-    props.saveCard(updatedCard);
+    props.onAction('save', newCard);
   };
 
   return (
@@ -76,9 +82,9 @@ const NewCard = (props: IColumnCard) => {
               maxRows={4}
               variant="outlined"
               placeholder="Type something…"
-              value={cardMessageState}
+              value={cardCommentState}
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                setCardMessage(event.target.value)
+                setCardComment(event.target.value)
               }
             />
           </div>
@@ -86,7 +92,7 @@ const NewCard = (props: IColumnCard) => {
       </div>
       <div className={classes['card__footer']}>
         <div className={classes['card__footer--cancel-button']}>
-          <Button variant="plain" color="neutral" onClick={onRemoveCard}>
+          <Button variant="plain" color="neutral" onClick={onCancelCard}>
             Cancel
           </Button>
         </div>
