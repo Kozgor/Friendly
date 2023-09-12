@@ -86,13 +86,14 @@ const FinalizedCard = (props: IColumnCard) => {
       <div className={classes.header}>
         <div className={classes.tags}>
           {props.cardTags?.map((tag) => (
-            <Chip key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
+            <Chip data-testid="tag" key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
               {tag}
             </Chip>
           ))}
         </div>
         <Dropdown>
           <MenuButton
+            data-testid="cardMenuButton"
             className={classes.actionsButton}
             title="actions"
             slots={{ root: IconButton }}
@@ -104,8 +105,8 @@ const FinalizedCard = (props: IColumnCard) => {
             <MoreVert />
           </MenuButton>
           <Menu>
-            <MenuItem onClick={editCard}>Edit</MenuItem>
-            <MenuItem onClick={deleteCard}>Delete</MenuItem>
+            <MenuItem data-testid="editCardButton" onClick={editCard}>Edit</MenuItem>
+            <MenuItem data-testid="deleteCardButton" onClick={deleteCard}>Delete</MenuItem>
           </Menu>
         </Dropdown>
       </div>
@@ -127,6 +128,7 @@ const FinalizedCard = (props: IColumnCard) => {
       </div>
       {displayShowButton && !isShownAllText && (
         <Button
+          data-testid="showMoreButton"
           className={classes.showButton}
           variant="plain"
           onClick={showMoreText}
@@ -149,6 +151,7 @@ const FinalizedCard = (props: IColumnCard) => {
       )}
       {displayShowButton && isShownAllText && (
         <Button
+          data-testid="showLessButton"
           className={classes.showButton}
           variant="plain"
           onClick={showLessText}
