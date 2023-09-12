@@ -11,6 +11,8 @@ import { REPLIES } from '../../mocks/cardReplies';
 describe('FinalizedCard component', () => {
   let component: RenderResult;
   const onActionMock = jest.fn();
+  // eslint-disable-next-line max-len
+  const commentMock = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.';
 
   beforeEach(() => {
     component = render(
@@ -18,7 +20,7 @@ describe('FinalizedCard component', () => {
         _id={REPLIES[0]._id}
         cardAuthor={REPLIES[0].cardAuthor}
         // eslint-disable-next-line max-len
-        cardComment="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+        cardComment={commentMock}
         onAction={onActionMock}
         cardReplies={REPLIES[0].cardReplies}
         cardReactions={REPLIES[0].cardReactions}
@@ -63,9 +65,7 @@ describe('FinalizedCard component', () => {
     expect(onActionMock).toHaveBeenCalledWith('edit', {
       _id: REPLIES[0]._id,
       cardAuthor: REPLIES[0].cardAuthor,
-      cardComment:
-        // eslint-disable-next-line max-len
-       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+      cardComment: commentMock,
       cardTags: REPLIES[0].cardTags
     });
   });
@@ -82,9 +82,7 @@ describe('FinalizedCard component', () => {
     expect(onActionMock).toHaveBeenCalledWith('remove', {
       _id: REPLIES[0]._id,
       cardAuthor: REPLIES[0].cardAuthor,
-      cardComment:
-        // eslint-disable-next-line max-len
-        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
+      cardComment: commentMock
     });
   });
 
