@@ -11,6 +11,7 @@ const BoardCatalog = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('fullName');
     localStorage.removeItem('role');
+    localStorage.removeItem('avatar');
     navigate('/auth');
   };
   const fullName = localStorage.getItem('fullName') || '';

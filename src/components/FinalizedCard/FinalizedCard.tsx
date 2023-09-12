@@ -114,7 +114,7 @@ const FinalizedCard = (props: IColumnCard) => {
           {props.cardAuthor === 'Incognito' ? (
             <i className="bi bi-incognito"></i>
           ) : (
-            props.cardAuthor[0]
+            props.cardAuthor
           )}
         </Avatar>
         <p
