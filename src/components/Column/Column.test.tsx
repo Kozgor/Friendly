@@ -61,7 +61,13 @@ describe('Column component', () => {
     );
 
     render(
-      <Column columnId="" columnTitle="" columnSubtitle="" columnAvatar="" columnStyle="" />,
+      <Column
+        columnId=""
+        columnTitle=""
+        columnSubtitle=""
+        columnAvatar=""
+        columnStyle=""
+      />,
       { wrapper }
     );
 

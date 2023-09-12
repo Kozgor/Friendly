@@ -61,6 +61,7 @@ function Login() {
 
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('fullName', response.data.fullName);
+          localStorage.setItem('avatar', response.data.avatar);
           localStorage.setItem('role', response.data.role);
           response.data.role === 'user'
             ? navigate('/board-catalog')

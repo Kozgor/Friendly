@@ -3,12 +3,12 @@ import { ICardReply } from './columnCardReply';
 import { CardTag } from '../types/cardTags';
 
 export interface IColumnCard {
-  cardId: string;
+  _id: string;
   cardComment: string;
   cardAuthor: string;
-  cardTags?: CardTag[]
+  cardTags?: CardTag[];
   cardReactions?: string[];
   cardReplies?: ICardReply[];
   isEditable?: boolean;
-  onAction: (actionType: string, newCard: IColumnCard) => void;
+  onAction?: (actionType: string, newCard: IColumnCard) => void;
 }

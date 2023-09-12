@@ -8,7 +8,7 @@ describe('FinalizedCard component', () => {
   beforeEach(() => {
     component = render(
       <FinalizedCard
-        cardId=""
+        _id=''
         cardAuthor=""
         cardComment=""
         onAction={jest.fn()}

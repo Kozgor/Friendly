@@ -8,15 +8,17 @@ describe('Comment component', () => {
   const commentNumber = 0;
 
   beforeEach(() => {
-    component = render(<NewCard
-      cardId={REPLIES[commentNumber].cardId}
-      cardComment={REPLIES[commentNumber].cardComment}
-      cardAuthor={REPLIES[commentNumber].cardAuthor}
-      cardTags={REPLIES[commentNumber].cardTags}
-      cardReplies={[]}
-      cardReactions={[]}
-      onAction={jest.fn()}
-    />);
+    component = render(
+      <NewCard
+        _id={REPLIES[commentNumber]._id}
+        cardComment={REPLIES[commentNumber].cardComment}
+        cardAuthor={REPLIES[commentNumber].cardAuthor}
+        cardTags={REPLIES[commentNumber].cardTags}
+        cardReplies={[]}
+        cardReactions={[]}
+        onAction={jest.fn()}
+      />
+    );
   });
 
   afterEach(async () => {

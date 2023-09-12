@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ColumnContext } from '../../store/column-context';
 
 import Button from '@mui/joy/Button';
@@ -9,35 +9,33 @@ import NewCard from '../NewCard/NewCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
-import { CardTag, cardTags } from '../../types/cardTags';
-
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 import classes from './Column.module.scss';
 
 const Column = (props: IColumn) => {
+  const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const initialCard = {
-    cardId: '',
+    _id: '',
     cardComment: '',
-    cardAuthor: 'Redux Prisoner',
+    cardAuthor: localStorage.getItem('avatar') || 'Incognito',
     cardTags: [],
-    cardReactions: [],
-    cardReplies: [],
-    isEditable: true,
-    onAction: () => {}
+    isEditable: true
   };
-  const { isAddingDisabled } = useContext(ColumnContext);
+  const { boardId, isAddingDisabled } = useContext(ColumnContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
-  const defaultCardTags: CardTag[] = [...cardTags];
-  const defaultMessage = '';
-  const defaultCardAuthor = localStorage.getItem('fullName') || 'Incognito';
-  const cardId = uuidv4();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    setIsButtonDisabled(isAddingDisabled);
+  }, [isAddingDisabled]);
 
   const onCreateCard = () => {
     setIsNewCard(true);
     setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
+    setIsButtonDisabled(true);
   };
 
   const onSaveHandler = (
@@ -45,14 +43,38 @@ const Column = (props: IColumn) => {
     handledCard: IColumnCard,
     cardIndex: number
   ) => {
-    setFinalizedCards((prevCards) => {
-      const filteredCards = prevCards.filter((card) => !card.isEditable);
-      cards.splice(cardIndex, 1, {
-        ...handledCard,
-        isEditable: false
-      });
-      return editableCard.cardId ? cards : [handledCard, ...filteredCards];
-    });
+    if (handledCard._id) {
+      axios
+        .put(`${FRIENDLY_DOMAIN}card`, {
+          _id: handledCard._id,
+          cardComment: handledCard.cardComment,
+          cardTags: handledCard.cardTags
+        })
+        .then(() => {
+          setFinalizedCards(() => {
+            cards.splice(cardIndex, 1, {
+              ...handledCard,
+              isEditable: false
+            });
+            return cards;
+          });
+        });
+    } else {
+      axios
+        .post(`${FRIENDLY_DOMAIN}card`, {
+          boardId,
+          columnId: props.columnId,
+          cardComment: handledCard.cardComment,
+          cardAuthor: handledCard.cardAuthor,
+          cardTags: handledCard.cardTags
+        })
+        .then((res) => {
+          setFinalizedCards((prevCards) => {
+            const filteredCards = prevCards.filter((card) => !card.isEditable);
+            return [{ ...handledCard, _id: res.data._id }, ...filteredCards];
+          });
+        });
+    }
   };
 
   const onEditHandler = (
@@ -68,16 +90,24 @@ const Column = (props: IColumn) => {
 
   const onCancelHandler = (cards: IColumnCard[]) => {
     setFinalizedCards((prevCards) =>
-      editableCard.cardId
+      editableCard._id
         ? cards.map((card) => ({ ...card, isEditable: false }))
         : prevCards.filter((card) => !card.isEditable)
     );
   };
 
   const onRemoveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
-    setFinalizedCards((prevCards) =>
-      prevCards.filter((card) => card.cardId !== handledCard.cardId)
-    );
+    axios({
+      method: 'DELETE',
+      url: `${FRIENDLY_DOMAIN}card`,
+      data: {
+        _id: handledCard._id
+      }
+    }).then(() => {
+      setFinalizedCards((prevCards) =>
+        prevCards.filter((card) => card._id !== handledCard._id)
+      );
+    });
   };
 
   const handleAction = (actionType: string, handledCard: IColumnCard) => {
@@ -98,7 +128,7 @@ const Column = (props: IColumn) => {
     const finCards = [...finalizedCards];
     setIsNewCard(actionType === 'edit');
     const editableIndex = finCards.findIndex(
-      (card) => card.cardId === handledCard.cardId
+      (card) => card._id === handledCard._id
     );
 
     Reflect.apply(actionsMap[actionType], this, [
@@ -110,6 +140,7 @@ const Column = (props: IColumn) => {
     setEditableCard(
       actionType === 'edit' ? { ...handledCard, isEditable: true } : initialCard
     );
+    setIsButtonDisabled(actionType === 'edit');
   };
 
   return (
@@ -120,7 +151,7 @@ const Column = (props: IColumn) => {
       </div>
       <div className={classes['column__adding']}>
         <Button
-          disabled={isAddingDisabled}
+          disabled={isButtonDisabled}
           role="button"
           aria-label="Add new comment"
           onClick={onCreateCard}
@@ -135,16 +166,16 @@ const Column = (props: IColumn) => {
             (isNewCard && card.isEditable && (
               <NewCard
                 key={`${Date.now()}`}
-                cardId={editableCard.cardId || `${Date.now()}`}
+                _id={editableCard._id}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
-                cardTags={['primary', 'danger']}
+                cardTags={editableCard.cardTags}
                 onAction={handleAction}
               />
             )) || (
               <FinalizedCard
-                key={card.cardId}
-                cardId={card.cardId}
+                key={card.cardComment}
+                _id={card._id}
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
                 cardTags={card.cardTags}
