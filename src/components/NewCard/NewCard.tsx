@@ -80,7 +80,7 @@ const NewCard = (props: IColumnCard) => {
               {cardAuthorState === 'Incognito' ? (
                 <i className="bi bi-incognito"></i>
               ) : (
-                cardAuthor[0]
+                cardAuthorState
               )}
             </Avatar>
           </div>

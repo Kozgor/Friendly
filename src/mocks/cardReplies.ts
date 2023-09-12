@@ -6,15 +6,13 @@ export const REPLIES: IColumnCard[] = [
       cardAuthor: 'Test User',
       cardTags: ['danger', 'primary'],
       cardReplies: [],
-      cardReactions: [],
-      onAction: () => {}
+      cardReactions: []
     }, {
       _id: 'test comment 2',
       cardComment: 'Dummy message 2',
       cardAuthor: 'Test User',
       cardTags: ['warning'],
       cardReplies: [],
-      cardReactions: [],
-      onAction: () => {}
+      cardReactions: []
     }
 ];

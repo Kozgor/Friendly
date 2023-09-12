@@ -18,7 +18,7 @@ const Column = (props: IColumn) => {
   const initialCard = {
     _id: '',
     cardComment: '',
-    cardAuthor: localStorage.getItem('fullName') || 'Incognito',
+    cardAuthor: localStorage.getItem('avatar') || 'Incognito',
     cardTags: [],
     isEditable: true
   };
