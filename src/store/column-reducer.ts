@@ -18,12 +18,6 @@ const ColumnReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         boardId: action.payload
       };
-    case 'AUTOSAVE_CARD':
-      return {
-        ...state,
-        isAddingDisabled: false,
-        tempCard: action.payload
-      };
     default:
       return state;
   }

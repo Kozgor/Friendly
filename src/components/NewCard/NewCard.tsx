@@ -43,9 +43,9 @@ const NewCard = (props: IColumnCard) => {
 
   return (
     <Card
-      color="neutral"
-      orientation="vertical"
-      variant="outlined"
+      color='neutral'
+      orientation='vertical'
+      variant='outlined'
       sx={{
         marginBottom: 2
       }}
@@ -56,9 +56,9 @@ const NewCard = (props: IColumnCard) => {
             <Autocomplete
               data-testid='newCardAutocomplete'
               multiple
-              placeholder="Tags"
-              size="sm"
-              variant="outlined"
+              placeholder='Tags'
+              size='sm'
+              variant='outlined'
               options={possibleCardTags || []}
               value={cardTagsState}
               disabled={isDisabled}
@@ -81,7 +81,7 @@ const NewCard = (props: IColumnCard) => {
             >
               {/* ToDo: To improve with author avatar */}
               {cardAuthorState === 'Incognito' ? (
-                <i data-testid='incognitoIcon' className="bi bi-incognito"></i>
+                <i data-testid='incognitoIcon' className='bi bi-incognito'></i>
               ) : (
                 cardAuthorState
               )}
@@ -94,8 +94,8 @@ const NewCard = (props: IColumnCard) => {
               data-testid='newCardTextarea'
               minRows={3}
               maxRows={4}
-              variant="outlined"
-              placeholder="Type something…"
+              variant='outlined'
+              placeholder='Type something…'
               value={cardCommentState}
               disabled={isDisabled}
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -109,8 +109,8 @@ const NewCard = (props: IColumnCard) => {
         <div className={classes['card__footer--cancel-button']}>
           <Button
             data-testid='newCardButtonCancel'
-            variant="plain"
-            color="neutral"
+            variant='plain'
+            color='neutral'
             onClick={onCancelCard}
             disabled={!cardCommentState && isDisabled}
           >
@@ -120,8 +120,8 @@ const NewCard = (props: IColumnCard) => {
         <div className={classes['card__footer--save-button']}>
           <Button
            data-testid='newCardButtonSave'
-            variant="solid"
-            color="primary"
+            variant='solid'
+            color='primary'
             onClick={onSaveCard}
             disabled={!cardCommentState || isDisabled}
           >

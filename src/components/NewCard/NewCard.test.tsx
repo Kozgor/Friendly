@@ -48,13 +48,13 @@ describe('Comment component', () => {
     expect(textarea).toBeInTheDocument();
   });
 
-  test('should display \'Cancel\' button' , () => {
+  test('should display `Cancel` button' , () => {
     const cancelButton = screen.getByTestId('newCardButtonCancel');
 
     expect(cancelButton).toBeInTheDocument();
   });
 
-  test('should display \'Save\' button', () => {
+  test('should display `Save` button', () => {
     const saveButton = screen.getByTestId('newCardButtonSave');
 
     expect(saveButton).toBeInTheDocument();
