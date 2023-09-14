@@ -9,6 +9,7 @@ describe('Column component', () => {
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
   const setBoardId = jest.fn();
+  const autoSaveCard = jest.fn();
 
   beforeEach(() => {
     component = render(
@@ -51,9 +52,11 @@ describe('Column component', () => {
         value={{
           boardId: '',
           isAddingDisabled: false,
+          tempCard: {},
           enableAdding,
           disableAdding,
-          setBoardId
+          setBoardId,
+          autoSaveCard
         }}
       >
         {children}

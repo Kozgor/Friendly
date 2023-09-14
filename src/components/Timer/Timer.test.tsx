@@ -16,15 +16,18 @@ describe('Timer component', () => {
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
   const setBoardId = jest.fn();
+  const autoSaveCard = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
     <ColumnContext.Provider
       value={{
         boardId: '',
         isAddingDisabled: true,
+        tempCard: {},
         enableAdding,
         disableAdding,
-        setBoardId
+        setBoardId,
+        autoSaveCard
       }}
     >
       {children}

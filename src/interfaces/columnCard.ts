@@ -10,5 +10,6 @@ export interface IColumnCard {
   cardReactions?: string[];
   cardReplies?: ICardReply[];
   isEditable?: boolean;
+  isDisabled?: boolean;
   onAction?: (actionType: string, newCard: IColumnCard) => void;
 }

@@ -1,13 +1,16 @@
 import { createContext, useReducer } from 'react';
 import { BaseProps } from '../interfaces/baseProps';
 import ColumnReducer from './column-reducer';
+import { IColumnCard } from '../interfaces/columnCard';
 
 export const initialGlobalState = {
   boardId: '',
   isAddingDisabled: true,
+  tempCard: {},
   enableAdding: () => {},
   disableAdding: () => {},
-  setBoardId: (id: string) => {}
+  setBoardId: (id: string) => {},
+  autoSaveCard: (card: IColumnCard) => {}
 };
 
 export const ColumnContext = createContext(initialGlobalState);
@@ -34,14 +37,23 @@ export const ColumnProvider = ({ children }: BaseProps) => {
     });
   };
 
+  const autoSaveCard = (card: IColumnCard) => {
+    dispatch({
+      type: 'AUTOSAVE_CARD',
+      payload: card
+    });
+  };
+
   return (
     <ColumnContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
         boardId: state.boardId,
+        tempCard: state.tempCard,
         enableAdding,
         disableAdding,
-        setBoardId
+        setBoardId,
+        autoSaveCard
       }}
     >
       {children}
