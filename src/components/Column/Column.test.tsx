@@ -30,13 +30,13 @@ describe('Column component', () => {
     expect(component).toBeTruthy();
   });
 
-  test('renders props values', () => {
+  test('should render props values', () => {
     const title = screen.getByText('Start');
 
     expect(title).toBeInTheDocument();
   });
 
-  test('renders button for adding new comments', () => {
+  test('should render button for adding new comments', () => {
     const button = screen.getByRole('button');
 
     expect(button).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('Column component', () => {
     expect(button).toHaveAttribute('aria-label', 'Add new comment');
   });
 
-  test('render enabled button if isAddingDisabled property is false', async () => {
+  test('should render enabled button if isAddingDisabled property is false', async () => {
     await component.unmount();
     const wrapper = ({ children }: BaseProps) => (
       <ColumnContext.Provider
@@ -71,7 +71,7 @@ describe('Column component', () => {
       { wrapper }
     );
 
-    const button = screen.getByRole('button');
+    const button = screen.getByTestId('addNewCommentButton');
 
     expect(button).toBeInTheDocument();
     expect(button).not.toBeDisabled();

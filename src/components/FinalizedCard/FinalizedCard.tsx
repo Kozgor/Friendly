@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Chip,
@@ -86,16 +85,16 @@ const FinalizedCard = (props: IColumnCard) => {
       <div className={classes.header}>
         <div className={classes.tags}>
           {props.cardTags?.map((tag) => (
-            <Chip data-testid="tag" key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
+            <Chip data-testid='tag' key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
               {tag}
             </Chip>
           ))}
         </div>
         <Dropdown>
           <MenuButton
-            data-testid="cardMenuButton"
+            data-testid='cardMenuButton'
             className={classes.actionsButton}
-            title="actions"
+            title='actions'
             slots={{ root: IconButton }}
             slotProps={{ root: { variant: 'outlined', color: 'neutral' } }}
             sx={{
@@ -105,15 +104,28 @@ const FinalizedCard = (props: IColumnCard) => {
             <MoreVert />
           </MenuButton>
           <Menu>
-            <MenuItem data-testid="editCardButton" onClick={editCard}>Edit</MenuItem>
-            <MenuItem data-testid="deleteCardButton" onClick={deleteCard}>Delete</MenuItem>
+            <MenuItem
+              data-testid='editCardButton'
+              disabled={props.isDisabled}
+              onClick={editCard}
+            >Edit</MenuItem>
+            <MenuItem
+              data-testid='deleteCardButton'
+              disabled={props.isDisabled}
+              onClick={deleteCard}
+            >Delete</MenuItem>
           </Menu>
         </Dropdown>
       </div>
-      <div id="message" className={classes.message}>
-        <Avatar className={classes.author} alt="user">
+      <div id='message' className={classes.message}>
+        <Avatar
+          data-testid='cardAvatar'
+          alt={props.cardAuthor}
+          src={props.cardAuthor}
+          className={classes.author}
+        >
           {props.cardAuthor === 'Incognito' ? (
-            <i className="bi bi-incognito"></i>
+            <i className='bi bi-incognito'></i>
           ) : (
             props.cardAuthor
           )}
@@ -128,9 +140,8 @@ const FinalizedCard = (props: IColumnCard) => {
       </div>
       {displayShowButton && !isShownAllText && (
         <Button
-          data-testid="showMoreButton"
-          className={classes.showButton}
-          variant="plain"
+          data-testid='showMoreButton'
+          variant='plain'
           onClick={showMoreText}
           sx={{
             width: 110,
@@ -145,14 +156,14 @@ const FinalizedCard = (props: IColumnCard) => {
             marginBottom: 0,
             marginLeft: 'auto'
           }}
+          className={classes.showButton}
         >
           Show more
         </Button>
       )}
       {displayShowButton && isShownAllText && (
         <Button
-          data-testid="showLessButton"
-          className={classes.showButton}
+          data-testid='showLessButton'
           variant="plain"
           onClick={showLessText}
           sx={{
@@ -168,6 +179,7 @@ const FinalizedCard = (props: IColumnCard) => {
             marginBottom: 0,
             marginLeft: 'auto'
           }}
+          className={classes.showButton}
         >
           Show less
         </Button>

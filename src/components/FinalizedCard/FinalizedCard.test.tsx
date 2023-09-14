@@ -36,13 +36,13 @@ describe('FinalizedCard component', () => {
     expect(component).toBeTruthy();
   });
 
-  test('renders all tags', () => {
+  test('should render all tags', () => {
     const tags = screen.getAllByTestId('tag');
 
     expect(tags.length).toBe(REPLIES[0].cardTags?.length);
   });
 
-  test('showMore button should be replaced with showLess button', () => {
+  test('`Show more` button should be replaced with `Show less` button', () => {
     const showMoreButton = screen.getByTestId('showMoreButton');
 
     fireEvent.click(showMoreButton);
@@ -52,7 +52,7 @@ describe('FinalizedCard component', () => {
     expect(showLess).toBeInTheDocument();
   });
 
-  test('should run onAction when User clicks on Edit button', () => {
+  test('should run onAction when user clicks on `Edit` button', () => {
     const cardMenuButton = screen.getByTestId('cardMenuButton');
 
     fireEvent.click(cardMenuButton);
@@ -69,7 +69,7 @@ describe('FinalizedCard component', () => {
     });
   });
 
-  test('should run onAction when User clicks on Delete button', () => {
+  test('should run onAction when user clicks on `Delete` button', () => {
     const cardMenuButton = screen.getByTestId('cardMenuButton');
 
     fireEvent.click(cardMenuButton);
@@ -86,7 +86,7 @@ describe('FinalizedCard component', () => {
   });
 
   test('should display user avatar in card', () => {
-    const avatar = screen.getByText(REPLIES[0].cardAuthor);
+    const avatar = screen.getByTestId('cardAvatar');
 
     expect(avatar).toBeInTheDocument();
   });
