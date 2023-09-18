@@ -1,23 +1,24 @@
-import { RenderResult, render, screen } from '@testing-library/react';
+import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { BaseProps } from '../../interfaces/baseProps';
 import Column from './Column';
-import { ColumnContext } from '../../store/column-context';
+
+import { BoardContext } from '../../context/board/board-context';
 
 describe('Column component', () => {
   let component: RenderResult;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const setBoardId = jest.fn();
 
   beforeEach(() => {
     component = render(
       <Column
-        id="start"
-        title="Start"
-        subtitle="What our team should start doing."
-        avatar=""
-        style=""
-        cards={[]}
+        columnId="start"
+        columnTitle="Start"
+        columnSubtitle="What our team should start doing."
+        columnAvatar=""
+        columnStyle=""
       />
     );
   });
@@ -26,51 +27,66 @@ describe('Column component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('renders props values', () => {
+  test('should render props values', () => {
     const title = screen.getByText('Start');
 
     expect(title).toBeInTheDocument();
   });
 
-  xtest('renders button for adding new comments', () => {
-    const button = screen.getByRole('button');
+  test('should render button for adding new comments', () => {
+    const button = screen.getByTestId('addNewCommentButton');
 
     expect(button).toBeInTheDocument();
     expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-label', 'Add new comment');
   });
 
-  xtest('renders Comment component and its values', () => {
-    const text = screen.getByText('Some text');
-
-    expect(text).toBeInTheDocument();
-  });
-
-  xtest('render enabled button if isAddingDisabled property is false', async () => {
+  test('should render enabled button if "isAddingDisabled" property is false', async () => {
     await component.unmount();
     const wrapper = ({ children }: BaseProps) => (
-      <ColumnContext.Provider
+      <BoardContext.Provider
         value={{
+          boardId: '',
           isAddingDisabled: false,
           enableAdding,
-          disableAdding
+          disableAdding,
+          setBoardId
         }}
       >
         {children}
-      </ColumnContext.Provider>
+      </BoardContext.Provider>
     );
 
     render(
-      <Column id="" title="" subtitle="" avatar="" style="" cards={[]} />,
+      <Column
+        columnId=""
+        columnTitle=""
+        columnSubtitle=""
+        columnAvatar=""
+        columnStyle=""
+      />,
       { wrapper }
     );
 
-    const button = screen.getByRole('button');
+    const button = screen.getByTestId('addNewCommentButton');
 
     expect(button).toBeInTheDocument();
     expect(button).not.toBeDisabled();
+  });
+
+  test('should create a card', () => {
+    const button = screen.getByTestId('addNewCommentButton');
+
+    fireEvent.click(button);
+
+    waitFor(() => {
+      const cancelButton = screen.getAllByText('Cancel');
+
+      expect(cancelButton).toBeInTheDocument();
+    });
   });
 });

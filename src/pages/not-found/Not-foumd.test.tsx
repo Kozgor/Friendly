@@ -21,11 +21,11 @@ describe('Not-found component', () => {
     await component.unmount();
   });
 
-  test('Should mount component properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('Should show message', () => {
+  test('should show message', () => {
     const message = screen.getByText('404 Page not found');
 
     expect(message).toBeInTheDocument();

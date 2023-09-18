@@ -5,21 +5,49 @@ import {
   screen
 } from '@testing-library/react';
 import BoardHeader from './BoardHeader';
+import { Provider } from 'react-redux';
+import store from '../../store/store';
+
+import { MemoryRouter } from 'react-router-dom';
+
+import { dummyLocalUserProfile, dummyStoreUserProfile } from '../../mocks/user';
+
+const addUserToStore = jest.fn();
+const removeUserFromStore = jest.fn();
+
+jest.mock('../../utils/storeUserManager', () => ({
+    useStoreUser: () => ({
+      addUserToStore,
+      removeUserFromStore,
+      getUserFromStore: () => dummyStoreUserProfile
+    })
+}));
+
+const saveLocalUserData = jest.fn();
+const removeLocalUserData = jest.fn();
+
+jest.mock('../../utils/localUserManager', () => ({
+    localStorageManager: () => ({
+      saveLocalUserData,
+      removeLocalUserData,
+      getLocalUserData: () => dummyLocalUserProfile
+    })
+}));
 
 describe('BoardHeader component', () => {
   let component: RenderResult;
 
-  const onSignMock = jest.fn();
-
   beforeEach(() => {
     component = render(
-      <BoardHeader
-        fullName="Jack"
-        boardName="RETROSPECTIVE"
-        isTimerVisible={true}
-        time={0}
-        onSignOut={onSignMock}
-      />
+      <Provider store={store}>
+        <MemoryRouter>
+          <BoardHeader
+            boardName="RETROSPECTIVE"
+            isTimerVisible={true}
+            time={0}
+          />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
@@ -27,26 +55,27 @@ describe('BoardHeader component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('display username', () => {
-    const username = screen.getByText(/Jack/i);
+  test('should be "Sign out" button in the document', () => {
+    const signOutButton = screen.getByTestId('signOut');
 
-    expect(username).toBeInTheDocument();
+    expect(signOutButton).toBeTruthy();
   });
 
-  test('sign out the user', () => {
+  test('should sign out the user', () => {
     const signOutButton = screen.getByTestId('signOut');
 
     fireEvent.click(signOutButton);
 
-    expect(onSignMock).toHaveBeenCalled();
+    expect(removeLocalUserData).toHaveBeenCalled();
+    expect(removeUserFromStore).toHaveBeenCalled();
   });
 
-  test('display `Start` button for timer', () => {
-    const startButton = screen.getByText(/Start/i);
+  test('should display "Start Timer" button for timer', () => {
+    const startButton = screen.getByText('Start Timer');
 
     expect(startButton).toBeInTheDocument();
   });

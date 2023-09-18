@@ -1,22 +1,25 @@
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import CircularProgress from '@mui/joy/CircularProgress';
-import Input from '@mui/joy/Input';
-import Toastr from '../../components/Toastr/Toastr';
-import Typography from '@mui/joy/Typography';
+import { toast } from 'react-toastify';
+
+import { Button, Card, CardContent, CircularProgress, Input, Typography } from '@mui/joy';
 
 import axios from 'axios';
-import { toast } from 'react-toastify';
+
+import { useStoreUser } from '../../utils/storeUserManager';
+
+import { localStorageManager } from '../../utils/localUserManager';
+
+import Toastr from '../../components/Toastr/Toastr';
 
 import classes from './Login.module.scss';
 
 function Login() {
     const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
     const navigate = useNavigate();
+    const { addUserToStore } = useStoreUser();
+    const { saveLocalUserData } = localStorageManager();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoginRequest, setIsLoginRequest] = useState(false);
@@ -58,14 +61,14 @@ function Login() {
           setEmail('');
           setPassword('');
           setIsLoginRequest(false);
+          addUserToStore(response.data);
+          saveLocalUserData(response.data);
 
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('fullName', response.data.fullName);
-          localStorage.setItem('role', response.data.role);
           response.data.role === 'user'
             ? navigate('/board-catalog')
             : navigate('/admin');
         } catch (error) {
+          console.log(error);
           setIsLoginRequest(false);
           toast.error(
             <Toastr

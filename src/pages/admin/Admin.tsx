@@ -1,20 +1,9 @@
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import Button from '@mui/joy/Button';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Modal from '@mui/joy/Modal';
-import ModalDialog from '@mui/joy/ModalDialog';
-import Stack from '@mui/joy/Stack';
-import Typography from '@mui/joy/Typography';
+import { Divider, Drawer, ListItem, List, ListItemButton, ListItemText } from '@mui/material';
+
+import { Button, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Typography } from '@mui/joy';
 
 import BoardHeader from '../../components/BoardHeader/BoardHeader';
 import { IColumn } from '../../interfaces/column';
@@ -25,22 +14,15 @@ const Admin = () => {
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
   const columnInitValue = {
-    id: '',
-    title: '',
-    subtitle: '',
-    style: '',
-    avatar: '',
-    cards: []
+    columnId: '',
+    columnTitle: '',
+    columnSubtitle: '',
+    columnStyle: '',
+    columnAvatar: '',
+    columnCards: []
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('role');
-    navigate('/auth');
-  };
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({
@@ -77,7 +59,7 @@ const Admin = () => {
       key: 'columnTitle',
       label: 'Column title:',
       type: 'input',
-      value: column.title,
+      value: column.columnTitle,
       onChange: columnTitleChangeHandler,
       placeholder: 'Please enter the column title:'
     },
@@ -85,7 +67,7 @@ const Admin = () => {
       key: 'columnSubtitle',
       label: 'Column subtitle:',
       type: 'input',
-      value: column.subtitle,
+      value: column.columnSubtitle,
       onChange: columnSubTitleChangeHandler,
       placeholder: 'Please enter the column subtitle:'
     },
@@ -93,7 +75,7 @@ const Admin = () => {
       key: 'columnStyle',
       label: 'Column style:',
       type: 'color',
-      value: column.style,
+      value: column.columnStyle,
       onChange: columnStyleChangeHandler,
       placeholder: 'Please choose the column style:'
     },
@@ -101,7 +83,7 @@ const Admin = () => {
       key: 'columnAvatar',
       label: 'Column avatar:',
       type: 'input',
-      value: column.avatar,
+      value: column.columnAvatar,
       onChange: columnAvatarChangeHandler,
       placeholder: 'Please choose the column avatar:'
     }
@@ -121,7 +103,7 @@ const Admin = () => {
       {
         ...column,
         columnId: Math.random().toString(),
-        columnStyle: !column.style ? '#000' : column.style
+        columnStyle: !column.columnStyle ? '#000' : column.columnStyle
       }
     ]);
     clearInputs();
@@ -170,11 +152,9 @@ const Admin = () => {
   return (
     <>
       <BoardHeader
-        fullName={'Admin'}
         boardName=''
         isTimerVisible={false}
         time={0}
-        onSignOut={handleClickSignOut}
       />
       <Stack className={classes.main} direction="row" spacing={2}>
         <Drawer

@@ -11,9 +11,14 @@ import Admin from '../Admin';
 import CreateBoard from '../createBoard/CreateBoard';
 import DefaultBoard from './DefaultBoard';
 import axios from 'axios';
+
 import { ToastContainer, toast } from 'react-toastify';
 import { BaseProps } from '../../../interfaces/baseProps';
 import Toastr from '../../../components/Toastr/Toastr';
+
+import { Provider } from 'react-redux';
+
+import store from '../../../store/store';
 
 describe('Admin component', () => {
   let component: RenderResult;
@@ -44,14 +49,17 @@ describe('Admin component', () => {
     const router = createMemoryRouter(routesConfig, {
       initialEntries: ['/admin/template']
     });
-    component = render(<RouterProvider router={router} />, { wrapper });
+    component = render(
+      <Provider store={store}>
+        <RouterProvider router={router} /></Provider>, { wrapper }
+    );
   });
 
   afterEach(async () => {
     await component.unmount();
   });
 
-  test('Should mount component properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
@@ -67,19 +75,19 @@ describe('Admin component', () => {
       expect(breadcrumbs).toHaveAttribute('aria-label', 'breadcrumbs');
     });
 
-    test('Should contain `backLink`', () => {
+    test('should contain "backLink"', () => {
       const backLink = screen.getByTestId('backLink');
 
       expect(backLink).toBeInTheDocument();
     });
 
-    test('Should contain `Default Board` title', () => {
+    test('should contain "Default Board" title', () => {
       const defaultTitle = screen.getByTestId('defaultTitle');
 
       expect(defaultTitle).toBeInTheDocument();
     });
 
-    test('backLink should navigate to `/admin`', () => {
+    test('backLink should navigate to "/admin"', () => {
       const backLink = screen.getByTestId('backLink');
 
       fireEvent.click(backLink);
@@ -94,7 +102,7 @@ describe('Admin component', () => {
     });
   });
 
-  describe('`Publish` button', () => {
+  describe('"Publish" button', () => {
     let publishButton: HTMLButtonElement;
 
     const mockPublishError = jest.fn(() =>
@@ -133,7 +141,7 @@ describe('Admin component', () => {
     //   expect(toastSpy).toHaveBeenCalledWith('Something went wrong!');
     // });
 
-    test('should navigate to `/admin` after publishing', async () => {
+    test('should navigate to "/admin" after publishing', async () => {
       jest.spyOn(axios, 'post').mockImplementation(mockPublishSuccess);
 
       await fireEvent.click(publishButton);
@@ -160,14 +168,14 @@ describe('Admin component', () => {
       );
     });
 
-    test('render all board settings', () => {
+    test('should render all board settings', () => {
         const boardSettings = screen.getAllByTestId('boardSetting');
         const settingsAmount = 3;
 
         expect(boardSettings.length).toBe(settingsAmount);
     });
 
-    test('render all default columns for board', () => {
+    test('should render all default columns for board', () => {
         const columnsAmount = 3;
         const columns = screen.getByTestId('boardColumns');
 

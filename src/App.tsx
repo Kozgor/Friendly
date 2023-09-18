@@ -1,5 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
+import { useStoreUser } from './utils/storeUserManager';
 
 import Admin from './pages/admin/Admin';
 import BoardCatalog from './pages/board-catalog/Board-catalog';
@@ -8,17 +11,17 @@ import DefaultBoard from './pages/admin/defaultBoard/DefaultBoard';
 import Login from './pages/login/Login';
 import NotFound from './pages/not-found/Not-fount';
 
-import { ColumnProvider } from './store/column-context';
 
 import 'react-toastify/dist/ReactToastify.css';
 import classes from './App.module.scss';
 
 function App() {
-  const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('role');
+  const { getUserFromStore } = useStoreUser();
+  const user = getUserFromStore;
+  const { token, role } = user;
 
   return (
-    <ColumnProvider>
+    <>
       <div className={classes.app}>
         <BrowserRouter>
           <Routes>
@@ -27,7 +30,7 @@ function App() {
               element={
                 !token ? (
                   <Login />
-                ) : userRole === 'user' ? (
+                ) : role === 'user' ? (
                   <BoardCatalog />
                 ) : (
                   <Admin />
@@ -54,7 +57,7 @@ function App() {
         hideProgressBar={false}
         theme="colored"
       />
-    </ColumnProvider>
+    </>
   );
 }
 

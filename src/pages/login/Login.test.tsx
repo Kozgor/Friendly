@@ -1,27 +1,18 @@
-import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { RenderResult, fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import Login from './Login';
 
-import { MemoryRouter } from 'react-router-dom';
-
 import axios from 'axios';
+
+import { dummyLocalUserProfile } from '../../mocks/user';
+import store from '../../store/store';
 
 const mockUserLogin = jest.fn(() =>
   Promise.resolve({
     data: {
-      token: 'mockToken',
-      fullName: 'Test User',
-      role: 'user'
-    }
-  })
-);
-
-const mockAdminLogin = jest.fn(() =>
-  Promise.resolve({
-    data: {
-      token: 'mockToken',
-      fullName: 'Test Admin',
-      role: 'admin'
+      dummyLocalUserProfile
     }
   })
 );
@@ -39,9 +30,11 @@ describe('Login component', () => {
 
   beforeEach(() => {
     component = render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Login />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
@@ -50,19 +43,19 @@ describe('Login component', () => {
     jest.clearAllMocks();
   });
 
-  test('Should mount component properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('Should render \'Welcome to Friendly\' and login form', () => {
-    const greeting = screen.getByText(/Welcome to Friendly/);
+  test('should render "Welcome to Friendly" and login form', () => {
+    const greeting = screen.getByText('Welcome to Friendly');
     const form = screen.getByTestId('loginForm');
 
     expect(greeting).toBeInTheDocument();
     expect(form).toBeInTheDocument();
   });
 
-  test('Should render \'Login\' value for login button', () => {
+  test('should render "Login" value for login button', () => {
     const login = screen.getByText(/Login/);
     const submitBtn = screen.getByTestId('submitBtn');
 
@@ -70,19 +63,19 @@ describe('Login component', () => {
     expect(submitBtn).toBeInTheDocument();
   });
 
-  test('Should render email input field', () => {
+  test('should render email input field', () => {
     const emailField = screen.getByTestId('loginInputEmail');
 
     expect(emailField).toBeInTheDocument();
   });
 
-  test('Should render password input field', () => {
+  test('should render password input field', () => {
     const passwordField = screen.getByTestId('loginInputPassword');
 
     expect(passwordField).toBeInTheDocument();
   });
 
-  test('Should change value in \'Email\' field', () => {
+  test('should change value in "Email" field', () => {
     const emailInputDiv = screen.getByTestId('loginInputEmail');
     const inputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
 
@@ -91,7 +84,7 @@ describe('Login component', () => {
     expect(inputElement.value).toBe('test@mail.com');
   });
 
-  test('Should change value in \'Password\' field', () => {
+  test('should change value in `Password` field', () => {
     const emailInputDiv = screen.getByTestId('loginInputPassword');
     const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
 
@@ -100,7 +93,7 @@ describe('Login component', () => {
     expect(emailInputElement.value).toBe('qwerty123');
   });
 
-  xtest('Should login user', () => {
+  test('should login user', () => {
     const emailInputDiv = screen.getByTestId('loginInputEmail');
     const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
     const passwordInputDiv = screen.getByTestId('loginInputPassword');
@@ -117,24 +110,7 @@ describe('Login component', () => {
     expect(post).toHaveBeenCalledTimes(expectedCallCount);
   });
 
-  xtest('Should login admin', () => {
-    const emailInputDiv = screen.getByTestId('loginInputEmail');
-    const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
-    const passwordInputDiv = screen.getByTestId('loginInputPassword');
-    const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
-    const post = jest.spyOn(axios, 'post').mockImplementation(mockAdminLogin);
-    const submitBtn = screen.getByTestId('submitBtn');
-    const expectedCallCount = 1;
-
-    fireEvent.change(emailInputElement, { target: { value: 'user@mail.com' } });
-    fireEvent.change(passwordInputElement, { target: { value: 'qwerty123' } });
-    fireEvent.click(submitBtn);
-
-    expect(post).toHaveBeenCalled();
-    expect(post).toHaveBeenCalledTimes(expectedCallCount);
-  });
-
-  xtest('Should show error toast message', () => {
+  test('should show error toast message', () => {
     const submitBtn = screen.getByTestId('submitBtn');
     const emailInputDiv = screen.getByTestId('loginInputEmail');
     const passwordInputDiv = screen.getByTestId('loginInputPassword');

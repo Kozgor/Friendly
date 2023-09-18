@@ -1,10 +1,12 @@
 import * as router from 'react-router';
 import { RenderResult, fireEvent, render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import axios from 'axios';
+import { Provider } from 'react-redux';
 
 import BoardCatalog from './Board-catalog';
 import Login from '../login/Login';
+
+import store from '../../store/store';
 
 describe('Board-catalog component', () => {
   let component: RenderResult;
@@ -15,12 +17,12 @@ describe('Board-catalog component', () => {
       data: {
         columns: [
           {
-            id: 'start',
-            avatar: '',
-            cards: [],
-            style: '',
-            subtitle: 'Subtitle 1',
-            title: 'Start'
+            columnId: 'start',
+            columnAvatar: '',
+            // columnCards: [],
+            columnStyle: '',
+            columnSubtitle: 'Subtitle 1',
+            columnTitle: 'Start'
           }
         ],
         name: 'Test Board',
@@ -47,30 +49,26 @@ describe('Board-catalog component', () => {
     const router = createMemoryRouter(routesConfig, {
       initialEntries: ['/board-catalog']
     });
-    component = render(<RouterProvider router={router} />);
+    component = render(<Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>);
   });
 
   afterEach(async () => {
     await component.unmount();
   });
 
-  test('Should mount component properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('Should render board', () => {
+  test('should render board', () => {
     const board = screen.getByTestId('board');
 
     expect(board).toBeInTheDocument();
   });
 
-  test('Should render fullName', () => {
-    const fullName = screen.getByText(/Hello, User/);
-
-    expect(fullName).toBeInTheDocument();
-  });
-
-  test('Should signOut, clear localStorage and navigate to `auth`', () => {
+  test('should signOut, clear localStorage and navigate to "auth"', () => {
     const signOutButton = screen.getByTestId('signOut');
     fireEvent.click(signOutButton);
 

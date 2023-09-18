@@ -3,7 +3,7 @@ import Button from '@mui/joy/Button';
 import Countdown from 'react-countdown';
 import moment from 'moment';
 
-import { ColumnContext } from '../../store/column-context';
+import { BoardContext } from '../../context/board/board-context';
 import { ITimerProps } from '../../interfaces/timerProps';
 
 import classes from './Timer.module.scss';
@@ -18,7 +18,7 @@ const Timer = (props: ITimerProps) => {
 
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
-  const { enableAdding, disableAdding } = useContext(ColumnContext);
+  const { enableAdding, disableAdding } = useContext(BoardContext);
 
   const now = moment().toDate().getTime();
   const date = now + props.time;

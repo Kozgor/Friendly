@@ -15,17 +15,17 @@ describe('Toastr component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('component get itemName prop', () => {
+  test('should show board name', () => {
     const boardName = screen.getByTestId('boardName');
 
     expect(boardName).toContainHTML('MyBoard');
   });
 
-  test('component show message', () => {
+  test('should show a message', () => {
     const message = screen.getByTestId('message');
 
     expect(message).toBeInTheDocument();

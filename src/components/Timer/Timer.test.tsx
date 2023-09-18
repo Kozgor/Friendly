@@ -6,7 +6,7 @@ import {
   waitFor
 } from '@testing-library/react';
 import { BaseProps } from '../../interfaces/baseProps';
-import { ColumnContext } from '../../store/column-context';
+import { BoardContext } from '../../context/board/board-context';
 
 import Timer from './Timer';
 
@@ -15,17 +15,20 @@ describe('Timer component', () => {
   let startButton: HTMLElement;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const setBoardId = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
-    <ColumnContext.Provider
+    <BoardContext.Provider
       value={{
+        boardId: '',
         isAddingDisabled: true,
         enableAdding,
-        disableAdding
+        disableAdding,
+        setBoardId
       }}
     >
       {children}
-    </ColumnContext.Provider>
+    </BoardContext.Provider>
   );
 
   beforeEach(() => {
@@ -37,15 +40,15 @@ describe('Timer component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('renders `Start` button', () => {
+  test('renders "Start" button', () => {
     expect(startButton).toBeInTheDocument();
   });
 
-  describe('`Start` button is clicked', () => {
+  describe('"Start" button is clicked', () => {
     let timer: HTMLElement;
 
     beforeEach(() => {
@@ -82,7 +85,7 @@ describe('Timer component', () => {
       );
     });
 
-    test('`continue` button should be shown when `reset` button was clicked', async () => {
+    test('"Continue" button should be shown when "Reset" button was clicked', async () => {
       const resetButton = screen.getByTestId('reset');
 
       fireEvent.click(resetButton);
@@ -95,7 +98,7 @@ describe('Timer component', () => {
       );
     });
 
-    test('time should be shown', async () => {
+    test('should show a time', async () => {
       const pauseButton = screen.getByTestId('pause');
 
       fireEvent.click(pauseButton);
@@ -109,7 +112,7 @@ describe('Timer component', () => {
       );
     });
 
-    test('`Submit` button should appear', async () => {
+    test('should appear a "Submit" button', async () => {
       await waitFor(
         () => {
           expect(screen.queryByTestId('submit')).toBeInTheDocument();
@@ -118,7 +121,7 @@ describe('Timer component', () => {
       );
     });
 
-    test('disable adding buttons when `pause` button was clicked', async () => {
+    test('should disable adding buttons when "Pause" button was clicked', async () => {
       const pauseButton = screen.getByTestId('pause');
 
       fireEvent.click(pauseButton);
@@ -131,7 +134,7 @@ describe('Timer component', () => {
       );
     });
 
-    test('disable adding buttons when `reset` button was clicked', async () => {
+    test('disable adding buttons when "Reset" button was clicked', async () => {
       const resetButton = screen.getByTestId('reset');
 
       fireEvent.click(resetButton);

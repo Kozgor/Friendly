@@ -11,6 +11,22 @@ import Admin from './Admin';
 import CreateBoard from './createBoard/CreateBoard';
 import DefaultBoard from './defaultBoard/DefaultBoard';
 
+import { Provider } from 'react-redux';
+import store from '../../store/store';
+
+import { dummyLocalAdminProfile } from '../../mocks/user';
+
+const saveLocalUserData = jest.fn();
+const removeLocalUserData = jest.fn();
+
+jest.mock('../../utils/localUserManager', () => ({
+    localStorageManager: () => ({
+      saveLocalUserData,
+      removeLocalUserData,
+      getLocalUserData: () => dummyLocalAdminProfile
+    })
+}));
+
 describe('Admin component', () => {
   let component: RenderResult;
   const navigate = jest.fn();
@@ -27,9 +43,9 @@ describe('Admin component', () => {
   ];
 
   beforeAll(() => {
-    localStorage.setItem('fullName', 'User');
+    localStorage.setItem('fullName', 'Admin');
     localStorage.setItem('token', 'testToken');
-    localStorage.setItem('role', 'user');
+    localStorage.setItem('role', 'admin');
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
@@ -37,66 +53,68 @@ describe('Admin component', () => {
     const router = createMemoryRouter(routesConfig, {
       initialEntries: ['/admin']
     });
-    component = render(<RouterProvider router={router} />);
+    component = render(<Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>);
   });
 
   afterEach(async () => {
     await component.unmount();
   });
 
-  test('Should mount component properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('Should render header with fullName `Admin`', () => {
+  test('should render header with fullName "Admin"', () => {
     const message = screen.getByText('Hello, Admin');
 
     expect(message).toBeInTheDocument();
   });
 
-  test('Should render signOut button', () => {
+  test('should render signOut button', () => {
     const signOutButton = screen.getByTestId('signOut');
 
     expect(signOutButton).toBeInTheDocument();
   });
 
-  test('Should not render timer', () => {
+  test('should not render timer', () => {
     const timerStartButton = screen.queryByTestId('timerStartButton');
 
     expect(timerStartButton).toBeNull();
   });
 
-  test('Should render boardName as empty string', () => {
+  test('should render boardName as empty string', () => {
     const boardName = screen.queryByTestId('boardName');
 
     expect(boardName?.innerHTML).toBe('');
   });
 
-  test('Should render drawer', () => {
+  test('should render drawer', () => {
     const drawer = screen.getByTestId('drawer');
 
     expect(drawer).toBeInTheDocument();
   });
 
-  test('Should render divider', () => {
+  test('should render divider', () => {
     const divider = screen.getByTestId('divider');
 
     expect(divider).toBeInTheDocument();
   });
 
-  test('Should render newBoardTab', () => {
+  test('should render newBoardTab', () => {
     const newBoardTab = screen.getByTestId('newBoardTab');
 
     expect(newBoardTab).toBeInTheDocument();
   });
 
-  test('Should render `Create Board` component', () => {
+  test('should render "Create Board" component', () => {
     const templates = screen.getByTestId('templates');
 
     expect(templates).toBeInTheDocument();
   });
 
-  test('Should signOut, clear localStorage and navigate to `auth`', () => {
+  test('should signOut, clear localStorage and navigate to "auth"', () => {
     const signOutButton = screen.getByTestId('signOut');
     fireEvent.click(signOutButton);
 
@@ -110,7 +128,7 @@ describe('Admin component', () => {
     expect(navigate).toHaveBeenCalledWith('/auth');
   });
 
-  test('Should navigate to `/admin` when click on `newBoardTab` button', () => {
+  test('should navigate to "/admin" when click on "newBoardTab" button', () => {
     const newBoardTab = screen.getByTestId('newBoardTab');
 
     fireEvent.click(newBoardTab);

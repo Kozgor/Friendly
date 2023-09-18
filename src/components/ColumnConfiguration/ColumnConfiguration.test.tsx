@@ -7,12 +7,12 @@ describe('ColumnConfiguration component', () => {
   let component: RenderResult;
   let columns: IColumn[] = [
     {
-      id: 'start',
-      avatar: '',
-      cards: [],
-      style: '',
-      subtitle: '',
-      title: 'Start'
+      columnId: 'start',
+      columnAvatar: '',
+      // columnCards: [],
+      columnStyle: '',
+      columnSubtitle: '',
+      columnTitle: 'Start'
     }
   ];
 
@@ -34,29 +34,29 @@ describe('ColumnConfiguration component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('render title', () => {
+  test('should render a title', () => {
     const title = screen.getByTestId('title');
 
     expect(title).toBeInTheDocument();
     expect(title).toContainHTML('Start');
   });
 
-  test('render subtitle', () => {
+  test('should render a subtitle', () => {
     const subtitle = screen.getByTestId('subtitle');
 
     expect(subtitle).toBeInTheDocument();
   });
 
-  test('textarea change subtitle value', () => {
+  test('should change subtitle value', () => {
     const subtitle = screen.getByTestId('subtitle');
     const subtitleInput = subtitle.querySelector('textarea') as HTMLTextAreaElement;
 
     fireEvent.change(subtitleInput, { target: {value: 'Subtitle' } });
 
-    expect(columns.find(col => col.id === 'start')?.subtitle).toBe('Subtitle');
+    expect(columns.find(col => col.columnId === 'start')?.columnSubtitle).toBe('Subtitle');
   });
 });

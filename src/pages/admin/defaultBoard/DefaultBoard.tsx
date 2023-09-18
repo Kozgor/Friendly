@@ -21,28 +21,28 @@ const DefaultBoard = () => {
 
   const initColumns = [
     {
-      id: 'start',
-      title: 'START',
-      subtitle: '',
-      avatar: '',
-      style: '',
-      cards: []
+      columnId: 'start',
+      columnTitle: 'START',
+      columnSubtitle: '',
+      columnAvatar: '',
+      columnStyle: '',
+      columnCards: []
     },
     {
-      id: 'stop',
-      title: 'STOP',
-      subtitle: '',
-      avatar: '',
-      style: '',
-      cards: []
+      columnId: 'stop',
+      columnTitle: 'STOP',
+      columnSubtitle: '',
+      columnAvatar: '',
+      columnStyle: '',
+      columnCards: []
     },
     {
-      id: 'continue',
-      title: 'CONTINUE',
-      subtitle: '',
-      avatar: '',
-      style: '',
-      cards: []
+      columnId: 'continue',
+      columnTitle: 'CONTINUE',
+      columnSubtitle: '',
+      columnAvatar: '',
+      columnStyle: '',
+      columnCards: []
     }
   ];
   const [columns, setColumns] = useState<IColumn[]>(initColumns);
@@ -165,8 +165,8 @@ const DefaultBoard = () => {
           <section className={classes.columns} data-testid="boardColumns">
             {initialSettingsValue.columns.map((column) => (
               <ColumnConfiguration
-                key={column.id}
-                columnId={column.id}
+                key={column.columnId}
+                columnId={column.columnId}
                 columns={columns}
                 onUpdateColumns={columnsUpdateHandler}
               />
