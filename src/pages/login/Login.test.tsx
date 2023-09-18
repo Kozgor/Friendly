@@ -55,7 +55,7 @@ describe('Login component', () => {
     expect(form).toBeInTheDocument();
   });
 
-  test('Should render \'Login\' value for login button', () => {
+  test('Should render `Login` value for login button', () => {
     const login = screen.getByText(/Login/);
     const submitBtn = screen.getByTestId('submitBtn');
 
@@ -75,7 +75,7 @@ describe('Login component', () => {
     expect(passwordField).toBeInTheDocument();
   });
 
-  test('Should change value in \'Email\' field', () => {
+  test('Should change value in `Email` field', () => {
     const emailInputDiv = screen.getByTestId('loginInputEmail');
     const inputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
 
@@ -84,7 +84,7 @@ describe('Login component', () => {
     expect(inputElement.value).toBe('test@mail.com');
   });
 
-  test('Should change value in \'Password\' field', () => {
+  test('Should change value in `Password` field', () => {
     const emailInputDiv = screen.getByTestId('loginInputPassword');
     const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
 

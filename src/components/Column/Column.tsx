@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 
 
@@ -34,11 +35,7 @@ const Column = (props: IColumn) => {
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  useEffect(() => {
-    setIsButtonDisabled(isAddingDisabled);
-  }, [isAddingDisabled]);
-
+  const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
   const onCreateCard = () => {
     setIsNewCard(true);
     setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
@@ -95,12 +92,14 @@ const Column = (props: IColumn) => {
     });
   };
 
+  // ToDo: check if card Id is temp card Id !important
   const onCancelHandler = (cards: IColumnCard[]) => {
     setFinalizedCards((prevCards) =>
       editableCard._id
         ? cards.map((card) => ({ ...card, isEditable: false }))
         : prevCards.filter((card) => !card.isEditable)
     );
+    setIsButtonDisabled(isAddingDisabled);
   };
 
   const onRemoveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
@@ -158,25 +157,27 @@ const Column = (props: IColumn) => {
       </div>
       <div className={classes['column__adding']}>
         <Button
-          disabled={isButtonDisabled}
-          role="button"
-          aria-label="Add new comment"
+          data-testid='addNewCommentButton'
+          disabled={isAddButtonDisabled}
+          role='button'
+          aria-label='Add new comment'
           onClick={onCreateCard}
         >
-          <i className="bi bi-plus"></i>
+          <i className='bi bi-plus'></i>
           <h5>Add comment</h5>
         </Button>
       </div>
-      <div id="comments" className={classes['column__comments']}>
+      <div id='comments' className={classes['column__comments']}>
         {finalizedCards?.map(
           (card) =>
             (isNewCard && card.isEditable && (
               <NewCard
-                key={`${Date.now()}`}
+                key={editableCard._id}
                 _id={editableCard._id}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
                 cardTags={editableCard.cardTags}
+                isDisabled={isAddingDisabled}
                 onAction={handleAction}
               />
             )) || (
@@ -186,6 +187,7 @@ const Column = (props: IColumn) => {
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
                 cardTags={card.cardTags}
+                isDisabled={isAddingDisabled}
                 onAction={handleAction}
               />
             )

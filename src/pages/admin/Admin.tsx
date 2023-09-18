@@ -1,20 +1,9 @@
-import { ChangeEvent, MouseEventHandler, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import Button from '@mui/joy/Button';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Modal from '@mui/joy/Modal';
-import ModalDialog from '@mui/joy/ModalDialog';
-import Stack from '@mui/joy/Stack';
-import Typography from '@mui/joy/Typography';
+import { Divider, Drawer, ListItem, List, ListItemButton, ListItemText } from '@mui/material';
+
+import { Button, FormControl, FormLabel, Input, Modal, ModalDialog, Stack, Typography } from '@mui/joy';
 
 import BoardHeader from '../../components/BoardHeader/BoardHeader';
 import { IColumn } from '../../interfaces/column';
