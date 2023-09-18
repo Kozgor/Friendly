@@ -1,5 +1,11 @@
 @import "../../mixins/flexbox";
 
+.board-container {
+  width: 100%;
+
+  @include flexbox(column, center, center, nowrap);
+}
+
 .board {
   width: 100%;
   height: 90vh;

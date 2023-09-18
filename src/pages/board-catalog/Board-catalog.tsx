@@ -1,27 +1,16 @@
 import Board from '../../components/Board/Board';
-
-import { MouseEventHandler } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { BoardProvider } from '../../context/board/board-context';
 
 import classes from './Board-catalog.module.scss';
 
-const BoardCatalog = () => {
-  const navigate = useNavigate();
-  const handleClickSignOut: MouseEventHandler<HTMLButtonElement> = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('role');
-    localStorage.removeItem('avatar');
-    navigate('/auth');
-  };
-  const fullName = localStorage.getItem('fullName') || '';
-  return (
+const BoardCatalog = () => (
     <>
       <div className={classes.boardCatalog}>
-        <Board fullName={fullName} onSignOut={handleClickSignOut} />
+        <BoardProvider>
+          <Board />
+        </BoardProvider>
       </div>
     </>
   );
-};
 
 export default BoardCatalog;

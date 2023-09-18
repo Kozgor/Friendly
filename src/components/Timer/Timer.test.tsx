@@ -6,7 +6,7 @@ import {
   waitFor
 } from '@testing-library/react';
 import { BaseProps } from '../../interfaces/baseProps';
-import { ColumnContext } from '../../store/column-context';
+import { BoardContext } from '../../context/board/board-context';
 
 import Timer from './Timer';
 
@@ -18,7 +18,7 @@ describe('Timer component', () => {
   const setBoardId = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
-    <ColumnContext.Provider
+    <BoardContext.Provider
       value={{
         boardId: '',
         isAddingDisabled: true,
@@ -28,7 +28,7 @@ describe('Timer component', () => {
       }}
     >
       {children}
-    </ColumnContext.Provider>
+    </BoardContext.Provider>
   );
 
   beforeEach(() => {

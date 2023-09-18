@@ -1,6 +1,6 @@
 import { createContext, useReducer } from 'react';
-import { BaseProps } from '../interfaces/baseProps';
-import ColumnReducer from './column-reducer';
+import { BaseProps } from '../../interfaces/baseProps';
+import BoardReducer from './board-reducer';
 
 export const initialGlobalState = {
   boardId: '',
@@ -10,10 +10,10 @@ export const initialGlobalState = {
   setBoardId: (id: string) => {}
 };
 
-export const ColumnContext = createContext(initialGlobalState);
+export const BoardContext = createContext(initialGlobalState);
 
-export const ColumnProvider = ({ children }: BaseProps) => {
-  const [state, dispatch] = useReducer(ColumnReducer, initialGlobalState);
+export const BoardProvider = ({ children }: BaseProps) => {
+  const [state, dispatch] = useReducer(BoardReducer, initialGlobalState);
 
   const enableAdding = () => {
     dispatch({
@@ -35,7 +35,7 @@ export const ColumnProvider = ({ children }: BaseProps) => {
   };
 
   return (
-    <ColumnContext.Provider
+    <BoardContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
         boardId: state.boardId,
@@ -45,6 +45,6 @@ export const ColumnProvider = ({ children }: BaseProps) => {
       }}
     >
       {children}
-    </ColumnContext.Provider>
+    </BoardContext.Provider>
   );
 };

@@ -1,13 +1,25 @@
 import { RenderResult, render, screen } from '@testing-library/react';
 import Board from './Board';
+import { BoardProvider } from '../../context/board/board-context';
+import store from '../../store/store';
+
+import { Provider } from 'react-redux';
+
+import { MemoryRouter } from 'react-router';
 
 describe('Board component', () => {
   let component: RenderResult;
 
-  const onSignMock = jest.fn();
-
   beforeEach(() => {
-    component = render(<Board fullName="Jack" onSignOut={onSignMock} />);
+    component = render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <BoardProvider>
+            <Board />
+          </BoardProvider>
+        </MemoryRouter>
+      </Provider>
+    );
   });
 
   afterEach(async () => {
@@ -16,12 +28,6 @@ describe('Board component', () => {
 
   test('component mounts properly', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('renders BoardHeader and display username', () => {
-    const username = screen.getByText(/Jack/i);
-
-    expect(username).toBeInTheDocument();
   });
 
   xtest('renders columns', () => {

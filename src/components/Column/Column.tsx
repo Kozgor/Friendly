@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
-import { ColumnContext } from '../../store/column-context';
+
 
 import Button from '@mui/joy/Button';
 
@@ -10,20 +10,27 @@ import NewCard from '../NewCard/NewCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
+import { localStorageManager } from '../../utils/localUserManager';
+
+import { BoardContext } from '../../context/board/board-context';
+
 import axios from 'axios';
 
 import classes from './Column.module.scss';
 
+
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
+  const { getLocalUserData } = localStorageManager();
+  const localUserData= getLocalUserData();
   const initialCard = {
     _id: '',
     cardComment: '',
-    cardAuthor: localStorage.getItem('avatar') || 'Incognito',
+    cardAuthor: localUserData.avatar || 'Incognito',
     cardTags: [],
     isEditable: true
   };
-  const { boardId, isAddingDisabled } = useContext(ColumnContext);
+  const { boardId, isAddingDisabled } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
@@ -150,7 +157,7 @@ const Column = (props: IColumn) => {
       </div>
       <div className={classes['column__adding']}>
         <Button
-          data-testId='addNewCommentButton'
+          data-testid='addNewCommentButton'
           disabled={isAddButtonDisabled}
           role='button'
           aria-label='Add new comment'

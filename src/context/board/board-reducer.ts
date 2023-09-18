@@ -1,7 +1,7 @@
-import { IAction } from '../interfaces/action';
-import { IGlobalState } from '../interfaces/globalState';
+import { IAction } from '../../interfaces/action';
+import { IGlobalState } from '../../interfaces/globalState';
 
-const ColumnReducer = (state: IGlobalState, action: IAction) => {
+const BoardReducer = (state: IGlobalState, action: IAction) => {
   switch (action.type) {
     case 'ADDING_ENABLE':
       return {
@@ -23,4 +23,4 @@ const ColumnReducer = (state: IGlobalState, action: IAction) => {
   }
 };
 
-export default ColumnReducer;
+export default BoardReducer;
