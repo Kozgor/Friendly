@@ -126,11 +126,11 @@ const DefaultBoard = () => {
       }}
     >
       <div className={classes.navbar}>
-        <Breadcrumbs aria-label="breadcrumbs" separator="<">
-          <Link className={classes.link} to="/admin">
+        <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs">
+          <Link className={classes.link} to="/admin" data-testid="backLink">
             Back
           </Link>
-          <Typography component="h3">Default Board</Typography>
+          <Typography component="h3" data-testid="defaultTitle">Default Board</Typography>
         </Breadcrumbs>
         <Button
           color="neutral"
@@ -138,6 +138,7 @@ const DefaultBoard = () => {
           type="button"
           aria-label="solid neutral button for publishing the board"
           onClick={publishSettings}
+          data-testid="publishButton"
         >
           Publish
         </Button>
@@ -155,12 +156,13 @@ const DefaultBoard = () => {
               onChange={setting.onChange}
               disabled={setting.disabled}
               aria-label={`input for ${setting.label}`}
+              data-testid="boardSetting"
             />
           </div>
         ))}
         <div className={classes.columnsBox}>
           <p>Columns:</p>
-          <section className={classes.columns}>
+          <section className={classes.columns} data-testid="boardColumns">
             {initialSettingsValue.columns.map((column) => (
               <ColumnConfiguration
                 key={column.columnId}

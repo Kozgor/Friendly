@@ -1,7 +1,8 @@
-import { RenderResult, render, screen } from '@testing-library/react';
+import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { BaseProps } from '../../interfaces/baseProps';
 import Column from './Column';
+
 import { BoardContext } from '../../context/board/board-context';
 
 describe('Column component', () => {
@@ -26,7 +27,7 @@ describe('Column component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
@@ -37,14 +38,14 @@ describe('Column component', () => {
   });
 
   test('should render button for adding new comments', () => {
-    const button = screen.getByRole('button');
+    const button = screen.getByTestId('addNewCommentButton');
 
     expect(button).toBeInTheDocument();
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute('aria-label', 'Add new comment');
   });
 
-  test('should render enabled button if isAddingDisabled property is false', async () => {
+  test('should render enabled button if "isAddingDisabled" property is false', async () => {
     await component.unmount();
     const wrapper = ({ children }: BaseProps) => (
       <BoardContext.Provider
@@ -75,5 +76,17 @@ describe('Column component', () => {
 
     expect(button).toBeInTheDocument();
     expect(button).not.toBeDisabled();
+  });
+
+  test('should create a card', () => {
+    const button = screen.getByTestId('addNewCommentButton');
+
+    fireEvent.click(button);
+
+    waitFor(() => {
+      const cancelButton = screen.getAllByText('Cancel');
+
+      expect(cancelButton).toBeInTheDocument();
+    });
   });
 });

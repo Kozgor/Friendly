@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from 'react';
-
-
+import { useContext, useState } from 'react';
 import Button from '@mui/joy/Button';
 
 import FinalizedCard from '../FinalizedCard/FinalizedCard';

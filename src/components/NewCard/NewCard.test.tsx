@@ -6,6 +6,7 @@ import { REPLIES } from '../../mocks/cardReplies';
 describe('Comment component', () => {
   let component: RenderResult;
   const commentNumber = 1;
+  const actionMock = jest.fn();
 
   beforeEach(() => {
     component = render(
@@ -17,7 +18,7 @@ describe('Comment component', () => {
         isDisabled={REPLIES[commentNumber].isDisabled}
         cardReplies={[]}
         cardReactions={[]}
-        onAction={jest.fn()}
+        onAction={actionMock}
       />
     );
   });
@@ -26,7 +27,7 @@ describe('Comment component', () => {
     await component.unmount();
   });
 
-  test('should properly mount a component', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
@@ -48,13 +49,13 @@ describe('Comment component', () => {
     expect(textarea).toBeInTheDocument();
   });
 
-  test('should display `Cancel` button' , () => {
+  test('should display "Cancel" button' , () => {
     const cancelButton = screen.getByTestId('newCardButtonCancel');
 
     expect(cancelButton).toBeInTheDocument();
   });
 
-  test('should display `Save` button', () => {
+  test('should display "Save" button', () => {
     const saveButton = screen.getByTestId('newCardButtonSave');
 
     expect(saveButton).toBeInTheDocument();
@@ -69,6 +70,31 @@ describe('Comment component', () => {
       const incognitoIcon = screen.getByTestId('incognitoIcon');
 
       expect(incognitoIcon).toBeInTheDocument();
+    });
+  });
+
+  test('should call cancel action when "Cancel" button is clicked', () => {
+    const cancelButton = screen.getByTestId('newCardButtonCancel');
+    fireEvent.click(cancelButton);
+
+    expect(actionMock).toHaveBeenCalledWith('cancel', {
+      _id: REPLIES[commentNumber]._id,
+      cardAuthor: REPLIES[commentNumber].cardAuthor,
+      cardComment: REPLIES[commentNumber].cardComment
+    });
+  });
+
+  test('should call save action when "Save" button is clicked', () => {
+    const saveButton = screen.getByTestId('newCardButtonSave');
+    fireEvent.click(saveButton);
+
+    waitFor(() => {
+      expect(actionMock).toHaveBeenCalledWith('save', {
+        _id: REPLIES[commentNumber]._id,
+        cardComment: REPLIES[commentNumber].cardComment,
+        cardAuthor: REPLIES[commentNumber].cardAuthor,
+        cardTags: []
+      });
     });
   });
 });

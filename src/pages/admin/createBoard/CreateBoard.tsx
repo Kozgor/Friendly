@@ -24,8 +24,8 @@ const CreateBoard = () => {
 
         <Divider className={classes.divider} /> */}
 
-      <h2 className={classes.title}>TEMPLATES</h2>
-      <div className={classes.defaultBoard} onClick={openDefaultBoard}>
+      <h2 className={classes.title} data-testid="templates">TEMPLATES</h2>
+      <div className={classes.defaultBoard} onClick={openDefaultBoard} data-testid="defaultBoard">
         <div className={classes['defaultBoard__column']}></div>
         <div className={classes['defaultBoard__column']}></div>
         <div className={classes['defaultBoard__column']}></div>

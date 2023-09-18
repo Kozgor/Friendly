@@ -26,12 +26,12 @@ describe('Board component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  xtest('renders columns', () => {
-    const columnsAmount = 3;
+  test('should render default amount of columns', () => {
+    const columnsAmount = 0;
     const board = screen.getByTestId('board');
 
     expect(board).toBeInTheDocument();

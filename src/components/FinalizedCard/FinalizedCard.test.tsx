@@ -6,20 +6,19 @@ import {
 } from '@testing-library/react';
 
 import FinalizedCard from './FinalizedCard';
-import { REPLIES } from '../../mocks/cardReplies';
+
+import { COMMENT, REPLIES } from '../../mocks/cardReplies';
 
 describe('FinalizedCard component', () => {
   let component: RenderResult;
   const onActionMock = jest.fn();
-  const commentMock = `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
-  eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`;
 
   beforeEach(() => {
     component = render(
       <FinalizedCard
         _id={REPLIES[0]._id}
         cardAuthor={REPLIES[0].cardAuthor}
-        cardComment={commentMock}
+        cardComment={COMMENT}
         onAction={onActionMock}
         cardReplies={REPLIES[0].cardReplies}
         cardReactions={REPLIES[0].cardReactions}
@@ -32,7 +31,7 @@ describe('FinalizedCard component', () => {
     await component.unmount();
   });
 
-  test('component mounts properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
@@ -42,7 +41,7 @@ describe('FinalizedCard component', () => {
     expect(tags.length).toBe(REPLIES[0].cardTags?.length);
   });
 
-  test('`Show more` button should be replaced with `Show less` button', () => {
+  test('"Show more" button should be replaced with "Show less" button', () => {
     const showMoreButton = screen.getByTestId('showMoreButton');
 
     fireEvent.click(showMoreButton);
@@ -52,7 +51,7 @@ describe('FinalizedCard component', () => {
     expect(showLess).toBeInTheDocument();
   });
 
-  test('should run onAction when user clicks on `Edit` button', () => {
+  test('should run onAction when user clicks on "Edit" button', () => {
     const cardMenuButton = screen.getByTestId('cardMenuButton');
 
     fireEvent.click(cardMenuButton);
@@ -64,24 +63,24 @@ describe('FinalizedCard component', () => {
     expect(onActionMock).toHaveBeenCalledWith('edit', {
       _id: REPLIES[0]._id,
       cardAuthor: REPLIES[0].cardAuthor,
-      cardComment: commentMock,
+      cardComment: COMMENT,
       cardTags: REPLIES[0].cardTags
     });
   });
 
-  test('should run onAction when user clicks on `Delete` button', () => {
+  test('should run onAction when user clicks on "Delete" button', () => {
     const cardMenuButton = screen.getByTestId('cardMenuButton');
 
     fireEvent.click(cardMenuButton);
 
-    const editCardButton = screen.getByTestId('deleteCardButton');
+    const deleteCardButton = screen.getByTestId('deleteCardButton');
 
-    fireEvent.click(editCardButton);
+    fireEvent.click(deleteCardButton);
 
     expect(onActionMock).toHaveBeenCalledWith('remove', {
       _id: REPLIES[0]._id,
       cardAuthor: REPLIES[0].cardAuthor,
-      cardComment: commentMock
+      cardComment: COMMENT
     });
   });
 

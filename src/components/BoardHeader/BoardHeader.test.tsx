@@ -34,7 +34,6 @@ jest.mock('../../utils/localUserManager', () => ({
     })
 }));
 
-
 describe('BoardHeader component', () => {
   let component: RenderResult;
 
@@ -56,17 +55,17 @@ describe('BoardHeader component', () => {
     await component.unmount();
   });
 
-  test('Should mount component properly', () => {
+  test('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 
-  test('Should be \'Sign out\' button in the document', () => {
+  test('should be "Sign out" button in the document', () => {
     const signOutButton = screen.getByTestId('signOut');
 
     expect(signOutButton).toBeTruthy();
   });
 
-  test('Should sign out the user', () => {
+  test('should sign out the user', () => {
     const signOutButton = screen.getByTestId('signOut');
 
     fireEvent.click(signOutButton);
@@ -75,7 +74,7 @@ describe('BoardHeader component', () => {
     expect(removeUserFromStore).toHaveBeenCalled();
   });
 
-  test('Should display `Start Timer` button for timer', () => {
+  test('should display "Start Timer" button for timer', () => {
     const startButton = screen.getByText('Start Timer');
 
     expect(startButton).toBeInTheDocument();

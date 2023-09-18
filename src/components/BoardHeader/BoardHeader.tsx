@@ -25,7 +25,7 @@ const BoardHeader = (props: IBoardHeaderProps) => {
 
   return (
     <header className={classes.header}>
-      <h4 className={classes.boardName}>{props.boardName}</h4>
+      <h4 className={classes.boardName} data-testid="boardName">{props.boardName}</h4>
       {props.isTimerVisible && <Timer time={props.time * minute} />}
       <div className={classes.userBox}>
         <span>Hello, {localUserData.fullName}</span>|

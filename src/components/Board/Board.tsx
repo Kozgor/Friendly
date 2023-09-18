@@ -6,7 +6,7 @@ import Column from '../Column/Column';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
 
-import { BoardContext, BoardProvider } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/board-context';
 
 import classes from './Board.module.scss';
 
@@ -24,6 +24,7 @@ const Board = () => {
   const { setBoardId } = useContext(BoardContext);
 
   useEffect(() => {
+    console.log('useeffect');
     try {
       axios.get(`${FRIENDLY_DOMAIN}boards/active`).then((res) => {
         setBoardSettings(res.data);

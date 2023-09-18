@@ -24,7 +24,7 @@ const ColumnConfiguration = (props: {
   return (
     <div className={classes.column}>
       <div className={classes['column__header']}>
-        <h2>{column?.columnTitle}</h2>
+        <h2 data-testid='title'>{column?.columnTitle}</h2>
         {/* <div className={classes['column__addIcon']}>
         <i className="bi bi-plus-circle"></i>
       </div> */}
@@ -38,6 +38,7 @@ const ColumnConfiguration = (props: {
               id: `${column?.columnId}`
             }
           }}
+          data-testid="subtitle"
         />
       </div>
     </div>

@@ -94,6 +94,7 @@ const Timer = (props: ITimerProps) => {
           type="submit"
           aria-label="solid neutral button for enabling and starting timer"
           onClick={showTimer}
+          data-testid="timerStartButton"
         >
           Start Timer
         </Button>
