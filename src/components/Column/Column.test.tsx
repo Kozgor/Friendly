@@ -19,6 +19,7 @@ describe('Column component', () => {
         columnSubtitle="What our team should start doing."
         columnAvatar=""
         columnStyle=""
+        columnCards={[]}
       />
     );
   });
@@ -68,6 +69,7 @@ describe('Column component', () => {
         columnSubtitle=""
         columnAvatar=""
         columnStyle=""
+        columnCards={[]}
       />,
       { wrapper }
     );

@@ -31,6 +31,7 @@ const FinalizedCard = (props: IColumnCard) => {
   const deleteCard = () => {
     props.onAction?.('remove', {
       _id: props._id,
+      createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment
     });
@@ -39,6 +40,7 @@ const FinalizedCard = (props: IColumnCard) => {
   const editCard = () => {
     props.onAction?.('edit', {
       _id: props._id,
+      createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment,
       cardTags: props.cardTags
@@ -164,7 +166,7 @@ const FinalizedCard = (props: IColumnCard) => {
       {displayShowButton && isShownAllText && (
         <Button
           data-testid='showLessButton'
-          variant="plain"
+          variant='plain'
           onClick={showLessText}
           sx={{
             width: 110,

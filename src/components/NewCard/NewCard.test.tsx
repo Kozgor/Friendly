@@ -12,6 +12,7 @@ describe('Comment component', () => {
     component = render(
       <NewCard
         _id={REPLIES[commentNumber]._id}
+        createdAt={REPLIES[commentNumber].createdAt}
         cardComment={REPLIES[commentNumber].cardComment}
         cardAuthor={REPLIES[commentNumber].cardAuthor}
         cardTags={REPLIES[commentNumber].cardTags}
@@ -79,6 +80,7 @@ describe('Comment component', () => {
 
     expect(actionMock).toHaveBeenCalledWith('cancel', {
       _id: REPLIES[commentNumber]._id,
+      createdAt: REPLIES[commentNumber].createdAt,
       cardAuthor: REPLIES[commentNumber].cardAuthor,
       cardComment: REPLIES[commentNumber].cardComment
     });
@@ -91,6 +93,7 @@ describe('Comment component', () => {
     waitFor(() => {
       expect(actionMock).toHaveBeenCalledWith('save', {
         _id: REPLIES[commentNumber]._id,
+        createdAt: REPLIES[commentNumber].createdAt,
         cardComment: REPLIES[commentNumber].cardComment,
         cardAuthor: REPLIES[commentNumber].cardAuthor,
         cardTags: []
