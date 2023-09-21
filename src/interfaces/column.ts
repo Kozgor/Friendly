@@ -6,5 +6,5 @@ export interface IColumn {
   columnSubtitle: string;
   columnAvatar: string;
   columnStyle: string;
-  // columnCards: IColumnCard[];
+  columnCards: IColumnCard[];
 }

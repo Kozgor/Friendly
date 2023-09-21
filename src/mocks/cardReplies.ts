@@ -2,6 +2,7 @@ import { IColumnCard } from '../interfaces/columnCard';
 
 export const REPLIES: IColumnCard[] = [
     { _id: 'test comment 1',
+      createdAt: '2023-09-19T14:28:54.921Z',
       cardComment: 'Dummy message 1',
       cardAuthor: 'Incognito',
       isDisabled: false,
@@ -10,6 +11,7 @@ export const REPLIES: IColumnCard[] = [
       cardReactions: []
     }, {
       _id: 'test comment 2',
+      createdAt: '2023-09-19T14:28:54.921Z',
       cardComment: 'Dummy message 2',
       cardAuthor: 'Mr Smith',
       isDisabled: false,

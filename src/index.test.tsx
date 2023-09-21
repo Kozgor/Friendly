@@ -34,10 +34,6 @@ describe('App component', () => {
   const navigate = jest.fn();
 
   beforeEach(() => {
-    localStorage.setItem('fullName', '');
-    localStorage.setItem('token', '');
-    localStorage.setItem('role', '');
-    localStorage.setItem('expiration', '');
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
     component = render(
@@ -51,7 +47,6 @@ describe('App component', () => {
     jest.clearAllMocks();
     await component.unmount();
   });
-
 
   test('renders App component', () => {
     const textElement = component.getByText('Sign Out');

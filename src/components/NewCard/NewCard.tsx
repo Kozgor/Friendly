@@ -5,6 +5,8 @@ import { IColumnCard } from '../../interfaces/columnCard';
 
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 
+import moment from 'moment';
+
 import classes from './NewCard.module.scss';
 
 const NewCard = (props: IColumnCard) => {
@@ -24,6 +26,7 @@ const NewCard = (props: IColumnCard) => {
   const onCancelCard = () => {
     props.onAction?.('cancel', {
       _id: props._id,
+      createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
       cardComment: props.cardComment
     });
@@ -33,6 +36,7 @@ const NewCard = (props: IColumnCard) => {
   const onSaveCard = () => {
     const newCard: IColumnCard = {
       _id: '',
+      createdAt: moment().toISOString(),
       cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
       cardTags: cardTagsState

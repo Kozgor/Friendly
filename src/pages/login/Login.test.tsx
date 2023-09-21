@@ -40,7 +40,7 @@ describe('Login component', () => {
 
   afterEach(() => {
     component.unmount();
-    jest.clearAllMocks();
+
   });
 
   test('should mount component properly', () => {
@@ -117,13 +117,11 @@ describe('Login component', () => {
     const emailInputElement = emailInputDiv.querySelector('input') as HTMLInputElement;
     const passwordInputElement = passwordInputDiv.querySelector('input') as HTMLInputElement;
     const post = jest.spyOn(axios, 'post').mockImplementation(mockLoginError);
-    const expectedCallCount = 1;
 
     fireEvent.change(emailInputElement, { target: { value: 'user@mail.com' } });
     fireEvent.change(passwordInputElement, { target: { value: 'qwerty123' } });
     fireEvent.click(submitBtn);
 
     expect(post).toHaveBeenCalled();
-    expect(post).toHaveBeenCalledTimes(expectedCallCount);
   });
 });

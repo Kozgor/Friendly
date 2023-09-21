@@ -23,17 +23,20 @@ const Column = (props: IColumn) => {
   const localUserData= getLocalUserData();
   const initialCard = {
     _id: '',
+    createdAt: '',
     cardComment: '',
     cardAuthor: localUserData.avatar || 'Incognito',
     cardTags: [],
     isEditable: true
   };
+
   const { boardId, isAddingDisabled } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
-  const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>([]);
+  const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>(props.columnCards);
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
+
   const onCreateCard = () => {
     setIsNewCard(true);
     setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
@@ -68,12 +71,13 @@ const Column = (props: IColumn) => {
           columnId: props.columnId,
           cardComment: handledCard.cardComment,
           cardAuthor: handledCard.cardAuthor,
-          cardTags: handledCard.cardTags
+          cardTags: handledCard.cardTags,
+          createdAt: handledCard.createdAt
         })
         .then((res) => {
           setFinalizedCards((prevCards) => {
             const filteredCards = prevCards.filter((card) => !card.isEditable);
-            return [{ ...handledCard, _id: res.data._id }, ...filteredCards];
+            return [...filteredCards, { ...handledCard, _id: res.data._id }];
           });
         });
     }
@@ -90,7 +94,6 @@ const Column = (props: IColumn) => {
     });
   };
 
-  // ToDo: check if card Id is temp card Id !important
   const onCancelHandler = (cards: IColumnCard[]) => {
     setFinalizedCards((prevCards) =>
       editableCard._id
@@ -130,7 +133,9 @@ const Column = (props: IColumn) => {
     };
 
     const finCards = [...finalizedCards];
+
     setIsNewCard(actionType === 'edit');
+
     const editableIndex = finCards.findIndex(
       (card) => card._id === handledCard._id
     );
@@ -172,6 +177,7 @@ const Column = (props: IColumn) => {
               <NewCard
                 key={editableCard._id}
                 _id={editableCard._id}
+                createdAt={editableCard.createdAt}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
                 cardTags={editableCard.cardTags}
@@ -182,6 +188,7 @@ const Column = (props: IColumn) => {
               <FinalizedCard
                 key={card.cardComment}
                 _id={card._id}
+                createdAt={card.createdAt}
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
                 cardTags={card.cardTags}

@@ -43,10 +43,6 @@ describe('Admin component', () => {
   ];
 
   beforeAll(() => {
-    localStorage.setItem('fullName', 'Admin');
-    localStorage.setItem('token', 'testToken');
-    localStorage.setItem('role', 'admin');
-    localStorage.setItem('expiration', '2033-09-21T13:06:05.312Z');
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
@@ -60,15 +56,12 @@ describe('Admin component', () => {
   });
 
   afterEach(async () => {
+    jest.clearAllMocks();
     await component.unmount();
   });
 
   afterAll(() => {
     jest.clearAllMocks();
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('expiration');
   });
 
   test('should mount component properly', () => {

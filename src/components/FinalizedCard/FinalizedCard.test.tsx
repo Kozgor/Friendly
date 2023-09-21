@@ -11,18 +11,20 @@ import { COMMENT, REPLIES } from '../../mocks/cardReplies';
 
 describe('FinalizedCard component', () => {
   let component: RenderResult;
+  const commentNumber = 1;
   const onActionMock = jest.fn();
 
   beforeEach(() => {
     component = render(
       <FinalizedCard
-        _id={REPLIES[0]._id}
-        cardAuthor={REPLIES[0].cardAuthor}
+        _id={REPLIES[commentNumber]._id}
+        createdAt={REPLIES[commentNumber].createdAt}
+        cardAuthor={REPLIES[commentNumber].cardAuthor}
         cardComment={COMMENT}
         onAction={onActionMock}
-        cardReplies={REPLIES[0].cardReplies}
-        cardReactions={REPLIES[0].cardReactions}
-        cardTags={REPLIES[0].cardTags}
+        cardReplies={REPLIES[commentNumber].cardReplies}
+        cardReactions={REPLIES[commentNumber].cardReactions}
+        cardTags={REPLIES[commentNumber].cardTags}
       />
     );
   });
@@ -38,7 +40,7 @@ describe('FinalizedCard component', () => {
   test('should render all tags', () => {
     const tags = screen.getAllByTestId('tag');
 
-    expect(tags.length).toBe(REPLIES[0].cardTags?.length);
+    expect(tags.length).toBe(REPLIES[commentNumber].cardTags?.length);
   });
 
   test('"Show more" button should be replaced with "Show less" button', () => {
@@ -61,10 +63,11 @@ describe('FinalizedCard component', () => {
     fireEvent.click(editCardButton);
 
     expect(onActionMock).toHaveBeenCalledWith('edit', {
-      _id: REPLIES[0]._id,
-      cardAuthor: REPLIES[0].cardAuthor,
+      _id: REPLIES[commentNumber]._id,
+      createdAt: REPLIES[commentNumber].createdAt,
+      cardAuthor: REPLIES[commentNumber].cardAuthor,
       cardComment: COMMENT,
-      cardTags: REPLIES[0].cardTags
+      cardTags: REPLIES[commentNumber].cardTags
     });
   });
 
@@ -78,8 +81,9 @@ describe('FinalizedCard component', () => {
     fireEvent.click(deleteCardButton);
 
     expect(onActionMock).toHaveBeenCalledWith('remove', {
-      _id: REPLIES[0]._id,
-      cardAuthor: REPLIES[0].cardAuthor,
+      _id: REPLIES[commentNumber]._id,
+      createdAt: REPLIES[commentNumber].createdAt,
+      cardAuthor: REPLIES[commentNumber].cardAuthor,
       cardComment: COMMENT
     });
   });
