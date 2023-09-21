@@ -26,7 +26,7 @@ jest.mock('../../utils/storeUserManager', () => ({
 const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
 
-jest.mock('../../utils/localUserManager', () => ({
+jest.mock('../../utils/localStorageManager', () => ({
     localStorageManager: () => ({
       saveLocalUserData,
       removeLocalUserData,

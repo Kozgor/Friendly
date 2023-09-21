@@ -24,7 +24,6 @@ const Board = () => {
   const { setBoardId } = useContext(BoardContext);
 
   useEffect(() => {
-    console.log('useeffect');
     try {
       axios.get(`${FRIENDLY_DOMAIN}boards/active`).then((res) => {
         setBoardSettings(res.data);

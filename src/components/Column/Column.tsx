@@ -8,7 +8,7 @@ import NewCard from '../NewCard/NewCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
-import { localStorageManager } from '../../utils/localUserManager';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 import { BoardContext } from '../../context/board/board-context';
 

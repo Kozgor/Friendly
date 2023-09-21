@@ -1,8 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { useEffect } from 'react';
 
-import { useStoreUser } from './utils/storeUserManager';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
+import { ToastContainer } from 'react-toastify';
 
 import Admin from './pages/admin/Admin';
 import BoardCatalog from './pages/board-catalog/Board-catalog';
@@ -11,53 +11,64 @@ import DefaultBoard from './pages/admin/defaultBoard/DefaultBoard';
 import Login from './pages/login/Login';
 import NotFound from './pages/not-found/Not-fount';
 
+import { checkAuthLoader } from './utils/checkAuthLoader';
+
+import { getTokenDuration } from './utils/getTokenDuration';
 
 import 'react-toastify/dist/ReactToastify.css';
 import classes from './App.module.scss';
 
+const { checkAdminRole, checkAuth } = checkAuthLoader();
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <BoardCatalog />,
+    errorElement: <NotFound />,
+    loader: checkAuth
+  }, {
+    path:'/auth',
+    element: <Login />
+  }, {
+    path: '/admin',
+      element: <Admin />,
+      children: [
+        {
+          path: '',
+          element: <CreateBoard />,
+          loader: checkAdminRole
+        }, {
+          path: 'default_board',
+          element: <DefaultBoard />,
+          loader: checkAdminRole
+        }
+      ],
+      loader: checkAdminRole
+    }
+]);
+
 function App() {
-  const { getUserFromStore } = useStoreUser();
-  const user = getUserFromStore;
-  const { token, role } = user;
+  const tokenDuration = getTokenDuration();
+
+  useEffect(() => {
+    setTimeout(() => {
+      router.navigate('/auth');
+    }, tokenDuration);
+  }, [tokenDuration]);
 
   return (
-    <>
       <div className={classes.app}>
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                !token ? (
-                  <Login />
-                ) : role === 'user' ? (
-                  <BoardCatalog />
-                ) : (
-                  <Admin />
-                )
-              }
-            />
-            <Route path="/auth" element={<Login />} />
-            <Route path="/board-catalog" element={<BoardCatalog />} />
-            <Route path="/admin" element={<Admin />}>
-              <Route path="/admin/" element={<CreateBoard />} />
-              <Route path="/admin/template" element={<DefaultBoard />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router}></RouterProvider>
+        <ToastContainer
+          role="alert"
+          position="top-right"
+          autoClose={3000}
+          draggable
+          closeOnClick
+          pauseOnHover={false}
+          hideProgressBar={false}
+          theme="colored"
+        />
       </div>
-      <ToastContainer
-        role="alert"
-        position="top-right"
-        autoClose={3000}
-        draggable
-        closeOnClick
-        pauseOnHover={false}
-        hideProgressBar={false}
-        theme="colored"
-      />
-    </>
   );
 }
 
