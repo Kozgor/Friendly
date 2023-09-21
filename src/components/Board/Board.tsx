@@ -9,6 +9,7 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { BoardContext } from '../../context/board/board-context';
 
 import classes from './Board.module.scss';
+import { IColumn } from '../../interfaces/column';
 
 const Board = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -23,16 +24,52 @@ const Board = () => {
     useState<IBoardSettings>(initSettings);
   const { setBoardId } = useContext(BoardContext);
 
-  useEffect(() => {
-    console.log('useeffect');
+  const getColumnData = async (boardId: string) => {
     try {
-      axios.get(`${FRIENDLY_DOMAIN}boards/active`).then((res) => {
-        setBoardSettings(res.data);
-        setBoardId(res.data._id);
-      });
-    } catch (err) {
-      console.log(err);
+      const columns = await axios.post(`${FRIENDLY_DOMAIN}columns`, { boardId });
+
+      return columns.data;
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  const getActiveBoard = async () => {
+    try {
+      const activeBoard = await axios.get(`${FRIENDLY_DOMAIN}boards/active`);
+
+      return activeBoard.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const activeBoard = await getActiveBoard();
+
+        setBoardId(activeBoard._id);
+
+        if (activeBoard._id) {
+          const columnsData = await getColumnData(activeBoard._id);
+
+          activeBoard.columns.forEach((column: IColumn) => {
+            const { columnId } = column;
+
+            if (columnsData[columnId]) {
+              column.columnCards = columnsData[columnId];
+            }
+          });
+
+          setBoardSettings(activeBoard);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, [FRIENDLY_DOMAIN]);
 
   return (
@@ -42,7 +79,7 @@ const Board = () => {
           isTimerVisible={true}
           time={boardSettings.timer}
         />
-        <main className={`container ${classes.board}`} data-testid="board">
+        <main className={`container ${classes.board}`} data-testid='board'>
           {boardSettings?.columns.map((column) => (
             <Column
               key={column.columnId}
@@ -51,7 +88,7 @@ const Board = () => {
               columnSubtitle={column.columnSubtitle}
               columnStyle={column.columnStyle}
               columnAvatar={column.columnAvatar}
-              // columnCards={column.columnCards}
+              columnCards={column.columnCards}
             />
           ))}
         </main>

@@ -9,7 +9,7 @@ describe('ColumnConfiguration component', () => {
     {
       columnId: 'start',
       columnAvatar: '',
-      // columnCards: [],
+      columnCards: [],
       columnStyle: '',
       columnSubtitle: '',
       columnTitle: 'Start'
