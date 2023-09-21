@@ -9,6 +9,7 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { BoardContext } from '../../context/board/board-context';
 
 import classes from './Board.module.scss';
+import { IColumn } from '../../interfaces/column';
 
 const Board = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -53,13 +54,13 @@ const Board = () => {
         if (activeBoard._id) {
           const columnsData = await getColumnData(activeBoard._id);
 
-          for (const column of activeBoard.columns) {
+          activeBoard.columns.forEach((column: IColumn) => {
             const { columnId } = column;
 
             if (columnsData[columnId]) {
               column.columnCards = columnsData[columnId];
             }
-          }
+          });
 
           setBoardSettings(activeBoard);
         }
