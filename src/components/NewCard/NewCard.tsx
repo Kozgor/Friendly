@@ -10,7 +10,7 @@ import moment from 'moment';
 import classes from './NewCard.module.scss';
 
 const NewCard = (props: IColumnCard) => {
-  const { cardAuthor, cardComment, cardTags, isDisabled } = props;
+  const { _id, cardAuthor, cardComment, cardTags, isDisabled, createdAt } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
@@ -34,9 +34,12 @@ const NewCard = (props: IColumnCard) => {
 
   // ToDo: Add reactions and replies via cardReactionsState, cardRepliesState
   const onSaveCard = () => {
+    const onSaveCreatedAt = !createdAt ? moment().toISOString(): createdAt;
+    const onSaveCardId = !_id ? '' : _id;
+
     const newCard: IColumnCard = {
-      _id: '',
-      createdAt: moment().toISOString(),
+      _id: onSaveCardId,
+      createdAt: onSaveCreatedAt,
       cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
       cardTags: cardTagsState

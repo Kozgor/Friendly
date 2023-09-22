@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
 
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
@@ -15,7 +14,7 @@ import { BoardContext } from '../../context/board/board-context';
 import axios from 'axios';
 
 import classes from './Column.module.scss';
-
+import { sortByDate } from '../../utils/sortByDate';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -32,10 +31,14 @@ const Column = (props: IColumn) => {
 
   const { boardId, isAddingDisabled } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
-  const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>(props.columnCards);
+  const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(props.columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
+
+  useEffect(() => {
+    setFinalizedCards(sortByDate(props.columnCards));
+  }, [props.columnCards]);
 
   const onCreateCard = () => {
     setIsNewCard(true);
