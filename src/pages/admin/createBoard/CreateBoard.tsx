@@ -6,7 +6,7 @@ import classes from './CreateBoard.module.scss';
 const CreateBoard = () => {
   const navigate = useNavigate();
   const openDefaultBoard = () => {
-    navigate('/admin/template');
+    navigate('default_board');
   };
 
   return (

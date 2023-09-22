@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import { useStoreUser } from '../../utils/storeUserManager';
 
-import { localStorageManager } from '../../utils/localUserManager';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 import Toastr from '../../components/Toastr/Toastr';
 
@@ -65,8 +65,8 @@ function Login() {
           saveLocalUserData(response.data);
 
           response.data.role === 'user'
-            ? navigate('/board-catalog')
-            : navigate('/admin');
+            ? navigate('/')
+            : navigate('/admin/');
         } catch (error) {
           console.log(error);
           setIsLoginRequest(false);

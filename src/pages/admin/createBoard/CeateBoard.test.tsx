@@ -62,7 +62,7 @@ describe('CreateBoard component', () => {
     fireEvent.click(defaultBoard);
 
     expect(navigate).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith('/admin/template');
+    expect(navigate).toHaveBeenCalledWith('default_board');
   });
 
   test('should render 3 draft for columns', () => {

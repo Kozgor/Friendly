@@ -6,7 +6,7 @@ import Timer from '../Timer/Timer';
 import classes from './BoardHeader.module.scss';
 import { useStoreUser } from '../../utils/storeUserManager';
 
-import { localStorageManager } from '../../utils/localUserManager';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router';

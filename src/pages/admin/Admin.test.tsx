@@ -19,7 +19,7 @@ import { dummyLocalAdminProfile } from '../../mocks/user';
 const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
 
-jest.mock('../../utils/localUserManager', () => ({
+jest.mock('../../utils/localStorageManager', () => ({
     localStorageManager: () => ({
       saveLocalUserData,
       removeLocalUserData,
@@ -43,9 +43,6 @@ describe('Admin component', () => {
   ];
 
   beforeAll(() => {
-    localStorage.setItem('fullName', 'Admin');
-    localStorage.setItem('token', 'testToken');
-    localStorage.setItem('role', 'admin');
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
@@ -59,7 +56,12 @@ describe('Admin component', () => {
   });
 
   afterEach(async () => {
+    jest.clearAllMocks();
     await component.unmount();
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   test('should mount component properly', () => {
