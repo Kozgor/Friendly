@@ -7,8 +7,8 @@ import {
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import Admin from './Dashboard';
 import CreateBoard from '../CreateBoard/CreateBoard';
+import Dashboard from './Dashboard';
 import DefaultBoard from '../DefaultBoard/DefaultBoard';
 
 import { Provider } from 'react-redux';
@@ -27,14 +27,14 @@ jest.mock('../../utils/localStorageManager', () => ({
     })
 }));
 
-describe('Admin component', () => {
+describe('Dashboard component', () => {
   let component: RenderResult;
   const navigate = jest.fn();
 
   const routesConfig = [
     {
       path: '/admin',
-      element: <Admin />,
+      element: <Dashboard />,
       children: [
         { path: '/admin/', element: <CreateBoard /> },
         { path: '/admin/template', element: <DefaultBoard /> }
