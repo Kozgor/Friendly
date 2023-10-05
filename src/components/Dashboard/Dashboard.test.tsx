@@ -7,14 +7,14 @@ import {
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import Admin from './Admin';
-import CreateBoard from './createBoard/CreateBoard';
-import DefaultBoard from './defaultBoard/DefaultBoard';
+import Admin from './Dashboard';
+import CreateBoard from '../CreateBoard/CreateBoard';
+import DefaultBoard from '../DefaultBoard/DefaultBoard';
 
 import { Provider } from 'react-redux';
 import store from '../../store/store';
 
-import { dummyLocalAdminProfile } from '../../mocks/user';
+import { LOCAL_ADMIN_PROFILE } from '../../mocks/user';
 
 const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
@@ -23,7 +23,7 @@ jest.mock('../../utils/localStorageManager', () => ({
     localStorageManager: () => ({
       saveLocalUserData,
       removeLocalUserData,
-      getLocalUserData: () => dummyLocalAdminProfile
+      getLocalUserData: () => LOCAL_ADMIN_PROFILE
     })
 }));
 
@@ -86,10 +86,10 @@ describe('Admin component', () => {
     expect(timerStartButton).toBeNull();
   });
 
-  test('should render boardName as empty string', () => {
+  test('should render boardName as "Admin page"', () => {
     const boardName = screen.queryByTestId('boardName');
 
-    expect(boardName?.innerHTML).toBe('');
+    expect(boardName?.innerHTML).toBe('Admin page');
   });
 
   test('should render drawer', () => {
@@ -104,8 +104,14 @@ describe('Admin component', () => {
     expect(divider).toBeInTheDocument();
   });
 
-  test('should render newBoardTab', () => {
-    const newBoardTab = screen.getByTestId('newBoardTab');
+  test('should render "New Board" tad', () => {
+    const newBoardTab = screen.getByText('New Board');
+
+    expect(newBoardTab).toBeInTheDocument();
+  });
+
+  test('should render "Boards Management" tab', () => {
+    const newBoardTab = screen.getByText('Boards Management');
 
     expect(newBoardTab).toBeInTheDocument();
   });
@@ -130,12 +136,20 @@ describe('Admin component', () => {
     expect(navigate).toHaveBeenCalledWith('/auth');
   });
 
-  test('should navigate to "/admin" when click on "newBoardTab" button', () => {
-    const newBoardTab = screen.getByTestId('newBoardTab');
+  test('should navigate to "new_board" when click on "New Board" tab button', () => {
+    const newBoardTab = screen.getByText('New Board');
 
     fireEvent.click(newBoardTab);
 
     expect(navigate).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith('/admin');
+    expect(navigate).toHaveBeenCalledWith('new_board');
+  });
+  test('should navigate to "boards_management" when click on "Boards Management" tab button', () => {
+    const newBoardTab = screen.getByText('Boards Management');
+
+    fireEvent.click(newBoardTab);
+
+    expect(navigate).toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith('boards_management');
   });
 });

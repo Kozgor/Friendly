@@ -16,15 +16,21 @@ describe('Timer component', () => {
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
   const setBoardId = jest.fn();
+  const setBoardStatus = jest.fn();
+  const setFormSubmit = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
     <BoardContext.Provider
       value={{
         boardId: '',
+        boardStatus: 'active',
         isAddingDisabled: true,
+        isFormSubmit: true,
         enableAdding,
         disableAdding,
-        setBoardId
+        setFormSubmit,
+        setBoardId,
+        setBoardStatus
       }}
     >
       {children}
@@ -109,15 +115,6 @@ describe('Timer component', () => {
           expect(screen.getByTestId('continue')).toBeInTheDocument();
         },
         { timeout: 100 }
-      );
-    });
-
-    test('should appear a "Submit" button', async () => {
-      await waitFor(
-        () => {
-          expect(screen.queryByTestId('submit')).toBeInTheDocument();
-        },
-        { timeout: 3100 }
       );
     });
 

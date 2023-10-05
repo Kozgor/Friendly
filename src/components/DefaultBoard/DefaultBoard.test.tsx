@@ -7,18 +7,18 @@ import {
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import Admin from '../Admin';
-import CreateBoard from '../createBoard/CreateBoard';
+import Admin from '../Dashboard/Dashboard';
+import CreateBoard from '../CreateBoard/CreateBoard';
 import DefaultBoard from './DefaultBoard';
 import axios from 'axios';
 
 import { ToastContainer, toast } from 'react-toastify';
-import { BaseProps } from '../../../interfaces/baseProps';
-import Toastr from '../../../components/Toastr/Toastr';
+import { BaseProps } from '../../interfaces/baseProps';
+import Toastr from '../Toastr/Toastr';
 
 import { Provider } from 'react-redux';
 
-import store from '../../../store/store';
+import store from '../../store/store';
 
 describe('Admin component', () => {
   let component: RenderResult;

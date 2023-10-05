@@ -10,8 +10,28 @@ describe('Column component', () => {
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
   const setBoardId = jest.fn();
+  const setBoardStatus = jest.fn();
+  const setFormSubmit = jest.fn();
 
   beforeEach(() => {
+    const wrapper = ({ children }: BaseProps) => (
+      <BoardContext.Provider
+        value={{
+          boardId: '',
+          boardStatus: 'active',
+          isAddingDisabled: false,
+          isFormSubmit: false,
+          enableAdding,
+          disableAdding,
+          setFormSubmit,
+          setBoardId,
+          setBoardStatus
+        }}
+      >
+        {children}
+      </BoardContext.Provider>
+    );
+
     component = render(
       <Column
         columnId="start"
@@ -20,7 +40,7 @@ describe('Column component', () => {
         columnAvatar=""
         columnStyle=""
         columnCards={[]}
-      />
+      />, { wrapper }
     );
   });
 
@@ -38,7 +58,38 @@ describe('Column component', () => {
     expect(title).toBeInTheDocument();
   });
 
-  test('should render button for adding new comments', () => {
+  test('should render button for adding new comments', async () => {
+    await component.unmount();
+    const wrapper = ({ children }: BaseProps) => (
+      <BoardContext.Provider
+        value={{
+          boardId: '',
+          boardStatus: 'active',
+          isAddingDisabled: true,
+          isFormSubmit: false,
+          enableAdding,
+          disableAdding,
+          setFormSubmit,
+          setBoardId,
+          setBoardStatus
+        }}
+      >
+        {children}
+      </BoardContext.Provider>
+    );
+
+    render(
+      <Column
+        columnId=""
+        columnTitle=""
+        columnSubtitle=""
+        columnAvatar=""
+        columnStyle=""
+        columnCards={[]}
+      />,
+      { wrapper }
+    );
+
     const button = screen.getByTestId('addNewCommentButton');
 
     expect(button).toBeInTheDocument();
@@ -52,10 +103,14 @@ describe('Column component', () => {
       <BoardContext.Provider
         value={{
           boardId: '',
+          boardStatus: 'active',
           isAddingDisabled: false,
+          isFormSubmit: false,
           enableAdding,
           disableAdding,
-          setBoardId
+          setFormSubmit,
+          setBoardId,
+          setBoardStatus
         }}
       >
         {children}

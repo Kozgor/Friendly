@@ -8,10 +8,11 @@ import Typography from '@mui/joy/Typography';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import ColumnConfiguration from '../../../components/ColumnConfiguration/ColumnConfiguration';
-import { IBoardSettings } from '../../../interfaces/boardSettings';
-import { IColumn } from '../../../interfaces/column';
-import Toastr from '../../../components/Toastr/Toastr';
+import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
+import { IBoardSettings } from '../../interfaces/boardSettings';
+import { IColumn } from '../../interfaces/column';
+
+import Toastr from '../Toastr/Toastr';
 
 import classes from './DefaultBoard.module.scss';
 
@@ -45,6 +46,7 @@ const DefaultBoard = () => {
       columnCards: []
     }
   ];
+
   const [columns, setColumns] = useState<IColumn[]>(initColumns);
   const initialSettingsValue = {
     name: 'RETROSPECTIVE',

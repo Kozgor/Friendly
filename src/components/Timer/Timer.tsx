@@ -1,7 +1,8 @@
 import { useContext, useMemo, useRef, useState } from 'react';
-import Button from '@mui/joy/Button';
 import Countdown from 'react-countdown';
 import moment from 'moment';
+
+import Button from '@mui/joy/Button';
 
 import { BoardContext } from '../../context/board/board-context';
 import { ITimerProps } from '../../interfaces/timerProps';
@@ -57,10 +58,6 @@ const Timer = (props: ITimerProps) => {
       isTimerChanged: true
     }));
     enableAdding();
-  };
-
-  const submitForm = () => {
-    disableAdding();
   };
 
   const onComplete = () => {
@@ -139,19 +136,6 @@ const Timer = (props: ITimerProps) => {
             <i className="bi bi-square-fill"></i>
           </button>
         </div>
-      )}
-      {countdownTimer.isTimerCompleted && (
-        <Button
-          variant="solid"
-          color='neutral'
-          type="submit"
-          aria-label="solid neutral button for submitting the form"
-          onClick={submitForm}
-          role="button"
-          data-testid="submit"
-        >
-          Submit
-        </Button>
       )}
     </>
   );

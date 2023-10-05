@@ -20,6 +20,7 @@ describe('FinalizedCard component', () => {
         _id={REPLIES[commentNumber]._id}
         createdAt={REPLIES[commentNumber].createdAt}
         cardAuthor={REPLIES[commentNumber].cardAuthor}
+        cardAuthorId={REPLIES[commentNumber].cardAuthorId}
         cardComment={COMMENT}
         onAction={onActionMock}
         cardReplies={REPLIES[commentNumber].cardReplies}
@@ -66,6 +67,7 @@ describe('FinalizedCard component', () => {
       _id: REPLIES[commentNumber]._id,
       createdAt: REPLIES[commentNumber].createdAt,
       cardAuthor: REPLIES[commentNumber].cardAuthor,
+      cardAuthorId: REPLIES[commentNumber].cardAuthorId,
       cardComment: COMMENT,
       cardTags: REPLIES[commentNumber].cardTags
     });
@@ -84,6 +86,7 @@ describe('FinalizedCard component', () => {
       _id: REPLIES[commentNumber]._id,
       createdAt: REPLIES[commentNumber].createdAt,
       cardAuthor: REPLIES[commentNumber].cardAuthor,
+      cardAuthorId: REPLIES[commentNumber].cardAuthorId,
       cardComment: COMMENT
     });
   });

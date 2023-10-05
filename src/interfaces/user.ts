@@ -7,11 +7,16 @@ export interface IUserProfile {
   description: string;
   createdAt: string;
   updatedAt: string;
+  boards?: {
+    active: string | null,
+    finalized: string | null
+  };
   __v: number;
   token: string;
 }
 
 export interface IUserLocalProfile {
+  _id: string;
   fullName: string;
   role: string;
   avatar: string;

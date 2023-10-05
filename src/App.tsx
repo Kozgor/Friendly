@@ -4,13 +4,13 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { ToastContainer } from 'react-toastify';
 
-import Admin from './pages/admin/Admin';
-import BoardCatalog from './pages/board-catalog/Board-catalog';
-import CreateBoard from './pages/admin/createBoard/CreateBoard';
-import DefaultBoard from './pages/admin/defaultBoard/DefaultBoard';
-import Login from './pages/login/Login';
-import NotFound from './pages/not-found/Not-fount';
-
+import AdminPage from './pages/admin/Admin';
+import BoardPage from './pages/board/Board';
+import BoardsManagementPage from './pages/boardsManagement/BoardsManagementPage';
+import CreateBoardPage from './pages/createBoard/CreateBoard';
+import DefaultBoardPage from './pages/defaultBoard/DefaultBoard';
+import ErrorPage from './pages/not-found/Error';
+import LoginPage from './pages/login/Login';
 import { checkAuthLoader } from './utils/checkAuthLoader';
 
 import { getTokenDuration } from './utils/getTokenDuration';
@@ -22,23 +22,28 @@ const { checkAdminRole, checkAuth } = checkAuthLoader();
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <BoardCatalog />,
-    errorElement: <NotFound />,
+    element: <BoardPage />,
+    errorElement: <ErrorPage />,
     loader: checkAuth
   }, {
     path:'/auth',
-    element: <Login />
+    element: <LoginPage />
   }, {
     path: '/admin',
-      element: <Admin />,
+      element: <AdminPage />,
       children: [
         {
-          path: '',
-          element: <CreateBoard />,
+          path: 'new_board',
+          element: <CreateBoardPage />,
           loader: checkAdminRole
         }, {
+          path: 'boards_management',
+          element: <BoardsManagementPage />,
+          loader: checkAdminRole
+        },
+        {
           path: 'default_board',
-          element: <DefaultBoard />,
+          element: <DefaultBoardPage />,
           loader: checkAdminRole
         }
       ],

@@ -3,12 +3,13 @@ import { RenderResult, fireEvent, render, screen } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import BoardCatalog from './Board-catalog';
-import Login from '../login/Login';
+import Board from '../../components/Board/Board';
+import Login from '../../components/Login/Login';
 
 import store from '../../store/store';
 
-describe('Board-catalog component', () => {
+
+describe('Board component', () => {
   let component: RenderResult;
   const navigate = jest.fn();
 
@@ -35,7 +36,7 @@ describe('Board-catalog component', () => {
     })
   );
 
-  const routesConfig = [{ path: '/board-catalog', element: <BoardCatalog /> }, { path: '/auth', element: <Login /> }];
+  const routesConfig = [{ path: '/board', element: <Board /> }, { path: '/auth', element: <Login /> }];
 
   beforeAll(() => {
     localStorage.setItem('fullName', 'User');
@@ -47,7 +48,7 @@ describe('Board-catalog component', () => {
 
   beforeEach(() => {
     const router = createMemoryRouter(routesConfig, {
-      initialEntries: ['/board-catalog']
+      initialEntries: ['/board']
     });
     component = render(<Provider store={store}>
       <RouterProvider router={router} />

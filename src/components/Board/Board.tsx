@@ -1,86 +1,151 @@
 import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
-import { IColumn } from '../../interfaces/column';
+import { INITIAL_BOARD } from '../../mocks/board';
 
 import { BoardContext } from '../../context/board/board-context';
+import { localStorageManager } from '../../utils/localStorageManager';
+
+import { boardAPI } from '../../api/BoardAPI';
+import { columnAPI } from '../../api/ColumnAPI';
+import { userAPI } from '../../api/UserAPI';
 
 import classes from './Board.module.scss';
 
 const Board = () => {
-  const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
-  const initSettings = {
-    name: '',
-    theme: '',
-    timer: 0,
-    columns: [],
-    status: 'active'
-  };
   const [boardSettings, setBoardSettings] =
-    useState<IBoardSettings>(initSettings);
-  const { setBoardId } = useContext(BoardContext);
+    useState<IBoardSettings>(INITIAL_BOARD);
+  const [isTimerVisible, setIsTimerVisible] = useState(false);
+  const [ isShowBoard, setIsShowBoard] = useState(false);
+  const { boardStatus, isFormSubmit, setBoardId, setBoardStatus } = useContext(BoardContext);
+  const { getLocalUserData } = localStorageManager();
+  const { getFinalColumnCards, getUserColumnCards } = columnAPI();
+  const { getActiveBoard, getFinalizedBoard } = boardAPI();
+  const { getUserById } = userAPI();
+  const user = getLocalUserData();
 
-  const getColumnData = async (boardId: string) => {
+  const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
-      const columns = await axios.post(`${FRIENDLY_DOMAIN}columns`, { boardId });
+      const columnsData = await getUserColumnCards(boardId, userId);
 
-      return columns.data;
+      return columnsData;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getActiveBoard = async () => {
+  const fetchFinalColumnCards = async (boardId: string) => {
     try {
-      const activeBoard = await axios.get(`${FRIENDLY_DOMAIN}boards/active`);
+      const columnsData = await getFinalColumnCards(boardId);
 
-      return activeBoard.data;
+      return columnsData;
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setUpActiveBoard = async () => {
+    try {
+      const activeBoard = await getActiveBoard();
+
+      if (activeBoard && activeBoard._id) {
+        const columnsData = await fetchUserColumnCards(activeBoard._id, user._id);
+
+        setBoardStatus(activeBoard.status);
+        activeBoard.columns.forEach((column) => {
+          const { columnId } = column;
+
+          if (columnsData && columnsData[columnId]) {
+            column.columnCards = columnsData[columnId];
+          }
+        });
+
+        setBoardId(activeBoard._id);
+        setBoardSettings(activeBoard);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setUpFinalizedBoard = async () => {
+    try{
+      const finalizedBoard = await getFinalizedBoard();
+
+      if (finalizedBoard && finalizedBoard._id) {
+        const columnsData = await fetchFinalColumnCards(finalizedBoard._id);
+
+        setBoardStatus(finalizedBoard.status);
+        finalizedBoard.columns.forEach((column) => {
+          const { columnId } = column;
+
+          if (columnsData && columnsData[columnId]) {
+            column.columnCards = columnsData[columnId];
+          }
+        });
+
+        setBoardId(finalizedBoard._id);
+        setBoardSettings(finalizedBoard);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setupBoardVisibility= (userSettings: any) => {
+    if(userSettings.boards && userSettings.boards.active !== null) {
+      setIsTimerVisible(true);
+      setIsShowBoard(true);
+      setUpActiveBoard();
+
+      if (!boardStatus) {
+        setIsTimerVisible(false);
+        setIsShowBoard(false);
+      }
+      return;
+    }
+
+    if (userSettings.boards && userSettings.boards.active === null) {
+      setUpFinalizedBoard();
+
+      if (boardStatus === 'finalized') {
+        setIsTimerVisible(false);
+        setIsShowBoard(true);
+      } else {
+        setIsTimerVisible(false);
+        setIsShowBoard(false);
+      }
+      return;
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const currentUserSetting = await getUserById(user._id);
+
+      setupBoardVisibility(currentUserSetting);
+    } catch (error){
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const activeBoard = await getActiveBoard();
-
-        setBoardId(activeBoard._id);
-
-        if (activeBoard._id) {
-          const columnsData = await getColumnData(activeBoard._id);
-
-          activeBoard.columns.forEach((column: IColumn) => {
-            const { columnId } = column;
-
-            if (columnsData[columnId]) {
-              column.columnCards = columnsData[columnId];
-            }
-          });
-
-          setBoardSettings(activeBoard);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [FRIENDLY_DOMAIN]);
+    fetchUserData();
+  }, [boardStatus, isFormSubmit]);
 
   return (
     <div className={classes['board-container']}>
-        <BoardHeader
-          boardName={boardSettings.name}
-          isTimerVisible={true}
-          time={boardSettings.timer}
-        />
-        <main className={`container ${classes.board}`} data-testid='board'>
-          {boardSettings?.columns.map((column) => (
+      <BoardHeader
+        boardName={boardSettings.name}
+        isTimerVisible={isTimerVisible}
+        time={boardSettings.timer}
+      />
+      <main className={`container ${classes.board}`} data-testid='board'>
+        {(isShowBoard && !isFormSubmit) &&
+          boardSettings?.columns.map((column) => (
             <Column
               key={column.columnId}
               columnId={column.columnId}
@@ -90,8 +155,14 @@ const Board = () => {
               columnAvatar={column.columnAvatar}
               columnCards={column.columnCards}
             />
-          ))}
-        </main>
+          ))
+        }
+        {(isFormSubmit || !isShowBoard) &&
+          <div>
+            <h2>No active board</h2>
+          </div>
+        }
+      </main>
     </div>
   );
 };

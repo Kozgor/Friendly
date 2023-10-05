@@ -1,11 +1,11 @@
 import Board from '../../components/Board/Board';
 import { BoardProvider } from '../../context/board/board-context';
 
-import classes from './Board-catalog.module.scss';
+import classes from './Board.module.scss';
 
-const BoardCatalog = () => (
+const BoardPage = () => (
     <>
-      <div className={classes.boardCatalog}>
+      <div className={classes.board}>
         <BoardProvider>
           <Board />
         </BoardProvider>
@@ -13,4 +13,4 @@ const BoardCatalog = () => (
     </>
   );
 
-export default BoardCatalog;
+export default BoardPage;

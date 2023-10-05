@@ -1,7 +1,7 @@
 import { RenderResult, render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import PageNotFound from './Not-fount';
+import PageNotFound from './Error';
 
 describe('Not-found component', () => {
   let component: RenderResult;

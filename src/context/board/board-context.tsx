@@ -4,10 +4,14 @@ import BoardReducer from './board-reducer';
 
 export const initialGlobalState = {
   boardId: '',
+  boardStatus: '',
+  isFormSubmit: false,
   isAddingDisabled: true,
   enableAdding: () => {},
   disableAdding: () => {},
-  setBoardId: (id: string) => {}
+  setFormSubmit: () => {},
+  setBoardId: (id: string) => {},
+  setBoardStatus: (status: string) => {}
 };
 
 export const BoardContext = createContext(initialGlobalState);
@@ -33,15 +37,30 @@ export const BoardProvider = ({ children }: BaseProps) => {
       payload: id
     });
   };
+  const setBoardStatus = (boardStatus: string) => {
+    dispatch({
+      type: 'SET_BOARD_STATUS',
+      payload: boardStatus
+    });
+  };
+  const setFormSubmit = () => {
+    dispatch({
+      type: 'SUBMIT_FORM'
+    });
+  };
 
   return (
     <BoardContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
+        isFormSubmit: state.isFormSubmit,
         boardId: state.boardId,
+        boardStatus: state.boardStatus,
         enableAdding,
         disableAdding,
-        setBoardId
+        setBoardId,
+        setBoardStatus,
+        setFormSubmit
       }}
     >
       {children}

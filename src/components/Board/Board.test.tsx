@@ -1,4 +1,4 @@
-import { RenderResult, render, screen } from '@testing-library/react';
+import { RenderResult, cleanup, render, screen } from '@testing-library/react';
 import Board from './Board';
 import { BoardProvider } from '../../context/board/board-context';
 import store from '../../store/store';
@@ -7,7 +7,43 @@ import { Provider } from 'react-redux';
 
 import { MemoryRouter } from 'react-router';
 
+import { LOCAL_USER_PROFILE, STORE_USER_PROFILE } from '../../mocks/user';
+
+const getUserById = jest.fn(() => {
+  STORE_USER_PROFILE;
+});
+const getLocalUserData = jest.fn(() => {
+  LOCAL_USER_PROFILE;
+});
+const getActiveBoard = jest.fn();
+const getFinalizedBoard = jest.fn();
+const getFinalColumnData = jest.fn();
+const getUserColumnData = jest.fn();
+
+jest.mock('../../utils/localStorageManager', () => ({
+  ...jest.requireActual('../../utils/localStorageManager'),
+  getLocalUserData
+}));
+
+jest.mock('../../api/UserAPI', () => ({
+  ...jest.requireActual('../../api/UserAPI'),
+  getUserById
+}));
+
+jest.mock('../../api/BoardAPI', () => ({
+  ...jest.requireActual('../../api/BoardAPI'),
+  getActiveBoard,
+  getFinalizedBoard
+}));
+
+jest.mock('../../api/ColumnAPI', () => ({
+  ...jest.requireActual('../../api/ColumnAPI'),
+  getFinalColumnData,
+  getUserColumnData
+}));
+
 describe('Board component', () => {
+  process.env.REACT_APP_FRIENDLY_DOMAIN = 'https://test.com/';
   let component: RenderResult;
 
   beforeEach(() => {
@@ -23,19 +59,11 @@ describe('Board component', () => {
   });
 
   afterEach(async () => {
+    jest.clearAllMocks();
     await component.unmount();
   });
 
-  test('should mount component properly', () => {
-    expect(component).toBeTruthy();
-  });
-
-  test('should render default amount of columns', () => {
-    const columnsAmount = 0;
-    const board = screen.getByTestId('board');
-
-    expect(board).toBeInTheDocument();
-    expect(board).toHaveClass('board');
-    expect(board.children.length).toBe(columnsAmount);
+  test('should mount component properly', async () => {
+    await expect(component).toBeTruthy();
   });
 });

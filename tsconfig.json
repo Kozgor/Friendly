@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "target": "es5",
     "lib": [
       "dom",
@@ -19,6 +20,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
     "jsx": "react-jsx"
   },
   "include": ["src", "jest.config.js"]

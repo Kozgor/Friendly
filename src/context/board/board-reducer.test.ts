@@ -4,14 +4,20 @@ import { IGlobalState } from '../../interfaces/globalState';
 const enableAdding = jest.fn();
 const disableAdding = jest.fn();
 const setBoardId = jest.fn();
+const setBoardStatus = jest.fn();
+const setFormSubmit = jest.fn();
 
 describe('BoardReducer', () => {
   const initialState: IGlobalState = {
       boardId: 'Test ID',
+      boardStatus: 'Test ID',
       isAddingDisabled: false,
+      isFormSubmit: false,
       enableAdding: enableAdding,
       disableAdding: disableAdding,
-      setBoardId: setBoardId
+      setFormSubmit: setFormSubmit,
+      setBoardId: setBoardId,
+      setBoardStatus : setBoardStatus
     };
 
   it('should handle "ADDING_ENABLE" action', () => {

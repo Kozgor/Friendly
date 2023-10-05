@@ -15,6 +15,7 @@ describe('Comment component', () => {
         createdAt={REPLIES[commentNumber].createdAt}
         cardComment={REPLIES[commentNumber].cardComment}
         cardAuthor={REPLIES[commentNumber].cardAuthor}
+        cardAuthorId={REPLIES[commentNumber].cardAuthorId}
         cardTags={REPLIES[commentNumber].cardTags}
         isDisabled={REPLIES[commentNumber].isDisabled}
         cardReplies={[]}
@@ -82,6 +83,7 @@ describe('Comment component', () => {
       _id: REPLIES[commentNumber]._id,
       createdAt: REPLIES[commentNumber].createdAt,
       cardAuthor: REPLIES[commentNumber].cardAuthor,
+      cardAuthorId: REPLIES[commentNumber].cardAuthorId,
       cardComment: REPLIES[commentNumber].cardComment
     });
   });
@@ -96,6 +98,7 @@ describe('Comment component', () => {
         createdAt: REPLIES[commentNumber].createdAt,
         cardComment: REPLIES[commentNumber].cardComment,
         cardAuthor: REPLIES[commentNumber].cardAuthor,
+        cardAuthorId: REPLIES[commentNumber].cardAuthorId,
         cardTags: []
       });
     });

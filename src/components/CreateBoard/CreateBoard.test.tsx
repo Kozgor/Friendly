@@ -7,12 +7,12 @@ import {
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import Admin from '../Admin';
+import Admin from '../Dashboard/Dashboard';
 import CreateBoard from './CreateBoard';
-import DefaultBoard from '../defaultBoard/DefaultBoard';
+import DefaultBoard from '../DefaultBoard/DefaultBoard';
 
 import { Provider } from 'react-redux';
-import store from '../../../store/store';
+import store from '../../store/store';
 
 describe('CreateBoard component', () => {
   let component: RenderResult;
@@ -62,7 +62,7 @@ describe('CreateBoard component', () => {
     fireEvent.click(defaultBoard);
 
     expect(navigate).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith('default_board');
+    expect(navigate).toHaveBeenCalledWith('/admin/default_board');
   });
 
   test('should render 3 draft for columns', () => {
