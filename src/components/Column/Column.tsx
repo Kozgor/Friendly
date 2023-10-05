@@ -1,4 +1,6 @@
-import { useContext, useState } from 'react';
+import axios from 'axios';
+
+import { useContext, useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
 
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
@@ -10,8 +12,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { localStorageManager } from '../../utils/localStorageManager';
 
 import { BoardContext } from '../../context/board/board-context';
-
-import axios from 'axios';
+import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
 
@@ -31,10 +32,14 @@ const Column = (props: IColumn) => {
 
   const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
-  const [finalizedCards, setFinalizedCards] = useState<IColumnCard[]>(props.columnCards);
+  const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(props.columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
+
+  useEffect(() => {
+    setFinalizedCards(sortByDate(props.columnCards));
+  }, [props.columnCards]);
 
   const onCreateCard = () => {
     setIsNewCard(true);
