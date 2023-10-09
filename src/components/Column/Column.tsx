@@ -31,7 +31,7 @@ const Column = (props: IColumn) => {
     isEditable: true
   };
 
-  const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
+  const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
@@ -164,7 +164,7 @@ const Column = (props: IColumn) => {
         <h2>{columnTitle}{boardStatus === 'finalized' && <span className={classes['column__header__couner']}>({columnCards.length})</span>}</h2>
         <p>{columnSubtitle}</p>
       </div>
-      {boardStatus === 'active' &&
+      {(boardStatus === 'active' && !isTimerFinalized) &&
         <div className={classes['column__adding']}>
           <Button
             data-testid='addNewCommentButton'

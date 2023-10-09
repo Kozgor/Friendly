@@ -19,7 +19,7 @@ const Timer = (props: ITimerProps) => {
 
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
-  const { enableAdding, disableAdding } = useContext(BoardContext);
+  const { enableAdding, disableAdding, finalizeTimer } = useContext(BoardContext);
 
   const now = moment().toDate().getTime();
   const date = now + props.time;
@@ -66,6 +66,7 @@ const Timer = (props: ITimerProps) => {
       isTimerCompleted: true
     }));
     disableAdding();
+    finalizeTimer();
   };
 
   const countdown = useMemo(

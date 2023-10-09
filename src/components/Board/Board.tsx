@@ -13,13 +13,16 @@ import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
 import { userAPI } from '../../api/UserAPI';
 
+import { possibleBoardStatuses } from '../../constants';
+
+import { isNull } from 'lodash';
+
 import classes from './Board.module.scss';
 
 const Board = () => {
-  const [boardSettings, setBoardSettings] =
-    useState<IBoardSettings>(INITIAL_BOARD);
+  const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
-  const [ isShowBoard, setIsShowBoard] = useState(false);
+  const [isBoardVisible, setIsBoardVisible] = useState(false);
   const { boardStatus, isFormSubmit, setBoardId, setBoardStatus } = useContext(BoardContext);
   const { getLocalUserData } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
@@ -55,6 +58,7 @@ const Board = () => {
         const columnsData = await fetchUserColumnCards(activeBoard._id, user._id);
 
         setBoardStatus(activeBoard.status);
+
         activeBoard.columns.forEach((column) => {
           const { columnId } = column;
 
@@ -72,13 +76,14 @@ const Board = () => {
   };
 
   const setUpFinalizedBoard = async () => {
-    try{
+    try {
       const finalizedBoard = await getFinalizedBoard();
 
       if (finalizedBoard && finalizedBoard._id) {
         const columnsData = await fetchFinalColumnCards(finalizedBoard._id);
 
         setBoardStatus(finalizedBoard.status);
+
         finalizedBoard.columns.forEach((column) => {
           const { columnId } = column;
 
@@ -95,30 +100,19 @@ const Board = () => {
     }
   };
 
-  const setupBoardVisibility= (userSettings: any) => {
-    if(userSettings.boards && userSettings.boards.active !== null) {
-      setIsTimerVisible(true);
-      setIsShowBoard(true);
+  const setSessionVisibility = (userSettings: any) => {
+    if (!isNull(userSettings.boards.active)) {
       setUpActiveBoard();
+      setIsTimerVisible(true);
+      setIsBoardVisible(true);
 
       if (!boardStatus) {
-        setIsTimerVisible(false);
-        setIsShowBoard(false);
+        setIsBoardVisible(false);
       }
-      return;
-    }
-
-    if (userSettings.boards && userSettings.boards.active === null) {
+    } else {
       setUpFinalizedBoard();
-
-      if (boardStatus === 'finalized') {
-        setIsTimerVisible(false);
-        setIsShowBoard(true);
-      } else {
-        setIsTimerVisible(false);
-        setIsShowBoard(false);
-      }
-      return;
+      boardStatus === possibleBoardStatuses.finalized ?
+        setIsBoardVisible(true) : setIsBoardVisible(false);
     }
   };
 
@@ -126,7 +120,7 @@ const Board = () => {
     try {
       const currentUserSetting = await getUserById(user._id);
 
-      setupBoardVisibility(currentUserSetting);
+      setSessionVisibility(currentUserSetting);
     } catch (error){
       console.log(error);
     }
@@ -144,7 +138,7 @@ const Board = () => {
         time={boardSettings.timer}
       />
       <main className={`container ${classes.board}`} data-testid='board'>
-        {(isShowBoard && !isFormSubmit) &&
+        {(isBoardVisible && !isFormSubmit) &&
           boardSettings?.columns.map((column) => (
             <Column
               key={column.columnId}
@@ -157,7 +151,7 @@ const Board = () => {
             />
           ))
         }
-        {(isFormSubmit || !isShowBoard) &&
+        {(isFormSubmit || !isBoardVisible) &&
           <div>
             <h2>No active board</h2>
           </div>

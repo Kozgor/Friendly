@@ -3,6 +3,7 @@ import { IGlobalState } from '../../interfaces/globalState';
 
 const enableAdding = jest.fn();
 const disableAdding = jest.fn();
+const finalizeTimer = jest.fn();
 const setBoardId = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
@@ -12,9 +13,11 @@ describe('BoardReducer', () => {
       boardId: 'Test ID',
       boardStatus: 'Test ID',
       isAddingDisabled: false,
+      isTimerFinalized: false,
       isFormSubmit: false,
       enableAdding: enableAdding,
       disableAdding: disableAdding,
+      finalizeTimer: finalizeTimer,
       setFormSubmit: setFormSubmit,
       setBoardId: setBoardId,
       setBoardStatus : setBoardStatus

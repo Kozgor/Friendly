@@ -27,6 +27,9 @@ jest.mock('../../utils/localStorageManager', () => ({
     })
 }));
 
+let newBoardTab: HTMLElement;
+let boardsManagementTab: HTMLElement;
+
 describe('Dashboard component', () => {
   let component: RenderResult;
   const navigate = jest.fn();
@@ -53,6 +56,9 @@ describe('Dashboard component', () => {
     component = render(<Provider store={store}>
       <RouterProvider router={router} />
     </Provider>);
+
+    newBoardTab = screen.getByText('New Board');
+    boardsManagementTab = screen.getByText('Boards Management');
   });
 
   afterEach(async () => {
@@ -105,15 +111,11 @@ describe('Dashboard component', () => {
   });
 
   test('should render "New Board" tad', () => {
-    const newBoardTab = screen.getByText('New Board');
-
     expect(newBoardTab).toBeInTheDocument();
   });
 
   test('should render "Boards Management" tab', () => {
-    const newBoardTab = screen.getByText('Boards Management');
-
-    expect(newBoardTab).toBeInTheDocument();
+    expect(boardsManagementTab).toBeInTheDocument();
   });
 
   test('should render "Create Board" component', () => {
@@ -137,17 +139,13 @@ describe('Dashboard component', () => {
   });
 
   test('should navigate to "new_board" when click on "New Board" tab button', () => {
-    const newBoardTab = screen.getByText('New Board');
-
     fireEvent.click(newBoardTab);
 
     expect(navigate).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith('new_board');
   });
   test('should navigate to "boards_management" when click on "Boards Management" tab button', () => {
-    const newBoardTab = screen.getByText('Boards Management');
-
-    fireEvent.click(newBoardTab);
+    fireEvent.click(boardsManagementTab);
 
     expect(navigate).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith('boards_management');
