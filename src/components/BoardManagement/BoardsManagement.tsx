@@ -6,8 +6,10 @@ import { BoardContext } from '../../context/board/board-context';
 import { boardAPI } from '../../api/BoardAPI';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
+import { possibleBoardStatuses } from '../../constants';
 
 import classes from './BoardsManagement.module.scss';
+
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
@@ -44,7 +46,7 @@ const BoardsManagement = () => {
 
         availableBoard ? setBoard(availableBoard) : setBoard(initSettings);
 
-        if (availableBoard?.status === 'active') {
+        if (availableBoard?.status === possibleBoardStatuses.active) {
           setIsFinalizeButton(true);
         }
 

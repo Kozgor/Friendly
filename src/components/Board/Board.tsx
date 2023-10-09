@@ -13,6 +13,8 @@ import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
 import { userAPI } from '../../api/UserAPI';
 
+import { possibleBoardStatuses } from '../../constants';
+
 import classes from './Board.module.scss';
 
 const Board = () => {
@@ -55,6 +57,7 @@ const Board = () => {
         const columnsData = await fetchUserColumnCards(activeBoard._id, user._id);
 
         setBoardStatus(activeBoard.status);
+
         activeBoard.columns.forEach((column) => {
           const { columnId } = column;
 
@@ -95,7 +98,7 @@ const Board = () => {
     }
   };
 
-  const setupBoardVisibility= (userSettings: any) => {
+  const setIsBoardVisible= (userSettings: any) => {
     if(userSettings.boards && userSettings.boards.active !== null) {
       setIsTimerVisible(true);
       setIsShowBoard(true);
@@ -111,7 +114,7 @@ const Board = () => {
     if (userSettings.boards && userSettings.boards.active === null) {
       setUpFinalizedBoard();
 
-      if (boardStatus === 'finalized') {
+      if (boardStatus === possibleBoardStatuses.finalized) {
         setIsTimerVisible(false);
         setIsShowBoard(true);
       } else {
@@ -126,7 +129,7 @@ const Board = () => {
     try {
       const currentUserSetting = await getUserById(user._id);
 
-      setupBoardVisibility(currentUserSetting);
+      setIsBoardVisible(currentUserSetting);
     } catch (error){
       console.log(error);
     }
