@@ -84,6 +84,7 @@ const Board = () => {
         const columnsData = await fetchFinalColumnCards(finalizedBoard._id);
 
         setBoardStatus(finalizedBoard.status);
+
         finalizedBoard.columns.forEach((column) => {
           const { columnId } = column;
 
@@ -114,7 +115,7 @@ const Board = () => {
       return;
     }
 
-    if (userSettings.boards && userSettings.boards.active === null) {
+    if (isNull(userSettings.boards.active)) {
       setUpFinalizedBoard();
 
       if (boardStatus === possibleBoardStatuses.finalized) {
