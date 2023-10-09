@@ -38,7 +38,6 @@ const Column = (props: IColumn) => {
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
-    console.log('isTimerFinalized', isTimerFinalized);
     setFinalizedCards(sortByDate(props.columnCards));
   }, [props.columnCards]);
 
