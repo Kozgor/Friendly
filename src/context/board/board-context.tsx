@@ -6,9 +6,11 @@ export const initialGlobalState = {
   boardId: '',
   boardStatus: '',
   isFormSubmit: false,
+  isTimerFinalized: false,
   isAddingDisabled: true,
   enableAdding: () => {},
   disableAdding: () => {},
+  finalizeTimer: () => {},
   setFormSubmit: () => {},
   setBoardId: (id: string) => {},
   setBoardStatus: (status: string) => {}
@@ -28,6 +30,12 @@ export const BoardProvider = ({ children }: BaseProps) => {
   const disableAdding = () => {
     dispatch({
       type: 'ADDING_DISABLE'
+    });
+  };
+
+  const finalizeTimer = () => {
+    dispatch({
+      type: 'FINALIZE_TIMER'
     });
   };
 
@@ -53,11 +61,13 @@ export const BoardProvider = ({ children }: BaseProps) => {
     <BoardContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
+        isTimerFinalized: state.isTimerFinalized,
         isFormSubmit: state.isFormSubmit,
         boardId: state.boardId,
         boardStatus: state.boardStatus,
         enableAdding,
         disableAdding,
+        finalizeTimer,
         setBoardId,
         setBoardStatus,
         setFormSubmit

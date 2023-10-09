@@ -13,6 +13,11 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         isAddingDisabled: true
       };
+    case 'FINALIZE_TIMER':
+      return {
+        ...state,
+        isTimerFinalized: true
+      };
     case 'SET_BOARDID':
       return {
         ...state,

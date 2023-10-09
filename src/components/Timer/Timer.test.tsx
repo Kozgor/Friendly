@@ -15,6 +15,7 @@ describe('Timer component', () => {
   let startButton: HTMLElement;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
@@ -25,9 +26,11 @@ describe('Timer component', () => {
         boardId: '',
         boardStatus: 'active',
         isAddingDisabled: true,
+        isTimerFinalized: false,
         isFormSubmit: true,
         enableAdding,
         disableAdding,
+        finalizeTimer,
         setFormSubmit,
         setBoardId,
         setBoardStatus

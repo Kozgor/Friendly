@@ -30,7 +30,7 @@ const Column = (props: IColumn) => {
     isEditable: true
   };
 
-  const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
+  const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(props.columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
@@ -38,6 +38,7 @@ const Column = (props: IColumn) => {
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
+    console.log('isTimerFinalized', isTimerFinalized);
     setFinalizedCards(sortByDate(props.columnCards));
   }, [props.columnCards]);
 
@@ -163,7 +164,7 @@ const Column = (props: IColumn) => {
         <h2>{props.columnTitle}</h2>
         <p>{props.columnSubtitle}</p>
       </div>
-      {boardStatus === 'active' &&
+      {(boardStatus === 'active' && !isTimerFinalized) &&
         <div className={classes['column__adding']}>
           <Button
             data-testid='addNewCommentButton'
