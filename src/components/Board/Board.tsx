@@ -109,9 +109,7 @@ const Board = () => {
       if (!boardStatus) {
         setIsBoardVisible(false);
       }
-    }
-
-    else {
+    } else {
       setUpFinalizedBoard();
       boardStatus === possibleBoardStatuses.finalized ?
         setIsBoardVisible(true) : setIsBoardVisible(false);
