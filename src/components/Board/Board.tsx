@@ -15,6 +15,8 @@ import { userAPI } from '../../api/UserAPI';
 
 import { possibleBoardStatuses } from '../../constants';
 
+import { isNull } from 'lodash';
+
 import classes from './Board.module.scss';
 
 const Board = () => {
@@ -99,7 +101,7 @@ const Board = () => {
   };
 
   const setIsBoardVisible= (userSettings: any) => {
-    if(userSettings.boards && userSettings.boards.active !== null) {
+    if (!isNull(userSettings.boards.active)) {
       setIsTimerVisible(true);
       setIsShowBoard(true);
       setUpActiveBoard();
@@ -108,6 +110,7 @@ const Board = () => {
         setIsTimerVisible(false);
         setIsShowBoard(false);
       }
+
       return;
     }
 
@@ -121,6 +124,7 @@ const Board = () => {
         setIsTimerVisible(false);
         setIsShowBoard(false);
       }
+
       return;
     }
   };
