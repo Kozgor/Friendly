@@ -101,19 +101,14 @@ const Board = () => {
   };
 
   const setSessionVisibility = (userSettings: any) => {
-    if (!isNull(userSettings.boards.active)) {
-      setUpActiveBoard();
-      setIsTimerVisible(true);
-      setIsBoardVisible(true);
-
-      if (!boardStatus) {
-        setIsBoardVisible(false);
-      }
-    } else {
-      setUpFinalizedBoard();
-      boardStatus === possibleBoardStatuses.finalized ?
+    !isNull(userSettings.boards.active) ?
+      setUpActiveBoard().then(() => {
+        setIsTimerVisible(true);
+        setIsBoardVisible(true);
+      }) : setUpFinalizedBoard().then(() => {
+        boardStatus === possibleBoardStatuses.finalized ?
         setIsBoardVisible(true) : setIsBoardVisible(false);
-    }
+      });
   };
 
   const fetchUserData = async () => {
