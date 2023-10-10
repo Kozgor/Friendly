@@ -17,6 +17,7 @@ const BoardHeader = (props: IBoardHeaderProps) => {
   const { boardName, time, isTimerVisible } = props;
   const navigate = useNavigate();
   const [isSubmitButton, setIsSubmitButton] = useState(true);
+  const [currentBoardName, setCurrentBoardName] = useState(boardName);
   const { disableAdding, setFormSubmit } = useContext(BoardContext);
   const { removeUserFromStore } = useStoreUser();
   const { removeLocalUserData, getLocalUserData } = localStorageManager();
@@ -35,28 +36,39 @@ const BoardHeader = (props: IBoardHeaderProps) => {
     disableAdding();
     setFormSubmit();
     setIsSubmitButton(false);
+    setCurrentBoardName(' ');
   };
 
   return (
     <header className={classes.header}>
-      <h4 className={classes.boardName} data-testid='boardName'>{boardName}</h4>
-      { (isTimerVisible && isSubmitButton) && <Timer time={time * minute} /> }
-      { (isTimerVisible && isSubmitButton)&&
-        <Button
-          variant='solid'
-          type='submit'
-          aria-label='solid button for submitting the form'
-          onClick= {onComplete}
-          role='button'
-          data-testid='submit'
-        >
-          Complete
-        </Button>
-      }
-      <div className={classes.userBox}>
+      <span className={classes['header__board-box']}>
+        <span className={classes['header__board-box__name']}>
+          <h4 data-testid='boardName'>{currentBoardName ? currentBoardName : boardName}</h4>
+        </span>
+        {(isTimerVisible && isSubmitButton) &&
+          <span className={classes['header__board-actions']}>
+            <span className={classes['header__board-actions__timer']}>
+              <Timer time={time * minute} />
+            </span>
+            <span className={classes['header__board-actions__complete-button']}>
+              <Button
+                variant='solid'
+                type='submit'
+                aria-label='solid button for submitting the form'
+                onClick= {onComplete}
+                role='button'
+                data-testid='submit'
+              >
+                Complete
+              </Button>
+            </span>
+          </span>
+        }
+      </span>
+      <div className={classes['header__user-box']}>
         <span>Hello, {localUserData.fullName}</span>|
         <Button
-          className={classes.signOut}
+          className={classes['header__user-box__sign-out']}
           variant='soft'
           onClick={onSignOut}
           aria-label='plain primary button for signing out'
