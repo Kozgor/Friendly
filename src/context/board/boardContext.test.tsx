@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import { fireEvent, render } from '@testing-library/react';
 
-import { BoardContext, BoardProvider } from './board-context';
+import { BoardContext, BoardProvider } from './boardContext';
 
 describe('BoardProvider', () => {
   let getByTestId: any;

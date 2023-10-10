@@ -3,7 +3,7 @@ import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-libra
 import { BaseProps } from '../../interfaces/baseProps';
 import Column from './Column';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 
 describe('Column component', () => {
   let component: RenderResult;

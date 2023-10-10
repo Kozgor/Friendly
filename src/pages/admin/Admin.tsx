@@ -1,6 +1,6 @@
 import Dashboard from '../../components/Dashboard/Dashboard';
 
-import { BoardProvider } from '../../context/board/board-context';
+import { BoardProvider } from '../../context/board/boardContext';
 
 const AdminPage = () => (
     <>
