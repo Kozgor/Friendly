@@ -4,7 +4,8 @@ import store from './store/store';
 import App from './App';
 
 import { Provider } from 'react-redux';
-import { dummyLocalAdminProfile } from './mocks/user';
+
+import { LOCAL_ADMIN_PROFILE } from './mocks/user';
 
 import * as router from 'react-router';
 
@@ -17,7 +18,7 @@ jest.mock('./utils/localStorageManager', () => ({
   localStorageManager: () => ({
     saveLocalUserData,
     removeLocalUserData,
-    getLocalUserData: () => dummyLocalAdminProfile
+    getLocalUserData: () => LOCAL_ADMIN_PROFILE
   })
 }));
 

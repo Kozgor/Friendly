@@ -3,15 +3,38 @@ import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-libra
 import { BaseProps } from '../../interfaces/baseProps';
 import Column from './Column';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 
 describe('Column component', () => {
   let component: RenderResult;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
+  const setBoardStatus = jest.fn();
+  const setFormSubmit = jest.fn();
 
   beforeEach(() => {
+    const wrapper = ({ children }: BaseProps) => (
+      <BoardContext.Provider
+        value={{
+          boardId: '',
+          boardStatus: 'active',
+          isAddingDisabled: false,
+          isTimerFinalized: false,
+          isFormSubmit: false,
+          enableAdding,
+          disableAdding,
+          finalizeTimer,
+          setFormSubmit,
+          setBoardId,
+          setBoardStatus
+        }}
+      >
+        {children}
+      </BoardContext.Provider>
+    );
+
     component = render(
       <Column
         columnId="start"
@@ -20,7 +43,7 @@ describe('Column component', () => {
         columnAvatar=""
         columnStyle=""
         columnCards={[]}
-      />
+      />, { wrapper }
     );
   });
 
@@ -38,7 +61,40 @@ describe('Column component', () => {
     expect(title).toBeInTheDocument();
   });
 
-  test('should render button for adding new comments', () => {
+  test('should render button for adding new comments', async () => {
+    await component.unmount();
+    const wrapper = ({ children }: BaseProps) => (
+      <BoardContext.Provider
+        value={{
+          boardId: '',
+          boardStatus: 'active',
+          isAddingDisabled: true,
+          isFormSubmit: false,
+          isTimerFinalized: false,
+          enableAdding,
+          disableAdding,
+          finalizeTimer,
+          setFormSubmit,
+          setBoardId,
+          setBoardStatus
+        }}
+      >
+        {children}
+      </BoardContext.Provider>
+    );
+
+    render(
+      <Column
+        columnId=""
+        columnTitle=""
+        columnSubtitle=""
+        columnAvatar=""
+        columnStyle=""
+        columnCards={[]}
+      />,
+      { wrapper }
+    );
+
     const button = screen.getByTestId('addNewCommentButton');
 
     expect(button).toBeInTheDocument();
@@ -52,10 +108,16 @@ describe('Column component', () => {
       <BoardContext.Provider
         value={{
           boardId: '',
+          boardStatus: 'active',
           isAddingDisabled: false,
+          isTimerFinalized: false,
+          isFormSubmit: false,
           enableAdding,
           disableAdding,
-          setBoardId
+          finalizeTimer,
+          setFormSubmit,
+          setBoardId,
+          setBoardStatus
         }}
       >
         {children}

@@ -1,9 +1,10 @@
 import { useContext, useMemo, useRef, useState } from 'react';
-import Button from '@mui/joy/Button';
 import Countdown from 'react-countdown';
 import moment from 'moment';
 
-import { BoardContext } from '../../context/board/board-context';
+import Button from '@mui/joy/Button';
+
+import { BoardContext } from '../../context/board/boardContext';
 import { ITimerProps } from '../../interfaces/timerProps';
 
 import classes from './Timer.module.scss';
@@ -18,7 +19,7 @@ const Timer = (props: ITimerProps) => {
 
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
-  const { enableAdding, disableAdding } = useContext(BoardContext);
+  const { enableAdding, disableAdding, finalizeTimer } = useContext(BoardContext);
 
   const now = moment().toDate().getTime();
   const date = now + props.time;
@@ -59,16 +60,13 @@ const Timer = (props: ITimerProps) => {
     enableAdding();
   };
 
-  const submitForm = () => {
-    disableAdding();
-  };
-
   const onComplete = () => {
     setTimer((prevState) => ({
       ...prevState,
       isTimerCompleted: true
     }));
     disableAdding();
+    finalizeTimer();
   };
 
   const countdown = useMemo(
@@ -139,19 +137,6 @@ const Timer = (props: ITimerProps) => {
             <i className="bi bi-square-fill"></i>
           </button>
         </div>
-      )}
-      {countdownTimer.isTimerCompleted && (
-        <Button
-          variant="solid"
-          color='neutral'
-          type="submit"
-          aria-label="solid neutral button for submitting the form"
-          onClick={submitForm}
-          role="button"
-          data-testid="submit"
-        >
-          Submit
-        </Button>
       )}
     </>
   );

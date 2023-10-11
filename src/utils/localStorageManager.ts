@@ -1,5 +1,6 @@
+import { INITIAL_LOCAL_PROFILE } from '../mocks/user';
 import { IUserLocalProfile } from '../interfaces/user';
-import { initialLocalUserProfile } from '../mocks/user';
+
 import moment from 'moment';
 
 export const localStorageManager = () => {
@@ -8,6 +9,7 @@ export const localStorageManager = () => {
         const expirationHours = currentTime.add(1, 'hours');
 
         const userProfile = {
+            _id: data._id,
             fullName: data.fullName,
             role: data.role,
             avatar: data.avatar,
@@ -24,7 +26,7 @@ export const localStorageManager = () => {
     const getLocalUserData = () => {
         const storedUserProfileJSON = localStorage.getItem('localProfile');
 
-        return storedUserProfileJSON ? JSON.parse(storedUserProfileJSON) : initialLocalUserProfile;
+        return storedUserProfileJSON ? JSON.parse(storedUserProfileJSON) : INITIAL_LOCAL_PROFILE;
     };
 
     return {

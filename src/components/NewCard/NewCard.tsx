@@ -1,16 +1,21 @@
 import { ChangeEvent, useState } from 'react';
+import moment from 'moment';
 
-import { Autocomplete, Avatar, Button, Card, Textarea } from '@mui/joy';
+import {
+  Autocomplete,
+  Avatar,
+  Button,
+  Card,
+  Textarea
+} from '@mui/joy';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 
-import moment from 'moment';
-
 import classes from './NewCard.module.scss';
 
 const NewCard = (props: IColumnCard) => {
-  const { _id, cardAuthor, cardComment, cardTags, isDisabled, createdAt } = props;
+  const { _id, cardAuthor, cardAuthorId, cardComment, cardTags, isDisabled, createdAt } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
@@ -28,6 +33,7 @@ const NewCard = (props: IColumnCard) => {
       _id: props._id,
       createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
+      cardAuthorId: props.cardAuthorId,
       cardComment: props.cardComment
     });
   };
@@ -42,6 +48,7 @@ const NewCard = (props: IColumnCard) => {
       createdAt: onSaveCreatedAt,
       cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
+      cardAuthorId: cardAuthorId,
       cardTags: cardTagsState
     };
 

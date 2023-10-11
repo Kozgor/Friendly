@@ -10,7 +10,7 @@ import store from '../../store/store';
 
 import { MemoryRouter } from 'react-router-dom';
 
-import { dummyLocalUserProfile, dummyStoreUserProfile } from '../../mocks/user';
+import { LOCAL_USER_PROFILE, STORE_USER_PROFILE } from '../../mocks/user';
 
 const addUserToStore = jest.fn();
 const removeUserFromStore = jest.fn();
@@ -19,7 +19,7 @@ jest.mock('../../utils/storeUserManager', () => ({
     useStoreUser: () => ({
       addUserToStore,
       removeUserFromStore,
-      getUserFromStore: () => dummyStoreUserProfile
+      getUserFromStore: () => STORE_USER_PROFILE
     })
 }));
 
@@ -30,7 +30,7 @@ jest.mock('../../utils/localStorageManager', () => ({
     localStorageManager: () => ({
       saveLocalUserData,
       removeLocalUserData,
-      getLocalUserData: () => dummyLocalUserProfile
+      getLocalUserData: () => LOCAL_USER_PROFILE
     })
 }));
 

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Avatar,
   Button,
@@ -10,7 +12,6 @@ import {
   MenuItem
 } from '@mui/joy';
 import MoreVert from '@mui/icons-material/MoreVert';
-import { useState } from 'react';
 
 import { IColumnCard } from '../../interfaces/columnCard';
 
@@ -33,6 +34,7 @@ const FinalizedCard = (props: IColumnCard) => {
       _id: props._id,
       createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
+      cardAuthorId: props.cardAuthorId,
       cardComment: props.cardComment
     });
   };
@@ -42,6 +44,7 @@ const FinalizedCard = (props: IColumnCard) => {
       _id: props._id,
       createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
+      cardAuthorId: props.cardAuthorId,
       cardComment: props.cardComment,
       cardTags: props.cardTags
     });

@@ -1,0 +1,7 @@
+@import "../../mixins/flexbox";
+
+.board {
+  width: 100%;
+
+  @include flexbox(column, center, center, nowrap);
+}

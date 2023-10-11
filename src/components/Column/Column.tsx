@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { useContext, useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
 
@@ -9,12 +11,10 @@ import { IColumnCard } from '../../interfaces/columnCard';
 
 import { localStorageManager } from '../../utils/localStorageManager';
 
-import { BoardContext } from '../../context/board/board-context';
-
-import axios from 'axios';
+import { BoardContext } from '../../context/board/boardContext';
+import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
-import { sortByDate } from '../../utils/sortByDate';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -24,12 +24,13 @@ const Column = (props: IColumn) => {
     _id: '',
     createdAt: '',
     cardComment: '',
+    cardAuthorId: localUserData._id,
     cardAuthor: localUserData.avatar || 'Incognito',
     cardTags: [],
     isEditable: true
   };
 
-  const { boardId, isAddingDisabled } = useContext(BoardContext);
+  const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(props.columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
@@ -74,6 +75,7 @@ const Column = (props: IColumn) => {
           columnId: props.columnId,
           cardComment: handledCard.cardComment,
           cardAuthor: handledCard.cardAuthor,
+          cardAuthorId: handledCard.cardAuthorId,
           cardTags: handledCard.cardTags,
           createdAt: handledCard.createdAt
         })
@@ -161,18 +163,20 @@ const Column = (props: IColumn) => {
         <h2>{props.columnTitle}</h2>
         <p>{props.columnSubtitle}</p>
       </div>
-      <div className={classes['column__adding']}>
-        <Button
-          data-testid='addNewCommentButton'
-          disabled={isAddButtonDisabled}
-          role='button'
-          aria-label='Add new comment'
-          onClick={onCreateCard}
-        >
-          <i className='bi bi-plus'></i>
-          <h5>Add comment</h5>
-        </Button>
-      </div>
+      {(boardStatus === 'active' && !isTimerFinalized) &&
+        <div className={classes['column__adding']}>
+          <Button
+            data-testid='addNewCommentButton'
+            disabled={isAddButtonDisabled}
+            role='button'
+            aria-label='Add new comment'
+            onClick={onCreateCard}
+          >
+            <i className='bi bi-plus'></i>
+            <h5>Add comment</h5>
+          </Button>
+        </div>
+      }
       <div id='comments' className={classes['column__comments']}>
         {finalizedCards?.map(
           (card) =>
@@ -183,17 +187,19 @@ const Column = (props: IColumn) => {
                 createdAt={editableCard.createdAt}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
+                cardAuthorId={editableCard.cardAuthorId}
                 cardTags={editableCard.cardTags}
                 isDisabled={isAddingDisabled}
                 onAction={handleAction}
               />
             )) || (
               <FinalizedCard
-                key={card.cardComment}
+                key={card._id}
                 _id={card._id}
                 createdAt={card.createdAt}
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
+                cardAuthorId={card.cardAuthorId}
                 cardTags={card.cardTags}
                 isDisabled={isAddingDisabled}
                 onAction={handleAction}

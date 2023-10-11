@@ -6,7 +6,7 @@ import {
   waitFor
 } from '@testing-library/react';
 import { BaseProps } from '../../interfaces/baseProps';
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 
 import Timer from './Timer';
 
@@ -15,16 +15,25 @@ describe('Timer component', () => {
   let startButton: HTMLElement;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
+  const setBoardStatus = jest.fn();
+  const setFormSubmit = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
     <BoardContext.Provider
       value={{
         boardId: '',
+        boardStatus: 'active',
         isAddingDisabled: true,
+        isTimerFinalized: false,
+        isFormSubmit: true,
         enableAdding,
         disableAdding,
-        setBoardId
+        finalizeTimer,
+        setFormSubmit,
+        setBoardId,
+        setBoardStatus
       }}
     >
       {children}
@@ -109,15 +118,6 @@ describe('Timer component', () => {
           expect(screen.getByTestId('continue')).toBeInTheDocument();
         },
         { timeout: 100 }
-      );
-    });
-
-    test('should appear a "Submit" button', async () => {
-      await waitFor(
-        () => {
-          expect(screen.queryByTestId('submit')).toBeInTheDocument();
-        },
-        { timeout: 3100 }
       );
     });
 
