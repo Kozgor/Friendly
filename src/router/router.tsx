@@ -5,7 +5,7 @@ import BoardPage from '../pages/board/Board';
 import BoardsManagementPage from '../pages/boardsManagement/BoardsManagementPage';
 import CreateBoardPage from '../pages/createBoard/CreateBoard';
 import DefaultBoardPage from '../pages/defaultBoard/DefaultBoard';
-import ErrorPage from '../pages/not-found/Error';
+import ErrorPage from '../pages/notFound/Error';
 import LoginPage from '../pages/login/Login';
 import { checkAuthLoader } from '../utils/checkAuthLoader';
 

@@ -23,7 +23,7 @@ import {
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';

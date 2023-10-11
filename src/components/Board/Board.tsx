@@ -6,7 +6,7 @@ import Column from '../Column/Column';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { INITIAL_BOARD } from '../../mocks/board';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 import { localStorageManager } from '../../utils/localStorageManager';
 
 import { boardAPI } from '../../api/BoardAPI';
@@ -102,17 +102,16 @@ const Board = () => {
 
   const setSessionVisibility = (userSettings: any) => {
     if (!isNull(userSettings.boards.active)) {
-      setUpActiveBoard();
-      setIsTimerVisible(true);
-      setIsBoardVisible(true);
-
-      if (!boardStatus) {
-        setIsBoardVisible(false);
-      }
+      setUpActiveBoard().then(() => {
+        setIsTimerVisible(true);
+        setIsBoardVisible(true);
+      });
     } else {
-      setUpFinalizedBoard();
-      boardStatus === possibleBoardStatuses.finalized ?
-        setIsBoardVisible(true) : setIsBoardVisible(false);
+      setUpFinalizedBoard().then(() => {
+        if (boardStatus === possibleBoardStatuses.finalized) {
+          setIsBoardVisible(true);
+        }
+      });
     }
   };
 

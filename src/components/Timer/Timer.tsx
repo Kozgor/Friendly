@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import Button from '@mui/joy/Button';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 import { ITimerProps } from '../../interfaces/timerProps';
 
 import classes from './Timer.module.scss';

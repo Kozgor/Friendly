@@ -11,7 +11,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 
 import { localStorageManager } from '../../utils/localStorageManager';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';

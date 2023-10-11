@@ -1,6 +1,6 @@
 import { RenderResult, cleanup, render, screen } from '@testing-library/react';
 import Board from './Board';
-import { BoardProvider } from '../../context/board/board-context';
+import { BoardProvider } from '../../context/board/boardContext';
 import store from '../../store/store';
 
 import { Provider } from 'react-redux';

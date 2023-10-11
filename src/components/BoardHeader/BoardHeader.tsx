@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import Button from '@mui/joy/Button';
 import Timer from '../Timer/Timer';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
 
 import { localStorageManager } from '../../utils/localStorageManager';
