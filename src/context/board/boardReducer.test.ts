@@ -1,4 +1,4 @@
-import BoardReducer from './board-reducer';
+import BoardReducer from './boardReducer';
 import { IGlobalState } from '../../interfaces/globalState';
 
 const enableAdding = jest.fn();

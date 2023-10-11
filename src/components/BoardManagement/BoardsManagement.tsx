@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Button } from '@mui/joy';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 import { boardAPI } from '../../api/BoardAPI';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';

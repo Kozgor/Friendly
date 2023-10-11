@@ -1,6 +1,6 @@
 import { createContext, useReducer } from 'react';
 import { BaseProps } from '../../interfaces/baseProps';
-import BoardReducer from './board-reducer';
+import BoardReducer from './boardReducer';
 
 export const initialGlobalState = {
   boardId: '',

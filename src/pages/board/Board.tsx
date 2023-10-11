@@ -1,5 +1,5 @@
 import Board from '../../components/Board/Board';
-import { BoardProvider } from '../../context/board/board-context';
+import { BoardProvider } from '../../context/board/boardContext';
 
 import classes from './Board.module.scss';
 

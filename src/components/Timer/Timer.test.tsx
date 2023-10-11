@@ -6,7 +6,7 @@ import {
   waitFor
 } from '@testing-library/react';
 import { BaseProps } from '../../interfaces/baseProps';
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 
 import Timer from './Timer';
 

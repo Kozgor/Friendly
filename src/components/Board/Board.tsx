@@ -7,7 +7,7 @@ import Column from '../Column/Column';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { INITIAL_BOARD } from '../../mocks/board';
 
-import { BoardContext } from '../../context/board/board-context';
+import { BoardContext } from '../../context/board/boardContext';
 import { localStorageManager } from '../../utils/localStorageManager';
 
 import { boardAPI } from '../../api/BoardAPI';
@@ -116,7 +116,6 @@ const Board = () => {
     } else {
       setUpFinalizedBoard().then(() => {
         if (boardStatus === possibleBoardStatuses.finalized) {
-          setIsLoading(false);
           setIsBoardVisible(true);
         }
       });
