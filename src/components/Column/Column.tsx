@@ -15,6 +15,7 @@ import { BoardContext } from '../../context/board/board-context';
 import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
+import { possibleBoardStatuses } from '../../constants';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -161,7 +162,9 @@ const Column = (props: IColumn) => {
   return (
     <section className={`${classes.column} col-4`}>
       <div className={classes['column__header']}>
-        <h2>{columnTitle}{boardStatus === 'finalized' && <span className={classes['column__header__couner']}>({columnCards.length})</span>}</h2>
+        <h2>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
+          <span className={classes['column__header__couner']}>({columnCards.length})</span>}
+        </h2>
         <p>{columnSubtitle}</p>
       </div>
       {(boardStatus === 'active' && !isTimerFinalized) &&
