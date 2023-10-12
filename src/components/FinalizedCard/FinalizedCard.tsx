@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { useState } from 'react';
 
 import {
@@ -16,10 +17,12 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import classes from './FinalizedCard.module.scss';
+import { getInitials } from '../../utils/userInitials';
 
 const FinalizedCard = (props: IColumnCard) => {
+  const { _id, createdAt, cardAuthor, cardAuthorId, cardAuthorAvatar, cardComment, isDisabled, cardTags } = props;
   const [isShownAllText, setIsShownAllText] = useState(false);
-  const [displayShowButton] = useState(props.cardComment.length > 110);
+  const [displayShowButton] = useState(cardComment.length > 110);
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -31,22 +34,24 @@ const FinalizedCard = (props: IColumnCard) => {
 
   const deleteCard = () => {
     props.onAction?.('remove', {
-      _id: props._id,
-      createdAt: props.createdAt,
-      cardAuthor: props.cardAuthor,
-      cardAuthorId: props.cardAuthorId,
-      cardComment: props.cardComment
+      _id: _id,
+      createdAt: createdAt,
+      cardAuthor: cardAuthor,
+      cardAuthorId: cardAuthorId,
+      cardAuthorAvatar: cardAuthorAvatar,
+      cardComment: cardComment
     });
   };
 
   const editCard = () => {
     props.onAction?.('edit', {
-      _id: props._id,
-      createdAt: props.createdAt,
-      cardAuthor: props.cardAuthor,
-      cardAuthorId: props.cardAuthorId,
-      cardComment: props.cardComment,
-      cardTags: props.cardTags
+      _id: _id,
+      createdAt: createdAt,
+      cardAuthor: cardAuthor,
+      cardAuthorId: cardAuthorId,
+      cardAuthorAvatar: cardAuthorAvatar,
+      cardComment: cardComment,
+      cardTags: cardTags
     });
   };
 
@@ -89,7 +94,7 @@ const FinalizedCard = (props: IColumnCard) => {
     >
       <div className={classes.header}>
         <div className={classes.tags}>
-          {props.cardTags?.map((tag) => (
+          {cardTags?.map((tag) => (
             <Chip data-testid='tag' key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
               {tag}
             </Chip>
@@ -111,36 +116,50 @@ const FinalizedCard = (props: IColumnCard) => {
           <Menu>
             <MenuItem
               data-testid='editCardButton'
-              disabled={props.isDisabled}
+              disabled={isDisabled}
               onClick={editCard}
             >Edit</MenuItem>
             <MenuItem
               data-testid='deleteCardButton'
-              disabled={props.isDisabled}
+              disabled={isDisabled}
               onClick={deleteCard}
             >Delete</MenuItem>
           </Menu>
         </Dropdown>
       </div>
       <div id='message' className={classes.message}>
+      {cardAuthor === 'Incognito' &&
         <Avatar
           data-testid='cardAvatar'
-          alt={props.cardAuthor}
-          src={props.cardAuthor}
           className={classes.author}
         >
-          {props.cardAuthor === 'Incognito' ? (
-            <i className='bi bi-incognito'></i>
-          ) : (
-            props.cardAuthor
-          )}
+          <i className='bi bi-incognito'></i>
         </Avatar>
+      }
+      {cardAuthorAvatar && (cardAuthorAvatar.length <= 2) &&
+        <Avatar
+          data-testid='cardAvatar'
+          className={classes.author}
+          alt={cardAuthorAvatar}
+          src={cardAuthorAvatar}
+        >
+          {getInitials(cardAuthor)}
+        </Avatar>
+      }
+      {cardAuthorAvatar && (cardAuthorAvatar.length > 2) &&
+        <Avatar
+          data-testid='cardAvatar'
+          className={classes.author}
+          alt={cardAuthorAvatar}
+          src={cardAuthorAvatar}
+        ></Avatar>
+      }
         <p
           style={{
             display: isShownAllText ? 'block' : '-webkit-box'
           }}
         >
-          {displayMessage(props.cardComment)}
+          {displayMessage(cardComment)}
         </p>
       </div>
       {displayShowButton && !isShownAllText && (

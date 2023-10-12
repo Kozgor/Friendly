@@ -207,6 +207,7 @@ const Column = (props: IColumn) => {
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
                 cardAuthorId={card.cardAuthorId}
+                cardAuthorAvatar={card.cardAuthorAvatar}
                 cardTags={card.cardTags}
                 isDisabled={isAddingDisabled}
                 onAction={handleAction}

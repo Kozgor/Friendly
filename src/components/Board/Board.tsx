@@ -112,10 +112,12 @@ const Board = () => {
 
   const setSessionVisibility = (userSettings: any) => {
     if (!isNull(userSettings.boards.active)) {
-      setUpActiveBoard().then(() => {
-        setIsLoading(false);
-        setIsTimerVisible(true);
-        setIsBoardVisible(true);
+      setUpActiveBoard().then((activeBoard) => {
+        if(activeBoard) {
+          setIsLoading(false);
+          setIsTimerVisible(true);
+          setIsBoardVisible(true);
+        }
       });
     } else {
       setUpFinalizedBoard().then(finalizedBoard => {
