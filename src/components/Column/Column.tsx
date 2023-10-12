@@ -15,9 +15,11 @@ import { BoardContext } from '../../context/board/boardContext';
 import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
+import { possibleBoardStatuses } from '../../constants';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
+  const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
   const localUserData= getLocalUserData();
   const initialCard = {
@@ -33,14 +35,14 @@ const Column = (props: IColumn) => {
 
   const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
-  const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(props.columnCards));
+  const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
-    setFinalizedCards(sortByDate(props.columnCards));
-  }, [props.columnCards]);
+    setFinalizedCards(sortByDate(columnCards));
+  }, [columnCards]);
 
   const onCreateCard = () => {
     setIsNewCard(true);
@@ -73,7 +75,7 @@ const Column = (props: IColumn) => {
       axios
         .post(`${FRIENDLY_DOMAIN}card`, {
           boardId,
-          columnId: props.columnId,
+          columnId: columnId,
           cardComment: handledCard.cardComment,
           cardAuthor: handledCard.cardAuthor,
           cardAuthorId: handledCard.cardAuthorId,
@@ -162,8 +164,10 @@ const Column = (props: IColumn) => {
   return (
     <section className={`${classes.column} col-4`}>
       <div className={classes['column__header']}>
-        <h2>{props.columnTitle}</h2>
-        <p>{props.columnSubtitle}</p>
+        <h2>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
+          <span className={classes['column__header__couner']}>({columnCards.length})</span>}
+        </h2>
+        <p>{columnSubtitle}</p>
       </div>
       {(boardStatus === 'active' && !isTimerFinalized) &&
         <div className={classes['column__adding']}>

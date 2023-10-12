@@ -144,6 +144,7 @@ describe('Dashboard component', () => {
     expect(navigate).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith('new_board');
   });
+
   test('should navigate to "boards_management" when click on "Boards Management" tab button', () => {
     fireEvent.click(boardsManagementTab);
 

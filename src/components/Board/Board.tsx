@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { CircularProgress } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
@@ -21,8 +22,9 @@ import classes from './Board.module.scss';
 
 const Board = () => {
   const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
+  const [isLoading, setIsLoading] = useState(false);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
-  const [isBoardVisible, setIsBoardVisible] = useState(false);
+  const [isBoardVisible, setIsBoardVisible] = useState(true);
   const { boardStatus, isFormSubmit, setBoardId, setBoardStatus } = useContext(BoardContext);
   const { getLocalUserData } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
@@ -110,15 +112,15 @@ const Board = () => {
 
   const setSessionVisibility = (userSettings: any) => {
     if (!isNull(userSettings.boards.active)) {
-      setUpActiveBoard().then(activeBoard => {
-        if (activeBoard) {
-          setIsTimerVisible(true);
-          setIsBoardVisible(true);
-        }
+      setUpActiveBoard().then(() => {
+        setIsLoading(false);
+        setIsTimerVisible(true);
+        setIsBoardVisible(true);
       });
     } else {
       setUpFinalizedBoard().then(finalizedBoard => {
         if (finalizedBoard && boardStatus === possibleBoardStatuses.finalized) {
+          setIsLoading(false);
           setIsBoardVisible(true);
         }
       });
@@ -126,6 +128,8 @@ const Board = () => {
   };
 
   const fetchUserData = async () => {
+    setIsLoading(true);
+
     try {
       const currentUserSetting = await getUserById(user._id);
 
@@ -133,6 +137,8 @@ const Board = () => {
     } catch (error){
       console.log(error);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -147,7 +153,7 @@ const Board = () => {
         time={boardSettings.timer}
       />
       <main className={`container ${classes.board}`} data-testid='board'>
-        {(isBoardVisible && !isFormSubmit) &&
+        {(isBoardVisible && !isFormSubmit && !isLoading) &&
           boardSettings?.columns.map((column) => (
             <Column
               key={column.columnId}
@@ -160,9 +166,18 @@ const Board = () => {
             />
           ))
         }
-        {(isFormSubmit || !isBoardVisible) &&
+        {(isFormSubmit || !isBoardVisible && !isLoading) &&
           <div>
             <h2>No active board</h2>
+          </div>
+        }
+        {(isLoading && !isFormSubmit) &&
+          <div>
+            <CircularProgress
+              color="primary"
+              size="md"
+              variant="soft"
+            />
           </div>
         }
       </main>
