@@ -41,7 +41,7 @@ describe('Comment component', () => {
   });
 
   test('should display user avatar in a new card', () => {
-    const avatar = screen.getByTestId('newCardAvatar');
+    const avatar = screen.getByTestId('cardAvatar');
 
     expect(avatar).toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe('Comment component', () => {
   });
 
   test('should switch avatar on click', () => {
-    const avatar = screen.getByTestId('newCardAvatar');
+    const avatar = screen.getByTestId('cardAvatar');
 
     fireEvent.click(avatar);
 

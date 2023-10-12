@@ -2,7 +2,6 @@
 import { useState } from 'react';
 
 import {
-  Avatar,
   Button,
   Card,
   Chip,
@@ -14,10 +13,11 @@ import {
 } from '@mui/joy';
 import MoreVert from '@mui/icons-material/MoreVert';
 
+import CardAvatar from '../CardAvatar/CardAvatar';
+
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import classes from './FinalizedCard.module.scss';
-import { getInitials } from '../../utils/userInitials';
 
 const FinalizedCard = (props: IColumnCard) => {
   const { _id, createdAt, cardAuthor, cardAuthorId, cardAuthorAvatar, cardComment, isDisabled, cardTags } = props;
@@ -128,32 +128,10 @@ const FinalizedCard = (props: IColumnCard) => {
         </Dropdown>
       </div>
       <div id='message' className={classes.message}>
-      {cardAuthor === 'Incognito' &&
-        <Avatar
-          data-testid='cardAvatar'
-          className={classes.author}
-        >
-          <i className='bi bi-incognito'></i>
-        </Avatar>
-      }
-      {cardAuthorAvatar && (cardAuthorAvatar.length <= 2) &&
-        <Avatar
-          data-testid='cardAvatar'
-          className={classes.author}
-          alt={cardAuthorAvatar}
-          src={cardAuthorAvatar}
-        >
-          {getInitials(cardAuthor)}
-        </Avatar>
-      }
-      {cardAuthorAvatar && (cardAuthorAvatar.length > 2) &&
-        <Avatar
-          data-testid='cardAvatar'
-          className={classes.author}
-          alt={cardAuthorAvatar}
-          src={cardAuthorAvatar}
-        ></Avatar>
-      }
+        <CardAvatar
+          cardAuthor={cardAuthor}
+          cardAuthorAvatar={cardAuthorAvatar || ''}
+        ></CardAvatar>
         <p
           style={{
             display: isShownAllText ? 'block' : '-webkit-box'

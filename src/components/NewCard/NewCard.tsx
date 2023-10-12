@@ -4,7 +4,6 @@ import moment from 'moment';
 
 import {
   Autocomplete,
-  Avatar,
   Button,
   Card,
   Textarea
@@ -15,20 +14,20 @@ import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
 
-import { getInitials } from '../../utils/userInitials';
+import CardAvatar from '../CardAvatar/CardAvatar';
 
 const NewCard = (props: IColumnCard) => {
   const { _id, cardAuthor, cardAuthorId, cardAuthorAvatar, cardComment, cardTags, isDisabled, createdAt } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
-  const [cardAuthorAvatarState, setCardAuthorAvatar] = useState(cardAuthorAvatar);
+  const [cardAuthorAvatarState, setCardAuthorAvatar] = useState(cardAuthorAvatar || '');
 
   const onHandleSwitchToggle = () => {
     if (!props._id && !isDisabled) {
       if(cardAuthorState === 'Incognito') {
         setCardAuthor(cardAuthor);
-        setCardAuthorAvatar(cardAuthorAvatar);
+        setCardAuthorAvatar(cardAuthorAvatar || '');
       } else {
         setCardAuthor('Incognito');
         setCardAuthorAvatar('Incognito');
@@ -94,37 +93,11 @@ const NewCard = (props: IColumnCard) => {
       <div className={classes['card__body']}>
         <div className={classes['card__body__user-section']}>
           <div className={classes['card__body__user-section--avatar']}>
-            {(cardAuthorState === 'Incognito' || cardAuthorAvatarState === 'Incognito') &&
-              <Avatar
-                data-testid='newCardAvatar'
-                onClick={onHandleSwitchToggle}
-                sx={{
-                  cursor: 'pointer'
-                }}
-              ><i data-testid='incognitoIcon' className='bi bi-incognito'></i></Avatar>
-            }
-            {((!cardAuthorAvatarState || cardAuthorAvatarState.length <= 2) && cardAuthorState !== 'Incognito') &&
-              <Avatar
-                data-testid='newCardAvatar'
-                onClick={onHandleSwitchToggle}
-                sx={{
-                  cursor: 'pointer'
-                }}
-              >
-                {getInitials(cardAuthorState)}
-              </Avatar>
-            }
-            {((cardAuthorAvatarState && cardAuthorAvatarState.length > 2) && cardAuthorState !== 'Incognito') &&
-              <Avatar
-                data-testid='newCardAvatar'
-                onClick={onHandleSwitchToggle}
-                alt={cardAuthorAvatar}
-                src={cardAuthorAvatar}
-                sx={{
-                  cursor: 'pointer'
-                }}
-              ></Avatar>
-            }
+            <CardAvatar
+              cardAuthor={cardAuthorState}
+              cardAuthorAvatar={cardAuthorAvatarState}
+              onToggle={onHandleSwitchToggle}
+            ></CardAvatar>
           </div>
         </div>
         <div className={classes['card__body__message-section']}>
