@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { ChangeEvent, useState } from 'react';
 import moment from 'moment';
 
@@ -28,11 +29,9 @@ const NewCard = (props: IColumnCard) => {
       if(cardAuthorState === 'Incognito') {
         setCardAuthor(cardAuthor);
         setCardAuthorAvatar(cardAuthorAvatar);
-        console.log('cardAuthorAvatarState', cardAuthorAvatar);
       } else {
         setCardAuthor('Incognito');
         setCardAuthorAvatar('Incognito');
-        console.log('cardAuthorAvatarState', cardAuthorAvatarState);
       }
     }
   };
@@ -95,22 +94,37 @@ const NewCard = (props: IColumnCard) => {
       <div className={classes['card__body']}>
         <div className={classes['card__body__user-section']}>
           <div className={classes['card__body__user-section--avatar']}>
-            <Avatar
-              data-testid='newCardAvatar'
-              onClick={onHandleSwitchToggle}
-              alt={cardAuthorAvatarState}
-              src={cardAuthorAvatarState}
-              sx={{
-                cursor: 'pointer'
-              }}
-            >
-              {cardAuthorState === 'Incognito'&&
-                <i data-testid='incognitoIcon' className='bi bi-incognito'></i>
-              }
-              {((!cardAuthorAvatarState || cardAuthorAvatarState.length <= 2) && cardAuthorState !== 'Incognito') &&
-                getInitials(cardAuthorState)
-              }
-            </Avatar>
+            {(cardAuthorState === 'Incognito' || cardAuthorAvatarState === 'Incognito') &&
+              <Avatar
+                data-testid='newCardAvatar'
+                onClick={onHandleSwitchToggle}
+                sx={{
+                  cursor: 'pointer'
+                }}
+              ><i data-testid='incognitoIcon' className='bi bi-incognito'></i></Avatar>
+            }
+            {((!cardAuthorAvatarState || cardAuthorAvatarState.length <= 2) && cardAuthorState !== 'Incognito') &&
+              <Avatar
+                data-testid='newCardAvatar'
+                onClick={onHandleSwitchToggle}
+                sx={{
+                  cursor: 'pointer'
+                }}
+              >
+                {getInitials(cardAuthorState)}
+              </Avatar>
+            }
+            {((cardAuthorAvatarState && cardAuthorAvatarState.length > 2) && cardAuthorState !== 'Incognito') &&
+              <Avatar
+                data-testid='newCardAvatar'
+                onClick={onHandleSwitchToggle}
+                alt={cardAuthorAvatar}
+                src={cardAuthorAvatar}
+                sx={{
+                  cursor: 'pointer'
+                }}
+              ></Avatar>
+            }
           </div>
         </div>
         <div className={classes['card__body__message-section']}>
