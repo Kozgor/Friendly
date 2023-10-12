@@ -25,7 +25,8 @@ const Column = (props: IColumn) => {
     createdAt: '',
     cardComment: '',
     cardAuthorId: localUserData._id,
-    cardAuthor: localUserData.avatar || 'Incognito',
+    cardAuthor: localUserData.fullName || 'Incognito',
+    cardAuthorAvatar: localUserData.avatar || 'Incognito',
     cardTags: [],
     isEditable: true
   };
@@ -76,6 +77,7 @@ const Column = (props: IColumn) => {
           cardComment: handledCard.cardComment,
           cardAuthor: handledCard.cardAuthor,
           cardAuthorId: handledCard.cardAuthorId,
+          cardAuthorAvatar: handledCard.cardAuthorAvatar,
           cardTags: handledCard.cardTags,
           createdAt: handledCard.createdAt
         })
@@ -187,6 +189,7 @@ const Column = (props: IColumn) => {
                 createdAt={editableCard.createdAt}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
+                cardAuthorAvatar={editableCard.cardAuthorAvatar}
                 cardAuthorId={editableCard.cardAuthorId}
                 cardTags={editableCard.cardTags}
                 isDisabled={isAddingDisabled}

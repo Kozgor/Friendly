@@ -14,17 +14,26 @@ import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
 
+import { getInitials } from '../../utils/userInitials';
+
 const NewCard = (props: IColumnCard) => {
-  const { _id, cardAuthor, cardAuthorId, cardComment, cardTags, isDisabled, createdAt } = props;
+  const { _id, cardAuthor, cardAuthorId, cardAuthorAvatar, cardComment, cardTags, isDisabled, createdAt } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
+  const [cardAuthorAvatarState, setCardAuthorAvatar] = useState(cardAuthorAvatar);
 
   const onHandleSwitchToggle = () => {
     if (!props._id && !isDisabled) {
-      cardAuthorState === 'Incognito'
-        ? setCardAuthor(cardAuthor)
-        : setCardAuthor('Incognito');
+      if(cardAuthorState === 'Incognito') {
+        setCardAuthor(cardAuthor);
+        setCardAuthorAvatar(cardAuthorAvatar);
+        console.log('cardAuthorAvatarState', cardAuthorAvatar);
+      } else {
+        setCardAuthor('Incognito');
+        setCardAuthorAvatar('Incognito');
+        console.log('cardAuthorAvatarState', cardAuthorAvatarState);
+      }
     }
   };
 
@@ -34,6 +43,7 @@ const NewCard = (props: IColumnCard) => {
       createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
       cardAuthorId: props.cardAuthorId,
+      cardAuthorAvatar: props.cardAuthorAvatar,
       cardComment: props.cardComment
     });
   };
@@ -48,6 +58,7 @@ const NewCard = (props: IColumnCard) => {
       createdAt: onSaveCreatedAt,
       cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
+      cardAuthorAvatar: cardAuthorAvatarState,
       cardAuthorId: cardAuthorId,
       cardTags: cardTagsState
     };
@@ -87,18 +98,18 @@ const NewCard = (props: IColumnCard) => {
             <Avatar
               data-testid='newCardAvatar'
               onClick={onHandleSwitchToggle}
-              alt={cardAuthorState}
-              src={cardAuthorState}
+              alt={cardAuthorAvatarState}
+              src={cardAuthorAvatarState}
               sx={{
                 cursor: 'pointer'
               }}
             >
-              {/* ToDo: To improve with author avatar */}
-              {cardAuthorState === 'Incognito' ? (
+              {cardAuthorState === 'Incognito'&&
                 <i data-testid='incognitoIcon' className='bi bi-incognito'></i>
-              ) : (
-                cardAuthorState
-              )}
+              }
+              {((!cardAuthorAvatarState || cardAuthorAvatarState.length <= 2) && cardAuthorState !== 'Incognito') &&
+                getInitials(cardAuthorState)
+              }
             </Avatar>
           </div>
         </div>

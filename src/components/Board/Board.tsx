@@ -69,6 +69,10 @@ const Board = () => {
 
         setBoardId(activeBoard._id);
         setBoardSettings(activeBoard);
+
+        return activeBoard;
+      } else {
+        return null;
       }
     } catch (error) {
       console.log(error);
@@ -94,6 +98,10 @@ const Board = () => {
 
         setBoardId(finalizedBoard._id);
         setBoardSettings(finalizedBoard);
+
+        return finalizedBoard;
+      } else {
+        return null;
       }
     } catch (error) {
       console.log(error);
@@ -102,13 +110,15 @@ const Board = () => {
 
   const setSessionVisibility = (userSettings: any) => {
     if (!isNull(userSettings.boards.active)) {
-      setUpActiveBoard().then(() => {
-        setIsTimerVisible(true);
-        setIsBoardVisible(true);
+      setUpActiveBoard().then(activeBoard => {
+        if (activeBoard) {
+          setIsTimerVisible(true);
+          setIsBoardVisible(true);
+        }
       });
     } else {
-      setUpFinalizedBoard().then(() => {
-        if (boardStatus === possibleBoardStatuses.finalized) {
+      setUpFinalizedBoard().then(finalizedBoard => {
+        if (finalizedBoard && boardStatus === possibleBoardStatuses.finalized) {
           setIsBoardVisible(true);
         }
       });
