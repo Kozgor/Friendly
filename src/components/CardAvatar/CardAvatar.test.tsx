@@ -58,7 +58,7 @@ describe('CardAvatar Component', () => {
       expect(avatar).toBeInTheDocument();
     });
 
-    test('should trigger the onToggle function when clicked', async () => {
+    test('should trigger the onToggle function when clicked', () => {
       const avatar = component.getByTestId('cardAvatar');
 
       fireEvent.click(avatar);

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { IUserProfile } from '../interfaces/user';
+
 export const userAPI = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
 
@@ -12,7 +14,7 @@ export const userAPI = () => {
       console.log(error);
     }
   };
-  const getUserById = async (userId: string) => {
+  const getUserById = async (userId: string): Promise<IUserProfile | undefined> => {
     try {
       const user = await axios.post(`${FRIENDLY_DOMAIN}user/get-user`, { _id: userId });
 

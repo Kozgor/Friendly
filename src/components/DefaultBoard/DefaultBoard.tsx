@@ -106,7 +106,7 @@ const DefaultBoard = () => {
     axios
       .post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings)
       .then((board: any) => {
-        navigate('/admin');
+        navigate('/');
         toast.success(
           <Toastr
             itemName={boardSettings.name}

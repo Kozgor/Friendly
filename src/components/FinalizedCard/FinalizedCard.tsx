@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import {
   Button,
@@ -15,12 +15,15 @@ import MoreVert from '@mui/icons-material/MoreVert';
 
 import CardAvatar from '../CardAvatar/CardAvatar';
 
+import { BoardContext } from '../../context/board/boardContext';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import classes from './FinalizedCard.module.scss';
+import { possibleBoardStatuses } from '../../constants';
 
 const FinalizedCard = (props: IColumnCard) => {
   const { _id, createdAt, cardAuthor, cardAuthorId, cardAuthorAvatar, cardComment, isDisabled, cardTags } = props;
+  const { boardStatus } = useContext(BoardContext);
   const [isShownAllText, setIsShownAllText] = useState(false);
   const [displayShowButton] = useState(cardComment.length > 110);
 
@@ -100,19 +103,20 @@ const FinalizedCard = (props: IColumnCard) => {
             </Chip>
           ))}
         </div>
-        <Dropdown>
-          <MenuButton
-            data-testid='cardMenuButton'
-            className={classes.actionsButton}
-            title='actions'
-            slots={{ root: IconButton }}
-            slotProps={{ root: { variant: 'outlined', color: 'neutral' } }}
-            sx={{
-              border: 'unset'
-            }}
-          >
-            <MoreVert />
-          </MenuButton>
+        {boardStatus === possibleBoardStatuses.active &&
+          <Dropdown>
+            <MenuButton
+              data-testid='cardMenuButton'
+              className={classes.actionsButton}
+              title='actions'
+              slots={{ root: IconButton }}
+              slotProps={{ root: { variant: 'outlined', color: 'neutral' } }}
+              sx={{
+                border: 'unset'
+              }}
+            >
+              <MoreVert />
+            </MenuButton>
           <Menu>
             <MenuItem
               data-testid='editCardButton'
@@ -126,12 +130,15 @@ const FinalizedCard = (props: IColumnCard) => {
             >Delete</MenuItem>
           </Menu>
         </Dropdown>
+      }
       </div>
       <div id='message' className={classes.message}>
-        <CardAvatar
-          cardAuthor={cardAuthor}
-          cardAuthorAvatar={cardAuthorAvatar || ''}
-        ></CardAvatar>
+        <div className={classes.author}>
+          <CardAvatar
+            cardAuthor={cardAuthor}
+            cardAuthorAvatar={cardAuthorAvatar || ''}
+          ></CardAvatar>
+        </div>
         <p
           style={{
             display: isShownAllText ? 'block' : '-webkit-box'
