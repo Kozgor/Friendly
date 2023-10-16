@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { ChangeEvent, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,8 +8,6 @@ import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
-
-import { toast } from 'react-toastify';
 
 import { BoardContext } from '../../context/board/boardContext';
 import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
@@ -106,7 +105,7 @@ const DefaultBoard = () => {
     axios
       .post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings)
       .then((board: any) => {
-        navigate('/');
+        navigate('/admin');
         toast.success(
           <Toastr
             itemName={boardSettings.name}

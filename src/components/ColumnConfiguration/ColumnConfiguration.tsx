@@ -5,7 +5,6 @@ import { IColumn } from '../../interfaces/column';
 
 import classes from './ColumnConfiguration.module.scss';
 
-
 const ColumnConfiguration = (props: {
   columns: IColumn[];
   columnId: string;

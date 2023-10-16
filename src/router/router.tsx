@@ -27,6 +27,11 @@ const router = createBrowserRouter([
     element: <AdminPage />,
     children: [
       {
+        path: '',
+        element: <CreateBoardPage />,
+        loader: checkAdminRole
+      },
+      {
         path: 'new_board',
         element: <CreateBoardPage />,
         loader: checkAdminRole

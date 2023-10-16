@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { ChangeEvent, useState } from 'react';
 import moment from 'moment';
 
@@ -8,16 +7,24 @@ import {
   Card,
   Textarea
 } from '@mui/joy';
+import CardAvatar from '../CardAvatar/CardAvatar';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
 
-import CardAvatar from '../CardAvatar/CardAvatar';
-
 const NewCard = (props: IColumnCard) => {
-  const { _id, cardAuthor, cardAuthorId, cardAuthorAvatar, cardComment, cardTags, isDisabled, createdAt } = props;
+  const {
+    _id,
+    cardAuthor,
+    cardAuthorId,
+    cardAuthorAvatar,
+    cardComment,
+    cardTags,
+    isDisabled,
+    createdAt
+  } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);

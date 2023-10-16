@@ -2,20 +2,18 @@ import axios from 'axios';
 
 import { useContext, useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
-
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import NewCard from '../NewCard/NewCard';
 
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
-import { localStorageManager } from '../../utils/localStorageManager';
-
 import { BoardContext } from '../../context/board/boardContext';
+import { localStorageManager } from '../../utils/localStorageManager';
+import { possibleBoardStatuses } from '../../constants';
 import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
-import { possibleBoardStatuses } from '../../constants';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
