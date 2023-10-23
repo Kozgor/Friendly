@@ -1,4 +1,9 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import {
@@ -29,8 +34,8 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { boardAPI } from '../../api/BoardAPI';
 
-
 import classes from './Dashboard.module.scss';
+
 const Dashboard = () => {
   const { boardId, setBoardId } = useContext(BoardContext);
   const navigate = useNavigate();
@@ -96,6 +101,7 @@ const Dashboard = () => {
   const openNewBoardTab = () => {
     navigate('new_board');
   };
+
   const openManager = () => {
     navigate('boards_management');
   };

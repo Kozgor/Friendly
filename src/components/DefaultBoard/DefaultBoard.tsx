@@ -1,13 +1,15 @@
-import { ChangeEvent, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+import { ChangeEvent, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 
+import { BoardContext } from '../../context/board/boardContext';
 import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -19,7 +21,7 @@ import classes from './DefaultBoard.module.scss';
 const DefaultBoard = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const navigate = useNavigate();
-
+  const { setBoardId } = useContext(BoardContext);
   const initColumns = [
     {
       columnId: 'start',
@@ -102,7 +104,7 @@ const DefaultBoard = () => {
   const publishSettings = () => {
     axios
       .post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings)
-      .then(() => {
+      .then((board: any) => {
         navigate('/admin');
         toast.success(
           <Toastr
@@ -110,6 +112,7 @@ const DefaultBoard = () => {
             message="board was successfully published. Now your team can play with it"
           />
         );
+        setBoardId(board.data._id);
       })
       .catch((error) => {
         toast.error(error?.message);

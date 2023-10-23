@@ -2,20 +2,18 @@ import axios from 'axios';
 
 import { useContext, useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
-
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import NewCard from '../NewCard/NewCard';
 
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 
-import { localStorageManager } from '../../utils/localStorageManager';
-
 import { BoardContext } from '../../context/board/boardContext';
+import { localStorageManager } from '../../utils/localStorageManager';
+import { possibleBoardStatuses } from '../../constants';
 import { sortByDate } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
-import { possibleBoardStatuses } from '../../constants';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -27,7 +25,8 @@ const Column = (props: IColumn) => {
     createdAt: '',
     cardComment: '',
     cardAuthorId: localUserData._id,
-    cardAuthor: localUserData.avatar || 'Incognito',
+    cardAuthor: localUserData.fullName || 'Incognito',
+    cardAuthorAvatar: localUserData.avatar || 'Incognito',
     cardTags: [],
     isEditable: true
   };
@@ -78,6 +77,7 @@ const Column = (props: IColumn) => {
           cardComment: handledCard.cardComment,
           cardAuthor: handledCard.cardAuthor,
           cardAuthorId: handledCard.cardAuthorId,
+          cardAuthorAvatar: handledCard.cardAuthorAvatar,
           cardTags: handledCard.cardTags,
           createdAt: handledCard.createdAt
         })
@@ -191,6 +191,7 @@ const Column = (props: IColumn) => {
                 createdAt={editableCard.createdAt}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
+                cardAuthorAvatar={editableCard.cardAuthorAvatar}
                 cardAuthorId={editableCard.cardAuthorId}
                 cardTags={editableCard.cardTags}
                 isDisabled={isAddingDisabled}
@@ -204,6 +205,7 @@ const Column = (props: IColumn) => {
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
                 cardAuthorId={card.cardAuthorId}
+                cardAuthorAvatar={card.cardAuthorAvatar}
                 cardTags={card.cardTags}
                 isDisabled={isAddingDisabled}
                 onAction={handleAction}
