@@ -1,10 +1,10 @@
 import { ChangeEvent } from 'react';
-import { Textarea } from '@mui/joy';
+
+import { Input, Textarea } from '@mui/joy';
 
 import { IColumn } from '../../interfaces/column';
 
 import classes from './ColumnConfiguration.module.scss';
-
 
 const ColumnConfiguration = (props: {
   columns: IColumn[];
@@ -22,10 +22,32 @@ const ColumnConfiguration = (props: {
     props.onUpdateColumns(updatedColumns);
   };
 
+  const titleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const updatedColumns = props.columns.map((column) => {
+      if (column.columnId === event.target.id) {
+        column.columnTitle = event.target.value;
+      }
+      return column;
+    });
+    props.onUpdateColumns(updatedColumns);
+  };
+
   return (
     <div className={classes.column}>
       <div className={classes['column__header']}>
-        <h2 data-testid='title'>{column?.columnTitle}</h2>
+        <h2 data-testid='title'>
+          <Input
+            className={classes['column__subtitle']}
+            placeholder={column?.columnTitle}
+            value={column?.columnTitle}
+            onChange={titleHandler}
+            slotProps={{
+              input: {
+                id: `${column?.columnId}`
+              }
+            }}
+          />
+        </h2>
         {/* <div className={classes['column__addIcon']}>
         <i className="bi bi-plus-circle"></i>
       </div> */}

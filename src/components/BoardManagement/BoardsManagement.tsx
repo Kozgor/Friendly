@@ -20,7 +20,8 @@ const BoardsManagement = () => {
     theme: '',
     timer: 0,
     columns: [],
-    status: ''
+    status: '',
+    participants: []
   };
 
   const [board, setBoard] = useState<IBoardSettings | undefined>(initSettings);

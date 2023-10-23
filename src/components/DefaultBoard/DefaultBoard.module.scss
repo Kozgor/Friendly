@@ -22,6 +22,7 @@
 .timer {
   height: 30px;
   width: 400px;
+  margin: 15px 0;
 
   @include flexbox(row, space-between, center, nowrap);
 
@@ -29,6 +30,14 @@
     border: none;
     background-color: #fff;
   }
+}
+
+.participants {
+  height: 30px;
+  width: 400px;
+  margin-top: -10px;
+
+  @include flexbox(row, space-between, center, nowrap);
 }
 
 .columnsBox {

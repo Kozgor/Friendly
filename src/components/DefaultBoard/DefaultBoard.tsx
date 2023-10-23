@@ -1,4 +1,6 @@
-import { ChangeEvent, useState } from 'react';
+/* eslint-disable max-lines */
+import { useState } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
@@ -13,6 +15,12 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 
 import Toastr from '../Toastr/Toastr';
+
+import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
+
+import { InputLabel } from '@mui/material';
+
+import Participants from '../Participants/Participants';
 
 import classes from './DefaultBoard.module.scss';
 
@@ -46,22 +54,42 @@ const DefaultBoard = () => {
       columnCards: []
     }
   ];
-
+  const names = [
+    'test',
+    'atest',
+    'singleName@gmail.com',
+    'whisdom13@gmail.com'
+  ];
   const [columns, setColumns] = useState<IColumn[]>(initColumns);
   const initialSettingsValue = {
     name: 'RETROSPECTIVE',
     theme: 'NEUTRAL',
     timer: 15,
+    participants: [],
     columns: columns,
     status: 'active'
   };
   const [boardSettings, setBoardSettings] =
     useState<IBoardSettings>(initialSettingsValue);
 
-  const boardNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const boardNameHandler = (event: any) => {
     setBoardSettings((prevState) => ({
       ...prevState,
       name: event.target.value
+    }));
+  };
+
+  const boardTimerHandler = (event: any) => {
+    setBoardSettings((prevState) => ({
+      ...prevState,
+      timer: parseInt(event.target.value, 10) || 0
+    }));
+  };
+
+  const boardParticipantsHandler = (partisipants: any) => {
+    setBoardSettings((prevState) => ({
+      ...prevState,
+      participants: partisipants
     }));
   };
 
@@ -89,9 +117,18 @@ const DefaultBoard = () => {
       label: 'Timer (min):',
       type: 'number',
       value: boardSettings.timer,
-      disabled: true,
-      onChange: () => {},
+      disabled: false,
+      onChange: boardTimerHandler,
       placeholder: 'Please enter board timer...'
+    },
+    {
+      key: 'participants',
+      label: 'Participants:',
+      type: 'select',
+      value: boardSettings.participants,
+      disabled: false,
+      onChange: boardParticipantsHandler,
+      placeholder: 'Please select participants...'
     }
   ];
 
@@ -148,20 +185,62 @@ const DefaultBoard = () => {
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map((setting) => (
           <div key={setting.key} className={classes[setting.key]}>
-            <label htmlFor={setting.key}>{setting.label}</label>
-            <Input
-              className={classes.input}
-              id={setting.key}
-              type={setting.type}
-              placeholder={setting.placeholder}
-              value={setting.value}
-              onChange={setting.onChange}
-              disabled={setting.disabled}
-              aria-label={`input for ${setting.label}`}
-              data-testid="boardSetting"
-            />
+            <InputLabel id={setting.key}>{setting.label}</InputLabel>
+            {setting.key === 'timer'&&
+              <Input
+                className={classes.input}
+                id={setting.key}
+                type={setting.type}
+                placeholder={setting.placeholder}
+                value={setting.value}
+                onChange={setting.onChange}
+                disabled={setting.disabled}
+                aria-label={`input for ${setting.label}`}
+                data-testid={`boardSetting${setting.key}`}
+                slotProps={{
+                  input: {
+                    component: numericFormatAdapter
+                  }
+                }}
+              />
+            }
+            {setting.key === 'theme'&&
+              <Input
+                className={classes.input}
+                id={setting.key}
+                type={setting.type}
+                placeholder={setting.placeholder}
+                value={setting.value}
+                onChange={setting.onChange}
+                disabled={true}
+                aria-label={`input for ${setting.label}`}
+                data-testid={`boardSetting${setting.key}`}
+              />
+            }
+            {(setting.key === 'name')&&
+              <Input
+                className={classes.input}
+                id={setting.key}
+                type={setting.type}
+                placeholder={setting.placeholder}
+                value={setting.value}
+                onChange={setting.onChange}
+                disabled={setting.disabled}
+                aria-label={`input for ${setting.label}`}
+                data-testid={`boardSetting${setting.key}`}
+              />
+            }
+            {setting.key === 'participants' &&
+              <div className={classes.input}>
+                <Participants
+                  participants={names}
+                  collectParticipants={setting.onChange}
+                />
+              </div>
+            }
           </div>
-        ))}
+        ))
+        }
         <div className={classes.columnsBox}>
           <p>Columns:</p>
           <section className={classes.columns} data-testid="boardColumns">
