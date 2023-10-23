@@ -3,11 +3,11 @@ import moment from 'moment';
 
 import {
   Autocomplete,
-  Avatar,
   Button,
   Card,
   Textarea
 } from '@mui/joy';
+import CardAvatar from '../CardAvatar/CardAvatar';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import { CardTag, possibleCardTags } from '../../types/cardTags';
@@ -15,16 +15,30 @@ import { CardTag, possibleCardTags } from '../../types/cardTags';
 import classes from './NewCard.module.scss';
 
 const NewCard = (props: IColumnCard) => {
-  const { _id, cardAuthor, cardAuthorId, cardComment, cardTags, isDisabled, createdAt } = props;
+  const {
+    _id,
+    cardAuthor,
+    cardAuthorId,
+    cardAuthorAvatar,
+    cardComment,
+    cardTags,
+    isDisabled,
+    createdAt
+  } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
+  const [cardAuthorAvatarState, setCardAuthorAvatar] = useState(cardAuthorAvatar || '');
 
   const onHandleSwitchToggle = () => {
     if (!props._id && !isDisabled) {
-      cardAuthorState === 'Incognito'
-        ? setCardAuthor(cardAuthor)
-        : setCardAuthor('Incognito');
+      if(cardAuthorState === 'Incognito') {
+        setCardAuthor(cardAuthor);
+        setCardAuthorAvatar(cardAuthorAvatar || '');
+      } else {
+        setCardAuthor('Incognito');
+        setCardAuthorAvatar('Incognito');
+      }
     }
   };
 
@@ -34,6 +48,7 @@ const NewCard = (props: IColumnCard) => {
       createdAt: props.createdAt,
       cardAuthor: props.cardAuthor,
       cardAuthorId: props.cardAuthorId,
+      cardAuthorAvatar: props.cardAuthorAvatar,
       cardComment: props.cardComment
     });
   };
@@ -48,6 +63,7 @@ const NewCard = (props: IColumnCard) => {
       createdAt: onSaveCreatedAt,
       cardComment: cardCommentState,
       cardAuthor: cardAuthorState,
+      cardAuthorAvatar: cardAuthorAvatarState,
       cardAuthorId: cardAuthorId,
       cardTags: cardTagsState
     };
@@ -84,22 +100,11 @@ const NewCard = (props: IColumnCard) => {
       <div className={classes['card__body']}>
         <div className={classes['card__body__user-section']}>
           <div className={classes['card__body__user-section--avatar']}>
-            <Avatar
-              data-testid='newCardAvatar'
-              onClick={onHandleSwitchToggle}
-              alt={cardAuthorState}
-              src={cardAuthorState}
-              sx={{
-                cursor: 'pointer'
-              }}
-            >
-              {/* ToDo: To improve with author avatar */}
-              {cardAuthorState === 'Incognito' ? (
-                <i data-testid='incognitoIcon' className='bi bi-incognito'></i>
-              ) : (
-                cardAuthorState
-              )}
-            </Avatar>
+            <CardAvatar
+              cardAuthor={cardAuthorState}
+              cardAuthorAvatar={cardAuthorAvatarState}
+              onToggle={onHandleSwitchToggle}
+            ></CardAvatar>
           </div>
         </div>
         <div className={classes['card__body__message-section']}>

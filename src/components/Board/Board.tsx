@@ -5,6 +5,10 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
+import { IColumn } from '../../interfaces/column';
+import { IColumnCard } from '../../interfaces/columnCard';
+import { IUserProfile } from '../../interfaces/user';
+
 import { INITIAL_BOARD } from '../../mocks/board';
 
 import { BoardContext } from '../../context/board/boardContext';
@@ -25,12 +29,14 @@ const Board = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
   const [isBoardVisible, setIsBoardVisible] = useState(true);
-  const { boardStatus, isFormSubmit, setBoardId, setBoardStatus } = useContext(BoardContext);
+  const { boardStatus, isFormSubmit, setBoardStatus, setBoardId } = useContext(BoardContext);
   const { getLocalUserData } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
-  const { getActiveBoard, getFinalizedBoard } = boardAPI();
+  const { getBoardById } = boardAPI();
   const { getUserById } = userAPI();
   const user = getLocalUserData();
+  const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
+  const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -52,73 +58,39 @@ const Board = () => {
     }
   };
 
-  const setUpActiveBoard = async () => {
+  const setupBoard = async (id: string, status: string) => {
     try {
-      const activeBoard = await getActiveBoard();
+      const board: IBoardSettings | undefined = await getBoardById(id);
 
-      if (activeBoard && activeBoard._id) {
-        const columnsData = await fetchUserColumnCards(activeBoard._id, user._id);
+      if (board && board?.status === status) {
+        let columnsCards: IColumnCard[] | undefined;
 
-        setBoardStatus(activeBoard.status);
-
-        activeBoard.columns.forEach((column) => {
-          const { columnId } = column;
-
-          if (columnsData && columnsData[columnId]) {
-            column.columnCards = columnsData[columnId];
-          }
-        });
-
-        setBoardId(activeBoard._id);
-        setBoardSettings(activeBoard);
-      } else {
-        setIsBoardVisible(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const setUpFinalizedBoard = async () => {
-    try {
-      const finalizedBoard = await getFinalizedBoard();
-
-      if (finalizedBoard && finalizedBoard._id) {
-        const columnsData = await fetchFinalColumnCards(finalizedBoard._id);
-
-        setBoardStatus(finalizedBoard.status);
-
-        finalizedBoard.columns.forEach((column) => {
-          const { columnId } = column;
-
-          if (columnsData && columnsData[columnId]) {
-            column.columnCards = columnsData[columnId];
-          }
-        });
-
-        setBoardId(finalizedBoard._id);
-        setBoardSettings(finalizedBoard);
-      } else {
-        setIsBoardVisible(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const setSessionVisibility = (userSettings: any) => {
-    if (!isNull(userSettings.boards.active)) {
-      setUpActiveBoard().then(() => {
-        setIsLoading(false);
-        setIsTimerVisible(true);
-        setIsBoardVisible(true);
-      });
-    } else {
-      setUpFinalizedBoard().then(() => {
-        if (boardStatus === possibleBoardStatuses.finalized) {
-          setIsBoardVisible(true);
+        if (board.status === possibleBoardStatuses.active) {
+          columnsCards = await fetchUserColumnCards(id, user._id);
+          setIsTimerVisible(true);
+        } else {
+          columnsCards = await fetchFinalColumnCards(id);
+          setIsTimerVisible(false);
         }
-      });
+
+        board.columns.forEach((column: IColumn) => {
+          const { columnId } = column;
+
+          if (columnsCards && columnsCards[columnId]) {
+            column.columnCards = columnsCards[columnId];
+          }
+        });
+
+        setBoardId(id);
+        setBoardSettings(board);
+        setBoardStatus(board.status);
+        setIsBoardVisible(true);
+      } else {
+        setIsTimerVisible(false);
+        setIsBoardVisible(false);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -126,19 +98,35 @@ const Board = () => {
     setIsLoading(true);
 
     try {
-      const currentUserSetting = await getUserById(user._id);
+      const userProfile: IUserProfile | undefined = await getUserById(user._id);
 
-      setSessionVisibility(currentUserSetting);
+      if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
+        setupBoard(
+          userProfile.boards.active,
+          possibleBoardStatuses.active
+        );
+        setIsLoading(false);
+
+        return;
+      }
+
+      if (userProfile && userProfile.boards && !isNull(userProfile.boards.finalized)) {
+        setupBoard(
+          userProfile.boards.finalized,
+          possibleBoardStatuses.finalized
+        );
+        setIsLoading(false);
+
+        return;
+      }
     } catch (error){
       console.log(error);
     }
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
     fetchUserData();
-  }, [boardStatus, isFormSubmit]);
+  }, [boardStatus]);
 
   return (
     <div className={classes['board-container']}>
@@ -148,7 +136,7 @@ const Board = () => {
         time={boardSettings.timer}
       />
       <main className={`container ${classes.board}`} data-testid='board'>
-        {(isBoardVisible && !isFormSubmit && !isLoading) &&
+        {isBoard &&
           boardSettings?.columns.map((column) => (
             <Column
               key={column.columnId}
@@ -161,12 +149,12 @@ const Board = () => {
             />
           ))
         }
-        {(isFormSubmit || !isBoardVisible && !isLoading) &&
+        {isNoBoard &&
           <div>
             <h2>No active board</h2>
           </div>
         }
-        {(isLoading && !isFormSubmit) &&
+        {isLoading &&
           <div>
             <CircularProgress
               color="primary"

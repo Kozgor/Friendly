@@ -1,5 +1,7 @@
-/* eslint-disable max-lines */
-import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+import { useContext, useEffect, useState } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -7,13 +9,12 @@ import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 
+import { BoardContext } from '../../context/board/boardContext';
 import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
-
+import { INITIAL_COLUMNS } from './DeafaultColumns';
 import Toastr from '../Toastr/Toastr';
 
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
@@ -23,44 +24,15 @@ import { InputLabel } from '@mui/material';
 import Participants from '../Participants/Participants';
 
 import classes from './DefaultBoard.module.scss';
+import { userAPI } from '../../api/UserAPI';
 
 const DefaultBoard = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const navigate = useNavigate();
-
-  const initColumns = [
-    {
-      columnId: 'start',
-      columnTitle: 'START',
-      columnSubtitle: '',
-      columnAvatar: '',
-      columnStyle: '',
-      columnCards: []
-    },
-    {
-      columnId: 'stop',
-      columnTitle: 'STOP',
-      columnSubtitle: '',
-      columnAvatar: '',
-      columnStyle: '',
-      columnCards: []
-    },
-    {
-      columnId: 'continue',
-      columnTitle: 'CONTINUE',
-      columnSubtitle: '',
-      columnAvatar: '',
-      columnStyle: '',
-      columnCards: []
-    }
-  ];
-  const names = [
-    'test',
-    'atest',
-    'singleName@gmail.com',
-    'whisdom13@gmail.com'
-  ];
-  const [columns, setColumns] = useState<IColumn[]>(initColumns);
+  const { setBoardId } = useContext(BoardContext);
+  const { getAllUsers } = userAPI();
+  const [names, setNames] = useState<string[]>([]);
+  const [columns, setColumns] = useState<IColumn[]>(INITIAL_COLUMNS);
   const initialSettingsValue = {
     name: 'RETROSPECTIVE',
     theme: 'NEUTRAL',
@@ -139,7 +111,7 @@ const DefaultBoard = () => {
   const publishSettings = () => {
     axios
       .post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings)
-      .then(() => {
+      .then((board: any) => {
         navigate('/admin');
         toast.success(
           <Toastr
@@ -147,11 +119,28 @@ const DefaultBoard = () => {
             message="board was successfully published. Now your team can play with it"
           />
         );
+        setBoardId(board.data._id);
       })
       .catch((error) => {
         toast.error(error?.message);
       });
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const allUsers = await getAllUsers();
+        const allUserNames = allUsers?.map(user => user.email) || [];
+
+        setNames(allUserNames || []);
+        console.log(allUserNames);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <Box

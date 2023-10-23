@@ -8,6 +8,7 @@ export interface IColumnCard {
   cardComment: string;
   cardAuthor: string;
   cardAuthorId: string;
+  cardAuthorAvatar?: string;
   cardTags?: CardTag[];
   cardReactions?: string[];
   cardReplies?: ICardReply[];
