@@ -5,9 +5,10 @@ import { BoardContext } from '../../context/board/boardContext';
 import { boardAPI } from '../../api/BoardAPI';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
+import { NO_BOARDS_MESSAGE } from '../../constants';
 
 import BoardStepper from '../BoardStepper/BoardStepper';
-import NoActiveBoard from '../NoContent/NoContent';
+import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
@@ -15,20 +16,17 @@ const BoardsManagement = () => {
   const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { getAllBoards } = boardAPI();
-  const message = 'No boards found';
 
   const fetchData = async () => {
     setIsLoading(true);
 
-    if (boardId) {
-      try {
-        const boards: IBoardSettings[] | undefined = await getAllBoards();
+    try {
+      const boards: IBoardSettings[] | undefined = await getAllBoards();
 
-        boards ? setBoards(boards) : setBoards([]);
+      boards ? setBoards(boards) : setBoards([]);
 
-      } catch (error) {
-        console.log(error);
-      }
+    } catch (error) {
+      console.log(error);
     }
 
     setIsLoading(false);
@@ -70,7 +68,7 @@ const BoardsManagement = () => {
           </div>
         }
         {(!isLoading && !boards?.length) &&
-          <NoActiveBoard message={message} />
+          <NoContent message={NO_BOARDS_MESSAGE} />
         }
       </div>
     </Box>
