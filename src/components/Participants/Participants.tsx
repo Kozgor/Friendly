@@ -40,6 +40,8 @@ const Participants = (props: IParticipants) => {
     if (personNames.length !== participants.length) {
       setPersonNames([...participants]);
       collectParticipants([...participants]);
+
+      return;
     }
 
     setPersonNames([]);

@@ -39,7 +39,9 @@ const Column = (props: IColumn) => {
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
-    setFinalizedCards(sortByDate(columnCards));
+    if (columnCards) {
+      setFinalizedCards(sortByDate(columnCards));
+    }
   }, [columnCards]);
 
   const onCreateCard = () => {
