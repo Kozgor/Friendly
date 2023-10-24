@@ -5,26 +5,17 @@ import { BoardContext } from '../../context/board/boardContext';
 import { boardAPI } from '../../api/BoardAPI';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
-import { INITIAL_BOARD } from '../../mocks/board';
-import { possibleBoardStatuses } from '../../constants';
 
 import BoardStepper from '../BoardStepper/BoardStepper';
+import NoActiveBoard from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
-  const [boards, setBoards] = useState<IBoardSettings[] | undefined>([INITIAL_BOARD]);
+  const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFinalizeButton, setIsFinalizeButton] = useState(false);
-  const { getAllBoards, finalizeBoard } = boardAPI();
-
-  const onFinalizeBoard = async () => {
-    if (boardId) {
-      const board = await finalizeBoard(boardId);
-
-      setIsFinalizeButton(false);
-    }
-  };
+  const { getAllBoards } = boardAPI();
+  const message = 'No boards found';
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -33,19 +24,14 @@ const BoardsManagement = () => {
       try {
         const boards: IBoardSettings[] | undefined = await getAllBoards();
 
-        boards ? setBoards(boards) : setBoards([INITIAL_BOARD]);
+        boards ? setBoards(boards) : setBoards([]);
 
-        boards?.forEach(board => {
-          if (board?.status === possibleBoardStatuses.active) {
-            setIsFinalizeButton(true);
-          }
-        });
-
-        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -83,18 +69,10 @@ const BoardsManagement = () => {
             )}
           </div>
         }
+        {(!isLoading && !boards?.length) &&
+          <NoActiveBoard message={message} />
+        }
       </div>
-      {/* <Button
-        variant='solid'
-        type='submit'
-        aria-label='solid button for submitting the form'
-        onClick={onFinalizeBoard}
-        role='button'
-        data-testid='finalize-button'
-        disabled={!isFinalizeButton}
-      >
-        Finalize Board
-      </Button> */}
     </Box>
   );
 };

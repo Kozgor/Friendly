@@ -24,6 +24,8 @@ import { isNull } from 'lodash';
 
 import classes from './Board.module.scss';
 
+import NoActiveBoard from '../NoContent/NoContent';
+
 const Board = () => {
   const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +39,7 @@ const Board = () => {
   const user = getLocalUserData();
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
+  const message = 'No active or finalized board found';
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -150,9 +153,7 @@ const Board = () => {
           ))
         }
         {isNoBoard &&
-          <div>
-            <h2>No active board</h2>
-          </div>
+          <NoActiveBoard message={message} />
         }
         {isLoading &&
           <div>
