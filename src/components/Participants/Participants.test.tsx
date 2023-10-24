@@ -1,13 +1,14 @@
 import {
-RenderResult,
-    fireEvent,
-render,
-screen,
-waitFor
+  RenderResult,
+  fireEvent,
+  render,
+  screen,
+  waitFor
 } from '@testing-library/react';
+import { PARTICIPANTS_LIST } from '../../mocks/participants';
 import Participants from './Participants';
 
-import { PARTICIPANTS_LIST } from '../../mocks/participants';
+const SELECT_ALL_CHECKBOXES = 'select-all-checkboxes';
 
 describe('FinalizedCard component', () => {
   let component: RenderResult;
@@ -43,7 +44,7 @@ describe('FinalizedCard component', () => {
 
     waitFor(() => {
       fireEvent.click(select);
-      const selectAllCheckbox = screen.getByTestId('select-all-checkboxes');
+      const selectAllCheckbox = screen.getByTestId(SELECT_ALL_CHECKBOXES);
 
       expect(selectAllCheckbox).toBeInTheDocument();
     });
@@ -57,7 +58,7 @@ describe('FinalizedCard component', () => {
     waitFor(() => {
       fireEvent.click(select);
 
-      const selectAllCheckbox = screen.getByTestId('select-all-checkboxes');
+      const selectAllCheckbox = screen.getByTestId(SELECT_ALL_CHECKBOXES);
 
       fireEvent.click(selectAllCheckbox);
 

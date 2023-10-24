@@ -40,10 +40,10 @@ const Participants = (props: IParticipants) => {
     if (personNames.length !== participants.length) {
       setPersonNames([...participants]);
       collectParticipants([...participants]);
-    } else {
-      setPersonNames([]);
-      collectParticipants([]);
     }
+
+    setPersonNames([]);
+    collectParticipants([]);
   };
 
   const handleSelect = (name: string) => {
@@ -57,7 +57,6 @@ const Participants = (props: IParticipants) => {
     if (!isChecked) {
       collectParticipants(selected);
     }
-
   }, [selected, checked]);
 
   return (
