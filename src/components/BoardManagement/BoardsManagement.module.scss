@@ -1,3 +1,31 @@
+@import "../../mixins/flexbox";
+
+.boardsManagement {
+  @include flexbox(column, start, center, nowrap);
+  flex-grow: 1;
+
+  .boardList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.boardsManagementContainer {
+  @include flexbox(column, start, stretch, nowrap);
+  margin-bottom: 10px;
+  width: 100%;
+  height: 70vh;
+  margin-top: 50px;
+  overflow-y: scroll;
+}
+
+.boardsManagementLoader {
+  @include flexbox(column, center, center, nowrap);
+  width: 100%;
+  height: 70vh;
+}
+
 .title {
   margin-bottom: 15px;
   margin-top: 0.75rem;

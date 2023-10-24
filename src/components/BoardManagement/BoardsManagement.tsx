@@ -1,55 +1,47 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Box, Button } from '@mui/joy';
-
+import { Box, CircularProgress } from '@mui/joy';
 import { BoardContext } from '../../context/board/boardContext';
 import { boardAPI } from '../../api/BoardAPI';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
+import { INITIAL_BOARD } from '../../mocks/board';
 import { possibleBoardStatuses } from '../../constants';
 
+import BoardStepper from '../BoardStepper/BoardStepper';
 import classes from './BoardsManagement.module.scss';
-
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
-
-  const initSettings = {
-    _id: '',
-    name: '',
-    theme: '',
-    timer: 0,
-    columns: [],
-    status: ''
-  };
-
-  const [board, setBoard] = useState<IBoardSettings | undefined>(initSettings);
+  const [boards, setBoards] = useState<IBoardSettings[] | undefined>([INITIAL_BOARD]);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFinalizeButton, setIsFinalizeButton] = useState(false);
-  const { getBoardById, finalizeBoard } = boardAPI();
+  const { getAllBoards, finalizeBoard } = boardAPI();
 
   const onFinalizeBoard = async () => {
     if (boardId) {
       const board = await finalizeBoard(boardId);
-
-      if (board) {
-        setBoard(board);
-      }
 
       setIsFinalizeButton(false);
     }
   };
 
   const fetchData = async () => {
+    setIsLoading(true);
+
     if (boardId) {
       try {
-        const availableBoard: IBoardSettings | undefined = await getBoardById(boardId);
+        const boards: IBoardSettings[] | undefined = await getAllBoards();
 
-        availableBoard ? setBoard(availableBoard) : setBoard(initSettings);
+        boards ? setBoards(boards) : setBoards([INITIAL_BOARD]);
 
-        if (availableBoard?.status === possibleBoardStatuses.active) {
-          setIsFinalizeButton(true);
-        }
+        boards?.forEach(board => {
+          if (board?.status === possibleBoardStatuses.active) {
+            setIsFinalizeButton(true);
+          }
+        });
 
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -64,22 +56,35 @@ const BoardsManagement = () => {
     <Box
       component="main"
       sx={{
-        flexGrow: 1,
+        flexGrow: 0,
         bgcolor: 'background.default',
         p: 3,
-        marginLeft: 0
+        marginLeft: 0,
+        width: '100%'
       }}
     >
       <h2 className={classes.title} data-testid='board-management-title'>
         BOARDS MANAGEMENT
       </h2>
-      {board && (
-        <ul>
-          <li data-testid='board-name'>Board name: {isFinalizeButton ? board.name : 'No active board'}</li>
-          <li data-testid='board-status'>Board status: {isFinalizeButton ? board.status : 'Finalized'}</li>
-        </ul>
-      )}
-      <Button
+      <div className={classes.boardsManagementContainer}>
+        {isLoading &&
+          <div className={classes.boardsManagementLoader}>
+            <CircularProgress
+              color="primary"
+              size="md"
+              variant="soft"
+            />
+          </div>
+        }
+        {!isLoading &&
+          <div className={classes.boardList}>
+            {boards?.map(board =>
+              <BoardStepper key={board._id} board={board} />
+            )}
+          </div>
+        }
+      </div>
+      {/* <Button
         variant='solid'
         type='submit'
         aria-label='solid button for submitting the form'
@@ -89,7 +94,7 @@ const BoardsManagement = () => {
         disabled={!isFinalizeButton}
       >
         Finalize Board
-      </Button>
+      </Button> */}
     </Box>
   );
 };
