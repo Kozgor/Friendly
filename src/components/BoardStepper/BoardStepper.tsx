@@ -29,12 +29,12 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   const { finalizeBoard } = boardAPI();
 
   useEffect(() => {
-    if (currentBoardStatus === 'created') {
-      setButtonLabel('Activate');
-    } else if (currentBoardStatus === 'active') {
-      setButtonLabel('Finalize');
-    } else if (currentBoardStatus === 'finalized') {
-      setButtonLabel('Archive');
+    if (currentBoardStatus === possibleBoardStatuses.created) {
+      setButtonLabel(buttonLabels.activate);
+    } else if (currentBoardStatus === possibleBoardStatuses.active) {
+      setButtonLabel(buttonLabels.finalize);
+    } else if (currentBoardStatus === possibleBoardStatuses.finalized) {
+      setButtonLabel(buttonLabels.archive);
     }
   }, [currentBoardStatus]);
 
@@ -56,7 +56,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       onFinalizeBoard();
     }
     if (activeStep === 1) {
-      setCurrentBoardStatus('archived');
+      setCurrentBoardStatus(possibleBoardStatuses.archived);
     }
   };
 
@@ -86,11 +86,11 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
           );
         })}
       </Stepper>
-      {activeStep === steps.length-1 ? (
+      {activeStep === steps.length - 1 ? (
         <>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Typography sx={{ mt: 2, mb: 1 }}>
-              {`${board.name} archived`}
+              {`${board.name} ${possibleBoardStatuses.archived}`}
             </Typography>
           </Box>
         </>

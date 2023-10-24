@@ -6,9 +6,9 @@ export const possibleBoardStatuses = {
 };
 
 export const buttonLabels = {
-  active: 'Activate',
-  finalized: 'Finalize',
-  archived: 'Archive'
+  activate: 'Activate',
+  finalize: 'Finalize',
+  archive: 'Archive'
 };
 
 export const NO_BOARDS_MESSAGE = 'No boards found';
