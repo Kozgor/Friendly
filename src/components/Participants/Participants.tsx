@@ -6,9 +6,9 @@ import {
 import { useEffect, useState } from 'react';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { isString, uniq } from 'lodash';
 import { IParticipants } from '../../interfaces/participants';
 import { SELECT_ALL } from '../../constants';
-import { uniq } from 'lodash';
 
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
@@ -29,23 +29,20 @@ const Participants = (props: IParticipants) => {
     } = event;
 
     setPersonNames(
-      typeof value === 'string' ? value.split(',') : value
+      isString(value) ? value.split(',') : value
     );
     collectParticipants([...selected]);
   };
 
   const handleSelectAll = () => {
     setChecked(checked.map(() => !!checked.includes(false)));
+    setPersonNames([]);
+    collectParticipants([]);
 
     if (personNames.length !== participants.length) {
       setPersonNames([...participants]);
       collectParticipants([...participants]);
-
-      return;
     }
-
-    setPersonNames([]);
-    collectParticipants([]);
   };
 
   const handleSelect = (name: string) => {
