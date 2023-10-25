@@ -10,7 +10,6 @@ import { possibleBoardStatuses } from '../../constants';
 
 import classes from './BoardsManagement.module.scss';
 
-
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
 

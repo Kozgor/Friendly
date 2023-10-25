@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   ChangeEvent,
   useContext,
@@ -29,6 +30,7 @@ import {
 import BoardHeader from '../BoardHeader/BoardHeader';
 
 import { BoardContext } from '../../context/board/boardContext';
+import { ThemeContext } from '../../context/theme/themeContext';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -38,6 +40,7 @@ import classes from './Dashboard.module.scss';
 
 const Dashboard = () => {
   const { boardId, setBoardId } = useContext(BoardContext);
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
   const columnInitValue = {
@@ -49,6 +52,7 @@ const Dashboard = () => {
     columnCards: []
   };
   const [column, setColumn] = useState<IColumn>(columnInitValue);
+  const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
 
@@ -98,11 +102,21 @@ const Dashboard = () => {
     }));
   };
 
-  const openNewBoardTab = () => {
+  const updateList = (ListItemindex: number) => {
+    setListItemActive(prevState => prevState.map(() => false));
+
+    const updatedList = isListItemActive.map((_, index) => index === ListItemindex);
+
+    setListItemActive(updatedList);
+  };
+
+  const openNewBoardTab = (ListItemindex: number) => {
+    updateList(ListItemindex);
     navigate('new_board');
   };
 
-  const openManager = () => {
+  const openManager = (ListItemindex: number) => {
+    updateList(ListItemindex);
     navigate('boards_management');
   };
 
@@ -142,9 +156,11 @@ const Dashboard = () => {
   ];
 
   const dashboardList = [{
-    listTitle: 'New Board', listAction: openNewBoardTab
+    listTitle: 'New Board',
+    listAction: (ListItemindex: number) => openNewBoardTab(ListItemindex)
   }, {
-    listTitle: 'Boards Management', listAction: openManager
+    listTitle: 'Boards Management',
+    listAction: (ListItemindex: number) => openManager(ListItemindex)
   }];
 
   const clearInputs = () => {
@@ -216,8 +232,9 @@ const Dashboard = () => {
                 width: 240,
                 boxSizing: 'border-box',
                 position: 'relative',
-                backgroundColor: 'darkgray',
-                borderRight: '1px solid black'
+                backgroundColor: theme.color1,
+                color: theme.color4,
+                borderRight: `1px solid ${theme.color5}`
               }
             }}
             variant="permanent"
@@ -226,8 +243,20 @@ const Dashboard = () => {
           >
             <Divider data-testid="divider" />
             <List className={classes['newBoard']}>
-              {dashboardList.map((listItem) => (
-                <ListItem key={listItem.listTitle} disablePadding onClick={listItem.listAction}>
+              {dashboardList.map((listItem, index) => (
+                <ListItem
+                  key={listItem.listTitle}
+                  onClick={() => listItem.listAction(index)}
+                  sx={{
+                    paddingRight: 0,
+                    paddingTop: 0,
+                    paddingLeft: 0,
+                    paddingBottom: 0,
+                    marginLeft: 2,
+                    backgroundColor: isListItemActive[index] ? theme.color2: 'transparent',
+                    borderRadius: 2.5
+                  }}
+                >
                   <ListItemButton>
                     <ListItemText primary={listItem.listTitle} />
                   </ListItemButton>
