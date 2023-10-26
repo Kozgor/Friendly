@@ -4,3 +4,5 @@ export const possibleBoardStatuses = {
   finalized: 'finalized',
   archived: 'archived'
 };
+
+export const SELECT_ALL = 'Select all';

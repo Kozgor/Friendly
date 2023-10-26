@@ -5,7 +5,7 @@ export const INITIAL_BOARD = {
     timer: 0,
     columns: [],
     status: '',
-    participantsList: []
+    participants: []
 };
 
 export const ACTIVE_BOARD = {
@@ -15,6 +15,7 @@ export const ACTIVE_BOARD = {
     timer: 10,
     columns: [],
     status: 'active',
+    participants: [],
     __v: 0
 };
 
@@ -25,5 +26,6 @@ export const FINALIZED_BOARD = {
     timer: 10,
     columns: [],
     status: 'finalized',
+    participants: [],
     __v: 0
 };
