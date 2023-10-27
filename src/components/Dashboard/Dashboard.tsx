@@ -55,6 +55,7 @@ const Dashboard = () => {
   const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
+  const pageTitle = 'friendly';
 
   const fetchData = async () => {
     if (!boardId) {
@@ -221,7 +222,7 @@ const Dashboard = () => {
   return (
     <>
       <BoardHeader
-        boardName={'friendly'}
+        boardName={pageTitle}
         isTimerVisible={false}
         time={0}
       />
@@ -242,19 +243,17 @@ const Dashboard = () => {
             data-testid="drawer"
           >
             <Divider data-testid="divider" />
-            <List className={classes['newBoard']}>
+            <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
               {dashboardList.map((listItem, index) => (
                 <ListItem
                   key={listItem.listTitle}
                   onClick={() => listItem.listAction(index)}
                   sx={{
-                    paddingRight: 0,
-                    paddingTop: 0,
-                    paddingLeft: 0,
-                    paddingBottom: 0,
-                    marginLeft: 2,
+                    padding: 0,
                     backgroundColor: isListItemActive[index] ? theme.color2: 'transparent',
-                    borderRadius: 2.5
+                    borderRadius: 2.5,
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0
                   }}
                 >
                   <ListItemButton>

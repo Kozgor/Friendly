@@ -1,7 +1,7 @@
 import { createContext, useReducer } from 'react';
 import { BaseProps } from '../../interfaces/baseProps';
 import ThemeReducer from './themeReducer';
-import { defaultTheme } from './themes';
+import { defaultTheme } from '../../theme/default';
 
 export const initialThemeState = {
   theme: defaultTheme,

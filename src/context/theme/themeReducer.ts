@@ -1,6 +1,6 @@
 import { IAction } from '../../interfaces/action';
 import { IThemeState } from '../../interfaces/themeState';
-import { defaultTheme } from './themes';
+import { defaultTheme } from '../../theme/default';
 
 const ThemeReducer = (state: IThemeState, action: IAction) => {
   switch (action.type) {
