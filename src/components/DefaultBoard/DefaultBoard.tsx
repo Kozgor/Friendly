@@ -1,69 +1,66 @@
 import axios from 'axios';
+
+import { useContext, useEffect, useState } from 'react';
+
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { ChangeEvent, useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Breadcrumbs from '@mui/joy/Breadcrumbs';
-import Button from '@mui/joy/Button';
-import Input from '@mui/joy/Input';
-import Typography from '@mui/joy/Typography';
-
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Input,
+  Typography
+} from '@mui/joy';
 import { BoardContext } from '../../context/board/boardContext';
-import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
+import { INITIAL_COLUMNS } from './DeafaultColumns';
+import { InputLabel } from '@mui/material';
+import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
+import { userAPI } from '../../api/UserAPI';
 
+import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
+import Participants from '../Participants/Participants';
 import Toastr from '../Toastr/Toastr';
-
 import classes from './DefaultBoard.module.scss';
 
 const DefaultBoard = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const navigate = useNavigate();
   const { setBoardId } = useContext(BoardContext);
-  const initColumns = [
-    {
-      columnId: 'start',
-      columnTitle: 'START',
-      columnSubtitle: '',
-      columnAvatar: '',
-      columnStyle: '',
-      columnCards: []
-    },
-    {
-      columnId: 'stop',
-      columnTitle: 'STOP',
-      columnSubtitle: '',
-      columnAvatar: '',
-      columnStyle: '',
-      columnCards: []
-    },
-    {
-      columnId: 'continue',
-      columnTitle: 'CONTINUE',
-      columnSubtitle: '',
-      columnAvatar: '',
-      columnStyle: '',
-      columnCards: []
-    }
-  ];
-
-  const [columns, setColumns] = useState<IColumn[]>(initColumns);
+  const { getAllUsers } = userAPI();
+  const [names, setNames] = useState<string[]>([]);
+  const [columns, setColumns] = useState<IColumn[]>(INITIAL_COLUMNS);
   const initialSettingsValue = {
     name: 'RETROSPECTIVE',
     theme: 'NEUTRAL',
     timer: 15,
+    participants: [],
     columns: columns,
     status: 'active'
   };
   const [boardSettings, setBoardSettings] =
     useState<IBoardSettings>(initialSettingsValue);
 
-  const boardNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const boardNameHandler = (event: any) => {
     setBoardSettings((prevState) => ({
       ...prevState,
       name: event.target.value
+    }));
+  };
+
+  const boardTimerHandler = (event: any) => {
+    setBoardSettings((prevState) => ({
+      ...prevState,
+      timer: parseInt(event.target.value, 10) || 0
+    }));
+  };
+
+  const boardParticipantsHandler = (partisipants: any) => {
+    setBoardSettings((prevState) => ({
+      ...prevState,
+      participants: partisipants
     }));
   };
 
@@ -91,9 +88,18 @@ const DefaultBoard = () => {
       label: 'Timer (min):',
       type: 'number',
       value: boardSettings.timer,
-      disabled: true,
-      onChange: () => {},
+      disabled: false,
+      onChange: boardTimerHandler,
       placeholder: 'Please enter board timer...'
+    },
+    {
+      key: 'participants',
+      label: 'Participants:',
+      type: 'select',
+      value: boardSettings.participants,
+      disabled: false,
+      onChange: boardParticipantsHandler,
+      placeholder: 'Please select participants...'
     }
   ];
 
@@ -118,6 +124,21 @@ const DefaultBoard = () => {
         toast.error(error?.message);
       });
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const allUsers = await getAllUsers();
+        const allUserNames = allUsers?.map(user => user.email) || [];
+
+        setNames(allUserNames || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <Box
@@ -151,20 +172,62 @@ const DefaultBoard = () => {
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map((setting) => (
           <div key={setting.key} className={classes[setting.key]}>
-            <label htmlFor={setting.key}>{setting.label}</label>
-            <Input
-              className={classes.input}
-              id={setting.key}
-              type={setting.type}
-              placeholder={setting.placeholder}
-              value={setting.value}
-              onChange={setting.onChange}
-              disabled={setting.disabled}
-              aria-label={`input for ${setting.label}`}
-              data-testid="boardSetting"
-            />
+            <InputLabel id={setting.key}>{setting.label}</InputLabel>
+            {setting.key === 'timer' &&
+              <Input
+                className={classes.input}
+                id={setting.key}
+                type={setting.type}
+                placeholder={setting.placeholder}
+                value={setting.value}
+                onChange={setting.onChange}
+                disabled={setting.disabled}
+                aria-label={`input for ${setting.label}`}
+                data-testid={`boardSetting${setting.key}`}
+                slotProps={{
+                  input: {
+                    component: numericFormatAdapter
+                  }
+                }}
+              />
+            }
+            {setting.key === 'theme' &&
+              <Input
+                className={classes.input}
+                id={setting.key}
+                type={setting.type}
+                placeholder={setting.placeholder}
+                value={setting.value}
+                onChange={setting.onChange}
+                disabled={true}
+                aria-label={`input for ${setting.label}`}
+                data-testid={`boardSetting${setting.key}`}
+              />
+            }
+            {(setting.key === 'name') &&
+              <Input
+                className={classes.input}
+                id={setting.key}
+                type={setting.type}
+                placeholder={setting.placeholder}
+                value={setting.value}
+                onChange={setting.onChange}
+                disabled={setting.disabled}
+                aria-label={`input for ${setting.label}`}
+                data-testid={`boardSetting${setting.key}`}
+              />
+            }
+            {setting.key === 'participants' &&
+              <div className={classes.input}>
+                <Participants
+                  participants={names}
+                  collectParticipants={setting.onChange}
+                />
+              </div>
+            }
           </div>
-        ))}
+        ))
+        }
         <div className={classes.columnsBox}>
           <p>Columns:</p>
           <section className={classes.columns} data-testid="boardColumns">

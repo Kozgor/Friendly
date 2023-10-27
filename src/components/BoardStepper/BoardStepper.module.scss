@@ -1,0 +1,16 @@
+@import "../../mixins/flexbox";
+
+.stepperHeader {
+  @include flexbox(row, start, stretch, wrap);
+  display: flex;
+  width: 100;
+}
+
+.stepperHeaderSubtittles,
+.stepperHeaderInfo {
+  @include flexbox(column, start, start, nowrap);
+}
+
+.stepperHeaderInfo {
+  margin-left: 5px;
+}

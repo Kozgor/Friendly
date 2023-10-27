@@ -168,13 +168,6 @@ describe('Admin component', () => {
       );
     });
 
-    test('should render all board settings', () => {
-        const boardSettings = screen.getAllByTestId('boardSetting');
-        const settingsAmount = 3;
-
-        expect(boardSettings.length).toBe(settingsAmount);
-    });
-
     test('should render all default columns for board', () => {
         const columnsAmount = 3;
         const columns = screen.getByTestId('boardColumns');

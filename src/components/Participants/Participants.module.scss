@@ -1,0 +1,14 @@
+@import "../../mixins/flexbox";
+
+.container {
+  @include flexbox(column, space-between, start, nowrap);
+}
+
+.select {
+  height: 40px;
+  width: 211px;
+}
+
+.mainContainer {
+  height: 20px;
+}
