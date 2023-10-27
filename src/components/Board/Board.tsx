@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { CircularProgress } from '@mui/joy';
-
-import BoardHeader from '../BoardHeader/BoardHeader';
-import Column from '../Column/Column';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -18,10 +19,13 @@ import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
 import { userAPI } from '../../api/UserAPI';
 
-import { possibleBoardStatuses } from '../../constants';
+import { NO_BOARDS_MESSAGE, possibleBoardStatuses } from '../../constants';
 
 import { isNull } from 'lodash';
 
+import BoardHeader from '../BoardHeader/BoardHeader';
+import Column from '../Column/Column';
+import NoContent from '../NoContent/NoContent';
 import classes from './Board.module.scss';
 
 const Board = () => {
@@ -150,9 +154,7 @@ const Board = () => {
           ))
         }
         {isNoBoard &&
-          <div>
-            <h2>No active board</h2>
-          </div>
+          <NoContent message={NO_BOARDS_MESSAGE} />
         }
         {isLoading &&
           <div>

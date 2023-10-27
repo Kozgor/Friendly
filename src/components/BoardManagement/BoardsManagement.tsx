@@ -1,60 +1,35 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Box, Button } from '@mui/joy';
-
+import { Box, CircularProgress } from '@mui/joy';
 import { BoardContext } from '../../context/board/boardContext';
 import { boardAPI } from '../../api/BoardAPI';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
-import { possibleBoardStatuses } from '../../constants';
+import { NO_BOARDS_MESSAGE } from '../../constants';
 
+import BoardStepper from '../BoardStepper/BoardStepper';
+import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
-
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
-
-  const initSettings = {
-    _id: '',
-    name: '',
-    theme: '',
-    timer: 0,
-    columns: [],
-    status: '',
-    participants: []
-  };
-
-  const [board, setBoard] = useState<IBoardSettings | undefined>(initSettings);
-  const [isFinalizeButton, setIsFinalizeButton] = useState(false);
-  const { getBoardById, finalizeBoard } = boardAPI();
-
-  const onFinalizeBoard = async () => {
-    if (boardId) {
-      const board = await finalizeBoard(boardId);
-
-      if (board) {
-        setBoard(board);
-      }
-
-      setIsFinalizeButton(false);
-    }
-  };
+  const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { getAllBoards } = boardAPI();
 
   const fetchData = async () => {
-    if (boardId) {
-      try {
-        const availableBoard: IBoardSettings | undefined = await getBoardById(boardId);
+    setIsLoading(true);
 
-        availableBoard ? setBoard(availableBoard) : setBoard(initSettings);
+    try {
+      const boards: IBoardSettings[] | undefined = await getAllBoards();
 
-        if (availableBoard?.status === possibleBoardStatuses.active) {
-          setIsFinalizeButton(true);
-        }
+      boards ? setBoards(boards) : setBoards([]);
 
-      } catch (error) {
-        console.log(error);
-      }
+    } catch (error) {
+      console.log(error);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -65,32 +40,37 @@ const BoardsManagement = () => {
     <Box
       component="main"
       sx={{
-        flexGrow: 1,
+        flexGrow: 0,
         bgcolor: 'background.default',
         p: 3,
-        marginLeft: 0
+        marginLeft: 0,
+        width: '100%'
       }}
     >
       <h2 className={classes.title} data-testid='board-management-title'>
         BOARDS MANAGEMENT
       </h2>
-      {board && (
-        <ul>
-          <li data-testid='board-name'>Board name: {isFinalizeButton ? board.name : 'No active board'}</li>
-          <li data-testid='board-status'>Board status: {isFinalizeButton ? board.status : 'Finalized'}</li>
-        </ul>
-      )}
-      <Button
-        variant='solid'
-        type='submit'
-        aria-label='solid button for submitting the form'
-        onClick={onFinalizeBoard}
-        role='button'
-        data-testid='finalize-button'
-        disabled={!isFinalizeButton}
-      >
-        Finalize Board
-      </Button>
+      <div className={classes.boardsManagementContainer}>
+        {isLoading &&
+          <div className={classes.boardsManagementLoader}>
+            <CircularProgress
+              color="primary"
+              size="md"
+              variant="soft"
+            />
+          </div>
+        }
+        {!isLoading &&
+          <div className={classes.boardList}>
+            {boards?.map(board =>
+              <BoardStepper key={board._id} board={board} />
+            )}
+          </div>
+        }
+        {(!isLoading && !boards?.length) &&
+          <NoContent message={NO_BOARDS_MESSAGE} />
+        }
+      </div>
     </Box>
   );
 };

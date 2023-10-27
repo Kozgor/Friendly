@@ -29,3 +29,5 @@ export const FINALIZED_BOARD = {
     participants: [],
     __v: 0
 };
+
+export const BOARD_STATUSES = ['created', 'active', 'finalized', 'archived'];

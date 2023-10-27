@@ -37,6 +37,16 @@ export const boardAPI = () => {
     }
   };
 
+  const getAllBoards = async (): Promise<IBoardSettings[] | undefined> => {
+    try {
+      const boards = await axios.post(`${FRIENDLY_DOMAIN}boards/get-boards`);
+
+      return boards.data ? boards.data : undefined;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const finalizeBoard = async (boardId: string): Promise<IBoardSettings | undefined> => {
     try {
       const finalizeBoard = await axios.put(`${FRIENDLY_DOMAIN}boards/finalize-board`, {
@@ -65,6 +75,7 @@ export const boardAPI = () => {
     getActiveBoard,
     getFinalizedBoard,
     getBoardById,
+    getAllBoards,
     finalizeBoard,
     archiveBoard
   };
