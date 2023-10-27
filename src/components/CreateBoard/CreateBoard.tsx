@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 
 import classes from './CreateBoard.module.scss';
+import { Typography } from '@mui/joy';
 
 const CreateBoard = () => {
   const navigate = useNavigate();
@@ -21,18 +22,14 @@ const CreateBoard = () => {
           marginLeft: 0
         }}
       >
-        {/* <div className={classes.customBoard}></div>
-          <h3>Custom Board</h3>
-
-          <Divider className={classes.divider} /> */}
-
-        <h2 className={classes.title} data-testid="templates">TEMPLATES</h2>
-        <div className={classes.defaultBoard} onClick={openDefaultBoard} data-testid="defaultBoard">
-          <div className={classes['defaultBoard__column']}></div>
-          <div className={classes['defaultBoard__column']}></div>
-          <div className={classes['defaultBoard__column']}></div>
+        <Typography level='h1' data-testid='templates'>New Board</Typography>
+        <div
+          className={classes.defaultBoard}
+          onClick={openDefaultBoard}
+          data-testid='defaultBoard'
+        >
         </div>
-        <h3>Default Board</h3>
+        <Typography level='title-lg' data-testid='default-board'>Default Board</Typography>
       </Box>
       <Outlet />
     </>

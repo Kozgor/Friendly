@@ -66,9 +66,8 @@ describe('CreateBoard component', () => {
   });
 
   test('should render 3 draft for columns', () => {
-    const defaultBoard = screen.getByTestId('defaultBoard');
-    const columnsDraftAmount = 3;
+    const defaultBoard = screen.getByTestId('default-board');
 
-    expect(defaultBoard.children.length).toBe(columnsDraftAmount);
+    expect(defaultBoard).toBeInTheDocument();
   });
 });

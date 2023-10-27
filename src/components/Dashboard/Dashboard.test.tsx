@@ -6,15 +6,14 @@ import {
   screen
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { ADMIN_PAGE_HEADER_TITLE } from '../../constants';
+import { LOCAL_ADMIN_PROFILE } from '../../mocks/user';
+import { Provider } from 'react-redux';
 
 import CreateBoard from '../CreateBoard/CreateBoard';
 import Dashboard from './Dashboard';
 import DefaultBoard from '../DefaultBoard/DefaultBoard';
-
-import { Provider } from 'react-redux';
 import store from '../../store/store';
-
-import { LOCAL_ADMIN_PROFILE } from '../../mocks/user';
 
 const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
@@ -57,8 +56,8 @@ describe('Dashboard component', () => {
       <RouterProvider router={router} />
     </Provider>);
 
-    newBoardTab = screen.getByText('New Board');
-    boardsManagementTab = screen.getByText('Boards Management');
+    newBoardTab = screen.getByTestId('new-board');
+    boardsManagementTab = screen.getByTestId('boards-management');
   });
 
   afterEach(async () => {
@@ -92,10 +91,10 @@ describe('Dashboard component', () => {
     expect(timerStartButton).toBeNull();
   });
 
-  test('should render boardName as "Admin page"', () => {
+  test('should render boardName as "friendly"', () => {
     const boardName = screen.queryByTestId('boardName');
 
-    expect(boardName?.innerHTML).toBe('Admin page');
+    expect(boardName?.innerHTML).toBe(ADMIN_PAGE_HEADER_TITLE);
   });
 
   test('should render drawer', () => {

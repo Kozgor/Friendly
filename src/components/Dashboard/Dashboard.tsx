@@ -29,6 +29,7 @@ import {
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 
+import { ADMIN_PAGE_HEADER_TITLE, dashboardTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { ThemeContext } from '../../context/theme/themeContext';
 
@@ -55,7 +56,6 @@ const Dashboard = () => {
   const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
-  const pageTitle = 'friendly';
 
   const fetchData = async () => {
     if (!boardId) {
@@ -157,10 +157,12 @@ const Dashboard = () => {
   ];
 
   const dashboardList = [{
-    listTitle: 'New Board',
+    listTitle: dashboardTitles.newBoard,
+    testId: 'new-board',
     listAction: (ListItemindex: number) => openNewBoardTab(ListItemindex)
   }, {
-    listTitle: 'Boards Management',
+    testId:'boards-management',
+    listTitle: dashboardTitles.boardsManagement,
     listAction: (ListItemindex: number) => openManager(ListItemindex)
   }];
 
@@ -222,7 +224,7 @@ const Dashboard = () => {
   return (
     <>
       <BoardHeader
-        boardName={pageTitle}
+        boardName={ADMIN_PAGE_HEADER_TITLE}
         isTimerVisible={false}
         time={0}
       />
@@ -247,6 +249,7 @@ const Dashboard = () => {
               {dashboardList.map((listItem, index) => (
                 <ListItem
                   key={listItem.listTitle}
+                  data-testid={listItem.testId}
                   onClick={() => listItem.listAction(index)}
                   sx={{
                     padding: 0,
