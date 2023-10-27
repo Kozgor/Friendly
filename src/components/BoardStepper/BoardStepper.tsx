@@ -75,9 +75,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       <Stepper alternativeLabel activeStep={activeStep + 1}>
         {steps.map(label => {
           const stepProps: { completed?: boolean } = {};
-          const labelProps: {
-            optional?: React.ReactNode;
-          } = {};
+          const labelProps: { optional?: React.ReactNode } = {};
 
           return (
             <Step key={label} {...stepProps}>
