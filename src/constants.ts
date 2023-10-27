@@ -12,3 +12,4 @@ export const buttonLabels = {
 };
 
 export const NO_BOARDS_MESSAGE = 'No boards found';
+export const SELECT_ALL = 'Select all';
