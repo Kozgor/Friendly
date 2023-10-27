@@ -221,7 +221,7 @@ const Dashboard = () => {
   return (
     <>
       <BoardHeader
-        boardName={'Admin page'}
+        boardName={'friendly'}
         isTimerVisible={false}
         time={0}
       />
