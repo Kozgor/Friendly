@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   ChangeEvent,
   useContext,
@@ -29,7 +30,9 @@ import {
 import BoardHeader from '../BoardHeader/BoardHeader';
 import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 
+import { ADMIN_PAGE_HEADER_TITLE, dashboardTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
+import { ThemeContext } from '../../context/theme/themeContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { boardAPI } from '../../api/BoardAPI';
@@ -40,10 +43,12 @@ import classes from './Dashboard.module.scss';
 
 const Dashboard = () => {
   const { boardId, setBoardId } = useContext(BoardContext);
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
   const columnInitValue = initColumnValue;
   const [column, setColumn] = useState<IColumn>(columnInitValue);
+  const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
   const iconList = [
@@ -97,11 +102,21 @@ const Dashboard = () => {
     }));
   };
 
-  const openNewBoardTab = () => {
+  const updateList = (ListItemindex: number) => {
+    setListItemActive(prevState => prevState.map(() => false));
+
+    const updatedList = isListItemActive.map((_, index) => index === ListItemindex);
+
+    setListItemActive(updatedList);
+  };
+
+  const openNewBoardTab = (ListItemindex: number) => {
+    updateList(ListItemindex);
     navigate('new_board');
   };
 
-  const openManager = () => {
+  const openManager = (ListItemindex: number) => {
+    updateList(ListItemindex);
     navigate('boards_management');
   };
 
@@ -141,9 +156,13 @@ const Dashboard = () => {
   ];
 
   const dashboardList = [{
-    listTitle: 'New Board', listAction: openNewBoardTab
+    listTitle: dashboardTitles.newBoard,
+    testId: 'new-board',
+    listAction: (ListItemindex: number) => openNewBoardTab(ListItemindex)
   }, {
-    listTitle: 'Boards Management', listAction: openManager
+    testId:'boards-management',
+    listTitle: dashboardTitles.boardsManagement,
+    listAction: (ListItemindex: number) => openManager(ListItemindex)
   }];
 
   const clearInputs = () => {
@@ -204,7 +223,7 @@ const Dashboard = () => {
   return (
     <>
       <BoardHeader
-        boardName={'Admin page'}
+        boardName={ADMIN_PAGE_HEADER_TITLE}
         isTimerVisible={false}
         time={0}
       />
@@ -215,8 +234,9 @@ const Dashboard = () => {
                 width: 240,
                 boxSizing: 'border-box',
                 position: 'relative',
-                backgroundColor: 'darkgray',
-                borderRight: '1px solid black'
+                backgroundColor: theme.color1,
+                color: theme.color4,
+                borderRight: `1px solid ${theme.color5}`
               }
             }}
             variant="permanent"
@@ -224,11 +244,22 @@ const Dashboard = () => {
             data-testid="drawer"
           >
             <Divider data-testid="divider" />
-            <List className={classes['newBoard']}>
+            <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
               {dashboardList.map((listItem, index) => (
-                <ListItem key={listItem.listTitle} disablePadding onClick={listItem.listAction}>
+                <ListItem
+                  key={listItem.listTitle}
+                  data-testid={listItem.testId}
+                  onClick={() => listItem.listAction(index)}
+                  sx={{
+                    padding: 0,
+                    backgroundColor: isListItemActive[index] ? theme.color2: 'transparent',
+                    borderRadius: 2.5,
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0
+                  }}
+                >
                   <ListItemButton>
-                    <span className={'list-item-icon'}>
+                    <span className={classes.listItemIcon}>
                       <FriendlyIcon element={iconList[index]}></FriendlyIcon>
                     </span>
                     <ListItemText primary={listItem.listTitle}>

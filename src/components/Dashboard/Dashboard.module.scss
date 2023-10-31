@@ -53,11 +53,6 @@
   height: 90vh;
   width: 100%;
 
-  .newBoard {
-    background-color: gray;
-    border-bottom: 1px solid black;
-  }
-
   .customBoard {
     width: 250px;
     height: 170px;
@@ -78,5 +73,9 @@
 
   .divider + h2 {
     margin-bottom: 15px;
+  }
+
+  .listItemIcon {
+    margin: 0 10px 5px;
   }
 }
