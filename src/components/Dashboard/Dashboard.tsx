@@ -28,14 +28,16 @@ import {
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
+import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 
 import { ADMIN_PAGE_HEADER_TITLE, dashboardTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { ThemeContext } from '../../context/theme/themeContext';
-
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { boardAPI } from '../../api/BoardAPI';
+import { icons } from '../../theme/icons/iconst';
+import { initColumnValue } from '../../mocks/column';
 
 import classes from './Dashboard.module.scss';
 
@@ -44,18 +46,15 @@ const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
-  const columnInitValue = {
-    columnId: '',
-    columnTitle: '',
-    columnSubtitle: '',
-    columnStyle: '',
-    columnAvatar: '',
-    columnCards: []
-  };
+  const columnInitValue = initColumnValue;
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
+  const iconList = [
+    icons.suitCase,
+    icons.signSpot
+  ];
 
   const fetchData = async () => {
     if (!boardId) {
@@ -260,7 +259,11 @@ const Dashboard = () => {
                   }}
                 >
                   <ListItemButton>
-                    <ListItemText primary={listItem.listTitle} />
+                    <span className={classes.listItemIcon}>
+                      <FriendlyIcon element={iconList[index]}></FriendlyIcon>
+                    </span>
+                    <ListItemText primary={listItem.listTitle}>
+                    </ListItemText>
                   </ListItemButton>
                 </ListItem>
               ))}
