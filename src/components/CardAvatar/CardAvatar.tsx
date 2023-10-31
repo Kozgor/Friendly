@@ -3,6 +3,9 @@ import { useMemo } from 'react';
 import { Avatar } from '@mui/joy';
 import { ICardAvatar } from '../../interfaces/cardAvatar';
 import { getInitials } from '../../utils/userInitials';
+import { icons } from '../../theme/icons/iconst';
+
+import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 
 const CardAvatar = (props: ICardAvatar) => {
   const { cardAuthor, cardAuthorAvatar, onToggle } = props;
@@ -18,7 +21,7 @@ const CardAvatar = (props: ICardAvatar) => {
           onClick={onToggle}
           sx={{ cursor: 'pointer' }}
         >
-          <i data-testid='incognitoIcon' className='bi bi-incognito'></i>
+          <FriendlyIcon element={icons.incognito}></FriendlyIcon>
         </Avatar>
         );
       }
@@ -36,11 +39,11 @@ const CardAvatar = (props: ICardAvatar) => {
       if (isAvatar) {
         return (
           <Avatar
-          data-testid='cardAvatar'
-          onClick={onToggle}
-          alt={cardAuthorAvatar}
-          src={cardAuthorAvatar}
-          sx={{ cursor: 'pointer' }}
+            data-testid='cardAvatar'
+            onClick={onToggle}
+            alt={cardAuthorAvatar}
+            src={cardAuthorAvatar}
+            sx={{ cursor: 'pointer' }}
         ></Avatar>
       );
     }

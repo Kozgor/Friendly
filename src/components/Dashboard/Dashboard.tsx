@@ -27,12 +27,14 @@ import {
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
+import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 
 import { BoardContext } from '../../context/board/boardContext';
-
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { boardAPI } from '../../api/BoardAPI';
+import { icons } from '../../theme/icons/iconst';
+import { initColumnValue } from '../../mocks/column';
 
 import classes from './Dashboard.module.scss';
 
@@ -40,17 +42,14 @@ const Dashboard = () => {
   const { boardId, setBoardId } = useContext(BoardContext);
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
-  const columnInitValue = {
-    columnId: '',
-    columnTitle: '',
-    columnSubtitle: '',
-    columnStyle: '',
-    columnAvatar: '',
-    columnCards: []
-  };
+  const columnInitValue = initColumnValue;
   const [column, setColumn] = useState<IColumn>(columnInitValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
+  const iconList = [
+    icons.suitCase,
+    icons.signSpot
+  ];
 
   const fetchData = async () => {
     if (!boardId) {
@@ -226,10 +225,14 @@ const Dashboard = () => {
           >
             <Divider data-testid="divider" />
             <List className={classes['newBoard']}>
-              {dashboardList.map((listItem) => (
+              {dashboardList.map((listItem, index) => (
                 <ListItem key={listItem.listTitle} disablePadding onClick={listItem.listAction}>
                   <ListItemButton>
-                    <ListItemText primary={listItem.listTitle} />
+                    <span className={'list-item-icon'}>
+                      <FriendlyIcon element={iconList[index]}></FriendlyIcon>
+                    </span>
+                    <ListItemText primary={listItem.listTitle}>
+                    </ListItemText>
                   </ListItemButton>
                 </ListItem>
               ))}
