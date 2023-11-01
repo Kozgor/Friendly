@@ -8,7 +8,6 @@ import {
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import {
-  Divider,
   Drawer,
   List,
   ListItem,
@@ -29,8 +28,9 @@ import {
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
+import useLastPartLocation from '../../utils/useLastPartLocation';
 
-import { ADMIN_PAGE_HEADER_TITLE, dashboardTitles } from '../../constants';
+import { ADMIN_PAGE_HEADER_TITLE, adminTabList, dashboardTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -46,11 +46,11 @@ const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
-  const columnInitValue = initColumnValue;
-  const [column, setColumn] = useState<IColumn>(columnInitValue);
-  const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
+  const [column, setColumn] = useState<IColumn>(initColumnValue);
+  const [listActiveItem, setListActiveItem] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
+  const lastPart = useLastPartLocation();
   const iconList = [
     icons.suitCase,
     icons.signSpot
@@ -63,12 +63,24 @@ const Dashboard = () => {
 
         (activeBoard && activeBoard._id) ? setBoardId(activeBoard._id) : setBoardId('');
       } catch (error) {
-        return Promise.resolve(columnInitValue);
+        return Promise.resolve(initColumnValue);
       }
     }
   };
 
+  const checkLocation = () => {
+    const words = lastPart.split('_');
+    const titleCaseWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+
+    return titleCaseWords.join(' ');
+  };
+
   useEffect(() => {
+    const activetab = checkLocation();
+
+    adminTabList.forEach(tab => tab !== activetab ? setListActiveItem(adminTabList[0])
+      : setListActiveItem(activetab));
+
     fetchData();
   }, []);
 
@@ -102,22 +114,14 @@ const Dashboard = () => {
     }));
   };
 
-  const updateList = (ListItemindex: number) => {
-    setListItemActive(prevState => prevState.map(() => false));
-
-    const updatedList = isListItemActive.map((_, index) => index === ListItemindex);
-
-    setListItemActive(updatedList);
-  };
-
-  const openNewBoardTab = (ListItemindex: number) => {
-    updateList(ListItemindex);
+  const openNewBoardTab = () => {
     navigate('new_board');
+    setListActiveItem(adminTabList[0]);
   };
 
-  const openManager = (ListItemindex: number) => {
-    updateList(ListItemindex);
+  const openManager = () => {
     navigate('boards_management');
+    setListActiveItem(adminTabList[1]);
   };
 
   const columnInputsCollection = [
@@ -158,15 +162,15 @@ const Dashboard = () => {
   const dashboardList = [{
     listTitle: dashboardTitles.newBoard,
     testId: 'new-board',
-    listAction: (ListItemindex: number) => openNewBoardTab(ListItemindex)
+    listAction: openNewBoardTab
   }, {
     testId:'boards-management',
     listTitle: dashboardTitles.boardsManagement,
-    listAction: (ListItemindex: number) => openManager(ListItemindex)
+    listAction: openManager
   }];
 
   const clearInputs = () => {
-    setColumn(columnInitValue);
+    setColumn(initColumnValue);
   };
 
   const addNewColumn = () => {
@@ -243,16 +247,15 @@ const Dashboard = () => {
             anchor="left"
             data-testid="drawer"
           >
-            <Divider data-testid="divider" />
             <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
               {dashboardList.map((listItem, index) => (
                 <ListItem
                   key={listItem.listTitle}
                   data-testid={listItem.testId}
-                  onClick={() => listItem.listAction(index)}
+                  onClick={listItem.listAction}
                   sx={{
                     padding: 0,
-                    backgroundColor: isListItemActive[index] ? theme.color2: 'transparent',
+                    backgroundColor: listActiveItem === listItem.listTitle ? theme.color2: 'transparent',
                     borderRadius: 2.5,
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0

@@ -81,6 +81,12 @@ describe('BoardsManagement component', () => {
     expect(templates).toBeInTheDocument();
   });
 
+  test('should render divider component', () => {
+    const divider = screen.getByTestId('divider');
+
+    expect(divider).toBeInTheDocument();
+  });
+
   test('should render "No active board" when isFinalizeButton is false', () => {
     const templates = screen.getByTestId('board-name');
 

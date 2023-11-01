@@ -16,6 +16,11 @@ export const possibleBoardStatuses = {
   archived: 'archived'
 };
 
+export const adminTabList = [
+  'New Board',
+  'Boards Management'
+];
+
 export const ADMIN_PAGE_HEADER_TITLE = 'friendly';
 export const NO_BOARDS_MESSAGE = 'No boards found';
 export const SELECT_ALL = 'Select all';

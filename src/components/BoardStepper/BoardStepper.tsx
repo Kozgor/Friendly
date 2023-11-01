@@ -72,7 +72,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
           <Typography variant='overline'>{currentBoardStatus}</Typography>
         </div>
       </div>
-      <Stepper alternativeLabel activeStep={activeStep + 1}>
+      <Stepper alternativeLabel activeStep={activeStep + 1} sx={{ pt: 2 }}>
         {steps.map(label => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: { optional?: React.ReactNode } = {};
