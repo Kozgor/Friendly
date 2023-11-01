@@ -5,6 +5,7 @@ import { BoardContext } from '../../context/board/boardContext';
 import { Divider } from '@mui/material';
 import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
+import { sortByDateStartNew } from '../../utils/sortByDate';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { NO_BOARDS_MESSAGE } from '../../constants';
@@ -26,7 +27,7 @@ const BoardsManagement = () => {
     try {
       const boards: IBoardSettings[] | undefined = await getAllBoards();
 
-      boards ? setBoards(boards) : setBoards([]);
+      boards ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
 
     } catch (error) {
       console.log(error);
@@ -57,14 +58,15 @@ const BoardsManagement = () => {
         {isLoading &&
           <div className={classes.boardsManagementLoader}>
             <CircularProgress
-              color="primary"
-              size="md"
-              variant="soft"
+              data-testid='circular-progress'
+              color='primary'
+              size='md'
+              variant='soft'
             />
           </div>
         }
         {!isLoading &&
-          <div className={classes.boardList}>
+          <div className={classes.boardList} data-testid='boards-list'>
             {boards?.map(board =>
               <>
                 <BoardStepper key={board._id} board={board} />
