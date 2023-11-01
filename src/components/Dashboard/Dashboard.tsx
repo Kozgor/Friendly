@@ -32,9 +32,9 @@ import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 
 import { ADMIN_PAGE_HEADER_TITLE, dashboardTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
-import { ThemeContext } from '../../context/theme/themeContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
+import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
 import { icons } from '../../theme/icons/iconst';
 import { initColumnValue } from '../../mocks/column';

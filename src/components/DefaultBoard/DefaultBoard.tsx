@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-import { useContext, useEffect, useState } from 'react';
-
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import {
@@ -12,6 +11,7 @@ import {
   Input,
   Typography
 } from '@mui/joy';
+import { BOARD_PUBLISH_MESSAGE } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -30,6 +30,7 @@ const DefaultBoard = () => {
   const navigate = useNavigate();
   const { setBoardId } = useContext(BoardContext);
   const { getAllUsers } = userAPI();
+  const [isCreatingBoard, setIsCreatingBoard] = useState(false);
   const [names, setNames] = useState<string[]>([]);
   const [columns, setColumns] = useState<IColumn[]>(INITIAL_COLUMNS);
   const initialSettingsValue = {
@@ -44,70 +45,70 @@ const DefaultBoard = () => {
     useState<IBoardSettings>(initialSettingsValue);
 
   const boardNameHandler = (event: any) => {
-    setBoardSettings((prevState) => ({
+    setBoardSettings(prevState => ({
       ...prevState,
       name: event.target.value
     }));
   };
 
   const boardTimerHandler = (event: any) => {
-    setBoardSettings((prevState) => ({
+    setBoardSettings(prevState => ({
       ...prevState,
       timer: parseInt(event.target.value, 10) || 0
     }));
   };
 
   const boardParticipantsHandler = (partisipants: any) => {
-    setBoardSettings((prevState) => ({
+    setBoardSettings(prevState => ({
       ...prevState,
       participants: partisipants
     }));
   };
 
-  const boardSettingsCollection = [
-    {
-      key: 'name',
-      label: 'Board Name:',
-      type: 'input',
-      value: boardSettings.name,
-      disabled: false,
-      onChange: boardNameHandler,
-      placeholder: 'Please enter board name...'
-    },
-    {
-      key: 'theme',
-      label: 'Theme:',
-      type: 'input',
-      value: boardSettings.theme,
-      disabled: true,
-      onChange: () => {},
-      placeholder: 'Please choose board theme...'
-    },
-    {
-      key: 'timer',
-      label: 'Timer (min):',
-      type: 'number',
-      value: boardSettings.timer,
-      disabled: false,
-      onChange: boardTimerHandler,
-      placeholder: 'Please enter board timer...'
-    },
-    {
-      key: 'participants',
-      label: 'Participants:',
-      type: 'select',
-      value: boardSettings.participants,
-      disabled: false,
-      onChange: boardParticipantsHandler,
-      placeholder: 'Please select participants...'
-    }
-  ];
+  const boardSettingsCollection = [{
+    key: 'name',
+    label: 'Board Name:',
+    type: 'input',
+    value: boardSettings.name,
+    disabled: false,
+    onChange: boardNameHandler,
+    placeholder: 'Please enter board name...'
+  }, {
+    key: 'theme',
+    label: 'Theme:',
+    type: 'input',
+    value: boardSettings.theme,
+    disabled: true,
+    onChange: () => {},
+    placeholder: 'Please choose board theme...'
+  }, {
+    key: 'timer',
+    label: 'Timer (min):',
+    type: 'number',
+    value: boardSettings.timer,
+    disabled: false,
+    onChange: boardTimerHandler,
+    placeholder: 'Please enter board timer...'
+  }, {
+    key: 'participants',
+    label: 'Participants:',
+    type: 'select',
+    value: boardSettings.participants,
+    disabled: false,
+    onChange: boardParticipantsHandler,
+    placeholder: 'Please select participants...'
+  }];
 
   const columnsUpdateHandler = (updatedColumns: IColumn[]) => {
     setColumns(updatedColumns);
   };
 
   const publishSettings = () => {
+    if (isCreatingBoard) {
+      return;
+    }
+
+    setIsCreatingBoard(true);
     axios
       .post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings)
       .then((board: any) => {
@@ -115,13 +116,15 @@ const DefaultBoard = () => {
         toast.success(
           <Toastr
             itemName={boardSettings.name}
-            message="board was successfully published. Now your team can play with it"
+            message={BOARD_PUBLISH_MESSAGE}
           />
         );
         setBoardId(board.data._id);
+        setIsCreatingBoard(false);
       })
-      .catch((error) => {
+      .catch(error => {
         toast.error(error?.message);
+        setIsCreatingBoard(false);
       });
   };
 
@@ -170,7 +173,7 @@ const DefaultBoard = () => {
         </Button>
       </div>
       <form className={classes.boardSettings}>
-        {boardSettingsCollection.map((setting) => (
+        {boardSettingsCollection.map(setting => (
           <div key={setting.key} className={classes[setting.key]}>
             <InputLabel id={setting.key}>{setting.label}</InputLabel>
             {setting.key === 'timer' &&
@@ -185,9 +188,7 @@ const DefaultBoard = () => {
                 aria-label={`input for ${setting.label}`}
                 data-testid={`boardSetting${setting.key}`}
                 slotProps={{
-                  input: {
-                    component: numericFormatAdapter
-                  }
+                  input: { component: numericFormatAdapter }
                 }}
               />
             }
@@ -226,12 +227,11 @@ const DefaultBoard = () => {
               </div>
             }
           </div>
-        ))
-        }
+        ))}
         <div className={classes.columnsBox}>
           <p>Columns:</p>
           <section className={classes.columns} data-testid="boardColumns">
-            {initialSettingsValue.columns.map((column) => (
+            {initialSettingsValue.columns.map(column => (
               <ColumnConfiguration
                 key={column.columnId}
                 columnId={column.columnId}
