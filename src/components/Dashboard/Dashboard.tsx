@@ -30,7 +30,7 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 import useLastPartLocation from '../../utils/useLastPartLocation';
 
-import { ADMIN_PAGE_HEADER_TITLE, adminTabList, dashboardTitles } from '../../constants';
+import { ADMIN_PAGE_HEADER_TITLE, adminTabMap, dashboardTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -78,7 +78,7 @@ const Dashboard = () => {
   useEffect(() => {
     const activetab = checkLocation();
 
-    adminTabList.forEach(tab => tab !== activetab ? setListActiveItem(adminTabList[0])
+    Object.values(adminTabMap).forEach(tab => tab !== activetab ? setListActiveItem(adminTabMap.newBoard)
       : setListActiveItem(activetab));
 
     fetchData();
@@ -116,12 +116,12 @@ const Dashboard = () => {
 
   const openNewBoardTab = () => {
     navigate('new_board');
-    setListActiveItem(adminTabList[0]);
+    setListActiveItem(adminTabMap.newBoard);
   };
 
   const openManager = () => {
     navigate('boards_management');
-    setListActiveItem(adminTabList[1]);
+    setListActiveItem(adminTabMap.boardsManagement);
   };
 
   const columnInputsCollection = [
