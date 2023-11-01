@@ -28,7 +28,6 @@ const BoardsManagement = () => {
       const boards: IBoardSettings[] | undefined = await getAllBoards();
 
       boards ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
-
     } catch (error) {
       console.log(error);
     }
@@ -68,10 +67,10 @@ const BoardsManagement = () => {
         {!isLoading &&
           <div className={classes.boardList} data-testid='boards-list'>
             {boards?.map(board =>
-              <>
-                <BoardStepper key={board._id} board={board} />
+              <div key={board._id}>
+                <BoardStepper board={board} />
                 <Divider data-testid='divider' sx={{ width: '50%', color: theme.color4 }}/>
-              </>
+              </div>
             )}
           </div>
         }
