@@ -11,7 +11,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { BoardContext } from '../../context/board/boardContext';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
-import { sortByDate } from '../../utils/sortByDate';
+import { sortByDateStartOld } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
 
@@ -33,14 +33,14 @@ const Column = (props: IColumn) => {
 
   const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
-  const [finalizedCards, setFinalizedCards] = useState(() => sortByDate(columnCards));
+  const [finalizedCards, setFinalizedCards] = useState(() => sortByDateStartOld(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
     if (columnCards) {
-      setFinalizedCards(sortByDate(columnCards));
+      setFinalizedCards(sortByDateStartOld(columnCards));
     }
   }, [columnCards]);
 

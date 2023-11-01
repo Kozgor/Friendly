@@ -22,7 +22,7 @@ describe('CardAvatar Component', () => {
   });
 
   test('should render an avatar with image when cardAuthorAvatar is provided', () => {
-    const avatar = component.getByTestId('cardAvatar');
+    const avatar = component.getByTestId('card-avatar');
     const image = avatar.querySelector('img');
 
     expect(avatar).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('CardAvatar Component', () => {
         onToggle={jest.fn()}
     />);
 
-    const avatar = component.getByTestId('cardAvatar');
+    const avatar = component.getByTestId('initials-avatar');
     const { textContent } = avatar;
 
     expect(avatar).toBeInTheDocument();
@@ -49,17 +49,17 @@ describe('CardAvatar Component', () => {
     test('should render an avatar with incognito icon when cardAuthor is "Incognito"', () => {
       const { rerender } = component;
 
-      rerender(<CardAvatar cardAuthor="Incognito" cardAuthorAvatar="image.jpeg" onToggle={jest.fn()} />);
+      rerender(<CardAvatar cardAuthor='Incognito' cardAuthorAvatar='image.jpeg' onToggle={jest.fn()} />);
 
-      const avatar = component.getByTestId('cardAvatar');
-      const incognitoIcon = avatar.querySelector('.bi-incognito');
+      const avatar = component.getByTestId('incognito-avatar');
+      const incognitoIcon = avatar.querySelector('svg');
 
       expect(incognitoIcon).toBeInTheDocument();
       expect(avatar).toBeInTheDocument();
     });
 
     test('should trigger the onToggle function when clicked', () => {
-      const avatar = component.getByTestId('cardAvatar');
+      const avatar = component.getByTestId('card-avatar');
 
       fireEvent.click(avatar);
 

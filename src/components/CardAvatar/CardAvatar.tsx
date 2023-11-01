@@ -17,7 +17,7 @@ const CardAvatar = (props: ICardAvatar) => {
     if (isIncognito) {
       return (
         <Avatar
-          data-testid='cardAvatar'
+          data-testid='incognito-avatar'
           onClick={onToggle}
           sx={{ cursor: 'pointer' }}
         >
@@ -28,7 +28,7 @@ const CardAvatar = (props: ICardAvatar) => {
       if (isInitials) {
         return (
           <Avatar
-            data-testid='cardAvatar'
+            data-testid='initials-avatar'
             onClick={onToggle}
             sx={{ cursor: 'pointer' }}
           >
@@ -39,7 +39,7 @@ const CardAvatar = (props: ICardAvatar) => {
       if (isAvatar) {
         return (
           <Avatar
-            data-testid='cardAvatar'
+            data-testid='card-avatar'
             onClick={onToggle}
             alt={cardAuthorAvatar}
             src={cardAuthorAvatar}

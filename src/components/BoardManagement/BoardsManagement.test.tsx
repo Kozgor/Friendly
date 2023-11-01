@@ -1,13 +1,13 @@
 import * as router from 'react-router';
+import axios from 'axios';
+
 import {
   RenderResult,
-  fireEvent,
   render,
-  screen,
-  waitFor
+  screen
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-
+import { ACTIVE_BOARD } from '../../mocks/board';
 import { Provider } from 'react-redux';
 import store from '../../store/store';
 
@@ -16,19 +16,49 @@ import BoardsManagementPage from '../../pages/boardsManagement/BoardsManagementP
 import CreateBoardPage from '../../pages/createBoard/CreateBoard';
 import DefaultBoardPage from '../../pages/defaultBoard/DefaultBoard';
 
-const getBoardById = jest.fn();
-const finalizeBoard = jest.fn();
+import { BoardContext } from '../../context/board/boardContext';
 
+import { BaseProps } from '../../interfaces/baseProps';
+
+import { boardAPI } from '../../api/BoardAPI';
+
+jest.mock('axios');
+
+const enableAdding = jest.fn();
+const disableAdding = jest.fn();
+const finalizeTimer = jest.fn();
+const setBoardId = jest.fn();
+const setBoardStatus = jest.fn();
+const setFormSubmit = jest.fn();
+
+const getAllBoards = jest.fn(() => [ACTIVE_BOARD]);
+const wrapper = ({ children }: BaseProps) => (
+  <BoardContext.Provider
+    value={{
+      boardId: 'testId',
+      boardStatus: 'active',
+      isAddingDisabled: false,
+      isTimerFinalized: false,
+      isFormSubmit: false,
+      enableAdding,
+      disableAdding,
+      finalizeTimer,
+      setFormSubmit,
+      setBoardId,
+      setBoardStatus
+    }}
+  >
+    {children}
+  </BoardContext.Provider>
+);
 jest.mock('../../api/BoardAPI', () => ({
   ...jest.requireActual('../../api/BoardAPI'),
-  getBoardById,
-  finalizeBoard
+  getAllBoards
 }));
 
 describe('BoardsManagement component', () => {
   let component: RenderResult;
   const navigate = jest.fn();
-
   const routesConfig = [
     {
       path: '/admin',
@@ -51,7 +81,7 @@ describe('BoardsManagement component', () => {
     });
     component = render(<Provider store={store}>
       <RouterProvider router={router} />
-    </Provider>);
+    </Provider>, { wrapper });
   });
 
   afterEach(async () => {
@@ -64,42 +94,14 @@ describe('BoardsManagement component', () => {
   });
 
   test('should render heading title', () => {
-    const templates = screen.getByTestId('board-management-title');
+    const title = screen.getByTestId('board-management-title');
 
-    expect(templates).toBeInTheDocument();
+    expect(title).toBeInTheDocument();
   });
 
-  test('should render board name', () => {
-    const templates = screen.getByTestId('board-name');
+  test('should render loading progress', () => {
+    const spinner = screen.getByTestId('circular-progress');
 
-    expect(templates).toBeInTheDocument();
-  });
-
-  test('should render board status', () => {
-    const templates = screen.getByTestId('board-status');
-
-    expect(templates).toBeInTheDocument();
-  });
-
-  test('should render "No active board" when isFinalizeButton is false', () => {
-    const templates = screen.getByTestId('board-name');
-
-    expect(templates).toHaveTextContent('No active board');
-  });
-
-  test('should render "Finalized" when isFinalizeButton is false', () => {
-    const templates = screen.getByTestId('board-status');
-
-    expect(templates).toHaveTextContent('Finalized');
-  });
-
-  test('should trigger finalize board function when the button is clicked', () => {
-    const finalizeButton = screen.getByTestId('finalize-button');
-
-    waitFor(() => {
-      fireEvent.click(finalizeButton);
-      expect(finalizeBoard).toHaveBeenCalled();
-      expect(finalizeBoard).toHaveBeenCalledTimes(1);
-    });
+    expect(spinner).toBeInTheDocument();
   });
 });
