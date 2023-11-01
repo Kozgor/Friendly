@@ -1,11 +1,10 @@
 import { useLocation } from 'react-router-dom';
 
 const useLastPartLocation = () => {
-    const location = useLocation();
-    const pathnameParts = location.pathname.split('/');
-    const lastPart = pathnameParts[pathnameParts.length - 1];
+  const location = useLocation();
+  const match = location.pathname.match(/\/admin\/([^/]+)/);
 
-    return lastPart;
+  return match ? match[1] : '';
 };
 
 export default useLastPartLocation;

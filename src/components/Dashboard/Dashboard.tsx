@@ -30,7 +30,7 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 import useLastPartLocation from '../../utils/useLastPartLocation';
 
-import { ADMIN_PAGE_HEADER_TITLE, adminTabMap, dashboardTitles } from '../../constants';
+import { ADMIN_PAGE_HEADER_TITLE, adminTabList } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -47,10 +47,10 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [column, setColumn] = useState<IColumn>(initColumnValue);
-  const [listActiveItem, setListActiveItem] = useState<string>('');
+  const [adminTabListState, setAdminTabListState] = useState(adminTabList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
-  const lastPart = useLastPartLocation();
+  const URLPart = useLastPartLocation();
   const iconList = [
     icons.suitCase,
     icons.signSpot
@@ -68,21 +68,20 @@ const Dashboard = () => {
     }
   };
 
-  const checkLocation = () => {
-    const words = lastPart.split('_');
-    const titleCaseWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-
-    return titleCaseWords.join(' ');
+  const adminListItemActiveUpdate = (URLPart: string) => {
+    setAdminTabListState(prevTabList => prevTabList.map(tab => {
+      if (tab.path === URLPart) {
+        return { ...tab, active: true };
+      } else {
+        return { ...tab, active: false };
+      }
+    }));
   };
 
   useEffect(() => {
-    const activetab = checkLocation();
-
-    Object.values(adminTabMap).forEach(tab => tab !== activetab ? setListActiveItem(adminTabMap.newBoard)
-      : setListActiveItem(activetab));
-
     fetchData();
-  }, []);
+    adminListItemActiveUpdate(URLPart);
+  }, [URLPart]);
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({
@@ -116,12 +115,12 @@ const Dashboard = () => {
 
   const openNewBoardTab = () => {
     navigate('new_board');
-    setListActiveItem(adminTabMap.newBoard);
+    adminListItemActiveUpdate(URLPart);
   };
 
   const openManager = () => {
     navigate('boards_management');
-    setListActiveItem(adminTabMap.boardsManagement);
+    adminListItemActiveUpdate(URLPart);
   };
 
   const columnInputsCollection = [
@@ -160,12 +159,12 @@ const Dashboard = () => {
   ];
 
   const dashboardList = [{
-    listTitle: dashboardTitles.newBoard,
     testId: 'new-board',
+    listTitle: adminTabList[0].title,
     listAction: openNewBoardTab
   }, {
     testId:'boards-management',
-    listTitle: dashboardTitles.boardsManagement,
+    listTitle: adminTabList[1].title,
     listAction: openManager
   }];
 
@@ -255,7 +254,7 @@ const Dashboard = () => {
                   onClick={listItem.listAction}
                   sx={{
                     padding: 0,
-                    backgroundColor: listActiveItem === listItem.listTitle ? theme.color2: 'transparent',
+                    backgroundColor: adminTabListState[index].active ? theme.color2: 'transparent',
                     borderRadius: 2.5,
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0

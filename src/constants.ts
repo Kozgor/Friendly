@@ -1,17 +1,12 @@
-export const adminTabMap = {
-  newBoard: 'New Board',
-  boardsManagement: 'Boards Management'
-};
+export const adminTabList = [
+  { title: 'New Board', path: 'new_board', active: false },
+  { title: 'Boards Management', path: 'boards_management', active: false }
+];
 
 export const buttonLabels = {
   activate: 'Activate',
   finalize: 'Finalize',
   archive: 'Archive'
-};
-
-export const dashboardTitles = {
-  newBoard: 'New Board',
-  boardsManagement: 'Boards Management'
 };
 
 export const possibleBoardStatuses = {

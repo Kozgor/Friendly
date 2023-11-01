@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         loader: checkAdminRole
       },
       {
-        path: 'default_board',
+        path: 'new_board/default_board',
         element: <DefaultBoardPage />,
         loader: checkAdminRole
       }
