@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { useContext, useEffect, useState } from 'react';
 
 import {
@@ -20,7 +22,7 @@ import classes from './BoardStepper.module.scss';
 const BoardStepper = (props: { board: IBoardSettings }) => {
   const { board } = props;
   const { setBoardStatus } = useContext(BoardContext);
-  const steps = [BOARD_STATUSES[1], BOARD_STATUSES[2], BOARD_STATUSES[3]];
+  const steps = [BOARD_STATUSES[1], BOARD_STATUSES[2]];
   const [activeStep, setActiveStep] = useState(
     board.status === possibleBoardStatuses.active ? 0 : 1
   );
@@ -28,14 +30,12 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   const [buttonLabel, setButtonLabel] = useState('');
   const { finalizeBoard } = boardAPI();
 
+  const formatedDate = moment(board.createdAt).format('DD/MM/YYYY');
+
   useEffect(() => {
-    if (currentBoardStatus === possibleBoardStatuses.created) {
-      setButtonLabel(buttonLabels.activate);
-    } else if (currentBoardStatus === possibleBoardStatuses.active) {
-      setButtonLabel(buttonLabels.finalize);
-    } else if (currentBoardStatus === possibleBoardStatuses.finalized) {
-      setButtonLabel(buttonLabels.archive);
-    }
+    currentBoardStatus === possibleBoardStatuses.created ?
+      setButtonLabel(buttonLabels.activate) :
+        setButtonLabel(buttonLabels.finalize);
   }, [currentBoardStatus]);
 
   const onFinalizeBoard = async () => {
@@ -55,9 +55,6 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
     if (activeStep === 0) {
       onFinalizeBoard();
     }
-    if (activeStep === 1) {
-      setCurrentBoardStatus(possibleBoardStatuses.archived);
-    }
   };
 
   return (
@@ -68,7 +65,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
           <Typography variant='subtitle1' gutterBottom>Board status:</Typography>
         </div>
         <div className={classes.stepperHeaderInfo}>
-          <Typography variant='overline'>{board.name}</Typography>
+          <Typography variant='overline'>{board.name} ({formatedDate})</Typography>
           <Typography variant='overline'>{currentBoardStatus}</Typography>
         </div>
       </div>
@@ -78,7 +75,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
           const labelProps: { optional?: React.ReactNode } = {};
 
           return (
-            <Step key={label} {...stepProps}>
+            <Step data-testid={`${label}-step`} key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
@@ -86,9 +83,12 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       </Stepper>
       {activeStep === steps.length - 1 ? (
         <>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <Box
+            data-testid='no-steps-message'
+            sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+          >
             <Typography sx={{ mt: 2, mb: 1 }}>
-              {`${board.name} ${possibleBoardStatuses.archived}`}
+              {`${board.name} ${possibleBoardStatuses.finalized}`}
             </Typography>
           </Box>
         </>
@@ -96,7 +96,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
         <>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleNext}>
+            <Button data-testid='next-button' onClick={handleNext}>
               {buttonLabel}
             </Button>
           </Box>

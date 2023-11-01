@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 import { useContext, useEffect, useState } from 'react';
 
@@ -38,10 +39,10 @@ const DefaultBoard = () => {
     timer: 15,
     participants: [],
     columns: columns,
-    status: 'active'
+    status: 'active',
+    createdAt: moment().toISOString()
   };
-  const [boardSettings, setBoardSettings] =
-    useState<IBoardSettings>(initialSettingsValue);
+  const [boardSettings, setBoardSettings] = useState<IBoardSettings>(initialSettingsValue);
 
   const boardNameHandler = (event: any) => {
     setBoardSettings((prevState) => ({

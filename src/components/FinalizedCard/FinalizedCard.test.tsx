@@ -95,7 +95,7 @@ describe('FinalizedCard component', () => {
   });
 
   test('should display user avatar in card', () => {
-    const avatar = screen.getByTestId('cardAvatar');
+    const avatar = screen.getByTestId('card-avatar');
 
     expect(avatar).toBeInTheDocument();
   });
