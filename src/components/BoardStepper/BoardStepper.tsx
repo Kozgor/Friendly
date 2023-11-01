@@ -34,8 +34,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
 
   useEffect(() => {
     currentBoardStatus === possibleBoardStatuses.created ?
-      setButtonLabel(buttonLabels.activate) :
-        setButtonLabel(buttonLabels.finalize);
+      setButtonLabel(buttonLabels.activate) : setButtonLabel(buttonLabels.finalize);
   }, [currentBoardStatus]);
 
   const onFinalizeBoard = async () => {
