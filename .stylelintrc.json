@@ -6,10 +6,12 @@
   ],
   "plugins": ["stylelint-scss"],
   "rules": {
+    "alpha-value-notation": null,
     "declaration-block-no-duplicate-properties": true,
     "declaration-empty-line-before": "never",
     "selector-class-pattern": null,
     "media-feature-name-no-unknown": true,
-    "declaration-no-important": null
+    "declaration-no-important": null,
+    "color-function-notation": null
   }
 }
