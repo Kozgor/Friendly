@@ -3,16 +3,14 @@ import {
   FormControlLabel,
   MenuItem
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { isString, uniq } from 'lodash';
+import { useEffect, useState } from 'react';
 import { IParticipants } from '../../interfaces/participants';
 import { SELECT_ALL } from '../../constants';
+import { isString } from 'lodash';
 
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
-
 import classes from './Participants.module.scss';
 
 const Participants = (props: IParticipants) => {
@@ -24,9 +22,7 @@ const Participants = (props: IParticipants) => {
   const isIndeterminate = personNames.length !== participants.length;
 
   const handleChange = (event: SelectChangeEvent<typeof personNames>) => {
-    const {
-      target: { value }
-    } = event;
+    const { target: { value } } = event;
 
     setPersonNames(
       isString(value) ? value.split(',') : value
@@ -36,20 +32,24 @@ const Participants = (props: IParticipants) => {
 
   const handleSelectAll = () => {
     setChecked(checked.map(() => !!checked.includes(false)));
+    setSelected([]);
     setPersonNames([]);
     collectParticipants([]);
 
     if (personNames.length !== participants.length) {
+      setSelected([...participants]);
       setPersonNames([...participants]);
       collectParticipants([...participants]);
     }
   };
 
   const handleSelect = (name: string) => {
-    const updatedSelected = [...selected, name];
-    const uniqueSelected = uniq(updatedSelected);
+    let updatesdList;
 
-    setSelected(uniqueSelected);
+    selected.includes(name) ? updatesdList = selected.filter(item => item !== name) :
+      updatesdList = [...selected, name];
+
+    setSelected(updatesdList);
   };
 
   useEffect(() => {
@@ -74,9 +74,9 @@ const Participants = (props: IParticipants) => {
               label={SELECT_ALL}
               control={
                 <Checkbox
+                  data-testid='select-all-checkboxes'
                   checked={isChecked}
                   indeterminate={isIndeterminate}
-                  data-testid='select-all-checkboxes'
                   onChange={handleSelectAll}
                 />
               }
@@ -86,11 +86,11 @@ const Participants = (props: IParticipants) => {
             <MenuItem
               key={name}
               value={name}
-              onClick={() => handleSelect(name)}
             >
               <Checkbox
                 data-testid={`select-checkbox-${name}`}
                 checked={personNames.indexOf(name) > -1}
+                onChange={() => handleSelect(name)}
                 />
               <ListItemText primary={name} />
             </MenuItem>
