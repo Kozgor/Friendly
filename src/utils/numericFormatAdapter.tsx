@@ -1,30 +1,29 @@
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { forwardRef } from 'react';
 
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
-
 interface INumericCustomAdapter {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
+  onChange: (event: { target: { value: string } }) => void;
+  value: string;
 }
 
 export const numericFormatAdapter = forwardRef<NumericFormatProps, INumericCustomAdapter>(
-  function NumericFormatAdapter(props, ref) {
+  function NumericFormatAdapter (props, ref) {
     const { onChange, ...other } = props;
 
     return (
       <NumericFormat
         {...other}
         getInputRef={ref}
-        onValueChange={(values) => {
+        onValueChange={values => {
           onChange({
             target: {
-              name: props.name,
               value: values.value
             }
           });
         }}
-        valueIsNumericString
+        min={1}
         allowNegative={false}
+        valueIsNumericString
       />
     );
   }

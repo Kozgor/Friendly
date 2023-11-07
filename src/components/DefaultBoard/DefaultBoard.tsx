@@ -1,10 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-
 import {
   Box,
   Breadcrumbs,
@@ -12,6 +8,8 @@ import {
   Input,
   Typography
 } from '@mui/joy';
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import { BOARD_PUBLISH_MESSAGE } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -19,6 +17,7 @@ import { IColumn } from '../../interfaces/column';
 import { INITIAL_COLUMNS } from './DeafaultColumns';
 import { InputLabel } from '@mui/material';
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
+import { toast } from 'react-toastify';
 import { userAPI } from '../../api/UserAPI';
 
 import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
@@ -53,9 +52,9 @@ const DefaultBoard = () => {
   };
 
   const boardTimerHandler = (event: any) => {
-    setBoardSettings(prevState => ({
+    setBoardSettings((prevState) => ({
       ...prevState,
-      timer: parseInt(event.target.value, 10) || 0
+      timer: parseInt(event.target.value, 10) || 1
     }));
   };
 
