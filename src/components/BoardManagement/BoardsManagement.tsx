@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, CircularProgress } from '@mui/joy';
 import { BoardContext } from '../../context/board/boardContext';
+import { Divider } from '@mui/material';
+import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
@@ -13,6 +15,7 @@ import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
+  const { theme } = useContext(ThemeContext);
   const { boardId } = useContext(BoardContext);
   const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +28,6 @@ const BoardsManagement = () => {
       const boards: IBoardSettings[] | undefined = await getAllBoards();
 
       boards ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
-
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +67,10 @@ const BoardsManagement = () => {
         {!isLoading &&
           <div className={classes.boardList} data-testid='boards-list'>
             {boards?.map(board =>
-              <BoardStepper key={board._id} board={board} />
+              <div key={board._id}>
+                <BoardStepper board={board} />
+                <Divider data-testid='divider' sx={{ width: '50%', color: theme.color4 }}/>
+              </div>
             )}
           </div>
         }

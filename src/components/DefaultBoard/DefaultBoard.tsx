@@ -1,10 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-
 import {
   Box,
   Breadcrumbs,
@@ -12,6 +8,8 @@ import {
   Input,
   Typography
 } from '@mui/joy';
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import { BOARD_PUBLISH_MESSAGE } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -19,6 +17,7 @@ import { IColumn } from '../../interfaces/column';
 import { INITIAL_COLUMNS } from './DeafaultColumns';
 import { InputLabel } from '@mui/material';
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
+import { toast } from 'react-toastify';
 import { userAPI } from '../../api/UserAPI';
 
 import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
@@ -53,9 +52,9 @@ const DefaultBoard = () => {
   };
 
   const boardTimerHandler = (event: any) => {
-    setBoardSettings(prevState => ({
+    setBoardSettings((prevState) => ({
       ...prevState,
-      timer: parseInt(event.target.value, 10) || 0
+      timer: parseInt(event.target.value, 10) || 1
     }));
   };
 
@@ -74,14 +73,6 @@ const DefaultBoard = () => {
     disabled: false,
     onChange: boardNameHandler,
     placeholder: 'Please enter board name...'
-  }, {
-    key: 'theme',
-    label: 'Theme:',
-    type: 'input',
-    value: boardSettings.theme,
-    disabled: true,
-    onChange: () => {},
-    placeholder: 'Please choose board theme...'
   }, {
     key: 'timer',
     label: 'Timer (min):',
@@ -193,19 +184,6 @@ const DefaultBoard = () => {
                 }}
               />
             }
-            {setting.key === 'theme' &&
-              <Input
-                className={classes.input}
-                id={setting.key}
-                type={setting.type}
-                placeholder={setting.placeholder}
-                value={setting.value}
-                onChange={setting.onChange}
-                disabled={true}
-                aria-label={`input for ${setting.label}`}
-                data-testid={`boardSetting${setting.key}`}
-              />
-            }
             {(setting.key === 'name') &&
               <Input
                 className={classes.input}
@@ -220,12 +198,10 @@ const DefaultBoard = () => {
               />
             }
             {setting.key === 'participants' &&
-              <div className={classes.input}>
-                <Participants
-                  participants={names}
-                  collectParticipants={setting.onChange}
-                />
-              </div>
+              <Participants
+                participants={names}
+                collectParticipants={setting.onChange}
+              />
             }
           </div>
         ))}
