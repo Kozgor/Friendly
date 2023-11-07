@@ -1,14 +1,14 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-
-import classes from './CreateBoard.module.scss';
 import { Typography } from '@mui/joy';
+
+import Box from '@mui/material/Box';
+import classes from './CreateBoard.module.scss';
 
 const CreateBoard = () => {
   const navigate = useNavigate();
   const openDefaultBoard = () => {
-    navigate('/admin/default_board');
+    navigate('/admin/new_board/default_board');
   };
 
   return (

@@ -103,12 +103,6 @@ describe('Dashboard component', () => {
     expect(drawer).toBeInTheDocument();
   });
 
-  test('should render divider', () => {
-    const divider = screen.getByTestId('divider');
-
-    expect(divider).toBeInTheDocument();
-  });
-
   test('should render "New Board" tad', () => {
     expect(newBoardTab).toBeInTheDocument();
   });

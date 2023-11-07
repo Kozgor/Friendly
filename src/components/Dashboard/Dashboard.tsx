@@ -8,7 +8,6 @@ import {
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import {
-  Divider,
   Drawer,
   List,
   ListItem,
@@ -29,8 +28,9 @@ import {
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
+import useLastPartLocation from '../../utils/useLastPartLocation';
 
-import { ADMIN_PAGE_HEADER_TITLE, dashboardTitles } from '../../constants';
+import { ADMIN_PAGE_HEADER_TITLE, adminTabList } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
@@ -46,11 +46,11 @@ const Dashboard = () => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
-  const columnInitValue = initColumnValue;
-  const [column, setColumn] = useState<IColumn>(columnInitValue);
-  const [isListItemActive, setListItemActive] = useState<boolean[]>([true, false]);
+  const [column, setColumn] = useState<IColumn>(initColumnValue);
+  const [adminTabListState, setAdminTabListState] = useState(adminTabList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { getActiveBoard } = boardAPI();
+  const URLPart = useLastPartLocation();
   const iconList = [
     icons.suitCase,
     icons.signSpot
@@ -63,14 +63,25 @@ const Dashboard = () => {
 
         (activeBoard && activeBoard._id) ? setBoardId(activeBoard._id) : setBoardId('');
       } catch (error) {
-        return Promise.resolve(columnInitValue);
+        return Promise.resolve(initColumnValue);
       }
     }
   };
 
+  const adminListItemActiveUpdate = (URLPart: string) => {
+    setAdminTabListState(prevTabList => prevTabList.map(tab => {
+      if (tab.path === URLPart) {
+        return { ...tab, active: true };
+      } else {
+        return { ...tab, active: false };
+      }
+    }));
+  };
+
   useEffect(() => {
     fetchData();
-  }, []);
+    adminListItemActiveUpdate(URLPart);
+  }, [URLPart]);
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({
@@ -102,22 +113,14 @@ const Dashboard = () => {
     }));
   };
 
-  const updateList = (ListItemindex: number) => {
-    setListItemActive(prevState => prevState.map(() => false));
-
-    const updatedList = isListItemActive.map((_, index) => index === ListItemindex);
-
-    setListItemActive(updatedList);
-  };
-
-  const openNewBoardTab = (ListItemindex: number) => {
-    updateList(ListItemindex);
+  const openNewBoardTab = () => {
     navigate('new_board');
+    adminListItemActiveUpdate(URLPart);
   };
 
-  const openManager = (ListItemindex: number) => {
-    updateList(ListItemindex);
+  const openManager = () => {
     navigate('boards_management');
+    adminListItemActiveUpdate(URLPart);
   };
 
   const columnInputsCollection = [
@@ -156,17 +159,17 @@ const Dashboard = () => {
   ];
 
   const dashboardList = [{
-    listTitle: dashboardTitles.newBoard,
     testId: 'new-board',
-    listAction: (ListItemindex: number) => openNewBoardTab(ListItemindex)
+    listTitle: adminTabList[0].title,
+    listAction: openNewBoardTab
   }, {
     testId:'boards-management',
-    listTitle: dashboardTitles.boardsManagement,
-    listAction: (ListItemindex: number) => openManager(ListItemindex)
+    listTitle: adminTabList[1].title,
+    listAction: openManager
   }];
 
   const clearInputs = () => {
-    setColumn(columnInitValue);
+    setColumn(initColumnValue);
   };
 
   const addNewColumn = () => {
@@ -243,16 +246,15 @@ const Dashboard = () => {
             anchor="left"
             data-testid="drawer"
           >
-            <Divider data-testid="divider" />
             <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
               {dashboardList.map((listItem, index) => (
                 <ListItem
                   key={listItem.listTitle}
                   data-testid={listItem.testId}
-                  onClick={() => listItem.listAction(index)}
+                  onClick={listItem.listAction}
                   sx={{
                     padding: 0,
-                    backgroundColor: isListItemActive[index] ? theme.color2: 'transparent',
+                    backgroundColor: adminTabListState[index].active ? theme.color2: 'transparent',
                     borderRadius: 2.5,
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0

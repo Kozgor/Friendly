@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import AdminPage from '../pages/admin/Admin';
 import BoardPage from '../pages/board/Board';
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <CreateBoardPage />,
+        element: <Navigate to="new_board" />,
         loader: checkAdminRole
       },
       {
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         loader: checkAdminRole
       },
       {
-        path: 'default_board',
+        path: 'new_board/default_board',
         element: <DefaultBoardPage />,
         loader: checkAdminRole
       }

@@ -2,8 +2,8 @@
 
 .stepperHeader {
   @include flexbox(row, start, stretch, wrap);
-  display: flex;
   width: 100;
+  padding-top: 15px;
 }
 
 .stepperHeaderSubtittles,
