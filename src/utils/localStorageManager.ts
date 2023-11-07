@@ -11,6 +11,7 @@ export const localStorageManager = () => {
         const userProfile = {
             _id: data._id,
             fullName: data.fullName,
+            email: data.email,
             role: data.role,
             avatar: data.avatar,
             token: data.token,
