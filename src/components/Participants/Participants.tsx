@@ -21,7 +21,7 @@ const Participants = (props: IParticipants) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [checked, setChecked] = useState<boolean[]>(participants.map(() => false));
   const isChecked = personNames.length === participants.length;
-  const isIndeterminate = personNames.length !== participants.length;
+  const isIndeterminate = personNames.length !== participants.length && personNames.length > 0;
 
   const handleChange = (event: SelectChangeEvent<typeof personNames>) => {
     const {
@@ -66,7 +66,7 @@ const Participants = (props: IParticipants) => {
           data-testid='select'
           value={personNames}
           onChange={handleChange}
-          renderValue={(selected) => selected.join(', ')}
+          renderValue={selected => selected.join(', ')}
           className={classes.select}
         >
           <MenuItem>
@@ -82,7 +82,7 @@ const Participants = (props: IParticipants) => {
               }
             />
           </MenuItem>
-          {participants.map((name) => (
+          {participants.map(name => (
             <MenuItem
               key={name}
               value={name}

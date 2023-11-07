@@ -220,12 +220,10 @@ const DefaultBoard = () => {
               />
             }
             {setting.key === 'participants' &&
-              <div className={classes.input}>
-                <Participants
-                  participants={names}
-                  collectParticipants={setting.onChange}
-                />
-              </div>
+              <Participants
+                participants={names}
+                collectParticipants={setting.onChange}
+              />
             }
           </div>
         ))}
