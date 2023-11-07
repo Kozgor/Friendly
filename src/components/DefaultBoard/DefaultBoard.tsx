@@ -75,14 +75,6 @@ const DefaultBoard = () => {
     onChange: boardNameHandler,
     placeholder: 'Please enter board name...'
   }, {
-    key: 'theme',
-    label: 'Theme:',
-    type: 'input',
-    value: boardSettings.theme,
-    disabled: true,
-    onChange: () => {},
-    placeholder: 'Please choose board theme...'
-  }, {
     key: 'timer',
     label: 'Timer (min):',
     type: 'number',
@@ -191,19 +183,6 @@ const DefaultBoard = () => {
                 slotProps={{
                   input: { component: numericFormatAdapter }
                 }}
-              />
-            }
-            {setting.key === 'theme' &&
-              <Input
-                className={classes.input}
-                id={setting.key}
-                type={setting.type}
-                placeholder={setting.placeholder}
-                value={setting.value}
-                onChange={setting.onChange}
-                disabled={true}
-                aria-label={`input for ${setting.label}`}
-                data-testid={`boardSetting${setting.key}`}
               />
             }
             {(setting.key === 'name') &&
