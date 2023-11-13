@@ -27,7 +27,6 @@ import {
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
-import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 import useLastPartLocation from '../../utils/useLastPartLocation';
 
 import { ADMIN_PAGE_HEADER_TITLE, adminTabList } from '../../constants';
@@ -52,7 +51,7 @@ const Dashboard = () => {
   const { getActiveBoard } = boardAPI();
   const URLPart = useLastPartLocation();
   const iconList = [
-    icons.suitCase,
+    icons.backpack,
     icons.signSpot
   ];
 
@@ -262,7 +261,7 @@ const Dashboard = () => {
                 >
                   <ListItemButton>
                     <span className={classes.listItemIcon}>
-                      <FriendlyIcon element={iconList[index]}></FriendlyIcon>
+                      {iconList[index]}
                     </span>
                     <ListItemText primary={listItem.listTitle}>
                     </ListItemText>

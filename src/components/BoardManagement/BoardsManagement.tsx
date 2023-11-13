@@ -8,14 +8,13 @@ import { boardAPI } from '../../api/BoardAPI';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
-import { NO_BOARDS_MESSAGE } from '../../constants';
+import { THERE_ARE_NO_BOARDS_MESSAGE } from '../../constants';
 
 import BoardStepper from '../BoardStepper/BoardStepper';
 import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
-  const { theme } = useContext(ThemeContext);
   const { boardId } = useContext(BoardContext);
   const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -69,13 +68,12 @@ const BoardsManagement = () => {
             {boards?.map(board =>
               <div key={board._id}>
                 <BoardStepper board={board} />
-                <Divider data-testid='divider' sx={{ width: '50%', color: theme.color4 }}/>
               </div>
             )}
           </div>
         }
         {(!isLoading && !boards?.length) &&
-          <NoContent message={NO_BOARDS_MESSAGE} />
+          <NoContent message={THERE_ARE_NO_BOARDS_MESSAGE} />
         }
       </div>
     </Box>

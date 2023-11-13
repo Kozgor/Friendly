@@ -1,41 +1,73 @@
+/* eslint-disable complexity */
 import moment from 'moment';
 
-import { useContext, useEffect, useState } from 'react';
-
+import { Button, Divider, Typography } from '@mui/joy';
 import {
-  Box,
-  Button,
+  Stack,
   Step,
+  StepButton,
+  StepIconProps,
   StepLabel,
   Stepper,
-  Typography
+  styled
 } from '@mui/material';
-import { BOARD_STATUSES } from '../../mocks/board';
+
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  boardStepperButtons,
+  boardStepperLabels,
+  possibleBoardStatuses
+} from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { boardAPI } from '../../api/BoardAPI';
-
-import { buttonLabels, possibleBoardStatuses } from '../../constants';
+import { defaultTheme } from '../../theme/default';
+import { icons } from '../../theme/icons/iconst';
 
 import classes from './BoardStepper.module.scss';
 
+interface IOwnerState {
+  completed?: boolean;
+  active?: boolean;
+}
+
+const ColorlibStepIconRoot = styled('div')<{ownerState: IOwnerState}>
+  (({ ownerState }) => ({
+    zIndex: 1,
+    color: defaultTheme.color4,
+    width: 39.5,
+    height: 36,
+    padding: 4,
+    borderRadius: 4,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: defaultTheme.color3,
+    ...(ownerState.active && {
+      backgroundColor: defaultTheme.color3
+    }),
+    ...(ownerState.completed && {
+      backgroundColor: defaultTheme.color5
+    })
+  })
+);
+
 const BoardStepper = (props: { board: IBoardSettings }) => {
   const { board } = props;
-  const { setBoardStatus } = useContext(BoardContext);
-  const steps = [BOARD_STATUSES[1], BOARD_STATUSES[2]];
-  const [activeStep, setActiveStep] = useState(
-    board.status === possibleBoardStatuses.active ? 0 : 1
-  );
+  const navigate = useNavigate();
+  const { setBoardId, setBoardStatus } = useContext(BoardContext);
   const [currentBoardStatus, setCurrentBoardStatus] = useState(board.status);
-  const [buttonLabel, setButtonLabel] = useState('');
   const { finalizeBoard } = boardAPI();
-
   const formatedDate = moment(board.createdAt).format('DD/MM/YYYY');
-
-  useEffect(() => {
-    currentBoardStatus === possibleBoardStatuses.created ?
-      setButtonLabel(buttonLabels.activate) : setButtonLabel(buttonLabels.finalize);
-  }, [currentBoardStatus]);
+  const stepIconValues = {
+    1: icons.backpack,
+    2: icons.passport,
+    3: icons.geo,
+    4: icons.map,
+    5: null
+  };
 
   const onFinalizeBoard = async () => {
     if (board._id) {
@@ -47,61 +79,145 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       return finalizedBoard;
     }
   };
+  // const onArchiveBoard = () => {
+  //   if (board._id) {
+  //     setCurrentBoardStatus(possibleBoardStatuses.archived);
+  //     setBoardStatus(possibleBoardStatuses.archived);
+  //   }
+  // };
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-    if (activeStep === 0) {
-      onFinalizeBoard();
+  const openSpecificBoard = (index: number) => {
+    if (index === 2 && currentBoardStatus === possibleBoardStatuses.active || index === 4) {
+      return;
+    }
+    if (board._id) {
+      setBoardId(board._id);
+      navigate(`/board/${board._id}`);
     }
   };
 
+  const isCompletedStep = (index: number) => {
+    if (index === 0) {
+      return true;
+    }
+
+    if (index === 1 && currentBoardStatus === possibleBoardStatuses.finalized ||
+      currentBoardStatus === possibleBoardStatuses.archived) {
+
+      return true;
+    }
+
+    if (index === 2 && currentBoardStatus === possibleBoardStatuses.finalized ||
+      currentBoardStatus === possibleBoardStatuses.archived) {
+
+      return true;
+    }
+
+    if (index === 3 && currentBoardStatus === possibleBoardStatuses.archived) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const ColorlibStepIcon = (props: StepIconProps) => {
+    const { active, completed, className } = props;
+    const opacity = (!active && !completed) &&
+      currentBoardStatus !== possibleBoardStatuses.finalized ? 0.5 : 1;
+
+    return (
+      <ColorlibStepIconRoot
+        ownerState={{ completed, active }}
+        className={className}
+        sx={{
+          opacity
+        }}
+      >
+        {stepIconValues[String(props.icon)]}
+      </ColorlibStepIconRoot>
+    );
+  };
+
   return (
-    <Box sx={{ width: '50%' }}>
+    <Stack sx={{
+      width: '70%',
+      marginTop: '40px',
+      marginBottom: '40px'
+    }} spacing={5}>
       <div className={classes.stepperHeader}>
-        <div className={classes.stepperHeaderSubtittles}>
-          <Typography variant='subtitle1' gutterBottom>Board name:</Typography>
-          <Typography variant='subtitle1' gutterBottom>Board status:</Typography>
-        </div>
-        <div className={classes.stepperHeaderInfo}>
-          <Typography variant='overline'>{board.name} ({formatedDate})</Typography>
-          <Typography variant='overline'>{currentBoardStatus}</Typography>
+        <div className={classes.stepperHeaderTittle}>
+          <div className={classes.boardNameContainerLeft}>
+            <Typography level='body-md' fontSize='xl'>Board:</Typography>
+          </div>
+          <div className={classes.boardNameContainerRight}>
+            <Typography level='h4'> {board.name} ({formatedDate})</Typography>
+          </div>
         </div>
       </div>
-      <Stepper alternativeLabel activeStep={activeStep + 1} sx={{ pt: 2 }}>
-        {steps.map(label => {
-          const stepProps: { completed?: boolean } = {};
-          const labelProps: { optional?: React.ReactNode } = {};
-
-          return (
-            <Step data-testid={`${label}-step`} key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
+      <Stepper
+        activeStep={1}
+        sx={{
+          '& .MuiStepConnector-line': {
+            borderStyle: 'dotted',
+            borderLeft: 'none',
+            borderRight: 'none',
+            borderColor: 'black',
+            borderBottom: 'none',
+            borderBlockStartWidth: 2
+          },
+          '& .Mui-completed:nth-of-type(1)': {
+            paddingLeft: '0px'
+          }
+        }}
+      >
+        {Object.values(stepIconValues).map((_: any, index: number) => (
+          <Step key={index} completed={isCompletedStep(index)}>
+            {(index === 2 && currentBoardStatus === possibleBoardStatuses.active) || index === 4 ?
+              (<Button
+                disabled={index === 4 && currentBoardStatus !== possibleBoardStatuses.finalized}
+                onClick={index === 2 && currentBoardStatus === possibleBoardStatuses.active ? onFinalizeBoard :
+                  () => {}}
+                sx={{
+                  backgroundColor: defaultTheme.color2,
+                  '&:hover': {
+                    backgroundColor: defaultTheme.color2
+                  },
+                  '&:disabled': {
+                    backgroundColor: defaultTheme.color2,
+                    color: defaultTheme.color4,
+                    opacity: 0.5
+                  }
+                }}
+              >
+                {index === 2 ? boardStepperButtons.finalize : boardStepperButtons.archive}
+              </Button>) :
+              (<StepButton
+                disabled={index === 3 && currentBoardStatus === possibleBoardStatuses.active}
+                onClick={() => openSpecificBoard(index)}>
+                <StepLabel
+                  StepIconComponent={ColorlibStepIcon}
+                  sx={{
+                    opacity: index === 3 && currentBoardStatus === possibleBoardStatuses.active ? 0.5 : 1,
+                    '&:hover': {
+                      cursor: 'pointer'
+                    }
+                  }}
+                >
+                  <span className={classes.stepperStepLabel}>{boardStepperLabels[index]}</span>
+                </StepLabel>
+              </StepButton>)
+            }
+          </Step>
+        ))}
       </Stepper>
-      {activeStep === steps.length - 1 ? (
-        <>
-          <Box
-            data-testid='no-steps-message'
-            sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
-          >
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              {`${board.name} ${possibleBoardStatuses.finalized}`}
-            </Typography>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button data-testid='next-button' onClick={handleNext}>
-              {buttonLabel}
-            </Button>
-          </Box>
-        </>
-      )}
-    </Box>
+      <Divider
+        sx={{
+          backgroundColor: defaultTheme.color5,
+          opacity: '0.8',
+          width: 'calc(100% - 8px)'
+        }}
+      />
+    </Stack>
   );
 };
 

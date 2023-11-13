@@ -5,8 +5,6 @@ import { ICardAvatar } from '../../interfaces/cardAvatar';
 import { getInitials } from '../../utils/userInitials';
 import { icons } from '../../theme/icons/iconst';
 
-import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
-
 const CardAvatar = (props: ICardAvatar) => {
   const { cardAuthor, cardAuthorAvatar, onToggle } = props;
   const avatar = useMemo(() => {
@@ -21,7 +19,7 @@ const CardAvatar = (props: ICardAvatar) => {
           onClick={onToggle}
           sx={{ cursor: 'pointer' }}
         >
-          <FriendlyIcon element={icons.incognito}></FriendlyIcon>
+          {icons.incognito}
         </Avatar>
         );
       }

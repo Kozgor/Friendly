@@ -3,6 +3,8 @@ import {
   useEffect,
   useState
 } from 'react';
+import { useParams } from 'react-router-dom';
+
 import { CircularProgress } from '@mui/joy';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -17,15 +19,14 @@ import { localStorageManager } from '../../utils/localStorageManager';
 
 import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
-import { userAPI } from '../../api/UserAPI';
 
 import { NO_BOARDS_MESSAGE, possibleBoardStatuses } from '../../constants';
-
-import { isNull } from 'lodash';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
 import NoContent from '../NoContent/NoContent';
+import useBoardIdLocation from '../../utils/useBoardIdLocation';
+
 import classes from './Board.module.scss';
 
 const Board = () => {
@@ -37,10 +38,10 @@ const Board = () => {
   const { getLocalUserData } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
-  const { getUserById } = userAPI();
   const user = getLocalUserData();
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
+  const URLBoardId= useBoardIdLocation();
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -62,11 +63,13 @@ const Board = () => {
     }
   };
 
-  const setupBoard = async (id: string, status: string) => {
+  const setupBoard = async (id: string) => {
+    setIsLoading(true);
+
     try {
       const board: IBoardSettings | undefined = await getBoardById(id);
 
-      if (board && board?.status === status) {
+      if (board && board.participants.includes(user.email)) {
         let columnsCards: IColumnCard[] | undefined;
 
         if (board.status === possibleBoardStatuses.active) {
@@ -96,40 +99,12 @@ const Board = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const fetchUserData = async () => {
-    setIsLoading(true);
-
-    try {
-      const userProfile: IUserProfile | undefined = await getUserById(user._id);
-
-      if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
-        setupBoard(
-          userProfile.boards.active,
-          possibleBoardStatuses.active
-        );
-        setIsLoading(false);
-
-        return;
-      }
-
-      if (userProfile && userProfile.boards && !isNull(userProfile.boards.finalized)) {
-        setupBoard(
-          userProfile.boards.finalized,
-          possibleBoardStatuses.finalized
-        );
-        setIsLoading(false);
-
-        return;
-      }
-    } catch (error){
-      console.log(error);
-    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchUserData();
+    console.log('URLBoardId', URLBoardId);
+    setupBoard(URLBoardId);
   }, [boardStatus]);
 
   return (

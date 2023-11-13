@@ -1,5 +1,4 @@
 import * as router from 'react-router';
-import axios from 'axios';
 
 import {
   RenderResult,
@@ -19,10 +18,6 @@ import DefaultBoardPage from '../../pages/defaultBoard/DefaultBoard';
 import { BoardContext } from '../../context/board/boardContext';
 
 import { BaseProps } from '../../interfaces/baseProps';
-
-import { boardAPI } from '../../api/BoardAPI';
-
-jest.mock('axios');
 
 const enableAdding = jest.fn();
 const disableAdding = jest.fn();

@@ -13,7 +13,12 @@ const { checkAdminRole, checkAuth } = checkAuthLoader();
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '',
+    element: <Navigate to="/board" />,
+    loader: checkAuth
+  },
+  {
+    path: '/board/:id',
     element: <BoardPage />,
     errorElement: <ErrorPage />,
     loader: checkAuth

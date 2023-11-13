@@ -1,16 +1,27 @@
 @import "../../mixins/flexbox";
 
 .stepperHeader {
+  width: 200;
+
   @include flexbox(row, start, stretch, wrap);
-  width: 100;
-  padding-top: 15px;
 }
 
-.stepperHeaderSubtittles,
-.stepperHeaderInfo {
-  @include flexbox(column, start, start, nowrap);
+.stepperHeaderTittle {
+  margin: 0;
+
+  @include flexbox(row, start, center, nowrap);
 }
 
-.stepperHeaderInfo {
-  margin-left: 5px;
+.boardNameContainerLeft {
+  @include flexbox(row, center, start, nowrap);
+}
+
+.boardNameContainerRight {
+  margin-left: 1rem;
+
+  @include flexbox(row, center, start, nowrap);
+}
+
+.stepperStepLabel {
+  color: rgba(72, 74, 75, 1);
 }
