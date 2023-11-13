@@ -14,12 +14,19 @@ export const possibleBoardStatuses = {
   finalized: 'finalized',
   archived: 'archived'
 };
+export const STEPS_MAP = {
+  first: 0,
+  second: 1,
+  third: 2,
+  fourth: 3,
+  fifth: 4
+};
 
 export const boardStepperLabels = [
   'Published',
-  'On Self Review',
+  'Solo Board',
   'Finalized',
-  'On Team Review'
+  'Shared Board'
 ];
 
 export const ADMIN_PAGE_HEADER_TITLE = 'friendly';

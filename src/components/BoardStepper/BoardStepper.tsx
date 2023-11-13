@@ -16,6 +16,7 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
+  STEPS_MAP,
   boardStepperButtons,
   boardStepperLabels,
   possibleBoardStatuses
@@ -36,7 +37,7 @@ interface IOwnerState {
 const ColorlibStepIconRoot = styled('div')<{ownerState: IOwnerState}>
   (({ ownerState }) => ({
     zIndex: 1,
-    color: defaultTheme.color4,
+    color: defaultTheme.color3,
     width: 39.5,
     height: 36,
     padding: 4,
@@ -44,9 +45,9 @@ const ColorlibStepIconRoot = styled('div')<{ownerState: IOwnerState}>
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: defaultTheme.color3,
+    backgroundColor: defaultTheme.color4,
     ...(ownerState.active && {
-      backgroundColor: defaultTheme.color3
+      backgroundColor: defaultTheme.color4
     }),
     ...(ownerState.completed && {
       backgroundColor: defaultTheme.color5
@@ -58,15 +59,24 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   const { board } = props;
   const navigate = useNavigate();
   const { setBoardId, setBoardStatus } = useContext(BoardContext);
-  const [currentBoardStatus, setCurrentBoardStatus] = useState(board.status);
+  const [currentBoardStatus, setCurrentBoardStatus] = useState<string>(board.status);
   const { finalizeBoard } = boardAPI();
   const formatedDate = moment(board.createdAt).format('DD/MM/YYYY');
   const stepIconValues = {
-    1: icons.backpack,
-    2: icons.passport,
-    3: icons.geo,
-    4: icons.map,
+    1: icons.map,
+    2: icons.backpack,
+    3: icons.pinMap,
+    4: icons.bus,
     5: null
+  };
+
+  const isStepCompletedMap = {
+    [STEPS_MAP.first]: true,
+    [STEPS_MAP.second]: currentBoardStatus === possibleBoardStatuses.finalized ||
+      currentBoardStatus === possibleBoardStatuses.archived,
+    [STEPS_MAP.third]: currentBoardStatus === possibleBoardStatuses.finalized ||
+      currentBoardStatus === possibleBoardStatuses.archived,
+    [STEPS_MAP.fourth]: currentBoardStatus === possibleBoardStatuses.archived
   };
 
   const onFinalizeBoard = async () => {
@@ -79,6 +89,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       return finalizedBoard;
     }
   };
+
   // const onArchiveBoard = () => {
   //   if (board._id) {
   //     setCurrentBoardStatus(possibleBoardStatuses.archived);
@@ -86,38 +97,11 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   //   }
   // };
 
-  const openSpecificBoard = (index: number) => {
-    if (index === 2 && currentBoardStatus === possibleBoardStatuses.active || index === 4) {
-      return;
-    }
+  const openSpecificBoard = () => {
     if (board._id) {
       setBoardId(board._id);
       navigate(`/board/${board._id}`);
     }
-  };
-
-  const isCompletedStep = (index: number) => {
-    if (index === 0) {
-      return true;
-    }
-
-    if (index === 1 && currentBoardStatus === possibleBoardStatuses.finalized ||
-      currentBoardStatus === possibleBoardStatuses.archived) {
-
-      return true;
-    }
-
-    if (index === 2 && currentBoardStatus === possibleBoardStatuses.finalized ||
-      currentBoardStatus === possibleBoardStatuses.archived) {
-
-      return true;
-    }
-
-    if (index === 3 && currentBoardStatus === possibleBoardStatuses.archived) {
-      return true;
-    }
-
-    return false;
   };
 
   const ColorlibStepIcon = (props: StepIconProps) => {
@@ -155,13 +139,13 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
         </div>
       </div>
       <Stepper
-        activeStep={1}
+        activeStep={STEPS_MAP.second}
         sx={{
           '& .MuiStepConnector-line': {
             borderStyle: 'dotted',
             borderLeft: 'none',
             borderRight: 'none',
-            borderColor: 'black',
+            borderColor: defaultTheme.color7,
             borderBottom: 'none',
             borderBlockStartWidth: 2
           },
@@ -171,12 +155,12 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
         }}
       >
         {Object.values(stepIconValues).map((_: any, index: number) => (
-          <Step key={index} completed={isCompletedStep(index)}>
-            {(index === 2 && currentBoardStatus === possibleBoardStatuses.active) || index === 4 ?
+          <Step key={index} completed={isStepCompletedMap[Object.keys(isStepCompletedMap)[index]]}>
+            {(index === 2 && currentBoardStatus === possibleBoardStatuses.active) || index === STEPS_MAP.fifth ?
               (<Button
-                disabled={index === 4 && currentBoardStatus !== possibleBoardStatuses.finalized}
-                onClick={index === 2 && currentBoardStatus === possibleBoardStatuses.active ? onFinalizeBoard :
-                  () => {}}
+                disabled={index === STEPS_MAP.fifth && currentBoardStatus !== possibleBoardStatuses.finalized}
+                onClick={index === STEPS_MAP.third && currentBoardStatus === possibleBoardStatuses.active ?
+                  onFinalizeBoard : () => {}}
                 sx={{
                   backgroundColor: defaultTheme.color2,
                   '&:hover': {
@@ -184,20 +168,20 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                   },
                   '&:disabled': {
                     backgroundColor: defaultTheme.color2,
-                    color: defaultTheme.color4,
+                    color: defaultTheme.color3,
                     opacity: 0.5
                   }
                 }}
               >
-                {index === 2 ? boardStepperButtons.finalize : boardStepperButtons.archive}
+                {index === STEPS_MAP.third ? boardStepperButtons.finalize : boardStepperButtons.archive}
               </Button>) :
               (<StepButton
-                disabled={index === 3 && currentBoardStatus === possibleBoardStatuses.active}
-                onClick={() => openSpecificBoard(index)}>
+                disabled={index === STEPS_MAP.fourth && currentBoardStatus === possibleBoardStatuses.active}
+                onClick={openSpecificBoard}>
                 <StepLabel
                   StepIconComponent={ColorlibStepIcon}
                   sx={{
-                    opacity: index === 3 && currentBoardStatus === possibleBoardStatuses.active ? 0.5 : 1,
+                    opacity: index === STEPS_MAP.fourth && currentBoardStatus === possibleBoardStatuses.active ? 0.5 : 1,
                     '&:hover': {
                       cursor: 'pointer'
                     }
@@ -212,7 +196,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       </Stepper>
       <Divider
         sx={{
-          backgroundColor: defaultTheme.color5,
+          backgroundColor: '#272829',
           opacity: '0.8',
           width: 'calc(100% - 8px)'
         }}

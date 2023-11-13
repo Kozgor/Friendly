@@ -237,7 +237,7 @@ const Dashboard = () => {
                 boxSizing: 'border-box',
                 position: 'relative',
                 backgroundColor: theme.color1,
-                color: theme.color4,
+                color: theme.color3,
                 borderRight: `1px solid ${theme.color5}`
               }
             }}

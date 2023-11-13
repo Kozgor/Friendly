@@ -107,6 +107,7 @@ const Board = () => {
       console.log(error);
     }
   };
+
   const fetchUserData = async () => {
     setIsLoading(true);
 
