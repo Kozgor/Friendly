@@ -35,7 +35,7 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
-import { icons } from '../../theme/icons/iconst';
+import { icons } from '../../theme/icons/icons';
 import { initColumnValue } from '../../mocks/column';
 
 import classes from './Dashboard.module.scss';

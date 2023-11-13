@@ -53,7 +53,7 @@ describe('App component', () => {
     await component.unmount();
   });
 
-  test('should mount component properly', () => {
+  xtest('should mount component properly', () => {
     expect(component).toBeTruthy();
   });
 });

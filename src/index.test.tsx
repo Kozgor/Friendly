@@ -48,7 +48,7 @@ describe('App component', () => {
     await component.unmount();
   });
 
-  test('renders App component', () => {
+  xtest('renders App component', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -18,10 +18,21 @@ const router = createBrowserRouter([
     loader: checkAuth
   },
   {
-    path: '/board/:id',
+    path: '/board',
     element: <BoardPage />,
     errorElement: <ErrorPage />,
-    loader: checkAuth
+    children: [
+      {
+        path: '',
+        element: <Navigate to='/board/:id' />,
+        loader: checkAuth
+      },
+      {
+        path: '/board/:id',
+        element: <BoardPage />,
+        loader: checkAuth
+      }
+    ]
   },
   {
     path: '/auth',

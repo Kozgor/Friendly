@@ -3,8 +3,6 @@ import {
   useEffect,
   useState
 } from 'react';
-import { useParams } from 'react-router-dom';
-
 import { CircularProgress } from '@mui/joy';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -19,8 +17,11 @@ import { localStorageManager } from '../../utils/localStorageManager';
 
 import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
+import { userAPI } from '../../api/UserAPI';
 
 import { NO_BOARDS_MESSAGE, possibleBoardStatuses } from '../../constants';
+
+import { isNull } from 'lodash';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
@@ -38,6 +39,7 @@ const Board = () => {
   const { getLocalUserData } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
+  const { getUserById } = userAPI();
   const user = getLocalUserData();
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
@@ -63,20 +65,25 @@ const Board = () => {
     }
   };
 
-  const setupBoard = async (id: string) => {
-    setIsLoading(true);
+  const setupBoard = async (id: string, status?: string) => {
+    if (id !== URLBoardId && user.role !== 'admin') {
+      setIsTimerVisible(false);
+      setIsBoardVisible(false);
+
+      return;
+    }
 
     try {
-      const board: IBoardSettings | undefined = await getBoardById(id);
+      const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
 
-      if (board && board.participants.includes(user.email)) {
+      if (board && board?.status === status) {
         let columnsCards: IColumnCard[] | undefined;
 
         if (board.status === possibleBoardStatuses.active) {
-          columnsCards = await fetchUserColumnCards(id, user._id);
+          columnsCards = await fetchUserColumnCards(URLBoardId, user._id);
           setIsTimerVisible(true);
         } else {
-          columnsCards = await fetchFinalColumnCards(id);
+          columnsCards = await fetchFinalColumnCards(URLBoardId);
           setIsTimerVisible(false);
         }
 
@@ -88,7 +95,7 @@ const Board = () => {
           }
         });
 
-        setBoardId(id);
+        setBoardId(URLBoardId);
         setBoardSettings(board);
         setBoardStatus(board.status);
         setIsBoardVisible(true);
@@ -99,12 +106,37 @@ const Board = () => {
     } catch (error) {
       console.log(error);
     }
-    setIsLoading(false);
+  };
+  const fetchUserData = async () => {
+    setIsLoading(true);
+
+    try {
+      const userProfile: IUserProfile | undefined = await getUserById(user._id);
+
+      if (userProfile && userProfile.boards) {
+        if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
+          setupBoard(userProfile.boards.active, possibleBoardStatuses.active);
+          setIsLoading(false);
+
+          return;
+        }
+
+        if (userProfile && userProfile.boards && !isNull(userProfile.boards.finalized)) {
+          setupBoard(userProfile.boards.finalized, possibleBoardStatuses.finalized);
+          setIsLoading(false);
+
+          return;
+        }
+      }
+    } catch (error){
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    console.log('URLBoardId', URLBoardId);
-    setupBoard(URLBoardId);
+    fetchUserData();
   }, [boardStatus]);
 
   return (

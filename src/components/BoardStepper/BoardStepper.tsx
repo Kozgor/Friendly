@@ -24,7 +24,7 @@ import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { boardAPI } from '../../api/BoardAPI';
 import { defaultTheme } from '../../theme/default';
-import { icons } from '../../theme/icons/iconst';
+import { icons } from '../../theme/icons/icons';
 
 import classes from './BoardStepper.module.scss';
 
