@@ -18,6 +18,7 @@ export interface IUserProfile {
 export interface IUserLocalProfile {
   _id: string;
   fullName: string;
+  email: string;
   role: string;
   avatar: string;
   token: string;

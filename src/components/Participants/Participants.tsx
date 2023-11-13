@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { IParticipants } from '../../interfaces/participants';
 import { SELECT_ALL } from '../../constants';
 import { isString } from 'lodash';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
@@ -15,9 +16,12 @@ import classes from './Participants.module.scss';
 
 const Participants = (props: IParticipants) => {
   const { participants, collectParticipants } = props;
-  const [personNames, setPersonNames] = useState<string[]>([]);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [checked, setChecked] = useState<boolean[]>(participants.map(() => false));
+  const { getLocalUserData } = localStorageManager();
+  const { email } = getLocalUserData();
+  const [personNames, setPersonNames] = useState<string[]>([email]);
+  const [selected, setSelected] = useState<string[]>([email]);
+  const [checked, setChecked] = useState<boolean[]>([]);
+
   const isChecked = personNames.length === participants.length;
   const isIndeterminate = personNames.length !== participants.length && personNames.length > 0;
 
@@ -56,6 +60,7 @@ const Participants = (props: IParticipants) => {
     if (!isChecked) {
       collectParticipants(selected);
     }
+
   }, [selected, checked]);
 
   return (
