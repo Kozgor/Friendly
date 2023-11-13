@@ -155,8 +155,9 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
         }}
       >
         {Object.values(stepIconValues).map((_: any, index: number) => (
-          <Step key={index} completed={isStepCompletedMap[Object.keys(isStepCompletedMap)[index]]}>
-            {(index === 2 && currentBoardStatus === possibleBoardStatuses.active) || index === STEPS_MAP.fifth ?
+          <Step key={index} completed={isStepCompletedMap[index]}>
+            {(index === STEPS_MAP.third && currentBoardStatus === possibleBoardStatuses.active) ||
+              index === STEPS_MAP.fifth ?
               (<Button
                 disabled={index === STEPS_MAP.fifth && currentBoardStatus !== possibleBoardStatuses.finalized}
                 onClick={index === STEPS_MAP.third && currentBoardStatus === possibleBoardStatuses.active ?
