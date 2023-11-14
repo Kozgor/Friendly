@@ -26,6 +26,8 @@ import { isNull } from 'lodash';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
 import NoContent from '../NoContent/NoContent';
+import useBoardIdLocation from '../../utils/useBoardIdLocation';
+
 import classes from './Board.module.scss';
 
 const Board = () => {
@@ -41,6 +43,7 @@ const Board = () => {
   const user = getLocalUserData();
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
+  const URLBoardId= useBoardIdLocation();
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -62,18 +65,25 @@ const Board = () => {
     }
   };
 
-  const setupBoard = async (id: string, status: string) => {
+  const setupBoard = async (id: string, status?: string) => {
+    if (id !== URLBoardId && user.role !== 'admin') {
+      setIsTimerVisible(false);
+      setIsBoardVisible(false);
+
+      return;
+    }
+
     try {
-      const board: IBoardSettings | undefined = await getBoardById(id);
+      const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
 
       if (board && board?.status === status) {
         let columnsCards: IColumnCard[] | undefined;
 
         if (board.status === possibleBoardStatuses.active) {
-          columnsCards = await fetchUserColumnCards(id, user._id);
+          columnsCards = await fetchUserColumnCards(URLBoardId, user._id);
           setIsTimerVisible(true);
         } else {
-          columnsCards = await fetchFinalColumnCards(id);
+          columnsCards = await fetchFinalColumnCards(URLBoardId);
           setIsTimerVisible(false);
         }
 
@@ -85,7 +95,7 @@ const Board = () => {
           }
         });
 
-        setBoardId(id);
+        setBoardId(URLBoardId);
         setBoardSettings(board);
         setBoardStatus(board.status);
         setIsBoardVisible(true);
@@ -104,27 +114,25 @@ const Board = () => {
     try {
       const userProfile: IUserProfile | undefined = await getUserById(user._id);
 
-      if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
-        setupBoard(
-          userProfile.boards.active,
-          possibleBoardStatuses.active
-        );
-        setIsLoading(false);
+      if (userProfile && userProfile.boards) {
+        if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
+          setupBoard(userProfile.boards.active, possibleBoardStatuses.active);
+          setIsLoading(false);
 
-        return;
-      }
+          return;
+        }
 
-      if (userProfile && userProfile.boards && !isNull(userProfile.boards.finalized)) {
-        setupBoard(
-          userProfile.boards.finalized,
-          possibleBoardStatuses.finalized
-        );
-        setIsLoading(false);
+        if (userProfile && userProfile.boards && !isNull(userProfile.boards.finalized)) {
+          setupBoard(userProfile.boards.finalized, possibleBoardStatuses.finalized);
+          setIsLoading(false);
 
-        return;
+          return;
+        }
       }
     } catch (error){
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

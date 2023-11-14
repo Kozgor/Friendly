@@ -3,9 +3,7 @@ import { useMemo } from 'react';
 import { Avatar } from '@mui/joy';
 import { ICardAvatar } from '../../interfaces/cardAvatar';
 import { getInitials } from '../../utils/userInitials';
-import { icons } from '../../theme/icons/iconst';
-
-import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
+import { icons } from '../../theme/icons/icons';
 
 const CardAvatar = (props: ICardAvatar) => {
   const { cardAuthor, cardAuthorAvatar, onToggle } = props;
@@ -21,7 +19,7 @@ const CardAvatar = (props: ICardAvatar) => {
           onClick={onToggle}
           sx={{ cursor: 'pointer' }}
         >
-          <FriendlyIcon element={icons.incognito}></FriendlyIcon>
+          {icons.incognito}
         </Avatar>
         );
       }

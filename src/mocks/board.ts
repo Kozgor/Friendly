@@ -40,5 +40,3 @@ export const FINALIZED_BOARD = {
     createdAt: '2023-10-31T10:59:17.953+00:00',
     __v: 0
 };
-
-export const BOARD_STATUSES = ['created', 'active', 'finalized', 'archived'];

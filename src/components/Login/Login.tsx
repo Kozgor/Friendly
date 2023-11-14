@@ -65,10 +65,21 @@ function Login() {
           addUserToStore(user);
           saveLocalUserData(user);
 
-          user.role === 'user'
-            ? navigate('/')
-            : navigate('/admin/');
+          if (user.role === 'user') {
+            if (user.boards.active) {
+              navigate(`/board/${user.boards.active}`);
+
+              return;
+            }
+
+            navigate(`/board/${user.boards.finalized}`);
+
+            return;
+          }
+
+          navigate('/admin/');
         } catch (error) {
+          console.log(error);
           setIsLoginRequest(false);
           toast.error(
             <Toastr

@@ -27,7 +27,6 @@ import {
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
-import FriendlyIcon from '../FriendlyIcon/FriendlyIcon';
 import useLastPartLocation from '../../utils/useLastPartLocation';
 
 import { ADMIN_PAGE_HEADER_TITLE, adminTabList } from '../../constants';
@@ -36,7 +35,7 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
-import { icons } from '../../theme/icons/iconst';
+import { icons } from '../../theme/icons/icons';
 import { initColumnValue } from '../../mocks/column';
 
 import classes from './Dashboard.module.scss';
@@ -52,7 +51,7 @@ const Dashboard = () => {
   const { getActiveBoard } = boardAPI();
   const URLPart = useLastPartLocation();
   const iconList = [
-    icons.suitCase,
+    icons.backpack,
     icons.signSpot
   ];
 
@@ -238,7 +237,7 @@ const Dashboard = () => {
                 boxSizing: 'border-box',
                 position: 'relative',
                 backgroundColor: theme.color1,
-                color: theme.color4,
+                color: theme.color3,
                 borderRight: `1px solid ${theme.color5}`
               }
             }}
@@ -262,7 +261,7 @@ const Dashboard = () => {
                 >
                   <ListItemButton>
                     <span className={classes.listItemIcon}>
-                      <FriendlyIcon element={iconList[index]}></FriendlyIcon>
+                      {iconList[index]}
                     </span>
                     <ListItemText primary={listItem.listTitle}>
                     </ListItemText>
