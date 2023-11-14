@@ -197,7 +197,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       </Stepper>
       <Divider
         sx={{
-          backgroundColor: '#272829',
+          backgroundColor: defaultTheme.color7,
           opacity: '0.8',
           width: 'calc(100% - 8px)'
         }}
