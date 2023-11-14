@@ -62,6 +62,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   const [currentBoardStatus, setCurrentBoardStatus] = useState<string>(board.status);
   const { finalizeBoard } = boardAPI();
   const formatedDate = moment(board.createdAt).format('DD/MM/YYYY');
+
   const stepIconValues = {
     1: icons.map,
     2: icons.backpack,
@@ -70,13 +71,15 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
     5: null
   };
 
+  const isStatusArchivedOrFinalized = currentBoardStatus === possibleBoardStatuses.finalized ||
+    currentBoardStatus === possibleBoardStatuses.archived;
+  const isStatusArchived = currentBoardStatus === possibleBoardStatuses.archived;
+
   const isStepCompletedMap = {
     [STEPS_MAP.first]: true,
-    [STEPS_MAP.second]: currentBoardStatus === possibleBoardStatuses.finalized ||
-      currentBoardStatus === possibleBoardStatuses.archived,
-    [STEPS_MAP.third]: currentBoardStatus === possibleBoardStatuses.finalized ||
-      currentBoardStatus === possibleBoardStatuses.archived,
-    [STEPS_MAP.fourth]: currentBoardStatus === possibleBoardStatuses.archived
+    [STEPS_MAP.second]: isStatusArchivedOrFinalized,
+    [STEPS_MAP.third]: isStatusArchivedOrFinalized,
+    [STEPS_MAP.fourth]: isStatusArchived
   };
 
   const onFinalizeBoard = async () => {
