@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import {
@@ -13,6 +13,10 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
+
+import { defaultTheme } from '../../theme/default';
+
+import CardTagChip from '../CardTagChip/CardTagChip';
 
 const NewCard = (props: IColumnCard) => {
   const {
@@ -84,14 +88,11 @@ const NewCard = (props: IColumnCard) => {
         {cardTagsState && (
           <div className={classes['card__header__tags']}>
             <Autocomplete
-              data-testid='newCardAutocomplete'
+              data-testid='tags-default'
               multiple
-              placeholder='Tags'
-              size='sm'
-              variant='outlined'
-              options={possibleCardTags || []}
-              value={cardTagsState}
-              disabled={isDisabled}
+              placeholder='Favorites'
+              options={possibleCardTags}
+              getOptionLabel={(option) => option}
               onChange={(event, newValue) => setCardTags([...newValue])}
             />
           </div>

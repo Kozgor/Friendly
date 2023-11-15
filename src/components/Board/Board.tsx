@@ -147,7 +147,7 @@ const Board = () => {
         isTimerVisible={isTimerVisible}
         time={boardSettings.timer}
       />
-      <main className={`container ${classes.board}`} data-testid='board'>
+      <main className={classes.board} data-testid='board'>
         {isBoard &&
           boardSettings?.columns.map((column) => (
             <Column

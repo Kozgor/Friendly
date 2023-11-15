@@ -8,7 +8,7 @@ export const REPLIES: IColumnCard[] = [
       cardAuthorId: '650b15bfc45ee8d80c27c388',
       cardAuthorAvatar: 'avatar.jpeg',
       isDisabled: false,
-      cardTags: ['danger', 'primary'],
+      cardTags: ['Fun', 'Value'],
       cardReplies: [],
       cardReactions: []
     }, {
@@ -19,7 +19,7 @@ export const REPLIES: IColumnCard[] = [
       cardAuthorId: '650b15bfc45ee8d80c27c389',
       cardAuthorAvatar: 'avatar.jpeg',
       isDisabled: false,
-      cardTags: ['warning'],
+      cardTags: ['Colaboration'],
       cardReplies: [],
       cardReactions: []
     }

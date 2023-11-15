@@ -1,13 +1,11 @@
 @import "../../mixins/flexbox";
 
-.header,
-.footer {
-  @include flexbox(row, space-between, center, nowrap);
-}
-
 .header {
   margin-bottom: 1rem;
   position: relative;
+  width: 100%;
+
+  @include flexbox(row, center, center, nowrap);
 
   .actionsButton:hover {
     background-color: unset;
@@ -16,10 +14,18 @@
 
 .footer {
   margin-top: 1rem;
+
+  @include flexbox(row, space-between, center, nowrap);
 }
 
 .card {
+  @include flexbox(column, space-between, start, nowrap);
+
   .message {
+    align-self: center;
+    width: 100%;
+    text-align: center;
+
     p {
       overflow: hidden;
       -webkit-line-clamp: 3;
@@ -32,6 +38,10 @@
     }
   }
 
+  .showButton {
+    align-self: center;
+  }
+
   .showButton:hover {
     background-color: unset;
   }
@@ -40,4 +50,13 @@
 .author {
   float: left;
   margin-right: 10px;
+}
+
+.tags {
+  @include flexbox(row, start, center, nowrap);
+
+  & div {
+    margin-left: 0;
+    margin-right: 10px;
+  }
 }
