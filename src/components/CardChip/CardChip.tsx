@@ -2,7 +2,7 @@ import { Chip } from '@mui/joy';
 import { defaultTheme } from '../../theme/default';
 import { possibleCardTags } from '../../types/cardTags';
 
-const CardTagChip = (props: { tag: string }) => {
+const CardChip = (props: { tag: string }) => {
   const { tag } = props;
 
   const setChipColor = {
@@ -21,7 +21,7 @@ const CardTagChip = (props: { tag: string }) => {
 
   return (
     <Chip
-      data-testid='card-tag-chip'
+      data-testid='card-chip'
       key={tag}
       size='sm'
       sx={{
@@ -41,4 +41,4 @@ const CardTagChip = (props: { tag: string }) => {
   );
 };
 
-export default CardTagChip;
+export default CardChip;

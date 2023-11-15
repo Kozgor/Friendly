@@ -1,14 +1,14 @@
 import { RenderResult, render, screen } from '@testing-library/react';
-import CardTagChip from './CardTagChip';
+import CardChip from './CardChip';
 
 import { possibleCardTags } from '../../types/cardTags';
 
-describe('Comment component', () => {
+describe('CardChip component', () => {
   let component: RenderResult;
 
   beforeEach(() => {
     component = render(
-      <CardTagChip tag={possibleCardTags[0]}/>
+      <CardChip tag={possibleCardTags[0]}/>
     );
   });
 
@@ -20,7 +20,7 @@ describe('Comment component', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should render specific tag', () => {
+  test('should render specific chip', () => {
     const tag = screen.getByText(possibleCardTags[0]);
 
     expect(tag.innerHTML).toBe(possibleCardTags[0]);

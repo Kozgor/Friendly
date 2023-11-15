@@ -40,7 +40,7 @@ describe('FinalizedCard component', () => {
   });
 
   test('should render tags', () => {
-    const tags = screen.getAllByTestId('card-tag-chip');
+    const tags = screen.getAllByTestId('card-chip');
 
     expect(tags.length).toBe(REPLIES[commentNumber].cardTags?.length);
   });

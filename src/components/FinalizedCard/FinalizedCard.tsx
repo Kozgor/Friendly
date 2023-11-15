@@ -11,7 +11,7 @@ import {
 } from '@mui/joy';
 
 import CardAvatar from '../CardAvatar/CardAvatar';
-import CardTagChip from '../CardTagChip/CardTagChip';
+import CardTagChip from '../CardChip/CardChip';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import classes from './FinalizedCard.module.scss';
