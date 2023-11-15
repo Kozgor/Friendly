@@ -5,12 +5,10 @@ import {
   Button,
   Card,
   Dropdown,
-  IconButton,
   Menu,
   MenuButton,
   MenuItem
 } from '@mui/joy';
-import MoreVert from '@mui/icons-material/MoreVert';
 
 import CardAvatar from '../CardAvatar/CardAvatar';
 import CardTagChip from '../CardTagChip/CardTagChip';
@@ -20,18 +18,14 @@ import classes from './FinalizedCard.module.scss';
 
 const FinalizedCard = (props: IColumnCard) => {
   const {
-    _id,
-    createdAt,
     cardAuthor,
-    cardAuthorId,
     cardAuthorAvatar,
     cardComment,
-    isDisabled,
     cardTags
   } = props;
   const [isShownAllText, setIsShownAllText] = useState(false);
-  const [isShownAllTags, setIsShownAllTags] = useState(cardTags && cardTags?.length < 3);
   const [displayShowButton] = useState(cardComment.length > 110);
+  const isShownAllTags = cardTags && cardTags?.length < 3;
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -41,28 +35,28 @@ const FinalizedCard = (props: IColumnCard) => {
     setIsShownAllText(false);
   };
 
-  const deleteCard = () => {
-    props.onAction?.('remove', {
-      _id: _id,
-      createdAt: createdAt,
-      cardAuthor: cardAuthor,
-      cardAuthorId: cardAuthorId,
-      cardAuthorAvatar: cardAuthorAvatar,
-      cardComment: cardComment
-    });
-  };
+  // const deleteCard = () => {
+  //   props.onAction?.('remove', {
+  //     _id: _id,
+  //     createdAt: createdAt,
+  //     cardAuthor: cardAuthor,
+  //     cardAuthorId: cardAuthorId,
+  //     cardAuthorAvatar: cardAuthorAvatar,
+  //     cardComment: cardComment
+  //   });
+  // };
 
-  const editCard = () => {
-    props.onAction?.('edit', {
-      _id: _id,
-      createdAt: createdAt,
-      cardAuthor: cardAuthor,
-      cardAuthorId: cardAuthorId,
-      cardAuthorAvatar: cardAuthorAvatar,
-      cardComment: cardComment,
-      cardTags: cardTags
-    });
-  };
+  // const editCard = () => {
+  //   props.onAction?.('edit', {
+  //     _id: _id,
+  //     createdAt: createdAt,
+  //     cardAuthor: cardAuthor,
+  //     cardAuthorId: cardAuthorId,
+  //     cardAuthorAvatar: cardAuthorAvatar,
+  //     cardComment: cardComment,
+  //     cardTags: cardTags
+  //   });
+  // };
 
   const displayMessage = (message: string) => {
     let row = '';

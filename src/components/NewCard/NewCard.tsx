@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import moment from 'moment';
 
 import {
@@ -13,10 +13,6 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
-
-import { defaultTheme } from '../../theme/default';
-
-import CardTagChip from '../CardTagChip/CardTagChip';
 
 const NewCard = (props: IColumnCard) => {
   const {

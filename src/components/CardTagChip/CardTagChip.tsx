@@ -4,6 +4,7 @@ import { possibleCardTags } from '../../types/cardTags';
 
 const CardTagChip = (props: { tag: string }) => {
   const { tag } = props;
+
   const setChipColor = {
     [possibleCardTags[0]] : 'rgba(245, 205, 119, 0.5)',
     [possibleCardTags[1]] : 'rgba(163, 164, 165, 1)',
