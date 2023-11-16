@@ -1,21 +1,52 @@
 @import "../../mixins/flexbox";
 
+.footer {
+  margin-top: 1rem;
+  width: 100%;
+
+  @include flexbox(row, space-between, center, nowrap);
+
+  .footerTags {
+    @include flexbox(row, start, center, nowrap);
+    justify-self: flex-start;
+
+    & div {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+  }
+
+  .footerReactons {
+    @include flexbox(row, space-between, center, nowrap);
+
+    .reactionIcon {
+      color: black;
+    }
+  }
+}
+
 .header {
   margin-bottom: 1rem;
   position: relative;
   width: 100%;
 
-  @include flexbox(row, center, center, nowrap);
+  @include flexbox(row, start, center, nowrap);
 
   .actionsButton:hover {
     background-color: unset;
   }
-}
 
-.footer {
-  margin-top: 1rem;
+  .headerActionItems {
+    @include flexbox(row, end, center, nowrap);
+  }
 
-  @include flexbox(row, space-between, center, nowrap);
+  .author {
+    @include flexbox(row, flex-end, center, nowrap);
+  }
+
+  .author div:nth-child(1) {
+    margin-right: -20px;
+  }
 }
 
 .card {
@@ -31,10 +62,8 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       margin-bottom: 0;
-    }
-
-    span {
-      display: list-item;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
   }
 
@@ -44,19 +73,5 @@
 
   .showButton:hover {
     background-color: unset;
-  }
-}
-
-.author {
-  float: left;
-  margin-right: 10px;
-}
-
-.tags {
-  @include flexbox(row, start, center, nowrap);
-
-  & div {
-    margin-left: 0;
-    margin-right: 10px;
   }
 }

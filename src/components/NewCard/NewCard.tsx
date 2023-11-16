@@ -13,6 +13,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 
 import classes from './NewCard.module.scss';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 const NewCard = (props: IColumnCard) => {
   const {
@@ -29,16 +30,16 @@ const NewCard = (props: IColumnCard) => {
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
   const [cardAuthorState, setCardAuthor] = useState(cardAuthor);
   const [cardAuthorAvatarState, setCardAuthorAvatar] = useState(cardAuthorAvatar || '');
+  const { getLocalUserData } = localStorageManager();
+  const localUser = getLocalUserData();
 
   const onHandleSwitchToggle = () => {
-    if (!props._id && !isDisabled) {
-      if(cardAuthorState === 'Incognito') {
-        setCardAuthor(cardAuthor);
-        setCardAuthorAvatar(cardAuthorAvatar || '');
-      } else {
-        setCardAuthor('Incognito');
-        setCardAuthorAvatar('Incognito');
-      }
+    if(cardAuthorState === 'Incognito') {
+      setCardAuthor(localUser.fullName);
+      setCardAuthorAvatar(localUser.avatar || '');
+    } else {
+      setCardAuthor('Incognito');
+      setCardAuthorAvatar('Incognito');
     }
   };
 
@@ -53,7 +54,6 @@ const NewCard = (props: IColumnCard) => {
     });
   };
 
-  // ToDo: Add reactions and replies via cardReactionsState, cardRepliesState
   const onSaveCard = () => {
     const onSaveCreatedAt = !createdAt ? moment().toISOString(): createdAt;
     const onSaveCardId = !_id ? '' : _id;
@@ -135,7 +135,7 @@ const NewCard = (props: IColumnCard) => {
         </div>
         <div className={classes['card__footer--save-button']}>
           <Button
-           data-testid='newCardButtonSave'
+            data-testid='newCardButtonSave'
             variant='solid'
             color='primary'
             onClick={onSaveCard}

@@ -2,6 +2,12 @@ import { ICardReply } from './columnCardReply';
 
 import { CardTag } from '../types/cardTags';
 
+// interface ICardReactions {
+//   _id: string;
+//   userId: string;
+//   isHappyReaction: boolean;
+// }
+
 export interface IColumnCard {
   _id: string;
   createdAt: string;
@@ -9,8 +15,9 @@ export interface IColumnCard {
   cardAuthor: string;
   cardAuthorId: string;
   cardAuthorAvatar?: string;
+  cardActionAuthorId?: string;
   cardTags?: CardTag[];
-  cardReactions?: string[];
+  cardReactions?: boolean|null;
   cardReplies?: ICardReply[];
   isEditable?: boolean;
   isDisabled?: boolean;

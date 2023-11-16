@@ -20,7 +20,6 @@ describe('Comment component', () => {
         cardTags={REPLIES[commentNumber].cardTags}
         isDisabled={REPLIES[commentNumber].isDisabled}
         cardReplies={[]}
-        cardReactions={[]}
         onAction={actionMock}
       />
     );

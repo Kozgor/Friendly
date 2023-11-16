@@ -25,8 +25,23 @@ export const columnAPI = () => {
     }
   };
 
+  const updateColumnCardReaction = async (_id: string, userId: string, isHappyReaction: boolean) => {
+    try {
+      const updatedCardWithReactions = await axios.put(`${FRIENDLY_DOMAIN}card/update-card-reactions`, {
+        _id,
+        userId,
+        isHappyReaction
+      });
+
+      return updatedCardWithReactions.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     getUserColumnCards,
-    getFinalColumnCards
+    getFinalColumnCards,
+    updateColumnCardReaction
   };
 };

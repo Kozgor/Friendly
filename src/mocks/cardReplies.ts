@@ -9,8 +9,7 @@ export const REPLIES: IColumnCard[] = [
       cardAuthorAvatar: 'avatar.jpeg',
       isDisabled: false,
       cardTags: ['Fun', 'Value'],
-      cardReplies: [],
-      cardReactions: []
+      cardReplies: []
     }, {
       _id: 'test comment 2',
       createdAt: '2023-09-19T14:28:54.921Z',
@@ -20,8 +19,7 @@ export const REPLIES: IColumnCard[] = [
       cardAuthorAvatar: 'avatar.jpeg',
       isDisabled: false,
       cardTags: ['Colaboration'],
-      cardReplies: [],
-      cardReactions: []
+      cardReplies: []
     }
 ];
 
