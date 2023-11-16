@@ -35,7 +35,7 @@ describe('Comment component', () => {
   });
 
   test('should display autocomplete for tags', () => {
-    const autocomplete = screen.getByTestId('newCardAutocomplete');
+    const autocomplete = screen.getByTestId('tags-default');
 
     expect(autocomplete).toBeInTheDocument();
   });

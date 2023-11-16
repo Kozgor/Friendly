@@ -1,35 +1,31 @@
+/* eslint-disable complexity */
 import { useState } from 'react';
 
 import {
   Button,
   Card,
-  Chip,
   Dropdown,
-  IconButton,
   Menu,
   MenuButton,
   MenuItem
 } from '@mui/joy';
-import MoreVert from '@mui/icons-material/MoreVert';
 
 import CardAvatar from '../CardAvatar/CardAvatar';
+import CardTagChip from '../CardChip/CardChip';
 import { IColumnCard } from '../../interfaces/columnCard';
 
 import classes from './FinalizedCard.module.scss';
 
 const FinalizedCard = (props: IColumnCard) => {
   const {
-    _id,
-    createdAt,
     cardAuthor,
-    cardAuthorId,
     cardAuthorAvatar,
     cardComment,
-    isDisabled,
     cardTags
   } = props;
   const [isShownAllText, setIsShownAllText] = useState(false);
   const [displayShowButton] = useState(cardComment.length > 110);
+  const isShownAllTags = cardTags && cardTags?.length < 3;
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -39,28 +35,28 @@ const FinalizedCard = (props: IColumnCard) => {
     setIsShownAllText(false);
   };
 
-  const deleteCard = () => {
-    props.onAction?.('remove', {
-      _id: _id,
-      createdAt: createdAt,
-      cardAuthor: cardAuthor,
-      cardAuthorId: cardAuthorId,
-      cardAuthorAvatar: cardAuthorAvatar,
-      cardComment: cardComment
-    });
-  };
+  // const deleteCard = () => {
+  //   props.onAction?.('remove', {
+  //     _id: _id,
+  //     createdAt: createdAt,
+  //     cardAuthor: cardAuthor,
+  //     cardAuthorId: cardAuthorId,
+  //     cardAuthorAvatar: cardAuthorAvatar,
+  //     cardComment: cardComment
+  //   });
+  // };
 
-  const editCard = () => {
-    props.onAction?.('edit', {
-      _id: _id,
-      createdAt: createdAt,
-      cardAuthor: cardAuthor,
-      cardAuthorId: cardAuthorId,
-      cardAuthorAvatar: cardAuthorAvatar,
-      cardComment: cardComment,
-      cardTags: cardTags
-    });
-  };
+  // const editCard = () => {
+  //   props.onAction?.('edit', {
+  //     _id: _id,
+  //     createdAt: createdAt,
+  //     cardAuthor: cardAuthor,
+  //     cardAuthorId: cardAuthorId,
+  //     cardAuthorAvatar: cardAuthorAvatar,
+  //     cardComment: cardComment,
+  //     cardTags: cardTags
+  //   });
+  // };
 
   const displayMessage = (message: string) => {
     let row = '';
@@ -91,23 +87,21 @@ const FinalizedCard = (props: IColumnCard) => {
 
   return (
     <Card
+      variant='outlined'
       className={classes.card}
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
         marginBottom: 2,
-        minHeight: 210
+        minHeight: 210,
+        backgroundColor: 'white',
+        border: 'none',
+        padding: '10px 24px 16px',
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1)'
       }}
     >
       <div className={classes.header}>
-        <div className={classes.tags}>
-          {cardTags?.map((tag) => (
-            <Chip data-testid='tag' key={tag} sx={{ marginRight: 1, marginBottom: 1 }}>
-              {tag}
-            </Chip>
-          ))}
-        </div>
-        <Dropdown>
+        {/* <Dropdown>
           <MenuButton
             data-testid='cardMenuButton'
             className={classes.actionsButton}
@@ -132,15 +126,15 @@ const FinalizedCard = (props: IColumnCard) => {
             onClick={deleteCard}
           >Delete</MenuItem>
         </Menu>
-      </Dropdown>
-      </div>
-      <div id='message' className={classes.message}>
+        </Dropdown> */}
         <div className={classes.author}>
           <CardAvatar
             cardAuthor={cardAuthor}
             cardAuthorAvatar={cardAuthorAvatar || ''}
           ></CardAvatar>
         </div>
+      </div>
+      <div id='message' className={classes.message}>
         <p
           style={{
             display: isShownAllText ? 'block' : '-webkit-box'
@@ -159,13 +153,7 @@ const FinalizedCard = (props: IColumnCard) => {
             paddingTop: 0,
             paddingBottom: 0,
             height: 30,
-            minHeight: 'unset',
-            top: -27,
-            left: 10,
-            marginTop: 0,
-            marginRight: 0,
-            marginBottom: 0,
-            marginLeft: 'auto'
+            minHeight: 'unset'
           }}
           className={classes.showButton}
         >
@@ -182,33 +170,62 @@ const FinalizedCard = (props: IColumnCard) => {
             paddingTop: 0,
             paddingBottom: 0,
             height: 30,
-            minHeight: 'unset',
-            top: -27,
-            left: 10,
-            marginTop: 0,
-            marginRight: 0,
-            marginBottom: 0,
-            marginLeft: 'auto'
+            minHeight: 'unset'
           }}
           className={classes.showButton}
         >
           Show less
         </Button>
       )}
-      {/* <div className={classes.footer}>
-        <Avatar
-          className={classes.author}
-          alt="reactions"
-          src="https://th.bing.com/th/id/OIP.z-H7lc_aTOJfM5cxxQpynwHaHa?w=212&h=213&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-        >
-          YB
-        </Avatar>
-        <Badge
-          badgeContent={props.cardReactions ? props.cardReactions.length : 0}
-        >
-          <Button>Reply</Button>
-        </Badge>
-      </div> */}
+      {isShownAllTags && cardTags &&
+        <div className={classes.tags}>
+          {cardTags?.map((tag) => (
+            <CardTagChip datda-testid='tag' key={tag} tag={tag}/>
+          ))}
+        </div>
+      }
+      {!isShownAllTags && cardTags &&
+        <div className={classes.tags}>
+          {
+            <>
+              <CardTagChip key={cardTags[0]} tag={cardTags[0]}/>
+              <CardTagChip key={cardTags[1]} tag={cardTags[1]}/>
+              <Dropdown>
+                <MenuButton
+                  variant='plain'
+                  size='sm'
+                  sx={{
+                    padding: '6px 8px',
+                    backgroundColor: 'rgba(247, 248, 249, 1)',
+                    borderRadius: '20px',
+                    border: 'solid 1px rgba(247, 248, 249, 1)',
+                    fontSize: '10px',
+                    fontWeight: '400',
+                    '&:hover': {
+                      backgroundColor: 'rgba(247, 248, 249, 1)'
+                    },
+                    '&.MuiMenuButton-root': {
+                      width: '28px',
+                      height: '26px',
+                      fontSize: '10px',
+                      minHeight: '0px'
+                    }
+                  }}
+                >
+                  {`+${cardTags?.length - 2}`}
+                </MenuButton>
+                <Menu>
+                  {cardTags.slice(2).map((tag) => (
+                    <MenuItem key={tag}>
+                      {tag}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Dropdown>
+            </>
+          }
+        </div>
+      }
     </Card>
   );
 };

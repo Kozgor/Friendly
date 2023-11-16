@@ -11,7 +11,7 @@
   height: 90vh;
   padding: 20px 0;
 
-  @include flexbox(row, space-around, center, nowrap);
+  @include flexbox(row, center, center, nowrap);
 
   .addingColumn {
     width: 360px;

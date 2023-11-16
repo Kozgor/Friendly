@@ -84,14 +84,11 @@ const NewCard = (props: IColumnCard) => {
         {cardTagsState && (
           <div className={classes['card__header__tags']}>
             <Autocomplete
-              data-testid='newCardAutocomplete'
+              data-testid='tags-default'
               multiple
-              placeholder='Tags'
-              size='sm'
-              variant='outlined'
-              options={possibleCardTags || []}
-              value={cardTagsState}
-              disabled={isDisabled}
+              placeholder='Favorites'
+              options={possibleCardTags}
+              getOptionLabel={(option) => option}
               onChange={(event, newValue) => setCardTags([...newValue])}
             />
           </div>

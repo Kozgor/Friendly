@@ -1,9 +1,8 @@
-export type CardTag = 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
+export type CardTag = 'Colaboration' | 'Learning' | 'Fun' | 'Value';
 
 export const possibleCardTags: CardTag[] = [
-  'primary',
-  'neutral',
-  'danger',
-  'success',
-  'warning'
+  'Colaboration',
+  'Learning',
+  'Fun',
+  'Value'
 ];
