@@ -13,6 +13,7 @@ import { THERE_ARE_NO_BOARDS_MESSAGE } from '../../constants';
 import BoardStepper from '../BoardStepper/BoardStepper';
 import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
+import { defaultTheme } from '../../theme/default';
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
@@ -65,9 +66,16 @@ const BoardsManagement = () => {
         }
         {!isLoading &&
           <div className={classes.boardList} data-testid='boards-list'>
-            {boards?.map(board =>
+            {boards?.map((board, index) =>
               <div key={board._id}>
                 <BoardStepper board={board} />
+                {(index + 1) !== boards.length && <Divider
+                  sx={{
+                    backgroundColor: defaultTheme.color7,
+                    opacity: '0.8',
+                    width: 'calc(70% - 8px)'
+                  }}
+                />}
               </div>
             )}
           </div>
