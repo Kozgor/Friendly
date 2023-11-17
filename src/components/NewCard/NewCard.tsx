@@ -34,13 +34,15 @@ const NewCard = (props: IColumnCard) => {
   const localUser = getLocalUserData();
 
   const onHandleSwitchToggle = () => {
-    if(cardAuthorState === 'Incognito') {
+    if (cardAuthorState === 'Incognito') {
       setCardAuthor(localUser.fullName);
       setCardAuthorAvatar(localUser.avatar || '');
-    } else {
-      setCardAuthor('Incognito');
-      setCardAuthorAvatar('Incognito');
+
+      return;
     }
+
+    setCardAuthor('Incognito');
+    setCardAuthorAvatar('Incognito');
   };
 
   const onCancelCard = () => {
@@ -86,7 +88,7 @@ const NewCard = (props: IColumnCard) => {
             <Autocomplete
               data-testid='tags-default'
               multiple
-              placeholder='Favorites'
+              placeholder='Tags'
               options={possibleCardTags}
               getOptionLabel={(option) => option}
               onChange={(event, newValue) => setCardTags([...newValue])}

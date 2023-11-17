@@ -18,8 +18,10 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { MoreVert } from '@mui/icons-material';
 import { columnAPI } from '../../api/ColumnAPI';
 import { icons } from '../../theme/icons/icons';
+import { isNull } from 'lodash';
 
 import classes from './FinalizedCard.module.scss';
+
 
 const FinalizedCard = (props: IColumnCard) => {
   const {
@@ -40,8 +42,8 @@ const FinalizedCard = (props: IColumnCard) => {
   const [reactionState, setReactionState] = useState(cardReactions);
   const { updateColumnCardReaction } = columnAPI();
   const isShownAllTags = cardTags && cardTags?.length < 3;
-  const isEmojiSmile = reactionState && reactionState !== null;
-  const isEmojiFrown = !reactionState && reactionState !== null;
+  const isEmojiSmile = reactionState && !isNull(reactionState);
+  const isEmojiFrown = !reactionState && !isNull(reactionState);
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -51,14 +53,9 @@ const FinalizedCard = (props: IColumnCard) => {
     setIsShownAllText(false);
   };
 
-  const onClickSmile = () => {
-    setReactionState(true);
-    updateColumnCardReaction(_id, cardActionAuthorId || '', true);
-  };
-
-  const onClickFrown = () => {
-    setReactionState(false);
-    updateColumnCardReaction(_id, cardActionAuthorId || '', false);
+  const onClickReaction = (isHappyReaction: boolean) => {
+    setReactionState(isHappyReaction);
+    updateColumnCardReaction(_id, cardActionAuthorId || '', isHappyReaction);
   };
 
   const deleteCard = () => {
@@ -231,7 +228,7 @@ const FinalizedCard = (props: IColumnCard) => {
         {isDisabled && <div className={classes.footerReactons}>
           <IconButton
             variant='outlined'
-            onClick={onClickSmile}
+            onClick={() => onClickReaction(true)}
             sx={{
               marginRight: '8px',
               minWidth: '26px',
@@ -247,7 +244,7 @@ const FinalizedCard = (props: IColumnCard) => {
           </IconButton>
           <IconButton
             variant='outlined'
-            onClick={onClickFrown}
+            onClick={() => onClickReaction(false)}
             sx={{
               backgroundColor: isEmojiFrown ? '#ffa62b' : 'transparent',
               minWidth: '26px',

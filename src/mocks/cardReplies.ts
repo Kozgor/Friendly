@@ -18,7 +18,7 @@ export const REPLIES: IColumnCard[] = [
       cardAuthorId: '650b15bfc45ee8d80c27c389',
       cardAuthorAvatar: 'avatar.jpeg',
       isDisabled: false,
-      cardTags: ['Colaboration'],
+      cardTags: ['Collaboration'],
       cardReplies: []
     }
 ];
