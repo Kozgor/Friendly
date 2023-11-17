@@ -1,17 +1,17 @@
 import axios from 'axios';
 
+import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
-import Button from '@mui/joy/Button';
-import FinalizedCard from '../FinalizedCard/FinalizedCard';
-import NewCard from '../NewCard/NewCard';
-
+import { BoardContext } from '../../context/board/boardContext';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
-
-import { BoardContext } from '../../context/board/boardContext';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
 import { sortByDateStartOld } from '../../utils/sortByDate';
+
+import Button from '@mui/joy/Button';
+import FinalizedCard from '../FinalizedCard/FinalizedCard';
+import NewCard from '../NewCard/NewCard';
 
 import classes from './Column.module.scss';
 
@@ -19,14 +19,14 @@ const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
-  const localUserData= getLocalUserData();
+  const localUser= getLocalUserData();
   const initialCard = {
     _id: '',
     createdAt: '',
     cardComment: '',
-    cardAuthorId: localUserData._id,
-    cardAuthor: localUserData.fullName || 'Incognito',
-    cardAuthorAvatar: localUserData.avatar || 'Incognito',
+    cardAuthorId: localUser._id,
+    cardAuthor: localUser.fullName || 'Incognito',
+    cardAuthorAvatar: localUser.avatar || 'Incognito',
     cardTags: [],
     isEditable: true
   };
@@ -57,7 +57,7 @@ const Column = (props: IColumn) => {
   ) => {
     if (handledCard._id) {
       axios
-        .put(`${FRIENDLY_DOMAIN}card`, {
+        .put(`${FRIENDLY_DOMAIN}card/update-card`, {
           _id: handledCard._id,
           cardComment: handledCard.cardComment,
           cardTags: handledCard.cardTags
@@ -73,7 +73,7 @@ const Column = (props: IColumn) => {
         });
     } else {
       axios
-        .post(`${FRIENDLY_DOMAIN}card`, {
+        .post(`${FRIENDLY_DOMAIN}card/create-card`, {
           boardId,
           columnId: columnId,
           cardComment: handledCard.cardComment,
@@ -115,7 +115,7 @@ const Column = (props: IColumn) => {
   const onRemoveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
     axios({
       method: 'DELETE',
-      url: `${FRIENDLY_DOMAIN}card`,
+      url: `${FRIENDLY_DOMAIN}card/remove-card`,
       data: {
         _id: handledCard._id
       }
@@ -161,6 +161,20 @@ const Column = (props: IColumn) => {
     setIsButtonDisabled(actionType === 'edit');
   };
 
+  const filterReactionsByUserId = (cardReactions: any): boolean | null => {
+    let isHappyUser = null;
+
+    if (isEmpty(cardReactions?.length)) {
+      find(cardReactions, (reaction => {
+        if (reaction.userId === localUser._id) {
+          isHappyUser = reaction.isHappyReaction;
+        }
+      }));
+    }
+
+    return isHappyUser;
+  };
+
   return (
     <section className={classes.column}>
       <div className={classes['column__header']}>
@@ -197,6 +211,7 @@ const Column = (props: IColumn) => {
                 cardAuthorId={editableCard.cardAuthorId}
                 cardTags={editableCard.cardTags}
                 isDisabled={isAddingDisabled}
+                isEditable={boardStatus !== possibleBoardStatuses.finalized && !isAddingDisabled}
                 onAction={handleAction}
               />
             )) || (
@@ -207,9 +222,12 @@ const Column = (props: IColumn) => {
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}
                 cardAuthorId={card.cardAuthorId}
+                cardActionAuthorId={localUser._id}
                 cardAuthorAvatar={card.cardAuthorAvatar}
                 cardTags={card.cardTags}
-                isDisabled={isAddingDisabled}
+                cardReactions={filterReactionsByUserId(card.cardReactions)}
+                isDisabled={boardStatus === possibleBoardStatuses.finalized}
+                isEditable={boardStatus !== possibleBoardStatuses.finalized && !isAddingDisabled}
                 onAction={handleAction}
               />
             )

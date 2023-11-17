@@ -38,7 +38,7 @@ const Board = () => {
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
   const { getUserById } = userAPI();
-  const user = getLocalUserData();
+  const localUser = getLocalUserData();
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
@@ -71,7 +71,7 @@ const Board = () => {
         let columnsCards: IColumnCard[] | undefined;
 
         if (board.status === possibleBoardStatuses.active) {
-          columnsCards = await fetchUserColumnCards(URLBoardId, user._id);
+          columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
           setIsTimerVisible(true);
         } else {
           columnsCards = await fetchFinalColumnCards(URLBoardId);
@@ -103,7 +103,7 @@ const Board = () => {
     setIsLoading(true);
 
     try {
-      const userProfile: IUserProfile | undefined = await getUserById(user._id);
+      const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
 
       if (!URLBoardId && userProfile && userProfile.boards) {
         navigate(`/board/${userProfile.boards.finalized || userProfile.boards.active}`);

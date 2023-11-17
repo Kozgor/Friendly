@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 import { useState } from 'react';
 
@@ -5,6 +6,7 @@ import {
   Button,
   Card,
   Dropdown,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem
@@ -13,19 +15,35 @@ import {
 import CardAvatar from '../CardAvatar/CardAvatar';
 import CardTagChip from '../CardChip/CardChip';
 import { IColumnCard } from '../../interfaces/columnCard';
+import { MoreVert } from '@mui/icons-material';
+import { columnAPI } from '../../api/ColumnAPI';
+import { icons } from '../../theme/icons/icons';
+import { isNull } from 'lodash';
 
 import classes from './FinalizedCard.module.scss';
 
+
 const FinalizedCard = (props: IColumnCard) => {
   const {
+    _id,
     cardAuthor,
     cardAuthorAvatar,
+    cardAuthorId,
+    cardActionAuthorId,
     cardComment,
-    cardTags
+    cardTags,
+    cardReactions,
+    createdAt,
+    isEditable,
+    isDisabled
   } = props;
-  const [isShownAllText, setIsShownAllText] = useState(false);
+  const [isShownAllText, setIsShownAllText] = useState(cardComment.length <= 30);
   const [displayShowButton] = useState(cardComment.length > 110);
+  const [reactionState, setReactionState] = useState(cardReactions);
+  const { updateColumnCardReaction } = columnAPI();
   const isShownAllTags = cardTags && cardTags?.length < 3;
+  const isEmojiSmile = reactionState && !isNull(reactionState);
+  const isEmojiFrown = !reactionState && !isNull(reactionState);
 
   const showMoreText = () => {
     setIsShownAllText(true);
@@ -35,54 +53,32 @@ const FinalizedCard = (props: IColumnCard) => {
     setIsShownAllText(false);
   };
 
-  // const deleteCard = () => {
-  //   props.onAction?.('remove', {
-  //     _id: _id,
-  //     createdAt: createdAt,
-  //     cardAuthor: cardAuthor,
-  //     cardAuthorId: cardAuthorId,
-  //     cardAuthorAvatar: cardAuthorAvatar,
-  //     cardComment: cardComment
-  //   });
-  // };
+  const onClickReaction = (isHappyReaction: boolean) => {
+    setReactionState(isHappyReaction);
+    updateColumnCardReaction(_id, cardActionAuthorId || '', isHappyReaction);
+  };
 
-  // const editCard = () => {
-  //   props.onAction?.('edit', {
-  //     _id: _id,
-  //     createdAt: createdAt,
-  //     cardAuthor: cardAuthor,
-  //     cardAuthorId: cardAuthorId,
-  //     cardAuthorAvatar: cardAuthorAvatar,
-  //     cardComment: cardComment,
-  //     cardTags: cardTags
-  //   });
-  // };
-
-  const displayMessage = (message: string) => {
-    let row = '';
-    const words = message.split(' ');
-    const rows: string[] = [];
-
-    words.forEach((word, index) => {
-      row += `${word} `;
-
-      if (
-        (rows.length === 2 && row.length > 25) ||
-        (rows.length !== 2 && row.length > 36) ||
-        index === words.length - 1
-      ) {
-        rows.push(row);
-        row = '';
-      }
+  const deleteCard = () => {
+    props.onAction?.('remove', {
+      _id: _id,
+      createdAt: createdAt,
+      cardAuthor: cardAuthor,
+      cardAuthorId: cardAuthorId,
+      cardAuthorAvatar: cardAuthorAvatar,
+      cardComment: cardComment
     });
+  };
 
-    return (
-      <>
-        {rows.map((row, index) => (
-          <span key={index}>{row}</span>
-        ))}
-      </>
-    );
+  const editCard = () => {
+    props.onAction?.('edit', {
+      _id: _id,
+      createdAt: createdAt,
+      cardAuthor: cardAuthor,
+      cardAuthorId: cardAuthorId,
+      cardAuthorAvatar: cardAuthorAvatar,
+      cardComment: cardComment,
+      cardTags: cardTags
+    });
   };
 
   return (
@@ -94,44 +90,44 @@ const FinalizedCard = (props: IColumnCard) => {
         gap: 'unset',
         marginBottom: 2,
         minHeight: 210,
-        backgroundColor: 'white',
+        backgroundColor: '#FFFFFF',
         border: 'none',
         padding: '10px 24px 16px',
-        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1)'
+        boxShadow: '0px 8px 16px #0000001a'
       }}
     >
-      <div className={classes.header}>
-        {/* <Dropdown>
-          <MenuButton
-            data-testid='cardMenuButton'
-            className={classes.actionsButton}
-            title='actions'
-            slots={{ root: IconButton }}
-            slotProps={{ root: { variant: 'outlined', color: 'neutral' } }}
-            sx={{
-              border: 'unset'
-            }}
-          >
-            <MoreVert />
-          </MenuButton>
-        <Menu>
-          <MenuItem
-            data-testid='editCardButton'
-            disabled={isDisabled}
-            onClick={editCard}
-          >Edit</MenuItem>
-          <MenuItem
-            data-testid='deleteCardButton'
-            disabled={isDisabled}
-            onClick={deleteCard}
-          >Delete</MenuItem>
-        </Menu>
-        </Dropdown> */}
-        <div className={classes.author}>
+      <div className={`col-12 ${classes.header}`}>
+        <div className={`col-6 ${classes.author}`}>
           <CardAvatar
             cardAuthor={cardAuthor}
             cardAuthorAvatar={cardAuthorAvatar || ''}
           ></CardAvatar>
+        </div>
+        <div className={`col-6 ${classes.headerActionItems}`}>
+          {isEditable && <Dropdown>
+            <MenuButton
+              data-testid='cardMenuButton'
+              className={classes.actionsButton}
+              title='actions'
+              slots={{ root: IconButton }}
+              slotProps={{ root: { variant: 'outlined', color: 'neutral' } }}
+              sx={{
+                border: 'unset'
+              }}
+            >
+              <MoreVert />
+            </MenuButton>
+            <Menu>
+              <MenuItem
+                data-testid='editCardButton'
+                onClick={editCard}
+              >Edit</MenuItem>
+              <MenuItem
+                data-testid='deleteCardButton'
+                onClick={deleteCard}
+              >Delete</MenuItem>
+            </Menu>
+          </Dropdown>}
         </div>
       </div>
       <div id='message' className={classes.message}>
@@ -140,7 +136,7 @@ const FinalizedCard = (props: IColumnCard) => {
             display: isShownAllText ? 'block' : '-webkit-box'
           }}
         >
-          {displayMessage(cardComment)}
+          {cardComment}
         </p>
       </div>
       {displayShowButton && !isShownAllText && (
@@ -177,55 +173,92 @@ const FinalizedCard = (props: IColumnCard) => {
           Show less
         </Button>
       )}
-      {isShownAllTags && cardTags &&
-        <div className={classes.tags}>
-          {cardTags?.map((tag) => (
-            <CardTagChip datda-testid='tag' key={tag} tag={tag}/>
-          ))}
-        </div>
-      }
-      {!isShownAllTags && cardTags &&
-        <div className={classes.tags}>
-          {
-            <>
-              <CardTagChip key={cardTags[0]} tag={cardTags[0]}/>
-              <CardTagChip key={cardTags[1]} tag={cardTags[1]}/>
-              <Dropdown>
-                <MenuButton
-                  variant='plain'
-                  size='sm'
-                  sx={{
-                    padding: '6px 8px',
-                    backgroundColor: 'rgba(247, 248, 249, 1)',
-                    borderRadius: '20px',
-                    border: 'solid 1px rgba(247, 248, 249, 1)',
-                    fontSize: '10px',
-                    fontWeight: '400',
-                    '&:hover': {
-                      backgroundColor: 'rgba(247, 248, 249, 1)'
-                    },
-                    '&.MuiMenuButton-root': {
-                      width: '28px',
-                      height: '26px',
-                      fontSize: '10px',
-                      minHeight: '0px'
-                    }
-                  }}
-                >
-                  {`+${cardTags?.length - 2}`}
-                </MenuButton>
-                <Menu>
-                  {cardTags.slice(2).map((tag) => (
-                    <MenuItem key={tag}>
-                      {tag}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Dropdown>
-            </>
+      <div className={classes.footer}>
+        <div className={classes.footerTags}>
+          {isShownAllTags && cardTags &&
+            <div className={classes.tags}>
+              {cardTags?.map((tag) => (
+                <CardTagChip datda-testid='tag' key={tag} tag={tag}/>
+              ))}
+            </div>
+          }
+          {!isShownAllTags && cardTags &&
+            <div className={classes.tags}>
+              {
+                <>
+                  <CardTagChip key={cardTags[0]} tag={cardTags[0]}/>
+                  <CardTagChip key={cardTags[1]} tag={cardTags[1]}/>
+                  <Dropdown>
+                    <MenuButton
+                      variant='plain'
+                      size='sm'
+                      sx={{
+                        padding: '6px 8px',
+                        backgroundColor: '#f7f8f9',
+                        borderRadius: '20px',
+                        border: 'solid 1px #f7f8f9',
+                        fontSize: '10px',
+                        fontWeight: '400',
+                        '&:hover': {
+                          backgroundColor: '#f7f8f9'
+                        },
+                        '&.MuiMenuButton-root': {
+                          width: '28px',
+                          height: '26px',
+                          fontSize: '10px',
+                          minHeight: '0px'
+                        }
+                      }}
+                    >
+                      {`+${cardTags?.length - 2}`}
+                    </MenuButton>
+                    <Menu>
+                      {cardTags.slice(2).map((tag) => (
+                        <MenuItem key={tag}>
+                          {tag}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Dropdown>
+                </>
+              }
+            </div>
           }
         </div>
-      }
+        {isDisabled && <div className={classes.footerReactons}>
+          <IconButton
+            variant='outlined'
+            onClick={() => onClickReaction(true)}
+            sx={{
+              marginRight: '8px',
+              minWidth: '26px',
+              minHeight: '26px',
+              backgroundColor: isEmojiSmile ? '#ffa62b' : 'transparent',
+              borderColor: isEmojiSmile ? '#ffa62b' : '#a0abbb',
+              '&:hover': {
+                backgroundColor: isEmojiSmile ? '#ffa62b' : 'transparent'
+              }
+            }}
+          >
+            {icons.emojiSmile(`${isEmojiSmile ? '#ffffff' : '#484a4b'}`, '16px')}
+          </IconButton>
+          <IconButton
+            variant='outlined'
+            onClick={() => onClickReaction(false)}
+            sx={{
+              backgroundColor: isEmojiFrown ? '#ffa62b' : 'transparent',
+              minWidth: '26px',
+              minHeight: '26px',
+              borderColor: isEmojiFrown ? '#ffa62b' : '#a0abbb',
+              '&:hover': {
+                backgroundColor: isEmojiFrown ? '#ffa62b' : 'transparent'
+              }
+            }}
+          >
+            {icons.emojiFrown(`${isEmojiFrown ? '#ffffff' : '#484a4b'}`, '16px')}
+          </IconButton>
+        </div>}
+      </div>
     </Card>
   );
 };

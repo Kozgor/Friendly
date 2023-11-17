@@ -1,7 +1,7 @@
-export type CardTag = 'Colaboration' | 'Learning' | 'Fun' | 'Value';
+export type CardTag = 'Collaboration' | 'Learning' | 'Fun' | 'Value';
 
 export const possibleCardTags: CardTag[] = [
-  'Colaboration',
+  'Collaboration',
   'Learning',
   'Fun',
   'Value'

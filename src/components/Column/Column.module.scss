@@ -14,20 +14,29 @@
   -ms-overflow-style: none;
 
   &__header {
-    color: #000;
-    padding: 10px;
+    padding: 0;
+    width: 224px;
+    margin: auto;
     margin-bottom: 10px;
 
+    @include flexbox(column, center, center, nowrap);
+
     h2 {
-      color: #34363b;
-      text-align: center;
+      color: #000;
+      font-weight: 400;
+      font-family: "Open Sans", sans-serif;
       cursor: context-menu;
     }
 
     p {
-      color: #636b74;
-      cursor: context-menu;
+      color: #666;
       margin-bottom: 0;
+      text-align: center;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 27.24px;
+      font-family: "Open Sans", sans-serif;
+      cursor: context-menu;
     }
 
     &__couner {

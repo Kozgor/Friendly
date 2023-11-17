@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { Avatar } from '@mui/joy';
 import { ICardAvatar } from '../../interfaces/cardAvatar';
+import { defaultTheme } from '../../theme/default';
 import { getInitials } from '../../utils/userInitials';
 import { icons } from '../../theme/icons/icons';
 
@@ -17,7 +18,7 @@ const CardAvatar = (props: ICardAvatar) => {
         <Avatar
           data-testid='incognito-avatar'
           onClick={onToggle}
-          sx={{ cursor: 'pointer' }}
+          sx={{ cursor: 'pointer', '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 } }}
         >
           {icons.incognito}
         </Avatar>
@@ -28,7 +29,11 @@ const CardAvatar = (props: ICardAvatar) => {
           <Avatar
             data-testid='initials-avatar'
             onClick={onToggle}
-            sx={{ cursor: 'pointer' }}
+            sx={{
+              cursor: 'pointer',
+              color: '#FFFFFF',
+              '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 }
+            }}
           >
             {getInitials(cardAuthor)}
           </Avatar>
