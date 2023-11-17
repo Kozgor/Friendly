@@ -1,17 +1,17 @@
 import axios from 'axios';
 
+import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
-import Button from '@mui/joy/Button';
-import FinalizedCard from '../FinalizedCard/FinalizedCard';
-import NewCard from '../NewCard/NewCard';
-
+import { BoardContext } from '../../context/board/boardContext';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
-
-import { BoardContext } from '../../context/board/boardContext';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
 import { sortByDateStartOld } from '../../utils/sortByDate';
+
+import Button from '@mui/joy/Button';
+import FinalizedCard from '../FinalizedCard/FinalizedCard';
+import NewCard from '../NewCard/NewCard';
 
 import classes from './Column.module.scss';
 
@@ -164,12 +164,12 @@ const Column = (props: IColumn) => {
   const filterReactionsByUserId = (cardReactions: any): boolean | null => {
     let isHappyUser = null;
 
-    if (cardReactions && cardReactions.length > 0) {
-      cardReactions.forEach((reaction: any) => {
+    if (isEmpty(cardReactions?.length)) {
+      find(cardReactions, (reaction => {
         if (reaction.userId === localUser._id) {
           isHappyUser = reaction.isHappyReaction;
         }
-      });
+      }));
     }
 
     return isHappyUser;
