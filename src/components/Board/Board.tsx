@@ -1,27 +1,24 @@
+/* eslint-disable complexity */
 import {
   useContext,
   useEffect,
   useState
 } from 'react';
-import { CircularProgress } from '@mui/joy';
+import { useNavigate } from 'react-router';
 
+import { NO_BOARDS_MESSAGE, possibleBoardStatuses } from '../../constants';
+import { BoardContext } from '../../context/board/boardContext';
+import { CircularProgress } from '@mui/joy';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
-import { IUserProfile } from '../../interfaces/user';
-
 import { INITIAL_BOARD } from '../../mocks/board';
-
-import { BoardContext } from '../../context/board/boardContext';
-import { localStorageManager } from '../../utils/localStorageManager';
-
+import { IUserProfile } from '../../interfaces/user';
 import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
-import { userAPI } from '../../api/UserAPI';
-
-import { NO_BOARDS_MESSAGE, possibleBoardStatuses } from '../../constants';
-
 import { isNull } from 'lodash';
+import { localStorageManager } from '../../utils/localStorageManager';
+import { userAPI } from '../../api/UserAPI';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
@@ -36,6 +33,7 @@ const Board = () => {
   const [isTimerVisible, setIsTimerVisible] = useState(false);
   const [isBoardVisible, setIsBoardVisible] = useState(true);
   const { boardStatus, isFormSubmit, setBoardStatus, setBoardId } = useContext(BoardContext);
+  const navigate = useNavigate();
   const { getLocalUserData } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
@@ -66,17 +64,10 @@ const Board = () => {
   };
 
   const setupBoard = async (id: string, status?: string) => {
-    if (id !== URLBoardId && user.role !== 'admin') {
-      setIsTimerVisible(false);
-      setIsBoardVisible(false);
-
-      return;
-    }
-
     try {
       const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
 
-      if (board && board?.status === status) {
+      if ((board && board?.status === status) || (board && user.role === 'admin')) {
         let columnsCards: IColumnCard[] | undefined;
 
         if (board.status === possibleBoardStatuses.active) {
@@ -114,6 +105,12 @@ const Board = () => {
     try {
       const userProfile: IUserProfile | undefined = await getUserById(user._id);
 
+      if (!URLBoardId && userProfile && userProfile.boards) {
+        navigate(`/board/${userProfile.boards.finalized || userProfile.boards.active}`);
+
+        return;
+      }
+
       if (userProfile && userProfile.boards) {
         if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
           setupBoard(userProfile.boards.active, possibleBoardStatuses.active);
@@ -138,7 +135,7 @@ const Board = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, [boardStatus]);
+  }, [boardStatus, URLBoardId]);
 
   return (
     <div className={classes['board-container']}>
