@@ -67,7 +67,7 @@ const Board = () => {
     try {
       const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
 
-      if ((board && board?.status === status) || (board && user.role === 'admin')) {
+      if ((board && board?.status === status) || (board && localUser.role === 'admin')) {
         let columnsCards: IColumnCard[] | undefined;
 
         if (board.status === possibleBoardStatuses.active) {
