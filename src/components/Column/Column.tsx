@@ -59,6 +59,11 @@ const Column = (props: IColumn) => {
       axios
         .put(`${FRIENDLY_DOMAIN}card/update-card`, {
           _id: handledCard._id,
+          boardId: boardId,
+          columnId: columnId,
+          cardAuthorId: handledCard.cardAuthorId,
+          cardAuthor: handledCard.cardAuthor,
+          cardAuthorAvatar: handledCard.cardAuthorAvatar,
           cardComment: handledCard.cardComment,
           cardTags: handledCard.cardTags
         })
