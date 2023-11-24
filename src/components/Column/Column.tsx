@@ -22,6 +22,7 @@ const Column = (props: IColumn) => {
   const localUser= getLocalUserData();
   const initialCard = {
     _id: '',
+    columnId: '',
     createdAt: '',
     cardComment: '',
     cardAuthorId: localUser._id,
@@ -209,6 +210,7 @@ const Column = (props: IColumn) => {
               <NewCard
                 key={editableCard._id}
                 _id={editableCard._id}
+                columnId={editableCard.columnId}
                 createdAt={editableCard.createdAt}
                 cardComment={editableCard.cardComment}
                 cardAuthor={editableCard.cardAuthor}
@@ -223,6 +225,7 @@ const Column = (props: IColumn) => {
               <FinalizedCard
                 key={card._id}
                 _id={card._id}
+                columnId={card.columnId}
                 createdAt={card.createdAt}
                 cardComment={card.cardComment}
                 cardAuthor={card.cardAuthor}

@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import moment from 'moment';
 
-import { Button, Divider, Typography } from '@mui/joy';
+import { Button, Typography } from '@mui/joy';
 import {
   Stack,
   Step,

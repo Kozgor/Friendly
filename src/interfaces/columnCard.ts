@@ -10,6 +10,7 @@ import { CardTag } from '../types/cardTags';
 
 export interface IColumnCard {
   _id: string;
+  columnId?: string;
   createdAt: string;
   cardComment: string;
   cardAuthor: string;
