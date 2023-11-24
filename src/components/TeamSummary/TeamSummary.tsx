@@ -87,7 +87,7 @@ const TeamSummary = () => {
   , []);
 
   return (
-    <div id='myGrid' className='ag-theme-alpine'>
+    <div id='my-grid' className='ag-theme-alpine'>
       <AgGridReact
         animateRows={true}
         ref={gridRef}
