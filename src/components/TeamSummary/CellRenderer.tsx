@@ -1,13 +1,15 @@
 import { icons } from '../../theme/icons/icons';
 
 const TeamSummaryCellRenderer = (params: any) => {
-  const isHappyReaction = params.value;
   let trueCount = 0;
   let falseCount = 0;
 
-  isHappyReaction.forEach((value: boolean) => {
-    value ? trueCount++ : falseCount++;
-  });
+  if (params.value[0]) {
+    const { isHappyReaction } = params.value[0];
+
+    trueCount = isHappyReaction ? 1 : 0;
+    falseCount = !isHappyReaction ? 1 : 0;
+  }
 
   return (
     <span style={{

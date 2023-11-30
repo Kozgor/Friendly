@@ -42,9 +42,11 @@ describe('BoardHeader component', () => {
       <Provider store={store}>
         <MemoryRouter>
           <BoardHeader
-            boardName="RETROSPECTIVE"
-            isTimerVisible={true}
-            time={0}
+            isAdmin={true}
+            firstTitle={'firstTitle'}
+            secondTitle={'secondTitle'}
+            backward={'backward'}
+            forward={'forward'}
           />
         </MemoryRouter>
       </Provider>

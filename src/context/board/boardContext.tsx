@@ -5,7 +5,9 @@ import BoardReducer from './boardReducer';
 export const initialGlobalState = {
   boardId: '',
   boardStatus: '',
+  boardTime: 0,
   isFormSubmit: false,
+  isTimerVisible: false,
   isTimerFinalized: false,
   isAddingDisabled: true,
   enableAdding: () => {},
@@ -13,6 +15,8 @@ export const initialGlobalState = {
   finalizeTimer: () => {},
   setFormSubmit: () => {},
   setBoardId: (id: string) => {},
+  setBoardTime: (boardTime: number) => {},
+  setTimerVisibility: (isTimerVisible: boolean) => {},
   setBoardStatus: (status: string) => {}
 };
 
@@ -51,6 +55,18 @@ export const BoardProvider = ({ children }: BaseProps) => {
       payload: boardStatus
     });
   };
+  const setBoardTime = (boardTime: number) => {
+    dispatch({
+      type: 'SET_BOARD_TIME',
+      payload: boardTime
+    });
+  };
+  const setTimerVisibility = (timerVisibility: boolean) => {
+    dispatch({
+      type: 'SET_TIMER_VISIBILITY',
+      payload: timerVisibility
+    });
+  };
   const setFormSubmit = () => {
     dispatch({
       type: 'SUBMIT_FORM'
@@ -62,13 +78,17 @@ export const BoardProvider = ({ children }: BaseProps) => {
       value={{
         isAddingDisabled: state.isAddingDisabled,
         isTimerFinalized: state.isTimerFinalized,
+        isTimerVisible: state.isTimerVisible,
         isFormSubmit: state.isFormSubmit,
         boardId: state.boardId,
         boardStatus: state.boardStatus,
+        boardTime: state.boardTime,
         enableAdding,
         disableAdding,
         finalizeTimer,
+        setTimerVisibility,
         setBoardId,
+        setBoardTime,
         setBoardStatus,
         setFormSubmit
       }}

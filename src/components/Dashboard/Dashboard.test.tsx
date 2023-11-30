@@ -6,7 +6,6 @@ import {
   screen
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { ADMIN_PAGE_HEADER_TITLE } from '../../constants';
 import { LOCAL_ADMIN_PROFILE } from '../../mocks/user';
 import { Provider } from 'react-redux';
 
@@ -89,12 +88,6 @@ describe('Dashboard component', () => {
     const timerStartButton = screen.queryByTestId('timerStartButton');
 
     expect(timerStartButton).toBeNull();
-  });
-
-  test('should render boardName as "friendly"', () => {
-    const boardName = screen.queryByTestId('boardName');
-
-    expect(boardName?.innerHTML).toBe(ADMIN_PAGE_HEADER_TITLE);
   });
 
   test('should render drawer', () => {

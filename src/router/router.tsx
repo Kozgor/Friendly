@@ -7,83 +7,91 @@ import CreateBoardPage from '../pages/createBoard/CreateBoard';
 import DefaultBoardPage from '../pages/defaultBoard/DefaultBoard';
 import ErrorPage from '../pages/notFound/Error';
 import LoginPage from '../pages/login/Login';
+import MainLayout from '../components/MainLayout/MainLayout';
 import TeamSummaryPage from '../pages/teamSummary/TeamSummary';
 import { checkAuthLoader } from '../utils/checkAuthLoader';
+import pathConstants from './pathConstants';
 
 const { checkAdminRole, checkAuth } = checkAuthLoader();
 
 const router = createBrowserRouter([
-  {
-    path: '',
-    element: <Navigate to="/board" />,
-    loader: checkAuth
-  },
-  {
-    path: '/boardDetails',
-    element: <TeamSummaryPage />,
-    errorElement: <ErrorPage />,
-    loader: checkAdminRole,
-    children: [
-      {
-        path: '',
-        element: <Navigate to='boardDetails/:id' />,
-        loader: checkAuth
-      },
-      {
-        path: '/boardDetails/:id',
-        element: <TeamSummaryPage />,
-        loader: checkAuth
-      }
-    ]
-  },
-  {
-    path: '/board',
-    element: <BoardPage />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to='/board/:id' />,
-        loader: checkAuth
-      },
-      {
-        path: '/board/:id',
-        element: <BoardPage />,
-        loader: checkAuth
-      }
-    ]
-  },
-  {
-    path: '/auth',
-    element: <LoginPage />
-  },
-  {
-    path: '/admin',
-    element: <AdminPage />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="new_board" />,
-        loader: checkAdminRole
-      },
-      {
-        path: 'new_board',
-        element: <CreateBoardPage />,
-        loader: checkAdminRole
-      },
-      {
-        path: 'boards_management',
-        element: <BoardsManagementPage />,
-        loader: checkAdminRole
-      },
-      {
-        path: 'new_board/default_board',
-        element: <DefaultBoardPage />,
-        loader: checkAdminRole
-      }
-    ],
-    loader: checkAdminRole
-  }
+    {
+      element: <MainLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+            path: '',
+            element: <Navigate to={pathConstants.HOME} />,
+            loader: checkAuth
+          },
+          {
+            path: pathConstants.TEAM_SUMMARY,
+            element: <TeamSummaryPage />,
+            errorElement: <ErrorPage />,
+            loader: checkAdminRole,
+            children: [
+              {
+                path: '',
+                element: <Navigate to={pathConstants.TEAM_SUMMARY_ID} />,
+                loader: checkAuth
+              },
+              {
+                path: pathConstants.TEAM_SUMMARY_ID,
+                element: <TeamSummaryPage />,
+                loader: checkAuth
+              }
+            ]
+          },
+          {
+            path: pathConstants.BOARD,
+            element: <BoardPage />,
+            errorElement: <ErrorPage />,
+            children: [
+              {
+                path: '',
+                element: <Navigate to={pathConstants.BOARD_ID} />,
+                loader: checkAuth
+              },
+              {
+                path: pathConstants.BOARD_ID,
+                element: <BoardPage />,
+                loader: checkAuth
+              }
+            ]
+          },
+          {
+            path: pathConstants.ADMIN,
+            element: <AdminPage />,
+            children: [
+              {
+                path: '',
+                element: <Navigate to={pathConstants.NEW_BOARD} />,
+                loader: checkAdminRole
+              },
+              {
+                path: pathConstants.NEW_BOARD,
+                element: <CreateBoardPage />,
+                loader: checkAdminRole
+              },
+              {
+                path: pathConstants.BOARDS_MANAGEMENT,
+                element: <BoardsManagementPage />,
+                loader: checkAdminRole
+              },
+              {
+                path: pathConstants.NEW_BOARD_DEFAULT,
+                element: <DefaultBoardPage />,
+                loader: checkAdminRole
+              }
+            ],
+            loader: checkAdminRole
+          }
+      ]
+    },
+    {
+      path: pathConstants.AUTH,
+      element: <LoginPage />
+    }
 ]);
 
 export default router;

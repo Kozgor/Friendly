@@ -2,14 +2,15 @@
 
 .board-container {
   width: 100%;
+  height: auto;
+  background-color: #f4f4f4;
 
   @include flexbox(column, center, center, nowrap);
 }
 
 .board {
   width: 100%;
-  height: 90vh;
-  padding: 20px 0;
+  padding-top: 44px;
 
   @include flexbox(row, center, center, nowrap);
 

@@ -48,26 +48,3 @@
     margin-top: 15px;
   }
 }
-
-.main {
-  height: 90vh;
-  width: 100%;
-
-  .customBoard {
-    width: 250px;
-    height: 170px;
-    border: 1px solid black;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-
-  .customBoard + h3 {
-    margin-bottom: 10px;
-  }
-
-  .listItemIcon {
-    margin: 0 10px 5px;
-    width: 14px;
-    color: white;
-  }
-}

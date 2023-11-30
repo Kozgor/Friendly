@@ -1,25 +1,35 @@
 @use "~ag-grid-community/styles" as ag;
 @include ag.grid-styles;
 
-#my-grid {
-  width: 100vw;
-  height: 100vh;
-}
+.teamSummaryContainer {
+  background-color: #f4f4f4;
+  height: 80vh;
 
-.ag-theme-alpine {
-  --ag-header-background-color: white;
-
-  .bi {
-    color: #191d23;
+  #summary-grid {
+    width: 100vw;
+    height: 100%;
+    padding: 38px;
   }
 
-  .ag-cell-label-container {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2d7887;
-  }
+  .ag-theme-alpine {
+    --ag-header-background-color: white;
 
-  .ag-center-cols-container {
-    width: 100%;
+    .ag-root-wrapper {
+      border: none;
+    }
+
+    .bi {
+      color: #191d23;
+    }
+
+    .ag-cell-label-container {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d7887;
+    }
+
+    .ag-center-cols-container {
+      width: 100%;
+    }
   }
 }

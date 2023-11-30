@@ -9,7 +9,7 @@ import { ITimerProps } from '../../interfaces/timerProps';
 
 import classes from './Timer.module.scss';
 
-const Timer = (props: ITimerProps) => {
+const Timer = () => {
   const initialTimerState = {
     isTimerStarted: false,
     isTimerPaused: false,
@@ -19,10 +19,10 @@ const Timer = (props: ITimerProps) => {
 
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
-  const { enableAdding, disableAdding, finalizeTimer } = useContext(BoardContext);
+  const { boardTime, enableAdding, disableAdding, finalizeTimer, setTimerVisibility } = useContext(BoardContext);
 
   const now = moment().toDate().getTime();
-  const date = now + props.time;
+  const date = now + (boardTime * 60000);
 
   const startTimer = () => {
     countdownRef.current?.start();
@@ -67,6 +67,7 @@ const Timer = (props: ITimerProps) => {
     }));
     disableAdding();
     finalizeTimer();
+    setTimerVisibility(false);
   };
 
   const countdown = useMemo(

@@ -1,30 +1,30 @@
 import { MouseEventHandler, useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { useLocation } from 'react-router-dom';
+
+import BoardSubheader from '../BoardSubheader/BoardSubheader';
 import Button from '@mui/joy/Button';
 import Timer from '../Timer/Timer';
 
 import { BoardContext } from '../../context/board/boardContext';
-import { IBoardHeaderProps } from '../../interfaces/boardHeaderProps';
-
+import { IBoardHeader } from '../../interfaces/boardHeader';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { useStoreUser } from '../../utils/storeUserManager';
 import { userAPI } from '../../api/UserAPI';
 
 import classes from './BoardHeader.module.scss';
 
-const BoardHeader = (props: IBoardHeaderProps) => {
-  const { boardName, time, isTimerVisible } = props;
+const BoardHeader = (props: IBoardHeader) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSubmitButton, setIsSubmitButton] = useState(true);
-  const [currentBoardName, setCurrentBoardName] = useState(boardName);
-  const { disableAdding, setFormSubmit } = useContext(BoardContext);
+  const { isTimerVisible, disableAdding, setFormSubmit, setTimerVisibility } = useContext(BoardContext);
   const { removeUserFromStore } = useStoreUser();
   const { removeLocalUserData, getLocalUserData } = localStorageManager();
   const localUserData = getLocalUserData();
   const { submitComments } = userAPI();
-  const minute = 60000;
-
+  const isBoardPage = location.pathname.startsWith('/board/');
   const onSignOut: MouseEventHandler<HTMLButtonElement> = () => {
     removeUserFromStore();
     removeLocalUserData();
@@ -36,48 +36,55 @@ const BoardHeader = (props: IBoardHeaderProps) => {
     disableAdding();
     setFormSubmit();
     setIsSubmitButton(false);
-    setCurrentBoardName(' ');
+    setTimerVisibility(false);
   };
 
   return (
     <header className={classes.header}>
-      <span className={classes['header__board-box']}>
-        <span className={classes['header__board-box__name']}>
-          <h4 data-testid='boardName'>{currentBoardName ? currentBoardName : boardName}</h4>
+      <div className={classes.mainHeader}>
+        <span className={classes['header__board-box']}>
+          {(isTimerVisible && isSubmitButton && isBoardPage) &&
+            <span className={classes['header__board-actions']}>
+              <span className={classes['header__board-actions__timer']}>
+                <Timer />
+              </span>
+              <span className={classes['header__board-actions__complete-button']}>
+                <Button
+                  variant='solid'
+                  type='submit'
+                  aria-label='solid button for submitting the form'
+                  onClick= {onComplete}
+                  role='button'
+                  data-testid='submit'
+                >
+                  Complete
+                </Button>
+              </span>
+            </span>
+          }
         </span>
-        {(isTimerVisible && isSubmitButton) &&
-          <span className={classes['header__board-actions']}>
-            <span className={classes['header__board-actions__timer']}>
-              <Timer time={time * minute} />
-            </span>
-            <span className={classes['header__board-actions__complete-button']}>
-              <Button
-                variant='solid'
-                type='submit'
-                aria-label='solid button for submitting the form'
-                onClick= {onComplete}
-                role='button'
-                data-testid='submit'
-              >
-                Complete
-              </Button>
-            </span>
-          </span>
-        }
-      </span>
-      <div className={classes['header__user-box']}>
-        <span>Hello, {localUserData.fullName}</span>|
-        <Button
-          className={classes['header__user-box__sign-out']}
-          variant='soft'
-          onClick={onSignOut}
-          aria-label='plain primary button for signing out'
-          role='button'
-          data-testid='signOut'
-        >
-          Sign Out
-        </Button>
+        <div className={classes['header__user-box']}>
+          <span>Hello, {localUserData.fullName}</span>|
+          <Button
+            className={classes['header__user-box__sign-out']}
+            variant='soft'
+            onClick={onSignOut}
+            aria-label='plain primary button for signing out'
+            role='button'
+            data-testid='signOut'
+          >
+            Sign Out
+          </Button>
+        </div>
       </div>
+      {props.isAdmin &&
+        <BoardSubheader
+          firstTitle={props.firstTitle}
+          secondTitle={props.secondTitle}
+          backward={props.backward}
+          forward={props.forward}
+        ></BoardSubheader>
+      }
     </header>
   );
 };

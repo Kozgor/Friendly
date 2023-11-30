@@ -6,6 +6,11 @@ export const INITIAL_LOCAL_PROFILE = {
     token: ''
 };
 
+export const INITIAL_LOCAL_BOARD = {
+    currentBoardId: '',
+    currentBoardName: ''
+};
+
 export const LOCAL_USER_PROFILE = {
     _id: '650b15bfc45ee8d80c27c388',
     fullName: 'John Doe',

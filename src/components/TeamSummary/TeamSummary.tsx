@@ -1,4 +1,5 @@
 import {
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -25,6 +26,7 @@ const TeamSummary = () => {
     cardReactions: any;
     cardAuthor: string;
   };
+
   const { getUserById } = userAPI();
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
@@ -55,12 +57,13 @@ const TeamSummary = () => {
       console.log(error);
     }
   };
-  const getUserData = async () => {
+
+  const fetchUserData = async () => {
     try {
       const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
 
-      if (!URLBoardId && userProfile && userProfile.boards) {
-        navigate(`/boardDetails/${userProfile.boards.finalized}`);
+      if (!URLBoardId && userProfile && userProfile.boards?.finalized) {
+        navigate(`/team_summary/${userProfile.boards.finalized}`);
 
         return;
       }
@@ -71,35 +74,34 @@ const TeamSummary = () => {
 
   useEffect(() => {
     if (!URLBoardId.length) {
-      getUserData();
+      fetchUserData();
     }
 
     fetchFinalColumnCards(URLBoardId).then(rowData => {
+      console.log(rowData);
       if (rowData) {
         setRowData(rowData);
       }
     });
-
   }, [URLBoardId]);
 
   const getRowId = useMemo(() => (params: any) =>
-    params.data.cardAuthor + params.data.cardComment
-  , []);
+    params.data.cardAuthor + params.data.cardComment, []);
 
   return (
-    <div id='my-grid' className='ag-theme-alpine'>
-      <AgGridReact
-        animateRows={true}
-        ref={gridRef}
-        rowData={rowData}
-        columnDefs={columnDefs}
-        rowSelection={'multiple'}
-        getRowId={getRowId}
-        defaultColDef={{
-          flex: 1
-        }}
-        icons={{filter: '<i class="bi bi-filter"></i>'}}
-      />
+    <div className='teamSummaryContainer'>
+      <div id='summary-grid' className='ag-theme-alpine'>
+        <AgGridReact
+          animateRows={true}
+          ref={gridRef}
+          rowData={rowData}
+          columnDefs={columnDefs}
+          rowSelection={'multiple'}
+          getRowId={getRowId}
+          defaultColDef={{ flex: 1 }}
+          icons={{ filter: '<i class="bi bi-filter"></i>' }}
+        />
+      </div>
     </div>
   );
 };

@@ -1,18 +1,15 @@
 import * as router from 'react-router';
 import { RenderResult, render } from '@testing-library/react';
 import BoardStepper from './BoardStepper';
+import BoardsManagement from '../BoardManagement/BoardsManagement';
+import store from '../../store/store';
 
 import { ACTIVE_BOARD } from '../../mocks/board';
-import Board from '../Board/Board';
-
+import { BaseProps } from '../../interfaces/baseProps';
+import { BoardContext } from '../../context/board/boardContext';
 import { Provider } from 'react-redux';
 
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import store from '../../store/store';
-
-import BoardsManagement from '../BoardManagement/BoardsManagement';
-import { BoardContext } from '../../context/board/boardContext';
-import { BaseProps } from '../../interfaces/baseProps';
 
 const finalizeBoard = jest.fn();
 
@@ -28,6 +25,8 @@ describe('BoardStepper Component', () => {
   const disableAdding = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
+  const setBoardTime = jest.fn();
+  const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
 
@@ -42,14 +41,18 @@ describe('BoardStepper Component', () => {
       value={{
         boardId: ACTIVE_BOARD._id,
         boardStatus: 'active',
+        boardTime: 5,
         isAddingDisabled: false,
         isTimerFinalized: false,
+        isTimerVisible: false,
         isFormSubmit: false,
         enableAdding,
         disableAdding,
         finalizeTimer,
+        setTimerVisibility,
         setFormSubmit,
         setBoardId,
+        setBoardTime,
         setBoardStatus
       }}
     >

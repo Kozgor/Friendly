@@ -22,4 +22,16 @@ export interface IUserLocalProfile {
   role: string;
   avatar: string;
   token: string;
+  currentBoardId: string;
+  currentBoardName: string;
+}
+
+export interface ICurrentBoardDetails {
+  currentBoardId?: string;
+  currentBoardName?: string
+}
+
+export interface IUserPermissions {
+  isTimerAvailable: boolean;
+  timeToComlete: number;
 }

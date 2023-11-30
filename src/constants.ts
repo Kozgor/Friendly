@@ -8,6 +8,12 @@ export const boardStepperButtons = {
   archive: 'Archive'
 };
 
+export const navigationBarTitles = {
+  drawerHeader: 'friendly',
+  drawerSubheader: 'Home',
+  navigatinListHeader: 'MY BOARDS'
+};
+
 export const possibleBoardStatuses = {
   created: 'created',
   active: 'active',
@@ -29,7 +35,6 @@ export const boardStepperLabels = [
   'Shared Board'
 ];
 
-export const ADMIN_PAGE_HEADER_TITLE = 'friendly';
 export const BOARD_PUBLISH_MESSAGE = 'board was successfully published. Now your team can play with it';
 export const NO_BOARDS_MESSAGE = 'No boards found';
 export const SELECT_ALL = 'Select all';

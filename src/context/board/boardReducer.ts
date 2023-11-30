@@ -23,6 +23,21 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         boardId: action.payload
       };
+    case 'SET_BOARD_TIME':
+      return {
+        ...state,
+        boardTime: action.payload
+      };
+    case 'SET_TIMER_VISIBILITY':
+      return {
+        ...state,
+        isTimerVisible: action.payload
+      };
+    case 'SET_BOARDNAME':
+      return {
+        ...state,
+        boardName: action.payload
+      };
     case 'SET_BOARD_STATUS':
       return {
         ...state,

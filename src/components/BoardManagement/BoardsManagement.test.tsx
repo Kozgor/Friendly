@@ -23,6 +23,8 @@ const enableAdding = jest.fn();
 const disableAdding = jest.fn();
 const finalizeTimer = jest.fn();
 const setBoardId = jest.fn();
+const setBoardTime = jest.fn();
+const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
 
@@ -32,14 +34,18 @@ const wrapper = ({ children }: BaseProps) => (
     value={{
       boardId: 'testId',
       boardStatus: 'active',
+      boardTime: 5,
       isAddingDisabled: false,
       isTimerFinalized: false,
+      isTimerVisible: false,
       isFormSubmit: false,
       enableAdding,
       disableAdding,
       finalizeTimer,
+      setTimerVisibility,
       setFormSubmit,
       setBoardId,
+      setBoardTime,
       setBoardStatus
     }}
   >

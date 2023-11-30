@@ -13,14 +13,14 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 import { INITIAL_BOARD } from '../../mocks/board';
-import { IUserProfile } from '../../interfaces/user';
+
+import { ICurrentBoardDetails, IUserProfile } from '../../interfaces/user';
 import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
 import { isNull } from 'lodash';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { userAPI } from '../../api/UserAPI';
 
-import BoardHeader from '../BoardHeader/BoardHeader';
 import Column from '../Column/Column';
 import NoContent from '../NoContent/NoContent';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
@@ -30,11 +30,17 @@ import classes from './Board.module.scss';
 const Board = () => {
   const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
   const [isLoading, setIsLoading] = useState(false);
-  const [isTimerVisible, setIsTimerVisible] = useState(false);
   const [isBoardVisible, setIsBoardVisible] = useState(true);
-  const { boardStatus, isFormSubmit, setBoardStatus, setBoardId } = useContext(BoardContext);
+  const {
+    boardStatus,
+    isFormSubmit,
+    setBoardStatus,
+    setBoardId,
+    setBoardTime,
+    setTimerVisibility
+  } = useContext(BoardContext);
   const navigate = useNavigate();
-  const { getLocalUserData } = localStorageManager();
+  const { getLocalUserData, saveLocalBoardDetails } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
   const { getUserById } = userAPI();
@@ -42,6 +48,7 @@ const Board = () => {
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
+  const layoutHeight = localUser.role === 'admin' ? '80vh': '90vh';
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -69,13 +76,25 @@ const Board = () => {
 
       if ((board && board?.status === status) || (board && localUser.role === 'admin')) {
         let columnsCards: IColumnCard[] | undefined;
+        const currentBoard: ICurrentBoardDetails = {
+          currentBoardId: board._id,
+          currentBoardName: board.name
+        };
+
+        saveLocalBoardDetails(currentBoard);
 
         if (board.status === possibleBoardStatuses.active) {
+          if (status === possibleBoardStatuses.finalized && localUser.role === 'admin' && URLBoardId === board._id) {
+            setIsBoardVisible(false);
+            setTimerVisibility(false);
+
+            return;
+          }
           columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
-          setIsTimerVisible(true);
+          setTimerVisibility(true);
         } else {
           columnsCards = await fetchFinalColumnCards(URLBoardId);
-          setIsTimerVisible(false);
+          setTimerVisibility(false);
         }
 
         board.columns.forEach((column: IColumn) => {
@@ -85,13 +104,15 @@ const Board = () => {
             column.columnCards = columnsCards[columnId];
           }
         });
+
         setBoardId(URLBoardId);
         setBoardSettings(board);
         setBoardStatus(board.status);
+        setBoardTime(board.timer);
         setIsBoardVisible(true);
       } else {
-        setIsTimerVisible(false);
         setIsBoardVisible(false);
+        setTimerVisibility(false);
       }
     } catch (error) {
       console.log(error);
@@ -111,16 +132,14 @@ const Board = () => {
       }
 
       if (userProfile && userProfile.boards) {
-        if (userProfile && userProfile.boards && !isNull(userProfile.boards.active)) {
+        if (!isNull(userProfile.boards.active)) {
           setupBoard(userProfile.boards.active, possibleBoardStatuses.active);
-          setIsLoading(false);
 
           return;
         }
 
-        if (userProfile && userProfile.boards && !isNull(userProfile.boards.finalized)) {
+        if (!isNull(userProfile.boards.finalized)) {
           setupBoard(userProfile.boards.finalized, possibleBoardStatuses.finalized);
-          setIsLoading(false);
 
           return;
         }
@@ -138,12 +157,7 @@ const Board = () => {
 
   return (
     <div className={classes['board-container']}>
-      <BoardHeader
-        boardName={boardSettings.name}
-        isTimerVisible={isTimerVisible}
-        time={boardSettings.timer}
-      />
-      <main className={classes.board} data-testid='board'>
+      <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
         {isBoard &&
           boardSettings?.columns.map((column) => (
             <Column
@@ -169,7 +183,7 @@ const Board = () => {
             />
           </div>
         }
-      </main>
+      </div>
     </div>
   );
 };
