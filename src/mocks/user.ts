@@ -44,7 +44,6 @@ export const INITIAL_USER_PROFILE = {
     token: ''
 };
 
-
 export const STORE_USER_PROFILE = {
     fullName: 'John Doe',
     _id: 'test-id-john',

@@ -19,25 +19,34 @@ import { icons } from '../../theme/icons/icons';
 import { localStorageManager } from '../../utils/localStorageManager';
 
 import classes from './MainLayout.module.scss';
+
 const MainLayout = () => {
+    const navigate = useNavigate();
+    const { theme } = useContext(ThemeContext);
     const { getLocalUserData, getLocalBoardDatails } = localStorageManager();
     const user = getLocalUserData();
     const currentBoardDetails = getLocalBoardDatails();
+    const URLAdminPart = useAdminLocation();
+    const URLPart = useLocation();
     const isAdmin = user.role === 'admin';
     const layoutHeight = isAdmin ? '80vh': '90vh';
-    const { theme } = useContext(ThemeContext);
-    const navigate = useNavigate();
     const [adminTabListState, setAdminTabListState] = useState(adminTabList);
     const [backward, setBackward] = useState<string>('');
     const [forward, setForward] = useState<string>('');
     const [firstTitle, setFirstTitle] = useState<string>('');
     const [secondTitle, setSecondTitle] = useState<string>('');
-    const URLAdminPart = useAdminLocation();
-    const URLPart = useLocation();
+
+    const isBoardPage = URLPart.pathname.startsWith('/board');
+    const isSummaryPage = URLPart.pathname.startsWith('/team_summary');
+    const isNewBoardPage = URLPart.pathname.startsWith('/admin/new_board');
+    const isNewDefaultBoard = URLPart.pathname.startsWith('/admin/new_board/default_board');
+    const isBoardManagement = URLPart.pathname.startsWith('/admin/boards_management');
+
     const iconList = [
       icons.backpack(adminTabListState[0].active ? '#fff' : '#8ab4bc'),
       icons.signSpot(adminTabListState[1].active ? '#fff' : '#8ab4bc')
     ];
+
     const subheaderTitles = {
       newBoard: 'New Board',
       defaultBoard: 'Default Board',
@@ -45,11 +54,6 @@ const MainLayout = () => {
       boardSummary: 'Summary',
       board: currentBoardDetails.currentBoardName
     };
-    const isBoardPage = URLPart.pathname.startsWith('/board');
-    const isSummaryPage = URLPart.pathname.startsWith('/team_summary');
-    const isNewBoardPage = URLPart.pathname.startsWith('/admin/new_board');
-    const isNewDefaultBoard = URLPart.pathname.startsWith('/admin/new_board/default_board');
-    const isBoardManagement = URLPart.pathname.startsWith('/admin/boards_management');
 
     const adminListItemActiveUpdate = (URLPart: string) => {
       setAdminTabListState(prevTabList => prevTabList.map(tab => {
@@ -131,6 +135,7 @@ const MainLayout = () => {
       setupTitle();
       adminListItemActiveUpdate(URLAdminPart);
     }, [URLPart]);
+
     const openNewBoardTab = () => {
       navigate('/admin/new_board');
       adminListItemActiveUpdate(URLAdminPart);
@@ -142,13 +147,12 @@ const MainLayout = () => {
     };
 
     const dashboardList = [{
-        testId: 'new-board',
-        listTitle: adminTabList[0].title,
-        listAction: openNewBoardTab
-      }, {
-        testId:'boards-management',
-        listTitle: adminTabList[1].title,
-        listAction: openManager
+      testId: 'new-board',
+      listTitle: adminTabList[0].title,
+      listAction: openNewBoardTab }, {
+      testId:'boards-management',
+      listTitle: adminTabList[1].title,
+      listAction: openManager
     }];
 
     return (

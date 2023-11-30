@@ -1,5 +1,5 @@
-import { INITIAL_LOCAL_BOARD, INITIAL_LOCAL_PROFILE } from '../mocks/user';
 import { ICurrentBoardDetails, IUserLocalProfile } from '../interfaces/user';
+import { INITIAL_LOCAL_BOARD, INITIAL_LOCAL_PROFILE } from '../mocks/user';
 
 import moment from 'moment';
 

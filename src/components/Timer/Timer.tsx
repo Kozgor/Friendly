@@ -1,11 +1,8 @@
 import { useContext, useMemo, useRef, useState } from 'react';
+import { BoardContext } from '../../context/board/boardContext';
+import Button from '@mui/joy/Button';
 import Countdown from 'react-countdown';
 import moment from 'moment';
-
-import Button from '@mui/joy/Button';
-
-import { BoardContext } from '../../context/board/boardContext';
-import { ITimerProps } from '../../interfaces/timerProps';
 
 import classes from './Timer.module.scss';
 
@@ -20,9 +17,9 @@ const Timer = () => {
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
   const { boardTime, enableAdding, disableAdding, finalizeTimer, setTimerVisibility } = useContext(BoardContext);
-
+  const timeMultiplier = 60000;
   const now = moment().toDate().getTime();
-  const date = now + (boardTime * 60000);
+  const date = now + (boardTime * timeMultiplier);
 
   const startTimer = () => {
     countdownRef.current?.start();
