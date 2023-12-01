@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { getTokenDuration } from './utils/getTokenDuration';
@@ -7,6 +8,7 @@ import router from './router/router';
 
 import 'react-toastify/dist/ReactToastify.css';
 import classes from './App.module.scss';
+import { joyTheme } from './theme/theme';
 
 function App() {
   const tokenDuration = getTokenDuration();
@@ -18,7 +20,8 @@ function App() {
   }, [tokenDuration]);
 
   return (
-      <div className={classes.app}>
+    <div className={classes.app}>
+      <JoyCssVarsProvider theme={joyTheme}>
         <RouterProvider router={router}></RouterProvider>
         <ToastContainer
           role="alert"
@@ -30,7 +33,8 @@ function App() {
           hideProgressBar={false}
           theme="colored"
         />
-      </div>
+      </JoyCssVarsProvider>
+    </div>
   );
 }
 
