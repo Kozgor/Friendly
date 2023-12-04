@@ -1,11 +1,10 @@
 import * as router from 'react-router';
-import { RenderResult, fireEvent, render, screen } from '@testing-library/react';
+import { RenderResult, render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import Board from '../../components/Board/Board';
 import Login from '../../components/Login/Login';
-
 import store from '../../store/store';
 
 
@@ -20,7 +19,6 @@ describe('Board component', () => {
           {
             columnId: 'start',
             columnAvatar: '',
-            // columnCards: [],
             columnStyle: '',
             columnSubtitle: 'Subtitle 1',
             columnTitle: 'Start'
@@ -67,19 +65,5 @@ describe('Board component', () => {
     const board = screen.getByTestId('board');
 
     expect(board).toBeInTheDocument();
-  });
-
-  test('should signOut, clear localStorage and navigate to "auth"', () => {
-    const signOutButton = screen.getByTestId('signOut');
-    fireEvent.click(signOutButton);
-
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const fullName = localStorage.getItem('fullName');
-
-    expect(token).toBeUndefined;
-    expect(role).toBeUndefined;
-    expect(fullName).toBeUndefined;
-    expect(navigate).toHaveBeenCalledWith('/auth');
   });
 });

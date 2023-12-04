@@ -1,22 +1,21 @@
-import * as router from 'react-router';
-import { RenderResult, render } from '@testing-library/react';
-import BoardStepper from './BoardStepper';
-import BoardsManagement from '../BoardManagement/BoardsManagement';
-import store from '../../store/store';
-
-import { ACTIVE_BOARD } from '../../mocks/board';
-import { BaseProps } from '../../interfaces/baseProps';
-import { BoardContext } from '../../context/board/boardContext';
-import { Provider } from 'react-redux';
-
-import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-
 const finalizeBoard = jest.fn();
 
 jest.mock('../../api/BoardAPI', () => ({
   ...jest.requireActual('../../api/BoardAPI'),
   finalizeBoard
 }));
+
+import * as router from 'react-router';
+import { RenderResult, render } from '@testing-library/react';
+import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { ACTIVE_BOARD } from '../../mocks/board';
+import { BaseProps } from '../../interfaces/baseProps';
+import { BoardContext } from '../../context/board/boardContext';
+import { Provider } from 'react-redux';
+
+import BoardStepper from './BoardStepper';
+import BoardsManagement from '../BoardManagement/BoardsManagement';
+import store from '../../store/store';
 
 describe('BoardStepper Component', () => {
   let component: RenderResult;

@@ -25,6 +25,7 @@ const BoardHeader = (props: IBoardHeader) => {
   const localUserData = getLocalUserData();
   const { submitComments } = userAPI();
   const isBoardPage = location.pathname.startsWith('/board/');
+  const isShowTimer = isTimerVisible && isSubmitButton && isBoardPage;
   const onSignOut: MouseEventHandler<HTMLButtonElement> = () => {
     removeUserFromStore();
     removeLocalUserData();
@@ -43,7 +44,7 @@ const BoardHeader = (props: IBoardHeader) => {
     <header className={classes.header}>
       <div className={classes.mainHeader}>
         <span className={classes['header__board-box']}>
-          {(isTimerVisible && isSubmitButton && isBoardPage) &&
+          {isShowTimer &&
             <span className={classes['header__board-actions']}>
               <span className={classes['header__board-actions__timer']}>
                 <Timer />

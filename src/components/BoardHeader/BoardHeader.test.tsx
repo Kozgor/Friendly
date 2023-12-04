@@ -1,3 +1,24 @@
+import { LOCAL_ADMIN_PROFILE, STORE_ADMIN_PROFILE } from '../../mocks/user';
+const addUserToStore = jest.fn();
+const removeUserFromStore = jest.fn();
+const saveLocalUserData = jest.fn();
+const removeLocalUserData = jest.fn();
+
+jest.mock('../../utils/storeUserManager', () => ({
+  useStoreUser: () => ({
+    addUserToStore,
+    removeUserFromStore,
+    getUserFromStore: () => STORE_ADMIN_PROFILE
+  })
+}));
+
+jest.mock('../../utils/localStorageManager', () => ({
+  localStorageManager: () => ({
+    saveLocalUserData,
+    removeLocalUserData,
+    getLocalUserData: () => LOCAL_ADMIN_PROFILE
+  })
+}));
 import {
   RenderResult,
   fireEvent,
@@ -8,39 +29,59 @@ import BoardHeader from './BoardHeader';
 import { Provider } from 'react-redux';
 import store from '../../store/store';
 
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import { LOCAL_USER_PROFILE, STORE_USER_PROFILE } from '../../mocks/user';
+import * as router from 'react-router';
+import { BaseProps } from '../../interfaces/baseProps';
+import { BoardContext } from '../../context/board/boardContext';
+import Board from '../Board/Board';
 
-const addUserToStore = jest.fn();
-const removeUserFromStore = jest.fn();
-
-jest.mock('../../utils/storeUserManager', () => ({
-    useStoreUser: () => ({
-      addUserToStore,
-      removeUserFromStore,
-      getUserFromStore: () => STORE_USER_PROFILE
-    })
-}));
-
-const saveLocalUserData = jest.fn();
-const removeLocalUserData = jest.fn();
-
-jest.mock('../../utils/localStorageManager', () => ({
-    localStorageManager: () => ({
-      saveLocalUserData,
-      removeLocalUserData,
-      getLocalUserData: () => LOCAL_USER_PROFILE
-    })
-}));
 
 describe('BoardHeader component', () => {
   let component: RenderResult;
+  const navigate = jest.fn();
+
+  beforeAll(() => {
+    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+  });
+
+  const enableAdding = jest.fn();
+  const disableAdding = jest.fn();
+  const finalizeTimer = jest.fn();
+  const setBoardId = jest.fn();
+  const setBoardTime = jest.fn();
+  const setTimerVisibility = jest.fn();
+  const setBoardStatus = jest.fn();
+  const setFormSubmit = jest.fn();
+
+  const wrapper = ({ children }: BaseProps) => (
+    <BoardContext.Provider
+      value={{
+        boardId: '',
+        boardStatus: 'active',
+        boardTime: 5,
+        isAddingDisabled: false,
+        isTimerFinalized: false,
+        isTimerVisible: true,
+        isFormSubmit: false,
+        enableAdding,
+        disableAdding,
+        finalizeTimer,
+        setFormSubmit,
+        setBoardId,
+        setBoardTime,
+        setTimerVisibility,
+        setBoardStatus
+      }}
+    >
+      {children}
+    </BoardContext.Provider>
+  );
 
   beforeEach(() => {
     component = render(
       <Provider store={store}>
-        <MemoryRouter>
+        <MemoryRouter initialEntries={['/board/']}>
           <BoardHeader
             isAdmin={true}
             firstTitle={'firstTitle'}
@@ -49,7 +90,7 @@ describe('BoardHeader component', () => {
             forward={'forward'}
           />
         </MemoryRouter>
-      </Provider>
+      </Provider>, { wrapper }
     );
   });
 

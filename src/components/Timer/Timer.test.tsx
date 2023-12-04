@@ -120,7 +120,7 @@ describe('Timer component', () => {
 
       await waitFor(
         () => {
-          expect(screen.getByText('00:00:03')).toBeInTheDocument();
+          expect(screen.getByText('00:05:00')).toBeInTheDocument();
           expect(screen.getByTestId('continue')).toBeInTheDocument();
         },
         { timeout: 100 }

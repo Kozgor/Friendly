@@ -1,34 +1,8 @@
-import { RenderResult, cleanup, render, screen } from '@testing-library/react';
-import Board from './Board';
-import { BoardProvider } from '../../context/board/boardContext';
-import store from '../../store/store';
-
-import { Provider } from 'react-redux';
-
-import { MemoryRouter } from 'react-router';
-
-import { LOCAL_USER_PROFILE, STORE_USER_PROFILE } from '../../mocks/user';
-
-const getUserById = jest.fn(() => {
-  STORE_USER_PROFILE;
-});
-const getLocalUserData = jest.fn(() => {
-  LOCAL_USER_PROFILE;
-});
+const getUserById = jest.fn();
 const getActiveBoard = jest.fn();
 const getFinalizedBoard = jest.fn();
 const getFinalColumnData = jest.fn();
 const getUserColumnData = jest.fn();
-
-jest.mock('../../utils/localStorageManager', () => ({
-  ...jest.requireActual('../../utils/localStorageManager'),
-  getLocalUserData
-}));
-
-jest.mock('../../api/UserAPI', () => ({
-  ...jest.requireActual('../../api/UserAPI'),
-  getUserById
-}));
 
 jest.mock('../../api/BoardAPI', () => ({
   ...jest.requireActual('../../api/BoardAPI'),
@@ -41,6 +15,19 @@ jest.mock('../../api/ColumnAPI', () => ({
   getFinalColumnData,
   getUserColumnData
 }));
+
+jest.mock('../../api/UserAPI', () => ({
+  ...jest.requireActual('../../api/UserAPI'),
+  getUserById
+}));
+
+import { RenderResult, render } from '@testing-library/react';
+import { BoardProvider } from '../../context/board/boardContext';
+import { MemoryRouter } from 'react-router';
+import { Provider } from 'react-redux';
+import store from '../../store/store';
+
+import Board from './Board';
 
 describe('Board component', () => {
   process.env.REACT_APP_FRIENDLY_DOMAIN = 'https://test.com/';

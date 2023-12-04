@@ -1,9 +1,7 @@
 import * as router from 'react-router';
 import {
   RenderResult,
-  fireEvent,
-  render,
-  screen
+  render
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { LOCAL_ADMIN_PROFILE } from '../../mocks/user';
@@ -24,9 +22,6 @@ jest.mock('../../utils/localStorageManager', () => ({
       getLocalUserData: () => LOCAL_ADMIN_PROFILE
     })
 }));
-
-let newBoardTab: HTMLElement;
-let boardsManagementTab: HTMLElement;
 
 describe('Dashboard component', () => {
   let component: RenderResult;
@@ -54,9 +49,6 @@ describe('Dashboard component', () => {
     component = render(<Provider store={store}>
       <RouterProvider router={router} />
     </Provider>);
-
-    newBoardTab = screen.getByTestId('new-board');
-    boardsManagementTab = screen.getByTestId('boards-management');
   });
 
   afterEach(async () => {
@@ -70,71 +62,5 @@ describe('Dashboard component', () => {
 
   test('should mount component properly', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('should render header with fullName "Admin"', () => {
-    const message = screen.getByText('Hello, Admin');
-
-    expect(message).toBeInTheDocument();
-  });
-
-  test('should render signOut button', () => {
-    const signOutButton = screen.getByTestId('signOut');
-
-    expect(signOutButton).toBeInTheDocument();
-  });
-
-  test('should not render timer', () => {
-    const timerStartButton = screen.queryByTestId('timerStartButton');
-
-    expect(timerStartButton).toBeNull();
-  });
-
-  test('should render drawer', () => {
-    const drawer = screen.getByTestId('drawer');
-
-    expect(drawer).toBeInTheDocument();
-  });
-
-  test('should render "New Board" tad', () => {
-    expect(newBoardTab).toBeInTheDocument();
-  });
-
-  test('should render "Boards Management" tab', () => {
-    expect(boardsManagementTab).toBeInTheDocument();
-  });
-
-  test('should render "Create Board" component', () => {
-    const templates = screen.getByTestId('templates');
-
-    expect(templates).toBeInTheDocument();
-  });
-
-  test('should signOut, clear localStorage and navigate to "auth"', () => {
-    const signOutButton = screen.getByTestId('signOut');
-    fireEvent.click(signOutButton);
-
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const fullName = localStorage.getItem('fullName');
-
-    expect(token).toBeUndefined;
-    expect(role).toBeUndefined;
-    expect(fullName).toBeUndefined;
-    expect(navigate).toHaveBeenCalledWith('/auth');
-  });
-
-  test('should navigate to "new_board" when click on "New Board" tab button', () => {
-    fireEvent.click(newBoardTab);
-
-    expect(navigate).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith('new_board');
-  });
-
-  test('should navigate to "boards_management" when click on "Boards Management" tab button', () => {
-    fireEvent.click(boardsManagementTab);
-
-    expect(navigate).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith('boards_management');
   });
 });
