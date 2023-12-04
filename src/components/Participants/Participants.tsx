@@ -1,17 +1,15 @@
 import {
   Checkbox,
-  FormControlLabel,
   MenuItem
-} from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useEffect, useState } from 'react';
+} from '@mui/joy';
+import Select from '@mui/joy/Select';
+import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useState } from 'react';
 import { IParticipants } from '../../interfaces/participants';
 import { SELECT_ALL } from '../../constants';
 import { isString } from 'lodash';
 import { localStorageManager } from '../../utils/localStorageManager';
 
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
+import FormControl from '@mui/joy/FormControl';
 import classes from './Participants.module.scss';
 
 const Participants = (props: IParticipants) => {
@@ -25,13 +23,16 @@ const Participants = (props: IParticipants) => {
   const isChecked = personNames.length === participants.length;
   const isIndeterminate = personNames.length !== participants.length && personNames.length > 0;
 
-  const handleChange = (event: SelectChangeEvent<typeof personNames>) => {
-    const { target: { value } } = event;
+  // TODO: Fix this func to use it in Select
+  const handleChange = (event: MouseEvent<Element, MouseEvent> | KeyboardEvent<Element> | FocusEvent<Element, Element> | null, value: string[]) => {
+    console.log(event);
+    console.log(value);
+    // const { target: { value } } = event;
 
-    setPersonNames(
-      isString(value) ? value.split(',') : value
-    );
-    collectParticipants([...selected]);
+    // setPersonNames(
+    //   isString(value) ? value.split(',') : value
+    // );
+    // collectParticipants([...selected]);
   };
 
   const handleSelectAll = () => {
@@ -70,12 +71,14 @@ const Participants = (props: IParticipants) => {
           multiple
           data-testid='select'
           value={personNames}
-          onChange={handleChange}
+          // TODO: Fix handleChange func
+          // onChange={handleChange}
           renderValue={selected => selected.join(', ')}
           className={classes.select}
         >
           <MenuItem>
-            <FormControlLabel
+          {/* TODO: Replace or fix element */}
+            {/* <FormControlLabel
               label={SELECT_ALL}
               control={
                 <Checkbox
@@ -85,19 +88,20 @@ const Participants = (props: IParticipants) => {
                   onChange={handleSelectAll}
                 />
               }
-            />
+            /> */}
           </MenuItem>
           {participants.map(name => (
             <MenuItem
               key={name}
-              value={name}
+            // value={name}
             >
               <Checkbox
                 data-testid={`select-checkbox-${name}`}
                 checked={personNames.indexOf(name) > -1}
                 onChange={() => handleSelect(name)}
-                />
-              <ListItemText primary={name} />
+              />
+              {/* TODO: replace this component with smth to display it in the same way */}
+              {/* <ListItemText primary={name} /> */}
             </MenuItem>
           ))}
         </Select>

@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Box, CircularProgress } from '@mui/joy';
+import { Box, CircularProgress, Divider } from '@mui/joy';
 import { BoardContext } from '../../context/board/boardContext';
-import { Divider } from '@mui/material';
 import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
 import { sortByDateStartNew } from '../../utils/sortByDate';

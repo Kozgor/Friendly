@@ -5,12 +5,10 @@ import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { getTokenDuration } from './utils/getTokenDuration';
 import router from './router/router';
-import { ThemeProvider } from '@mui/material/styles';
-import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from '@mui/material';
 
 import 'react-toastify/dist/ReactToastify.css';
 import classes from './App.module.scss';
-import { joyTheme, materialTheme } from './theme/theme';
+import { joyTheme } from './theme/theme';
 
 function App() {
   const tokenDuration = getTokenDuration();
@@ -24,19 +22,17 @@ function App() {
   return (
     <div className={classes.app}>
       <JoyCssVarsProvider theme={joyTheme}>
-        <ThemeProvider theme={materialTheme}>
-          <RouterProvider router={router}></RouterProvider>
-          <ToastContainer
-            role="alert"
-            position="top-right"
-            autoClose={3000}
-            draggable
-            closeOnClick
-            pauseOnHover={false}
-            hideProgressBar={false}
-            theme="colored"
-          />
-        </ThemeProvider>
+        <RouterProvider router={router}></RouterProvider>
+        <ToastContainer
+          role="alert"
+          position="top-right"
+          autoClose={3000}
+          draggable
+          closeOnClick
+          pauseOnHover={false}
+          hideProgressBar={false}
+          theme="colored"
+        />
       </JoyCssVarsProvider>
     </div>
   );

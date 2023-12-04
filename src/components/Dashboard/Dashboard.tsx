@@ -8,14 +8,6 @@ import {
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText
-} from '@mui/material';
-
-import {
   Button,
   FormControl,
   FormLabel,
@@ -23,7 +15,11 @@ import {
   Modal,
   ModalDialog,
   Stack,
-  Typography
+  Typography,
+  List,
+  ListItem,
+  ListItemButton,
+  Drawer
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
@@ -48,6 +44,7 @@ const Dashboard = () => {
   const [column, setColumn] = useState<IColumn>(initColumnValue);
   const [adminTabListState, setAdminTabListState] = useState(adminTabList);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const { getActiveBoard } = boardAPI();
   const URLPart = useLastPartLocation();
   const iconList = [
@@ -162,7 +159,7 @@ const Dashboard = () => {
     listTitle: adminTabList[0].title,
     listAction: openNewBoardTab
   }, {
-    testId:'boards-management',
+    testId: 'boards-management',
     listTitle: adminTabList[1].title,
     listAction: openManager
   }];
@@ -229,49 +226,53 @@ const Dashboard = () => {
         isTimerVisible={false}
         time={0}
       />
-        <Stack className={classes.main} direction="row" spacing={2}>
-          <Drawer
-            sx={{
-              '& .MuiDrawer-paper': {
-                width: 240,
-                boxSizing: 'border-box',
-                position: 'relative',
-                backgroundColor: theme.color1,
-                color: theme.color3,
-                borderRight: `1px solid ${theme.color5}`
-              }
-            }}
-            variant="permanent"
-            anchor="left"
-            data-testid="drawer"
-          >
-            <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
-              {dashboardList.map((listItem, index) => (
-                <ListItem
-                  key={listItem.listTitle}
-                  data-testid={listItem.testId}
-                  onClick={listItem.listAction}
-                  sx={{
-                    padding: 0,
-                    backgroundColor: adminTabListState[index].active ? theme.color2: 'transparent',
-                    borderRadius: 2.5,
-                    borderTopRightRadius: 0,
-                    borderBottomRightRadius: 0
-                  }}
-                >
-                  <ListItemButton>
-                    <span className={classes.listItemIcon}>
-                      {iconList[index]}
-                    </span>
-                    <ListItemText primary={listItem.listTitle}>
-                    </ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
-          <Outlet />
-        </Stack>
+      <Stack className={classes.main} direction="row" spacing={2}>
+        <Drawer
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: 240,
+              boxSizing: 'border-box',
+              position: 'relative',
+              backgroundColor: theme.color1,
+              color: theme.color3,
+              borderRight: `1px solid ${theme.color5}`
+            }
+          }}
+          // TODO: investigate this variant
+          // variant="permanent"
+          anchor="left"
+          data-testid="drawer"
+          open={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+        >
+          <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
+            {dashboardList.map((listItem, index) => (
+              <ListItem
+                key={listItem.listTitle}
+                data-testid={listItem.testId}
+                onClick={listItem.listAction}
+                sx={{
+                  padding: 0,
+                  backgroundColor: adminTabListState[index].active ? theme.color2 : 'transparent',
+                  borderRadius: 2.5,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0
+                }}
+              >
+                <ListItemButton>
+                  <span className={classes.listItemIcon}>
+                    {iconList[index]}
+                  </span>
+                  {/* TODO: replace component with smth to display it in the same way */}
+                  {/* <ListItemText primary={listItem.listTitle}>
+                    </ListItemText> */}
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <Outlet />
+      </Stack>
     </>
   );
 };

@@ -15,7 +15,6 @@ import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { INITIAL_COLUMNS } from './DeafaultColumns';
-import { InputLabel } from '@mui/material';
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
 import { toast } from 'react-toastify';
 import { userAPI } from '../../api/UserAPI';
@@ -167,7 +166,8 @@ const DefaultBoard = () => {
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map(setting => (
           <div key={setting.key} className={classes[setting.key]}>
-            <InputLabel id={setting.key}>{setting.label}</InputLabel>
+            {/* TODO: replace this component with wmth to display it in the same way */}
+            {/* <InputLabel id={setting.key}>{setting.label}</InputLabel> */}
             {setting.key === 'timer' &&
               <Input
                 className={classes.input}

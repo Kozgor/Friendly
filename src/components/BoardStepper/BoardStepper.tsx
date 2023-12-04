@@ -1,16 +1,13 @@
 /* eslint-disable complexity */
 import moment from 'moment';
 
-import { Button, Divider, Typography } from '@mui/joy';
 import {
-  Stack,
+  Button, Typography, Stack,
   Step,
   StepButton,
-  StepIconProps,
-  StepLabel,
   Stepper,
   styled
-} from '@mui/material';
+} from '@mui/joy';
 
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +31,7 @@ interface IOwnerState {
   active?: boolean;
 }
 
-const ColorlibStepIconRoot = styled('div')<{ownerState: IOwnerState}>
+const ColorlibStepIconRoot = styled('div')<{ ownerState: IOwnerState }>
   (({ ownerState }) => ({
     zIndex: 1,
     color: defaultTheme.color3,
@@ -53,7 +50,7 @@ const ColorlibStepIconRoot = styled('div')<{ownerState: IOwnerState}>
       backgroundColor: defaultTheme.color5
     })
   })
-);
+  );
 
 const BoardStepper = (props: { board: IBoardSettings }) => {
   const { board } = props;
@@ -93,6 +90,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
     }
   };
 
+  // TODO: investigate do we need it
   // const onArchiveBoard = () => {
   //   if (board._id) {
   //     setCurrentBoardStatus(possibleBoardStatuses.archived);
@@ -107,22 +105,23 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
     }
   };
 
-  const ColorlibStepIcon = (props: StepIconProps) => {
-    const { active, completed, className } = props;
-    const opacity = (!active && !completed) && !isStatusFinalized ? 0.5 : 1;
+  // TODO replace components with smth to display in the same way
+  // const ColorlibStepIcon = (props: StepIconProps) => {
+  //   const { active, completed, className } = props;
+  //   const opacity = (!active && !completed) && !isStatusFinalized ? 0.5 : 1;
 
-    return (
-      <ColorlibStepIconRoot
-        ownerState={{ completed, active }}
-        className={className}
-        sx={{
-          opacity
-        }}
-      >
-        {stepIconValues[String(props.icon)]}
-      </ColorlibStepIconRoot>
-    );
-  };
+  //   return (
+  //     <ColorlibStepIconRoot
+  //       ownerState={{ completed, active }}
+  //       className={className}
+  //       sx={{
+  //         opacity
+  //       }}
+  //     >
+  //       {stepIconValues[String(props.icon)]}
+  //     </ColorlibStepIconRoot>
+  //   );
+  // };
 
   return (
     <Stack sx={{
@@ -141,7 +140,8 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
         </div>
       </div>
       <Stepper
-        activeStep={STEPS_MAP.second}
+        // TODO investiage issue
+        // activeStep={STEPS_MAP.second}
         sx={{
           '& .MuiStepConnector-line': {
             borderStyle: 'dotted',
@@ -163,7 +163,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
               (<Button
                 disabled={index === STEPS_MAP.fifth && !isStatusFinalized}
                 onClick={index === STEPS_MAP.third && isStatusActive ?
-                  onFinalizeBoard : () => {}}
+                  onFinalizeBoard : () => { }}
                 sx={{
                   backgroundColor: defaultTheme.color2,
                   '&:hover': {
@@ -182,7 +182,8 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                 disabled={(index === STEPS_MAP.fourth && isStatusActive) ||
                   isStepCompletedMap[index]}
                 onClick={openSpecificBoard}>
-                <StepLabel
+                {/* TODO: replace component with smth to displaying in the same way */}
+                {/* <StepLabel
                   StepIconComponent={ColorlibStepIcon}
                   sx={{
                     opacity: index === STEPS_MAP.fourth && isStatusActive ? 0.5 : 1,
@@ -192,7 +193,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                   }}
                 >
                   <span className={classes.stepperStepLabel}>{boardStepperLabels[index]}</span>
-                </StepLabel>
+                </StepLabel> */}
               </StepButton>)
             }
           </Step>

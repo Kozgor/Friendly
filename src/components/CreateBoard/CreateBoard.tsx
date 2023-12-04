@@ -1,8 +1,7 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { Typography } from '@mui/joy';
+import { Box, Typography } from '@mui/joy';
 
-import Box from '@mui/material/Box';
 import classes from './CreateBoard.module.scss';
 
 const CreateBoard = () => {
