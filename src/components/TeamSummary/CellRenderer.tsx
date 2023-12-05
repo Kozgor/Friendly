@@ -1,15 +1,13 @@
+import { ICardReactions } from '../../interfaces/columnCard';
 import { icons } from '../../theme/icons/icons';
 
 const TeamSummaryCellRenderer = (params: any) => {
   let trueCount = 0;
   let falseCount = 0;
 
-  if (params.value[0]) {
-    const { isHappyReaction } = params.value[0];
-
-    trueCount = isHappyReaction ? 1 : 0;
-    falseCount = !isHappyReaction ? 1 : 0;
-  }
+  params.value.forEach((cardReactions: ICardReactions) => {
+    cardReactions.isHappyReaction ? trueCount++ : falseCount++;
+  });
 
   return (
     <span style={{
