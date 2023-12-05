@@ -6,6 +6,7 @@ import {
 } from 'react';
 
 import { AgGridReact } from 'ag-grid-react';
+import { ICardReactions, IColumnCard } from '../../interfaces/columnCard';
 import { IUserProfile } from '../../interfaces/user';
 import { columnAPI } from '../../api/ColumnAPI';
 import { columnDefsList } from './ColumnsDefs';
@@ -48,8 +49,10 @@ const TeamSummary = () => {
           cardTags: card.cardTags ? card.cardTags.join(', ') : '',
           cardReactions: card.cardReactions,
           cardAuthor: card.cardAuthor
-        }));
 
+
+        }));
+        console.log(allCards[0].cardReactions);
         return updatedRowData || null;
       }
     } catch (error) {
@@ -86,8 +89,15 @@ const TeamSummary = () => {
   const getRowId = useMemo(() => (params: any) =>
     params.data.cardAuthor + params.data.cardComment, []);
 
+  const getCSVFile = () => {
+    gridRef.current?.api.exportDataAsCsv({
+      suppressQuotes: true
+    });
+  };
+
   return (
     <div className='teamSummaryContainer'>
+      <button onClick={getCSVFile}>Download csv file</button>
       <div id='summary-grid' className='ag-theme-alpine'>
         <AgGridReact
           animateRows={true}

@@ -74,7 +74,7 @@ const MainLayout = () => {
 
       if (isAdmin && isSummaryPage) {
         setBackward(`${pathConstants.BOARD}/${currentBoardDetails.currentBoardId}`);
-        setForward('');
+        setForward('downloadCSV');
 
         return;
       }
