@@ -78,11 +78,13 @@ const MainLayout = () => {
 
         return;
       }
+
       if (isAdmin && isNewBoardPage) {
         setFirstTitle(subheaderTitles.newBoard);
 
         return;
       }
+
       if (isAdmin && isBoardManagement) {
         setFirstTitle(subheaderTitles.boardsManagement);
 
