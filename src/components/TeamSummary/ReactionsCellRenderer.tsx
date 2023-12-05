@@ -1,7 +1,7 @@
 import { ICardReactions } from '../../interfaces/columnCard';
 import { icons } from '../../theme/icons/icons';
 
-const TeamSummaryCellRenderer = (params: any) => {
+const ReactionsCellRenderer = (params: any) => {
   let trueCount = 0;
   let falseCount = 0;
 
@@ -40,4 +40,4 @@ const TeamSummaryCellRenderer = (params: any) => {
   );
 };
 
-export default TeamSummaryCellRenderer;
+export default ReactionsCellRenderer;

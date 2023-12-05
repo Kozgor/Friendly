@@ -7,9 +7,9 @@ import {
 
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
-import { columnAPI } from '../../api/ColumnAPI';
-import { columnDefsList } from './ColumnsDefs';
+import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
+import { teamSummaryDefsList } from './TeamSummaryColumnDefs';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
@@ -30,31 +30,21 @@ const TeamSummary = () => {
   const localUser = getLocalUserData();
   const URLBoardId= useBoardIdLocation();
   const navigate = useNavigate();
-  const { getFinalColumnCards } = columnAPI();
+  const { getBoardSummary } = boardSummaryAPI();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
-  const [columnDefs, setColumnDefs] = useState(columnDefsList);
+  const [columnDefs, setColumnDefs] = useState(teamSummaryDefsList);
 
-  const fetchFinalColumnCards = async (boardId: string) => {
+  const fetchBoardSummary = async (boardId: string) => {
     try {
-      const columnsData = await getFinalColumnCards(boardId);
+      const boardSummary= await getBoardSummary(boardId);
 
-      if (columnsData) {
-        const allCards = Object.values(columnsData).flat();
-        const updatedRowData = allCards.map((card) => ({
-          columnId: card.columnId,
-          cardComment: card.cardComment,
-          cardTags: card.cardTags ? card.cardTags.join(', ') : '',
-          cardReactions: card.cardReactions,
-          cardAuthor: card.cardAuthor
-        }));
-
-        return updatedRowData || null;
-      }
+      return boardSummary || null;
     } catch (error) {
       console.log(error);
     }
   };
+
   const getUserData = async () => {
     try {
       const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
@@ -74,7 +64,7 @@ const TeamSummary = () => {
       getUserData();
     }
 
-    fetchFinalColumnCards(URLBoardId).then(rowData => {
+    fetchBoardSummary(URLBoardId).then(rowData => {
       if (rowData) {
         setRowData(rowData);
       }
