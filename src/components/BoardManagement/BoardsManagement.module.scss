@@ -3,14 +3,12 @@
 .boardsManagement {
   @include flexbox(column, start, center, nowrap);
   flex-grow: 1;
+}
 
-  .boardList {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 70vh;
-    overflow-y: scroll;
-  }
+.boardList {
+  @include flexbox(column, start, unset, nowrap);
+  width: 100%;
+  height: 70vh;
 }
 
 .boardsManagementContainer {

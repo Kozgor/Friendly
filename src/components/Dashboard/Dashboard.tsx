@@ -19,7 +19,8 @@ import {
   List,
   ListItem,
   ListItemButton,
-  Drawer
+  Drawer,
+  ListItemContent
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
@@ -238,8 +239,6 @@ const Dashboard = () => {
               borderRight: `1px solid ${theme.color5}`
             }
           }}
-          // TODO: investigate this variant
-          // variant="permanent"
           anchor="left"
           data-testid="drawer"
           open={isDrawerOpen}
@@ -263,9 +262,7 @@ const Dashboard = () => {
                   <span className={classes.listItemIcon}>
                     {iconList[index]}
                   </span>
-                  {/* TODO: replace component with smth to display it in the same way */}
-                  {/* <ListItemText primary={listItem.listTitle}>
-                    </ListItemText> */}
+                  <ListItemContent>{listItem.listTitle}</ListItemContent>
                 </ListItemButton>
               </ListItem>
             ))}

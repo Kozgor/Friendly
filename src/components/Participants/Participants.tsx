@@ -1,8 +1,11 @@
 import {
   Checkbox,
-  MenuItem
+  ListItemContent,
+  MenuItem,
+  Option,
+  Typography
 } from '@mui/joy';
-import Select from '@mui/joy/Select';
+import Select, { selectClasses } from '@mui/joy/Select';
 import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useState } from 'react';
 import { IParticipants } from '../../interfaces/participants';
 import { SELECT_ALL } from '../../constants';
@@ -11,6 +14,7 @@ import { localStorageManager } from '../../utils/localStorageManager';
 
 import FormControl from '@mui/joy/FormControl';
 import classes from './Participants.module.scss';
+import { KeyboardArrowDown } from '@mui/icons-material';
 
 const Participants = (props: IParticipants) => {
   const { participants, collectParticipants } = props;
@@ -24,9 +28,18 @@ const Participants = (props: IParticipants) => {
   const isIndeterminate = personNames.length !== participants.length && personNames.length > 0;
 
   // TODO: Fix this func to use it in Select
-  const handleChange = (event: MouseEvent<Element, MouseEvent> | KeyboardEvent<Element> | FocusEvent<Element, Element> | null, value: string[]) => {
+  const handleChange = (event: React.SyntheticEvent | null,
+    newValue: Array<string> | null) => {
+    console.log(personNames);
     console.log(event);
-    console.log(value);
+    console.log(newValue);
+    if (newValue && newValue.length) {
+      const lastChange = newValue[newValue.length - 1];
+      if(lastChange !== 'all') {
+        setPersonNames(newValue);
+        collectParticipants([...selected]);
+      }
+    }
     // const { target: { value } } = event;
 
     // setPersonNames(
@@ -71,14 +84,27 @@ const Participants = (props: IParticipants) => {
           multiple
           data-testid='select'
           value={personNames}
-          // TODO: Fix handleChange func
-          // onChange={handleChange}
-          renderValue={selected => selected.join(', ')}
+          onChange={handleChange}
+          // renderValue={selected => {
+          //   console.log(selected);
+          //   return selected.join(', ');
+          // }}
           className={classes.select}
+          indicator={<KeyboardArrowDown />}
+          sx={{
+            [`& .${selectClasses.indicator}`]: {
+              transition: '0.2s',
+              marginTop: '0',
+              [`&.${selectClasses.expanded}`]: {
+                transform: 'rotate(-180deg)'
+              }
+            }
+          }}
         >
-          <MenuItem>
+          <Option value='all' onClick={handleSelectAll}>Select all</Option>
+          {/* <MenuItem> */}
           {/* TODO: Replace or fix element */}
-            {/* <FormControlLabel
+          {/* <FormControlLabel
               label={SELECT_ALL}
               control={
                 <Checkbox
@@ -89,20 +115,25 @@ const Participants = (props: IParticipants) => {
                 />
               }
             /> */}
-          </MenuItem>
+          {/* <Checkbox
+              data-testid='select-all-checkboxes'
+              checked={isChecked}
+              indeterminate={isIndeterminate}
+              onChange={handleSelectAll}
+            />
+          </MenuItem> */}
           {participants.map(name => (
-            <MenuItem
-              key={name}
-            // value={name}
-            >
-              <Checkbox
-                data-testid={`select-checkbox-${name}`}
-                checked={personNames.indexOf(name) > -1}
-                onChange={() => handleSelect(name)}
-              />
-              {/* TODO: replace this component with smth to display it in the same way */}
-              {/* <ListItemText primary={name} /> */}
-            </MenuItem>
+            <Option key={name} value={name} onClick={() => handleSelect(name)}><Typography level='body-md'>{name}</Typography></Option>
+            // <MenuItem
+            //   key={name}
+            // >
+            //   <Checkbox
+            //     data-testid={`select-checkbox-${name}`}
+            //     checked={personNames.indexOf(name) > -1}
+            //     onChange={() => handleSelect(name)}
+            //   />
+            //   <ListItemContent><Typography level='body-md'>{name}</Typography></ListItemContent>
+            // </MenuItem>
           ))}
         </Select>
       </FormControl>

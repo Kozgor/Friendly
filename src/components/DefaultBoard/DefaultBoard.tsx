@@ -166,8 +166,7 @@ const DefaultBoard = () => {
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map(setting => (
           <div key={setting.key} className={classes[setting.key]}>
-            {/* TODO: replace this component with wmth to display it in the same way */}
-            {/* <InputLabel id={setting.key}>{setting.label}</InputLabel> */}
+            <Typography htmlFor={setting.key} component='label'>{setting.label}</Typography>
             {setting.key === 'timer' &&
               <Input
                 className={classes.input}

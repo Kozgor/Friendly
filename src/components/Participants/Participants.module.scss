@@ -7,6 +7,12 @@
 .select {
   height: 40px;
   width: 211px;
+  background-color: #fff !important;
+  border: none !important;
+}
+
+.select:hover {
+  background-color: #fff;
 }
 
 .mainContainer {
