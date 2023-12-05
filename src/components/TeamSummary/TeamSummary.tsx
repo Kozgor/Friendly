@@ -77,7 +77,6 @@ const TeamSummary = () => {
     }
 
     fetchFinalColumnCards(URLBoardId).then(rowData => {
-      console.log(rowData);
       if (rowData) {
         setRowData(rowData);
       }
