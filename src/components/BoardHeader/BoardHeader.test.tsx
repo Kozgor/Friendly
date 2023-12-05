@@ -84,8 +84,8 @@ describe('BoardHeader component', () => {
         <MemoryRouter initialEntries={['/board/']}>
           <BoardHeader
             isAdmin={true}
-            firstTitle={'firstTitle'}
-            secondTitle={'secondTitle'}
+            backwardLabel={'backwardLabel'}
+            forwardLabel={'forwardLabel'}
             backward={'backward'}
             forward={'forward'}
           />

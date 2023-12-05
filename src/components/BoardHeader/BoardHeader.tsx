@@ -80,8 +80,8 @@ const BoardHeader = (props: IBoardHeader) => {
       </div>
       {props.isAdmin &&
         <BoardSubheader
-          firstTitle={props.firstTitle}
-          secondTitle={props.secondTitle}
+          backwardLabel={props.backwardLabel}
+          forwardLabel={props.forwardLabel}
           backward={props.backward}
           forward={props.forward}
         ></BoardSubheader>

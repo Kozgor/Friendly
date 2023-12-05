@@ -8,8 +8,8 @@ import classes from './BoardSubheader.module.scss';
 
 const BoardSubheader = (props: IBoardHeader) => {
   const {
-    firstTitle,
-    secondTitle,
+    backwardLabel,
+    forwardLabel,
     backward,
     forward
   } = props;
@@ -42,13 +42,13 @@ const BoardSubheader = (props: IBoardHeader) => {
           </IconButton>
         </span>
       }
-      {!isEmpty(firstTitle) &&
+      {!isEmpty(backwardLabel) &&
         <span className={classes.subheaderContainerFirstTitle}>
-          <h2>{firstTitle}</h2>
+          <h2>{backwardLabel}</h2>
         </span>}
-      {!isEmpty(secondTitle) &&
+      {!isEmpty(forwardLabel) &&
         <span className={classes.subheaderContainerSecondTitle}>
-          <h2>{secondTitle}</h2>
+          <h2>{forwardLabel}</h2>
         </span>}
       {!isEmpty(forward) &&
         <span className={classes.subheaderContainerForward}>
