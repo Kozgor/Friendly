@@ -9,16 +9,18 @@ import {
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { adminTabList, navigationBarTitles } from '../../constants';
 import { useContext, useEffect, useState } from 'react';
-import BoardHeader from '../BoardHeader/BoardHeader';
-import pathConstants from '../../router/pathConstants';
-import useAdminLocation from '../../utils/useAdminLocation';
-
 import { BoardProvider } from '../../context/board/boardContext';
+import { IPageSubheaderNavigation } from '../../interfaces/pageSubheaderNavigation';
 import { ThemeContext } from '../../context/theme/themeContext';
 import { icons } from '../../theme/icons/icons';
 import { localStorageManager } from '../../utils/localStorageManager';
 
+import BoardHeader from '../BoardHeader/BoardHeader';
+import pathConstants from '../../router/pathConstants';
+import useAdminLocation from '../../utils/useAdminLocation';
+
 import classes from './MainLayout.module.scss';
+
 
 const MainLayout = () => {
   const navigate = useNavigate();
@@ -31,10 +33,10 @@ const MainLayout = () => {
   const isAdmin = user.role === 'admin';
   const layoutHeight = isAdmin ? '80vh': '90vh';
   const [adminTabListState, setAdminTabListState] = useState(adminTabList);
-  const [backward, setBackward] = useState<string>('');
-  const [forward, setForward] = useState<string>('');
-  const [backwardLabel, setFirstTitle] = useState<string>('');
-  const [forwardLabel, setSecondTitle] = useState<string>('');
+  const [backward, setBackward] = useState<string|null>(null);
+  const [forward, setForward] = useState<string|null>(null);
+  const [backwardLabel, setBackwardLabel] = useState<string|null>(null);
+  const [forwardLabel, setForwardLabel] = useState<string|null>(null);
 
   const iconList = [
     icons.backpack(adminTabListState[0].active ? '#fff' : '#8ab4bc'),
@@ -53,46 +55,59 @@ const MainLayout = () => {
     setAdminTabListState(prevTabList => prevTabList.map(tab => ({...tab, active: tab.path === URLPart })));
   };
 
-  const headerNavigationConditions = {
-    'URLPart.pathname.startsWith("/board")': () => {
-      setBackward(pathConstants.ADMIN);
-      setForward(`${pathConstants.TEAM_SUMMARY}/${currentBoardDetails.currentBoardId}`);
-      setFirstTitle(`${subheaderTitles.board}`);
-      setSecondTitle(subheaderTitles.boardSummary);
-    },
-    'URLPart.pathname.startsWith("/team_summary")': () => {
-      setBackward(`${pathConstants.BOARD}/${currentBoardDetails.currentBoardId}`);
-      setForward('');
-      setFirstTitle(`${currentBoardDetails.currentBoardName} | ${subheaderTitles.boardSummary}`);
-      setSecondTitle('');
-    },
-    'URLPart.pathname.startsWith("/admin/new_board")': () => {
-      setFirstTitle(subheaderTitles.newBoard);
-      setSecondTitle('');
-    },
-    'URLPart.pathname.startsWith("/admin/new_board/default_board")': () => {
-      setFirstTitle(subheaderTitles.defaultBoard);
-      setSecondTitle('');
-    },
-    'URLPart.pathname.startsWith("/admin/boards_management")': () => {
-      setFirstTitle(subheaderTitles.boardsManagement);
-      setSecondTitle('');
-    },
-    'true': () => {
-      setBackward('');
-      setForward('');
-      setFirstTitle('');
-      setSecondTitle('');
-    }
+  const setNavigationAndTitles = (params: IPageSubheaderNavigation) => {
+    const { backward, forward, backwardLabel, forwardLabel } = params;
+
+    setBackward(backward);
+    setForward(forward);
+    setBackwardLabel(backwardLabel);
+    setForwardLabel(forwardLabel);
   };
 
-  const setupHeaderNavigation = () => {
-    const navigationKey = Object.keys(headerNavigationConditions).find(condition => eval(condition));
-    headerNavigationConditions[navigationKey!]();
+  const setHeaderNavigationConfig = (path: string) => {
+    path.startsWith('/board/') ?
+      setNavigationAndTitles({
+        backward: pathConstants.ADMIN,
+        forward: `${pathConstants.BOARD_SUMMARY}/${currentBoardDetails.currentBoardId}`,
+        backwardLabel: `${subheaderTitles.board}`,
+        forwardLabel: subheaderTitles.boardSummary
+      }): null;
+
+    path.startsWith('/board_summary/') ?
+      setNavigationAndTitles({
+        backward: `${pathConstants.BOARD}/${currentBoardDetails.currentBoardId}`,
+        forward: null,
+        backwardLabel: `${currentBoardDetails.currentBoardName} | ${subheaderTitles.boardSummary}`,
+        forwardLabel: null
+      }): null;
+
+    path.startsWith('/admin/new_board') ?
+      setNavigationAndTitles({
+        backward: null,
+        forward: null,
+        backwardLabel: subheaderTitles.newBoard,
+        forwardLabel: null
+      }): null;
+
+     path.startsWith('/admin/new_board/default_board') ?
+      setNavigationAndTitles({
+        backward: null,
+        forward: null,
+        backwardLabel: subheaderTitles.defaultBoard,
+        forwardLabel: null
+      }): null;
+
+    path.startsWith('/admin/boards_management') ?
+      setNavigationAndTitles({
+        backward: null,
+        forward: null,
+        backwardLabel: subheaderTitles.boardsManagement,
+        forwardLabel: null
+      }): null;
   };
 
   useEffect(() => {
-    setupHeaderNavigation();
+    setHeaderNavigationConfig(URLPart.pathname);
     adminListItemActiveUpdate(URLAdminPart);
   }, [URLPart]);
 

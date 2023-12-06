@@ -8,16 +8,16 @@ import {
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
+import { boardSummaryDefsList } from './BoarSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
-import { teamSummaryDefsList } from './TeamSummaryColumnDefs';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
-import './TeamSummary.scss';
+import './BoarSummary.scss';
 
-const TeamSummary = () => {
+const BoardSummary = () => {
   type RowDataItem = {
     columnId: string | undefined;
     cardComment: string;
@@ -34,13 +34,13 @@ const TeamSummary = () => {
   const { getBoardSummary } = boardSummaryAPI();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
-  const [columnDefs, setColumnDefs] = useState(teamSummaryDefsList);
+  const [columnDefs, setColumnDefs] = useState(boardSummaryDefsList);
 
   const fetchBoardSummary = async (boardId: string) => {
     try {
       const boardSummary= await getBoardSummary(boardId);
 
-      return boardSummary || null;
+      return boardSummary;
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +51,7 @@ const TeamSummary = () => {
       const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
 
       if (!URLBoardId && userProfile && userProfile.boards?.finalized) {
-        navigate(`/team_summary/${userProfile.boards.finalized}`);
+        navigate(`/board_summary/${userProfile.boards.finalized}`);
 
         return;
       }
@@ -76,7 +76,7 @@ const TeamSummary = () => {
     params.data.cardAuthor + params.data.cardComment, []);
 
   return (
-    <div className='teamSummaryContainer'>
+    <div className='boardSummaryContainer'>
       <div id='summary-grid' className='ag-theme-alpine'>
         <AgGridReact
           animateRows={true}
@@ -93,4 +93,4 @@ const TeamSummary = () => {
   );
 };
 
-export default TeamSummary;
+export default BoardSummary;

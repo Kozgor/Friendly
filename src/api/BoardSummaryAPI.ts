@@ -5,9 +5,9 @@ export const boardSummaryAPI = () => {
 
   const getBoardSummary = async (boardId: string) => {
     try {
-      const finalColumns = await axios.post(`${FRIENDLY_DOMAIN}board_summary/get-board-summary`, { boardId });
+      const boardSummary = await axios.post(`${FRIENDLY_DOMAIN}board_summary/get-board-summary`, { boardId });
 
-      return finalColumns.data;
+      return boardSummary.data || null;
     } catch (error) {
       console.log(error);
     }

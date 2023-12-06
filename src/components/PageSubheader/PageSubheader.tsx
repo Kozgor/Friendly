@@ -4,9 +4,9 @@ import { icons } from '../../theme/icons/icons';
 import { isEmpty } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-import classes from './BoardSubheader.module.scss';
+import classes from './PageSubheader.module.scss';
 
-const BoardSubheader = (props: IBoardHeader) => {
+const PageSubheader = (props: IBoardHeader) => {
   const {
     backwardLabel,
     forwardLabel,
@@ -17,11 +17,15 @@ const BoardSubheader = (props: IBoardHeader) => {
   const navigate = useNavigate();
 
   const onBackward = () => {
-    navigate(backward);
+    if (backward) {
+      navigate(backward);
+    }
   };
 
   const onForward = () => {
-    navigate(forward);
+    if (forward) {
+      navigate(forward);
+    }
   };
 
   return(
@@ -70,4 +74,4 @@ const BoardSubheader = (props: IBoardHeader) => {
   );
 };
 
-export default BoardSubheader;
+export default PageSubheader;

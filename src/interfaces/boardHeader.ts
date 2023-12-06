@@ -1,7 +1,7 @@
 export interface IBoardHeader {
   isAdmin?: boolean
-  backwardLabel: string;
-  forwardLabel: string;
-  backward: string;
-  forward: string;
+  backwardLabel: string|null;
+  forwardLabel: string|null;
+  backward: string|null;
+  forward: string|null;
 }

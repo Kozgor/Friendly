@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router';
 
 import { useLocation } from 'react-router-dom';
 
-import BoardSubheader from '../BoardSubheader/BoardSubheader';
 import Button from '@mui/joy/Button';
+import PageSubheader from '../PageSubheader/PageSubheader';
 import Timer from '../Timer/Timer';
 
 import { BoardContext } from '../../context/board/boardContext';
@@ -79,12 +79,12 @@ const BoardHeader = (props: IBoardHeader) => {
         </div>
       </div>
       {props.isAdmin &&
-        <BoardSubheader
+        <PageSubheader
           backwardLabel={props.backwardLabel}
           forwardLabel={props.forwardLabel}
           backward={props.backward}
           forward={props.forward}
-        ></BoardSubheader>
+        ></PageSubheader>
       }
     </header>
   );

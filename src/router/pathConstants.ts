@@ -5,8 +5,8 @@ const pathConstants = {
     BOARD_ID:'/board/:id',
     ADMIN: '/admin',
     BOARDS_MANAGEMENT: 'boards_management',
-    TEAM_SUMMARY: '/team_summary',
-    TEAM_SUMMARY_ID: '/team_summary/:id',
+    BOARD_SUMMARY: '/board_summary',
+    BOARD_SUMMARY_ID: '/board_summary/:id',
     NEW_BOARD: 'new_board',
     NEW_BOARD_DEFAULT: 'new_board/default_board'
 };

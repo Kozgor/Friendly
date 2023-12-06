@@ -29,12 +29,11 @@ import BoardHeader from './BoardHeader';
 import { Provider } from 'react-redux';
 import store from '../../store/store';
 
-import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import * as router from 'react-router';
 import { BaseProps } from '../../interfaces/baseProps';
 import { BoardContext } from '../../context/board/boardContext';
-import Board from '../Board/Board';
 
 
 describe('BoardHeader component', () => {
