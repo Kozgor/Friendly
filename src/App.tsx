@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { getTokenDuration } from './utils/getTokenDuration';
+
 import router from './router/router';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,19 +19,19 @@ function App() {
   }, [tokenDuration]);
 
   return (
-      <div className={classes.app}>
-        <RouterProvider router={router}></RouterProvider>
-        <ToastContainer
-          role="alert"
-          position="top-right"
-          autoClose={3000}
-          draggable
-          closeOnClick
-          pauseOnHover={false}
-          hideProgressBar={false}
-          theme="colored"
-        />
-      </div>
+    <div className={classes.app}>
+      <RouterProvider router={router}></RouterProvider>
+      <ToastContainer
+        role="alert"
+        position="top-right"
+        autoClose={3000}
+        draggable
+        closeOnClick
+        pauseOnHover={false}
+        hideProgressBar={false}
+        theme="colored"
+      />
+    </div>
   );
 }
 

@@ -1,13 +1,17 @@
-import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  RenderResult,
+  fireEvent,
+  render,
+  screen,
+  waitFor
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { STORE_USER_PROFILE } from '../../mocks/user';
+import { act } from 'react-dom/test-utils';
 
 import Login from './Login';
-
-import { STORE_USER_PROFILE } from '../../mocks/user';
 import store from '../../store/store';
-
-import { act } from 'react-dom/test-utils';
 
 const login = jest.fn();
 const addUserToStore = jest.fn();
@@ -31,24 +35,26 @@ const USER_LOGIN_ERROR = jest.fn(() =>
   })
 );
 
-jest.mock('../../api/AuthAPI', () => ({
-  ...jest.requireActual('../../api/AuthAPI'),
-  login
-}));
-
-jest.mock('../../utils/storeUserManager', () => ({
-  ...jest.requireActual('../../utils/storeUserManager'),
-  addUserToStore
-}));
-
-jest.mock('../../utils/localStorageManager', () => ({
-  ...jest.requireActual('../../utils/localStorageManager'),
-  saveLocalUserData
-}));
-
 describe('Login component', () => {
   process.env.REACT_APP_FRIENDLY_DOMAIN = 'https://test.com/';
   let component: RenderResult;
+
+  beforeAll(() => {
+    jest.mock('../../utils/localStorageManager', () => ({
+      ...jest.requireActual('../../utils/localStorageManager'),
+      saveLocalUserData
+    }));
+
+    jest.mock('../../utils/storeUserManager', () => ({
+      ...jest.requireActual('../../utils/storeUserManager'),
+      addUserToStore
+    }));
+
+    jest.mock('../../api/AuthAPI', () => ({
+      ...jest.requireActual('../../api/AuthAPI'),
+      login
+    }));
+  });
 
   beforeEach(() => {
     component = render(

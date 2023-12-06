@@ -1,5 +1,11 @@
 @import "../../mixins/flexbox";
 
-.signForm {
-  margin-top: 10px;
+.loginContainer {
+  @include flexbox(column, center, center, nowrap);
+  width: 100%;
+  height: 100vh;
+
+  .signForm {
+    margin-top: 10px;
+  }
 }
