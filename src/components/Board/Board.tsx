@@ -85,7 +85,6 @@ const Board = () => {
             column.columnCards = columnsCards[columnId];
           }
         });
-
         setBoardId(URLBoardId);
         setBoardSettings(board);
         setBoardStatus(board.status);
