@@ -2,14 +2,15 @@ import { ICardReply } from './columnCardReply';
 
 import { CardTag } from '../types/cardTags';
 
-// interface ICardReactions {
-//   _id: string;
-//   userId: string;
-//   isHappyReaction: boolean;
-// }
+export interface ICardReactions {
+  _id: string;
+  userId: string;
+  isHappyReaction: boolean;
+}
 
 export interface IColumnCard {
   _id: string;
+  columnId?: string;
   createdAt: string;
   cardComment: string;
   cardAuthor: string;
