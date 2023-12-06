@@ -96,7 +96,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
       </div>
       <Stepper
         sx={{
-          '--StepIndicator-size': '3rem',
+          '--StepIndicator-size': '2.5rem',
           paddingLeft: '20px',
           [`& .${stepClasses.root}::after`]: {
             color: 'primary.500',
@@ -117,7 +117,6 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                 borderRadius: '4px',
                 height: '36px',
                 minWidth: '40px',
-                marginRight: '8px',
                 opacity: index === STEPS_MAP.fourth && isStatusActive ? 0.5 : 1
               }}>
                 {stepIconValues[index + 1]}
