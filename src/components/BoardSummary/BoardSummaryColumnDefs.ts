@@ -1,5 +1,11 @@
 import ReactionsCellRenderer from './ReactionsCellRenderer';
 
+const reactionsFormatter = (params: any) => {
+  const { happy, unhappy } = params.value;
+
+  return String(`happy: ${happy}, unhappy: ${unhappy}`);
+};
+
 export const boardSummaryDefsList = [{
     headerName: 'COLUMN',
     field: 'columnId',
@@ -32,6 +38,7 @@ export const boardSummaryDefsList = [{
   }, {
     headerName: 'REACTIONS',
     field: 'cardReactions',
+    valueFormatter: reactionsFormatter,
     cellRenderer: ReactionsCellRenderer,
     maxWidth: 143
   }, {

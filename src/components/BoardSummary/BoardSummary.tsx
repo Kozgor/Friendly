@@ -7,7 +7,7 @@ import {
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
-import { boardSummaryDefsList } from './BoarSummaryColumnDefs';
+import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
@@ -74,15 +74,8 @@ const BoardSummary = () => {
   const getRowId = useMemo(() => (params: any) =>
     params.data.cardAuthor + params.data.cardComment, []);
 
-  const getCSVFile = () => {
-    gridRef.current?.api.exportDataAsCsv({
-      suppressQuotes: true
-    });
-  };
-
   return (
-    <div className='teamSummaryContainer'>
-      <button onClick={getCSVFile}>Download csv file</button>
+    <div className='boardSummaryContainer'>
       <div id='summary-grid' className='ag-theme-alpine'>
         <AgGridReact
           animateRows={true}

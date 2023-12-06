@@ -1,6 +1,7 @@
 import { findKey, isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AgGridReact } from 'ag-grid-react';
 import { IPageSubheaderNavigation } from '../../interfaces/pageSubheaderNavigation';
 import { IconButton } from '@mui/joy';
 import { icons } from '../../theme/icons/icons';
@@ -18,6 +19,14 @@ const PageSubheader = () => {
   const [forward, setForward] = useState<string|null>(null);
   const [backwardLabel, setBackwardLabel] = useState<string|null>(null);
   const [forwardLabel, setForwardLabel] = useState<string|null>(null);
+  const [element, setElement] = useState<ReactNode|null>();
+  const gridRef = useRef<AgGridReact>(null);
+
+  const getCSVFile = () => {
+    gridRef.current?.api.exportDataAsCsv({
+      suppressQuotes: true
+    });
+  };
 
   const subheaderTitles = {
     newBoard: 'New Board',
@@ -34,6 +43,7 @@ const PageSubheader = () => {
     setForward(forward || null);
     setBackwardLabel(backwardLabel || null);
     setForwardLabel(forwardLabel || null);
+    setElement(<button onClick={getCSVFile}>Download csv file</button>);
   };
 
   const headerNavigationConditions = {
@@ -45,7 +55,8 @@ const PageSubheader = () => {
     },
     '/board_summary/' : {
       backward: `${pathConstants.BOARD}/${currentBoardDetails.currentBoardId}`,
-      backwardLabel: `${currentBoardDetails.currentBoardName} | ${subheaderTitles.boardSummary}`
+      backwardLabel: `${currentBoardDetails.currentBoardName} | ${subheaderTitles.boardSummary}`,
+      element: element
     },
     '/admin/new_board/default_board' : {
       backwardLabel: subheaderTitles.defaultBoard
@@ -122,6 +133,11 @@ const PageSubheader = () => {
           >
             {icons.shewronDoubleRigth}
           </IconButton>
+        </span>
+      }
+      {element &&
+        <span className={classes.subheaderContainerForward}>
+          {element}
         </span>
       }
     </div>
