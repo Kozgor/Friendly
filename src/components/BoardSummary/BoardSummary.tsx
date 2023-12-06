@@ -4,7 +4,6 @@ import {
   useRef,
   useState
 } from 'react';
-
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';

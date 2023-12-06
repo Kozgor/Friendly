@@ -1,20 +1,70 @@
-import { IBoardHeader } from '../../interfaces/boardHeader';
+import { findKey, isEmpty } from 'lodash';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { IPageSubheaderNavigation } from '../../interfaces/pageSubheaderNavigation';
 import { IconButton } from '@mui/joy';
 import { icons } from '../../theme/icons/icons';
-import { isEmpty } from 'lodash';
-import { useNavigate } from 'react-router-dom';
+import { localStorageManager } from '../../utils/localStorageManager';
+import { pathConstants } from '../../router/pathConstants';
 
 import classes from './PageSubheader.module.scss';
 
-const PageSubheader = (props: IBoardHeader) => {
-  const {
-    backwardLabel,
-    forwardLabel,
-    backward,
-    forward
-  } = props;
-
+const PageSubheader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { getLocalBoardDatails } = localStorageManager();
+  const currentBoardDetails = getLocalBoardDatails();
+  const [backward, setBackward] = useState<string|null>(null);
+  const [forward, setForward] = useState<string|null>(null);
+  const [backwardLabel, setBackwardLabel] = useState<string|null>(null);
+  const [forwardLabel, setForwardLabel] = useState<string|null>(null);
+
+  const subheaderTitles = {
+    newBoard: 'New Board',
+    defaultBoard: 'Default Board',
+    boardsManagement: 'Boards Management',
+    boardSummary: 'Summary',
+    board: currentBoardDetails.currentBoardName
+  };
+
+  const setNavigationAndTitles = (params: IPageSubheaderNavigation) => {
+    const { backward, forward, backwardLabel, forwardLabel } = params;
+
+    setBackward(backward || null);
+    setForward(forward || null);
+    setBackwardLabel(backwardLabel || null);
+    setForwardLabel(forwardLabel || null);
+  };
+
+  const headerNavigationConditions = {
+    '/board/' : {
+      backward: pathConstants.ADMIN,
+      forward: `${pathConstants.BOARD_SUMMARY}/${currentBoardDetails.currentBoardId}`,
+      backwardLabel: `${subheaderTitles.board}`,
+      forwardLabel: subheaderTitles.boardSummary
+    },
+    '/board_summary/' : {
+      backward: `${pathConstants.BOARD}/${currentBoardDetails.currentBoardId}`,
+      backwardLabel: `${currentBoardDetails.currentBoardName} | ${subheaderTitles.boardSummary}`
+    },
+    '/admin/new_board/default_board' : {
+      backwardLabel: subheaderTitles.defaultBoard
+    },
+    '/admin/new_board' : {
+      backwardLabel: subheaderTitles.newBoard
+    },
+    '/admin/boards_management' : {
+      backwardLabel: subheaderTitles.boardsManagement
+    }
+  };
+
+  const setupHeaderNavigation = (path: string) => {
+    const resultKey = findKey(headerNavigationConditions, (value, key) => path.startsWith(key));
+
+    if (resultKey) {
+      setNavigationAndTitles(headerNavigationConditions[resultKey]);
+    }
+  };
 
   const onBackward = () => {
     if (backward) {
@@ -27,6 +77,10 @@ const PageSubheader = (props: IBoardHeader) => {
       navigate(forward);
     }
   };
+
+  useEffect(() => {
+    setupHeaderNavigation(location.pathname);
+  }, [location.pathname]);
 
   return(
     <div className={classes.subheaderContainer}>

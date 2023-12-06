@@ -11,7 +11,7 @@ import LoginPage from '../pages/login/Login';
 import MainLayout from '../components/MainLayout/MainLayout';
 
 import { checkAuthLoader } from '../utils/checkAuthLoader';
-import pathConstants from './pathConstants';
+import { pathConstants } from './pathConstants';
 
 const { checkAdminRole, checkAuth } = checkAuthLoader();
 

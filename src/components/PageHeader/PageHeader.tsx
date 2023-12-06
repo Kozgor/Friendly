@@ -8,14 +8,13 @@ import PageSubheader from '../PageSubheader/PageSubheader';
 import Timer from '../Timer/Timer';
 
 import { BoardContext } from '../../context/board/boardContext';
-import { IBoardHeader } from '../../interfaces/boardHeader';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { useStoreUser } from '../../utils/storeUserManager';
 import { userAPI } from '../../api/UserAPI';
 
-import classes from './BoardHeader.module.scss';
+import classes from './PageHeader.module.scss';
 
-const BoardHeader = (props: IBoardHeader) => {
+const PageHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSubmitButton, setIsSubmitButton] = useState(true);
@@ -26,6 +25,7 @@ const BoardHeader = (props: IBoardHeader) => {
   const { submitComments } = userAPI();
   const isBoardPage = location.pathname.startsWith('/board/');
   const isShowTimer = isTimerVisible && isSubmitButton && isBoardPage;
+
   const onSignOut: MouseEventHandler<HTMLButtonElement> = () => {
     removeUserFromStore();
     removeLocalUserData();
@@ -78,16 +78,11 @@ const BoardHeader = (props: IBoardHeader) => {
           </Button>
         </div>
       </div>
-      {props.isAdmin &&
-        <PageSubheader
-          backwardLabel={props.backwardLabel}
-          forwardLabel={props.forwardLabel}
-          backward={props.backward}
-          forward={props.forward}
-        ></PageSubheader>
+      {localUserData.role === 'admin' &&
+        <PageSubheader></PageSubheader>
       }
     </header>
   );
 };
 
-export default BoardHeader;
+export default PageHeader;

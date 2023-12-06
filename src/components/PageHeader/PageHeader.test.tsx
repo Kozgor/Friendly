@@ -1,42 +1,38 @@
-import { LOCAL_ADMIN_PROFILE, STORE_ADMIN_PROFILE } from '../../mocks/user';
-const addUserToStore = jest.fn();
+import { INITIAL_LOCAL_BOARD, LOCAL_ADMIN_PROFILE } from '../../mocks/user';
+
 const removeUserFromStore = jest.fn();
-const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
 
 jest.mock('../../utils/storeUserManager', () => ({
   useStoreUser: () => ({
-    addUserToStore,
-    removeUserFromStore,
-    getUserFromStore: () => STORE_ADMIN_PROFILE
+    removeUserFromStore
   })
 }));
 
 jest.mock('../../utils/localStorageManager', () => ({
   localStorageManager: () => ({
-    saveLocalUserData,
     removeLocalUserData,
-    getLocalUserData: () => LOCAL_ADMIN_PROFILE
+    getLocalUserData: () => LOCAL_ADMIN_PROFILE,
+    getLocalBoardDatails: () => INITIAL_LOCAL_BOARD
   })
 }));
+
+import * as router from 'react-router';
 import {
   RenderResult,
   fireEvent,
   render,
   screen
 } from '@testing-library/react';
-import BoardHeader from './BoardHeader';
-import { Provider } from 'react-redux';
-import store from '../../store/store';
-
-import { MemoryRouter } from 'react-router-dom';
-
-import * as router from 'react-router';
 import { BaseProps } from '../../interfaces/baseProps';
 import { BoardContext } from '../../context/board/boardContext';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
+import PageHeader from './PageHeader';
+import store from '../../store/store';
 
-describe('BoardHeader component', () => {
+describe('PageHeader component', () => {
   let component: RenderResult;
   const navigate = jest.fn();
 
@@ -81,13 +77,7 @@ describe('BoardHeader component', () => {
     component = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/board/']}>
-          <BoardHeader
-            isAdmin={true}
-            backwardLabel={'backwardLabel'}
-            forwardLabel={'forwardLabel'}
-            backward={'backward'}
-            forward={'forward'}
-          />
+          <PageHeader />
         </MemoryRouter>
       </Provider>, { wrapper }
     );

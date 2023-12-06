@@ -1,4 +1,4 @@
-const pathConstants = {
+export const pathConstants = {
     HOME: '/',
     AUTH: '/auth',
     BOARD: '/board',
@@ -10,5 +10,3 @@ const pathConstants = {
     NEW_BOARD: 'new_board',
     NEW_BOARD_DEFAULT: 'new_board/default_board'
 };
-
-export default pathConstants;
