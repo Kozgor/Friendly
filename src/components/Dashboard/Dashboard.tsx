@@ -15,12 +15,7 @@ import {
   Modal,
   ModalDialog,
   Stack,
-  Typography,
-  List,
-  ListItem,
-  ListItemButton,
-  Drawer,
-  ListItemContent
+  Typography
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
@@ -28,30 +23,21 @@ import useLastPartLocation from '../../utils/useLastPartLocation';
 
 import { ADMIN_PAGE_HEADER_TITLE, adminTabList } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
+import Drawer from '../Drawer/Drawer';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
-import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
-import { icons } from '../../theme/icons/icons';
 import { initColumnValue } from '../../mocks/column';
 
 import classes from './Dashboard.module.scss';
 
 const Dashboard = () => {
   const { boardId, setBoardId } = useContext(BoardContext);
-  const { theme } = useContext(ThemeContext);
-  const navigate = useNavigate();
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [column, setColumn] = useState<IColumn>(initColumnValue);
-  const [adminTabListState, setAdminTabListState] = useState(adminTabList);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const { getActiveBoard } = boardAPI();
   const URLPart = useLastPartLocation();
-  const iconList = [
-    icons.backpack,
-    icons.signSpot
-  ];
 
   const fetchData = async () => {
     if (!boardId) {
@@ -65,19 +51,8 @@ const Dashboard = () => {
     }
   };
 
-  const adminListItemActiveUpdate = (URLPart: string) => {
-    setAdminTabListState(prevTabList => prevTabList.map(tab => {
-      if (tab.path === URLPart) {
-        return { ...tab, active: true };
-      } else {
-        return { ...tab, active: false };
-      }
-    }));
-  };
-
   useEffect(() => {
     fetchData();
-    adminListItemActiveUpdate(URLPart);
   }, [URLPart]);
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -108,16 +83,6 @@ const Dashboard = () => {
       ...prevState,
       columnAvatar: event.target.value
     }));
-  };
-
-  const openNewBoardTab = () => {
-    navigate('new_board');
-    adminListItemActiveUpdate(URLPart);
-  };
-
-  const openManager = () => {
-    navigate('boards_management');
-    adminListItemActiveUpdate(URLPart);
   };
 
   const columnInputsCollection = [
@@ -154,16 +119,6 @@ const Dashboard = () => {
       placeholder: 'Please choose the column avatar:'
     }
   ];
-
-  const dashboardList = [{
-    testId: 'new-board',
-    listTitle: adminTabList[0].title,
-    listAction: openNewBoardTab
-  }, {
-    testId: 'boards-management',
-    listTitle: adminTabList[1].title,
-    listAction: openManager
-  }];
 
   const clearInputs = () => {
     setColumn(initColumnValue);
@@ -228,46 +183,7 @@ const Dashboard = () => {
         time={0}
       />
       <Stack className={classes.main} direction="row" spacing={2}>
-        <Drawer
-          sx={{
-            '& .MuiDrawer-paper': {
-              width: 240,
-              boxSizing: 'border-box',
-              position: 'relative',
-              backgroundColor: theme.color1,
-              color: theme.color3,
-              borderRight: `1px solid ${theme.color5}`
-            }
-          }}
-          anchor="left"
-          data-testid="drawer"
-          open={isDrawerOpen}
-          onClose={() => setIsDrawerOpen(false)}
-        >
-          <List sx={{ paddingLeft: 2 }} className={classes['newBoard']}>
-            {dashboardList.map((listItem, index) => (
-              <ListItem
-                key={listItem.listTitle}
-                data-testid={listItem.testId}
-                onClick={listItem.listAction}
-                sx={{
-                  padding: 0,
-                  backgroundColor: adminTabListState[index].active ? theme.color2 : 'transparent',
-                  borderRadius: 2.5,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0
-                }}
-              >
-                <ListItemButton>
-                  <span className={classes.listItemIcon}>
-                    {iconList[index]}
-                  </span>
-                  <ListItemContent>{listItem.listTitle}</ListItemContent>
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
+        <Drawer />
         <Outlet />
       </Stack>
     </>
