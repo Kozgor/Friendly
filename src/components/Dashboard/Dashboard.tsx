@@ -1,11 +1,9 @@
 /* eslint-disable max-lines */
 import {
   ChangeEvent,
-  useContext,
-  useEffect,
   useState
 } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import {
   Button,
@@ -19,41 +17,18 @@ import {
 } from '@mui/joy';
 
 import BoardHeader from '../BoardHeader/BoardHeader';
-import useLastPartLocation from '../../utils/useLastPartLocation';
 
-import { ADMIN_PAGE_HEADER_TITLE, adminTabList } from '../../constants';
-import { BoardContext } from '../../context/board/boardContext';
+import { ADMIN_PAGE_HEADER_TITLE } from '../../constants';
 import Drawer from '../Drawer/Drawer';
-import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
-import { boardAPI } from '../../api/BoardAPI';
 import { initColumnValue } from '../../mocks/column';
 
 import classes from './Dashboard.module.scss';
 
 const Dashboard = () => {
-  const { boardId, setBoardId } = useContext(BoardContext);
   const [columns, setColumns] = useState<IColumn[]>([]);
   const [column, setColumn] = useState<IColumn>(initColumnValue);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { getActiveBoard } = boardAPI();
-  const URLPart = useLastPartLocation();
-
-  const fetchData = async () => {
-    if (!boardId) {
-      try {
-        const activeBoard: IBoardSettings | undefined = await getActiveBoard();
-
-        (activeBoard && activeBoard._id) ? setBoardId(activeBoard._id) : setBoardId('');
-      } catch (error) {
-        return Promise.resolve(initColumnValue);
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [URLPart]);
 
   const columnTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setColumn((prevState) => ({

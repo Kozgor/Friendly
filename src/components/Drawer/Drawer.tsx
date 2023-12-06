@@ -7,6 +7,7 @@ import { icons } from '../../theme/icons/icons';
 import useLastPartLocation from '../../utils/useLastPartLocation';
 
 import classes from './Drawer.module.scss';
+import { useState } from 'react';
 
 const Aside = styled.aside`
 width: 240px;
@@ -21,6 +22,7 @@ padding: 8px 0 8px 16px;
 const Drawer = () => {
     const navigate = useNavigate();
     const URLPart = useLastPartLocation();
+    const [activeTab, setActiveTab] = useState(URLPart);
     const iconList = [
         icons.backpack,
         icons.signSpot
@@ -28,6 +30,7 @@ const Drawer = () => {
 
     const changeTabHandler = (event: any, value: any) => {
         navigate(value);
+        setActiveTab(value);
     };
 
     const dashboardList = [{
@@ -44,7 +47,7 @@ const Drawer = () => {
             orientation="vertical"
             sx={{ minWidth: 'calc(240px - 16px)' }}
             onChange={changeTabHandler}
-            defaultValue={URLPart}
+            value={activeTab}
         >
             <TabList sx={{
                 width: '100%', backgroundColor: 'var(--friendly-palette-primary-900)',
