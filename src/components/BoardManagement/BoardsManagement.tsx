@@ -1,4 +1,3 @@
-
 import { Box, CircularProgress } from '@mui/joy';
 import { useContext, useEffect, useState } from 'react';
 import { BoardContext } from '../../context/board/boardContext';

@@ -1,15 +1,7 @@
 import { icons } from '../../theme/icons/icons';
 
-const TeamSummaryCellRenderer = (params: any) => {
-  let trueCount = 0;
-  let falseCount = 0;
-
-  if (params.value[0]) {
-    const { isHappyReaction } = params.value[0];
-
-    trueCount = isHappyReaction ? 1 : 0;
-    falseCount = !isHappyReaction ? 1 : 0;
-  }
+const ReactionsCellRenderer = (params: any) => {
+  const { happy, unhappy } = params.value;
 
   return (
     <span style={{
@@ -26,7 +18,7 @@ const TeamSummaryCellRenderer = (params: any) => {
         justifyContent: 'space-between',
         width: '30px'
       }}>
-        {trueCount}
+        {happy}
         {icons.emojiSmile('#484a4b', '16px')}
       </span>
       <span style={{
@@ -35,11 +27,11 @@ const TeamSummaryCellRenderer = (params: any) => {
         justifyContent: 'space-between',
         width: '30px'
       }}>
-        {falseCount}
+        {unhappy}
         {icons.emojiFrown('#484a4b', '16px')}
       </span>
     </span>
   );
 };
 
-export default TeamSummaryCellRenderer;
+export default ReactionsCellRenderer;
