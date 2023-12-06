@@ -7,14 +7,14 @@ import {
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
-import { boardSummaryDefsList } from './BoarSummaryColumnDefs';
+import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
-import './BoarSummary.scss';
+import './BoardSummary.scss';
 
 const BoardSummary = () => {
   type RowDataItem = {
