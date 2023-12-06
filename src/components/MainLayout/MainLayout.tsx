@@ -89,7 +89,7 @@ const MainLayout = () => {
           </div>
           <List className={classes.navigationList}>
             <ListItem className={classes.navigationTitle}>
-              {navigationBarTitles.navigatinListHeader}
+              {navigationBarTitles.navigatingListHeader}
             </ListItem>
             {dashboardList.map((listItem, index) => (
               <ListItem
