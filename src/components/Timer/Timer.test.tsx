@@ -17,6 +17,8 @@ describe('Timer component', () => {
   const disableAdding = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
+  const setBoardTime = jest.fn();
+  const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
 
@@ -25,14 +27,18 @@ describe('Timer component', () => {
       value={{
         boardId: '',
         boardStatus: 'active',
-        isAddingDisabled: true,
+        boardTime: 5,
+        isAddingDisabled: false,
         isTimerFinalized: false,
-        isFormSubmit: true,
+        isTimerVisible: false,
+        isFormSubmit: false,
         enableAdding,
         disableAdding,
         finalizeTimer,
         setFormSubmit,
         setBoardId,
+        setBoardTime,
+        setTimerVisibility,
         setBoardStatus
       }}
     >
@@ -41,7 +47,7 @@ describe('Timer component', () => {
   );
 
   beforeEach(() => {
-    component = render(<Timer time={3000} />, { wrapper });
+    component = render(<Timer />, { wrapper });
     startButton = screen.getByText(/Start/i);
   });
 
@@ -114,7 +120,7 @@ describe('Timer component', () => {
 
       await waitFor(
         () => {
-          expect(screen.getByText('00:00:03')).toBeInTheDocument();
+          expect(screen.getByText('00:05:00')).toBeInTheDocument();
           expect(screen.getByTestId('continue')).toBeInTheDocument();
         },
         { timeout: 100 }

@@ -16,10 +16,6 @@ import {
   Typography
 } from '@mui/joy';
 
-import BoardHeader from '../BoardHeader/BoardHeader';
-
-import { ADMIN_PAGE_HEADER_TITLE } from '../../constants';
-import Drawer from '../Drawer/Drawer';
 import { IColumn } from '../../interfaces/column';
 import { initColumnValue } from '../../mocks/column';
 
@@ -152,13 +148,7 @@ const Dashboard = () => {
   );
   return (
     <>
-      <BoardHeader
-        boardName={ADMIN_PAGE_HEADER_TITLE}
-        isTimerVisible={false}
-        time={0}
-      />
       <Stack className={classes.main} direction="row" spacing={2}>
-        <Drawer />
         <Outlet />
       </Stack>
     </>

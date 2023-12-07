@@ -7,15 +7,19 @@ module.exports = {
   ],
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
+    "preset": "ts-jest"
   },
   moduleNameMapper: {
+    'text-encoding': 'fast-text-encoding',
     "^.+\\.(css|scss)$": "identity-obj-proxy",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/fileMocks.js",
   },
+  transformIgnorePatterns: [
+    "node_modules/(?!(library-to-exclude)/)"
+  ],
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
-
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{ts,tsx,js,jsx}",

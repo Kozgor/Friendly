@@ -11,17 +11,11 @@ const CreateBoard = () => {
   };
 
   return (
-    <>
+    <div className={classes.createBoardContainer}>
       <Box
+        className={classes.createBoardBox}
         component="main"
-        sx={{
-          flexGrow: 1,
-          bgcolor: 'background.default',
-          p: 3,
-          marginLeft: 0
-        }}
       >
-        <Typography level='h1' data-testid='templates'>New Board</Typography>
         <div
           className={classes.defaultBoard}
           onClick={openDefaultBoard}
@@ -31,7 +25,7 @@ const CreateBoard = () => {
         <Typography level='title-lg' data-testid='default-board'>Default Board</Typography>
       </Box>
       <Outlet />
-    </>
+    </div>
   );
 };
 

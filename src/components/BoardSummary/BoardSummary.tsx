@@ -4,20 +4,19 @@ import {
   useRef,
   useState
 } from 'react';
-
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
+import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
-import { teamSummaryDefsList } from './TeamSummaryColumnDefs';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
-import './TeamSummary.scss';
+import './BoardSummary.scss';
 
-const TeamSummary = () => {
+const BoardSummary = () => {
   type RowDataItem = {
     columnId: string | undefined;
     cardComment: string;
@@ -25,6 +24,7 @@ const TeamSummary = () => {
     cardReactions: any;
     cardAuthor: string;
   };
+
   const { getUserById } = userAPI();
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
@@ -33,13 +33,13 @@ const TeamSummary = () => {
   const { getBoardSummary } = boardSummaryAPI();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
-  const [columnDefs, setColumnDefs] = useState(teamSummaryDefsList);
+  const [columnDefs, setColumnDefs] = useState(boardSummaryDefsList);
 
   const fetchBoardSummary = async (boardId: string) => {
     try {
       const boardSummary= await getBoardSummary(boardId);
 
-      return boardSummary || null;
+      return boardSummary;
     } catch (error) {
       console.log(error);
     }
@@ -49,8 +49,8 @@ const TeamSummary = () => {
     try {
       const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
 
-      if (!URLBoardId && userProfile && userProfile.boards) {
-        navigate(`/boardDetails/${userProfile.boards.finalized}`);
+      if (!URLBoardId && userProfile && userProfile.boards?.finalized) {
+        navigate(`/board_summary/${userProfile.boards.finalized}`);
 
         return;
       }
@@ -69,29 +69,27 @@ const TeamSummary = () => {
         setRowData(rowData);
       }
     });
-
   }, [URLBoardId]);
 
   const getRowId = useMemo(() => (params: any) =>
-    params.data.cardAuthor + params.data.cardComment
-  , []);
+    params.data.cardAuthor + params.data.cardComment, []);
 
   return (
-    <div id='my-grid' className='ag-theme-alpine'>
-      <AgGridReact
-        animateRows={true}
-        ref={gridRef}
-        rowData={rowData}
-        columnDefs={columnDefs}
-        rowSelection={'multiple'}
-        getRowId={getRowId}
-        defaultColDef={{
-          flex: 1
-        }}
-        icons={{filter: '<i class="bi bi-filter"></i>'}}
-      />
+    <div className='boardSummaryContainer'>
+      <div id='summary-grid' className='ag-theme-alpine'>
+        <AgGridReact
+          animateRows={true}
+          ref={gridRef}
+          rowData={rowData}
+          columnDefs={columnDefs}
+          rowSelection={'multiple'}
+          getRowId={getRowId}
+          defaultColDef={{ flex: 1 }}
+          icons={{ filter: '<i class="bi bi-filter"></i>' }}
+        />
+      </div>
     </div>
   );
 };
 
-export default TeamSummary;
+export default BoardSummary;

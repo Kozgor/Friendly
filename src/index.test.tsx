@@ -1,18 +1,14 @@
-import { RenderResult, render } from '@testing-library/react';
+import * as router from 'react-router';
 
+import { RenderResult, render } from '@testing-library/react';
+import { LOCAL_ADMIN_PROFILE } from './mocks/user';
 import { Provider } from 'react-redux';
 
 import App from './App';
 import store from './store/store';
 
-import { LOCAL_ADMIN_PROFILE } from './mocks/user';
-
-import * as router from 'react-router';
-
 const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
-const checkAdminRole = jest.fn();
-const checkAuth = jest.fn();
 
 jest.mock('./utils/localStorageManager', () => ({
   localStorageManager: () => ({
@@ -24,8 +20,8 @@ jest.mock('./utils/localStorageManager', () => ({
 
 jest.mock('./utils/checkAuthLoader', () => ({
   checkAuthLoader: () => ({
-    checkAdminRole,
-    checkAuth
+    checkAdminRole: () => true,
+    checkAuth: () => null
   })
 }));
 
@@ -48,7 +44,7 @@ describe('App component', () => {
     await component.unmount();
   });
 
-  xtest('renders App component', () => {
+  test('renders App component', () => {
     expect(component).toBeTruthy();
   });
 });

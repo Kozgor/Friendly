@@ -6,12 +6,11 @@ import {
   screen
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import Admin from '../Dashboard/Dashboard';
 import CreateBoard from './CreateBoard';
 import DefaultBoard from '../DefaultBoard/DefaultBoard';
-
-import { Provider } from 'react-redux';
 import store from '../../store/store';
 
 describe('CreateBoard component', () => {
@@ -48,12 +47,6 @@ describe('CreateBoard component', () => {
 
   test('should mount component properly', () => {
     expect(component).toBeTruthy();
-  });
-
-  test('should render heading title', () => {
-    const templates = screen.getByTestId('templates');
-
-    expect(templates).toBeInTheDocument();
   });
 
   test('should navigate to "/template"', () => {

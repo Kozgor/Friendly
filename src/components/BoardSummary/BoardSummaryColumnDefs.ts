@@ -1,6 +1,6 @@
 import ReactionsCellRenderer from './ReactionsCellRenderer';
 
-export const teamSummaryDefsList = [{
+export const boardSummaryDefsList = [{
     headerName: 'COLUMN',
     field: 'columnId',
     filter: 'agTextColumnFilter',

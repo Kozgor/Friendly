@@ -4,6 +4,7 @@ import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { getTokenDuration } from './utils/getTokenDuration';
+
 import router from './router/router';
 
 import 'react-toastify/dist/ReactToastify.css';

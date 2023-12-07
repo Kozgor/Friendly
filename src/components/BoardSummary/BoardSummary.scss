@@ -1,0 +1,35 @@
+@use "~ag-grid-community/styles" as ag;
+@include ag.grid-styles;
+
+.boardSummaryContainer {
+  background-color: #f4f4f4;
+  height: 80vh;
+
+  #summary-grid {
+    width: 100vw;
+    height: 100%;
+    padding: 38px;
+  }
+
+  .ag-theme-alpine {
+    --ag-header-background-color: white;
+
+    .ag-root-wrapper {
+      border: none;
+    }
+
+    .bi {
+      color: #191d23;
+    }
+
+    .ag-cell-label-container {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d7887;
+    }
+
+    .ag-center-cols-container {
+      width: 100%;
+    }
+  }
+}

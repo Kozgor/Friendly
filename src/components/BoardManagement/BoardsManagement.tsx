@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, CircularProgress, Divider } from '@mui/joy';
 import { BoardContext } from '../../context/board/boardContext';
-import { ThemeContext } from '../../context/theme/themeContext';
 import { boardAPI } from '../../api/BoardAPI';
+import { defaultTheme } from '../../theme/default';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -12,7 +12,6 @@ import { THERE_ARE_NO_BOARDS_MESSAGE } from '../../constants';
 import BoardStepper from '../BoardStepper/BoardStepper';
 import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
-import { defaultTheme } from '../../theme/default';
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
@@ -43,15 +42,13 @@ const BoardsManagement = () => {
       component="main"
       sx={{
         flexGrow: 0,
-        bgcolor: 'background.default',
-        p: 3,
+        bgcolor: '#f4f4f4;',
+        padding: '0 32px',
         marginLeft: 0,
-        width: '100%'
+        width: '100%',
+        height: '80vh'
       }}
     >
-      <h2 className={classes.title} data-testid='board-management-title'>
-        BOARDS MANAGEMENT
-      </h2>
       <div className={classes.boardsManagementContainer}>
         {isLoading &&
           <div className={classes.boardsManagementLoader}>

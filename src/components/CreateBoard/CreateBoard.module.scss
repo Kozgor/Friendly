@@ -1,15 +1,28 @@
 @import "../../mixins/flexbox";
 
-.defaultBoard {
-  width: 200px;
-  height: 170px;
-  border: none;
-  margin-top: 10px;
-  cursor: pointer;
-  padding: 30px 5px;
-  background-image: url("../../assets/images/kanbanboard_120442.png");
-  background-repeat: no-repeat;
-  background-size: contain;
+.createBoardContainer {
+  @include flexbox(row, space-evenly, start, nowrap);
+  width: 100%;
+  height: 80vh;
+  background-color: #f4f4f4;
 
-  @include flexbox(row, space-evenly, center, nowrap);
+  .createBoardBox {
+    flex-grow: 1;
+    padding: 24px;
+    margin-left: 0;
+  }
+
+  .defaultBoard {
+    width: 200px;
+    height: 170px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+    padding: 30px 5px;
+    background-image: url("../../assets/images/kanbanboard_120442.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @include flexbox(row, space-evenly, center, nowrap);
+  }
 }

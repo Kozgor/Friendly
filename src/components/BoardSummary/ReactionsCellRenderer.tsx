@@ -1,13 +1,7 @@
-import { ICardReactions } from '../../interfaces/columnCard';
 import { icons } from '../../theme/icons/icons';
 
 const ReactionsCellRenderer = (params: any) => {
-  let trueCount = 0;
-  let falseCount = 0;
-
-  params.value.forEach((cardReactions: ICardReactions) => {
-    cardReactions.isHappyReaction ? trueCount++ : falseCount++;
-  });
+  const { happy, unhappy } = params.value;
 
   return (
     <span style={{
@@ -24,7 +18,7 @@ const ReactionsCellRenderer = (params: any) => {
         justifyContent: 'space-between',
         width: '30px'
       }}>
-        {trueCount}
+        {happy}
         {icons.emojiSmile('#484a4b', '16px')}
       </span>
       <span style={{
@@ -33,7 +27,7 @@ const ReactionsCellRenderer = (params: any) => {
         justifyContent: 'space-between',
         width: '30px'
       }}>
-        {falseCount}
+        {unhappy}
         {icons.emojiFrown('#484a4b', '16px')}
       </span>
     </span>

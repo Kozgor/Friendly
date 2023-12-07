@@ -2,17 +2,22 @@
 
 .header {
   width: 100%;
-  height: 10vh;
-  background-color: #f5f6f7;
-  padding: 15px;
-  border-bottom: 1px solid black;
+  height: 20vh;
 
-  @include flexbox(row, flex-end, center, nowrap);
+  @include flexbox(row, flex-end, center, wrap);
+
+  .mainHeader {
+    @include flexbox(row, flex-end, center, wrap);
+    width: 100%;
+    height: 10vh;
+    padding: 15px;
+    background-color: #f4f4f4;
+  }
 
   &__board-box {
     width: 60%;
 
-    @include flexbox(row, space-between, center, nowrap);
+    @include flexbox(row, end, center, nowrap);
 
     &__name {
       cursor: context-menu;

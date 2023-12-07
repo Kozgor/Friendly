@@ -103,7 +103,7 @@ function Login() {
     };
 
     return (
-        <>
+        <div className={classes.loginContainer}>
           <Card
             sx={{
               width: 320,
@@ -141,7 +141,7 @@ function Login() {
               </form>
             </CardContent>
           </Card>
-        </>
+        </div>
     );
 }
 

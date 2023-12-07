@@ -5,23 +5,29 @@ const enableAdding = jest.fn();
 const disableAdding = jest.fn();
 const finalizeTimer = jest.fn();
 const setBoardId = jest.fn();
+const setBoardTime = jest.fn();
+const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
 
 describe('BoardReducer', () => {
   const initialState: IGlobalState = {
-      boardId: 'Test ID',
-      boardStatus: 'Test ID',
-      isAddingDisabled: false,
-      isTimerFinalized: false,
-      isFormSubmit: false,
-      enableAdding: enableAdding,
-      disableAdding: disableAdding,
-      finalizeTimer: finalizeTimer,
-      setFormSubmit: setFormSubmit,
-      setBoardId: setBoardId,
-      setBoardStatus : setBoardStatus
-    };
+    boardId: 'Test ID',
+    boardStatus: 'Test ID',
+    boardTime: 5,
+    isAddingDisabled: false,
+    isTimerFinalized: false,
+    isTimerVisible: false,
+    isFormSubmit: false,
+    enableAdding: enableAdding,
+    disableAdding: disableAdding,
+    finalizeTimer: finalizeTimer,
+    setFormSubmit: setFormSubmit,
+    setBoardId: setBoardId,
+    setBoardTime: setBoardTime,
+    setBoardStatus: setBoardStatus,
+    setTimerVisibility: setTimerVisibility
+  };
 
   it('should handle "ADDING_ENABLE" action', () => {
     const action = { type: 'ADDING_ENABLE' };

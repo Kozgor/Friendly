@@ -25,18 +25,20 @@ import { defaultTheme } from '../../theme/default';
 import { icons } from '../../theme/icons/icons';
 
 import classes from './BoardStepper.module.scss';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 const BoardStepper = (props: { board: IBoardSettings }) => {
   const { board } = props;
   const navigate = useNavigate();
   const { setBoardId, setBoardStatus } = useContext(BoardContext);
   const [currentBoardStatus, setCurrentBoardStatus] = useState<string>(board.status);
+  const { removeLocalBoardDetails, saveLocalBoardDetails } = localStorageManager();
   const { finalizeBoard } = boardAPI();
   const formatedDate = moment(board.createdAt).format('DD/MM/YYYY');
 
   const stepIconValues = {
     1: icons.map,
-    2: icons.backpack,
+    2: icons.backpack('#fff'),
     3: icons.pinMap,
     4: icons.bus,
     5: null
@@ -74,6 +76,8 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   const openSpecificBoard = () => {
     if (board._id) {
       setBoardId(board._id);
+      removeLocalBoardDetails(),
+      saveLocalBoardDetails({currentBoardId: board._id, currentBoardName: board.name}),
       navigate(`/board/${board._id}`);
     }
   };

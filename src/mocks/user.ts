@@ -6,6 +6,11 @@ export const INITIAL_LOCAL_PROFILE = {
     token: ''
 };
 
+export const INITIAL_LOCAL_BOARD = {
+    currentBoardId: '',
+    currentBoardName: ''
+};
+
 export const LOCAL_USER_PROFILE = {
     _id: '650b15bfc45ee8d80c27c388',
     fullName: 'John Doe',
@@ -39,13 +44,29 @@ export const INITIAL_USER_PROFILE = {
     token: ''
 };
 
-
 export const STORE_USER_PROFILE = {
     fullName: 'John Doe',
     _id: 'test-id-john',
     avatar: 'avatar.jpg',
     role: 'user',
     email: 'user@mail-test.com',
+    description: 'dummy descrition',
+    createdAt: '2023-08-25T09:23:57.495+00:00',
+    updatedAt: '2023-08-25T09:23:57.495+00:00',
+    boards: {
+        active: 'oe2r4-2034rm-2or12-ok3rke',
+        finalized: null
+    },
+    __v: 0,
+    token: 'dummy-token-12345-test'
+};
+
+export const STORE_ADMIN_PROFILE = {
+    fullName: 'Admin',
+    _id: 'test-id-john',
+    avatar: 'avatar.jpg',
+    role: 'admin',
+    email: 'admin@mail-test.com',
     description: 'dummy descrition',
     createdAt: '2023-08-25T09:23:57.495+00:00',
     updatedAt: '2023-08-25T09:23:57.495+00:00',
