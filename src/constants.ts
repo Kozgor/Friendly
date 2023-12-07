@@ -11,7 +11,7 @@ export const boardStepperButtons = {
 export const navigationBarTitles = {
   drawerHeader: 'friendly',
   drawerSubheader: 'Home',
-  navigatinListHeader: 'MY BOARDS'
+  navigatingListHeader: 'MY BOARDS'
 };
 
 export const possibleBoardStatuses = {

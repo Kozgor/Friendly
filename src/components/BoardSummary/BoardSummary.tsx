@@ -6,6 +6,7 @@ import {
   useState
 } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { BoardContext } from '../../context/board/boardContext';
 import { IUserProfile } from '../../interfaces/user';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
 import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
@@ -16,7 +17,6 @@ import { userAPI } from '../../api/UserAPI';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
 import './BoardSummary.scss';
-import { BoardContext } from '../../context/board/boardContext';
 
 const BoardSummary = () => {
   type RowDataItem = {
