@@ -48,3 +48,12 @@
     margin-top: 15px;
   }
 }
+
+.main {
+  height: inherit;
+  overflow-y: auto;
+}
+
+.main::-webkit-scrollbar {
+  width: 6px;
+}
