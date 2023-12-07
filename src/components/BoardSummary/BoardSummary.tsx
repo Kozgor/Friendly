@@ -1,4 +1,5 @@
 import {
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -15,6 +16,7 @@ import { userAPI } from '../../api/UserAPI';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
 import './BoardSummary.scss';
+import { BoardContext } from '../../context/board/boardContext';
 
 const BoardSummary = () => {
   type RowDataItem = {
@@ -34,6 +36,7 @@ const BoardSummary = () => {
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
   const [columnDefs, setColumnDefs] = useState(boardSummaryDefsList);
+  const { isSummaryDownload, disableDownloadSummaryCSV } = useContext(BoardContext);
 
   const fetchBoardSummary = async (boardId: string) => {
     try {
@@ -59,9 +62,23 @@ const BoardSummary = () => {
     }
   };
 
+  const downloadCSV = () => {
+    if (gridRef) {
+      gridRef.current?.api.exportDataAsCsv({
+        suppressQuotes: true
+      });
+    }
+  };
+
   useEffect(() => {
     if (!URLBoardId.length) {
       getUserData();
+    }
+    disableDownloadSummaryCSV();
+    if (isSummaryDownload) {
+      downloadCSV();
+
+      return;
     }
 
     fetchBoardSummary(URLBoardId).then(rowData => {
@@ -69,7 +86,7 @@ const BoardSummary = () => {
         setRowData(rowData);
       }
     });
-  }, [URLBoardId]);
+  }, [URLBoardId, isSummaryDownload]);
 
   const getRowId = useMemo(() => (params: any) =>
     params.data.cardAuthor + params.data.cardComment, []);

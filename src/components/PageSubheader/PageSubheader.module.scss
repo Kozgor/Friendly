@@ -9,7 +9,7 @@
 
   .subheaderContainerFirstTitle,
   .subheaderContainerSecondTitle {
-    display: flex;
+    @include flexbox(row, start, start, nowrap);
     width: 50%;
     height: 40px;
 
@@ -41,7 +41,6 @@
   }
 
   .subheaderContainerBackward {
-    display: flex;
-    justify-content: flex-start;
+    @include flexbox(row, start, center, nowrap);
   }
 }

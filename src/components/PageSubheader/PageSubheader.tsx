@@ -1,18 +1,22 @@
+import { Button, IconButton } from '@mui/joy';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { findKey, isEmpty } from 'lodash';
-import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AgGridReact } from 'ag-grid-react';
+import { BoardContext } from '../../context/board/boardContext';
+import { DOWNLOAD_CSV_REPORT } from '../../constants';
 import { IPageSubheaderNavigation } from '../../interfaces/pageSubheaderNavigation';
-import { IconButton } from '@mui/joy';
+
 import { icons } from '../../theme/icons/icons';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { pathConstants } from '../../router/pathConstants';
 
 import classes from './PageSubheader.module.scss';
 
+
 const PageSubheader = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { downloadSummaryCSV } = useContext(BoardContext);
   const { getLocalBoardDatails } = localStorageManager();
   const currentBoardDetails = getLocalBoardDatails();
   const [backward, setBackward] = useState<string|null>(null);
@@ -20,12 +24,9 @@ const PageSubheader = () => {
   const [backwardLabel, setBackwardLabel] = useState<string|null>(null);
   const [forwardLabel, setForwardLabel] = useState<string|null>(null);
   const [element, setElement] = useState<ReactNode|null>();
-  const gridRef = useRef<AgGridReact>(null);
 
   const getCSVFile = () => {
-    gridRef.current?.api.exportDataAsCsv({
-      suppressQuotes: true
-    });
+    downloadSummaryCSV();
   };
 
   const subheaderTitles = {
@@ -37,13 +38,13 @@ const PageSubheader = () => {
   };
 
   const setNavigationAndTitles = (params: IPageSubheaderNavigation) => {
-    const { backward, forward, backwardLabel, forwardLabel } = params;
+    const { backward, forward, backwardLabel, forwardLabel, element } = params;
 
     setBackward(backward || null);
     setForward(forward || null);
     setBackwardLabel(backwardLabel || null);
     setForwardLabel(forwardLabel || null);
-    setElement(<button onClick={getCSVFile}>Download csv file</button>);
+    setElement(element || null);
   };
 
   const headerNavigationConditions = {
@@ -56,7 +57,15 @@ const PageSubheader = () => {
     '/board_summary/' : {
       backward: `${pathConstants.BOARD}/${currentBoardDetails.currentBoardId}`,
       backwardLabel: `${currentBoardDetails.currentBoardName} | ${subheaderTitles.boardSummary}`,
-      element: element
+      element: <Button
+        color='neutral'
+        onClick={getCSVFile}
+        startDecorator={icons.download('#303439', '16')}
+        size='md'
+        variant='outlined'
+      >
+        {DOWNLOAD_CSV_REPORT}
+      </Button>
     },
     '/admin/new_board/default_board' : {
       backwardLabel: subheaderTitles.defaultBoard
@@ -136,7 +145,7 @@ const PageSubheader = () => {
         </span>
       }
       {element &&
-        <span className={classes.subheaderContainerForward}>
+        <span className={classes.subheaderContainerSecondTitle}>
           {element}
         </span>
       }

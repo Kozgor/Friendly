@@ -7,6 +7,7 @@ export const initialGlobalState = {
   boardStatus: '',
   boardTime: 0,
   isFormSubmit: false,
+  isSummaryDownload: false,
   isTimerVisible: false,
   isTimerFinalized: false,
   isAddingDisabled: true,
@@ -14,6 +15,8 @@ export const initialGlobalState = {
   disableAdding: () => {},
   finalizeTimer: () => {},
   setFormSubmit: () => {},
+  downloadSummaryCSV: () => {},
+  disableDownloadSummaryCSV: () => {},
   setBoardId: (id: string) => {},
   setBoardTime: (boardTime: number) => {},
   setTimerVisibility: (isTimerVisible: boolean) => {},
@@ -55,21 +58,36 @@ export const BoardProvider = ({ children }: BaseProps) => {
       payload: boardStatus
     });
   };
+
   const setBoardTime = (boardTime: number) => {
     dispatch({
       type: 'SET_BOARD_TIME',
       payload: boardTime
     });
   };
+
   const setTimerVisibility = (timerVisibility: boolean) => {
     dispatch({
       type: 'SET_TIMER_VISIBILITY',
       payload: timerVisibility
     });
   };
+
   const setFormSubmit = () => {
     dispatch({
       type: 'SUBMIT_FORM'
+    });
+  };
+
+  const downloadSummaryCSV = () => {
+    dispatch({
+      type: 'DOWNLOAD_BOARD_SUMMARY_CSV'
+    });
+  };
+
+  const disableDownloadSummaryCSV = () => {
+    dispatch({
+      type: 'DISABLE_DOWNLOAD_BOARD_SUMMARY_CSV'
     });
   };
 
@@ -80,6 +98,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
         isTimerFinalized: state.isTimerFinalized,
         isTimerVisible: state.isTimerVisible,
         isFormSubmit: state.isFormSubmit,
+        isSummaryDownload: state.isSummaryDownload,
         boardId: state.boardId,
         boardStatus: state.boardStatus,
         boardTime: state.boardTime,
@@ -90,7 +109,9 @@ export const BoardProvider = ({ children }: BaseProps) => {
         setBoardId,
         setBoardTime,
         setBoardStatus,
-        setFormSubmit
+        setFormSubmit,
+        downloadSummaryCSV,
+        disableDownloadSummaryCSV
       }}
     >
       {children}

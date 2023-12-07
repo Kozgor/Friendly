@@ -22,7 +22,7 @@ import classes from './MainLayout.module.scss';
 const MainLayout = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-  const { getLocalUserData, getLocalBoardDatails } = localStorageManager();
+  const { getLocalUserData } = localStorageManager();
   const user = getLocalUserData();
   const URLAdminPart = useAdminLocation();
   const URLPart = useLocation();

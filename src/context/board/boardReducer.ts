@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { IAction } from '../../interfaces/action';
 import { IGlobalState } from '../../interfaces/globalState';
 
@@ -33,11 +34,6 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         isTimerVisible: action.payload
       };
-    case 'SET_BOARDNAME':
-      return {
-        ...state,
-        boardName: action.payload
-      };
     case 'SET_BOARD_STATUS':
       return {
         ...state,
@@ -47,6 +43,16 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
       return {
         ...state,
         isFormSubmit: true
+      };
+    case 'DOWNLOAD_BOARD_SUMMARY_CSV':
+      return {
+        ...state,
+        isSummaryDownload: true
+      };
+    case 'DISABLE_DOWNLOAD_BOARD_SUMMARY_CSV':
+      return {
+        ...state,
+        isSummaryDownload: false
       };
     default:
       return state;

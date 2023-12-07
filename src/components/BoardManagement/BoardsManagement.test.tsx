@@ -6,6 +6,8 @@ const setBoardTime = jest.fn();
 const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
+const downloadSummaryCSV = jest.fn();
+const disableDownloadSummaryCSV = jest.fn();
 const getAllBoards = jest.fn();
 
 jest.mock('../../api/BoardAPI', () => ({
@@ -21,7 +23,6 @@ import {
   screen
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { ACTIVE_BOARD } from '../../mocks/board';
 import { BaseProps } from '../../interfaces/baseProps';
 import { BoardContext } from '../../context/board/boardContext';
 import { Provider } from 'react-redux';
@@ -42,11 +43,14 @@ const wrapper = ({ children }: BaseProps) => (
       isTimerFinalized: false,
       isTimerVisible: false,
       isFormSubmit: false,
+      isSummaryDownload: false,
       enableAdding,
       disableAdding,
       finalizeTimer,
       setTimerVisibility,
       setFormSubmit,
+      downloadSummaryCSV,
+      disableDownloadSummaryCSV,
       setBoardId,
       setBoardTime,
       setBoardStatus
