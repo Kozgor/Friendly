@@ -3,23 +3,23 @@
 .stepperHeader {
   width: 200;
 
-  @include flexbox(row, start, stretch, wrap);
+  @include flexbox(row, flex-start, stretch, wrap);
 }
 
 .stepperHeaderTittle {
   margin: 0;
 
-  @include flexbox(row, start, center, nowrap);
+  @include flexbox(row, flex-start, center, nowrap);
 }
 
 .boardNameContainerLeft {
-  @include flexbox(row, center, start, nowrap);
+  @include flexbox(row, center, flex-start, nowrap);
 }
 
 .boardNameContainerRight {
   margin-left: 1rem;
 
-  @include flexbox(row, center, start, nowrap);
+  @include flexbox(row, center, flex-start, nowrap);
 }
 
 .stepperStepLabel {

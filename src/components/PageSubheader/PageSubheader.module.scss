@@ -1,7 +1,7 @@
 @import "../../mixins/flexbox";
 
 .subheaderContainer {
-  @include flexbox(row, start, center, nowrap);
+  @include flexbox(row, flex-start, center, nowrap);
   width: 100%;
   height: 10vh;
   background-color: #fff;

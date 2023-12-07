@@ -17,7 +17,7 @@
   &__board-box {
     width: 60%;
 
-    @include flexbox(row, end, center, nowrap);
+    @include flexbox(row, flex-end, center, nowrap);
 
     &__name {
       cursor: context-menu;
