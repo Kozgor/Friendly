@@ -21,7 +21,7 @@
 .theme,
 .timer,
 .participants {
-  height: 30px;
+  // height: 30px;
   width: 400px;
   margin: 15px 0;
 
@@ -29,13 +29,10 @@
 
   .input {
     border: none;
+    border-bottom: 2px solid #a3a5a7;
     background-color: #fff;
     box-shadow: none;
   }
-}
-
-.participants :nth-child(2) {
-  margin-top: -20px;
 }
 
 .columnsBox {

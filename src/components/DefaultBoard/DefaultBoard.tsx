@@ -181,6 +181,21 @@ const DefaultBoard = () => {
                 slotProps={{
                   input: { component: numericFormatAdapter }
                 }}
+                sx={{
+                  '--Input-radius': '0px',
+                  '&::before': {
+                    border: '1px solid var(--friendly-palette-primary-700)',
+                    transform: 'scaleX(0)',
+                    left: 0,
+                    right: 0,
+                    bottom: '-1px',
+                    top: 'unset',
+                    transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
+                  },
+                  '&:focus-within::before': {
+                    transform: 'scaleX(1)'
+                  }
+                }}
               />
             }
             {(setting.key === 'name') &&
@@ -194,6 +209,22 @@ const DefaultBoard = () => {
                 disabled={setting.disabled}
                 aria-label={`input for ${setting.label}`}
                 data-testid={`boardSetting${setting.key}`}
+                sx={{
+                  '--Input-radius': '0px',
+                  borderColor: '#A3A5A7',
+                  '&::before': {
+                    border: '1px solid var(--friendly-palette-primary-700)',
+                    transform: 'scaleX(0)',
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 'unset',
+                    transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
+                  },
+                  '&:focus-within::before': {
+                    transform: 'scaleX(1)'
+                  }
+                }}
               />
             }
             {setting.key === 'participants' &&
