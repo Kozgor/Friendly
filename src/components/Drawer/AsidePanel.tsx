@@ -24,8 +24,8 @@ const AsidePanel = () => {
     const URLPart = useLocation();
     const [activeTab, setActiveTab] = useState(URLPart.pathname.includes('default_board') ? adminTabList[0].path : URLPart.pathname);
     const iconList = [
-        icons.backpack(`var(--friendly-palette-${activeTab === adminTabList[0].path ? 'shades-50' : 'primary-400'})`),
-        icons.backpack(`var(--friendly-palette-${activeTab === adminTabList[1].path ? 'shades-50' : 'primary-400'})`)
+        icons.bus(`var(--friendly-palette-${activeTab === adminTabList[0].path ? 'shades-50' : 'primary-400'})`),
+        icons.signSpot(`var(--friendly-palette-${activeTab === adminTabList[1].path ? 'shades-50' : 'primary-400'})`)
     ];
 
     const changeTabHandler = (event: any, value: any) => {

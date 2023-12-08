@@ -38,9 +38,9 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
 
   const stepIconValues = {
     1: icons.map,
-    2: icons.backpack('#fff'),
+    2: icons.backpack('#var(--friendly-palette-shades-50)'),
     3: icons.pinMap,
-    4: icons.bus,
+    4: icons.bus('var(--friendly-palette-shades-50)'),
     5: null
   };
 
@@ -77,8 +77,8 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
     if (board._id) {
       setBoardId(board._id);
       removeLocalBoardDetails(),
-      saveLocalBoardDetails({currentBoardId: board._id, currentBoardName: board.name}),
-      navigate(`/board/${board._id}`);
+        saveLocalBoardDetails({ currentBoardId: board._id, currentBoardName: board.name }),
+        navigate(`/board/${board._id}`);
     }
   };
 
