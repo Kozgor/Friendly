@@ -15,8 +15,6 @@ describe('Column component', () => {
   const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
-  const downloadSummaryCSV = jest.fn();
-  const disableDownloadSummaryCSV = jest.fn();
 
   beforeEach(() => {
     const wrapper = ({ children }: BaseProps) => (
@@ -29,13 +27,10 @@ describe('Column component', () => {
           isTimerVisible: false,
           isTimerFinalized: false,
           isFormSubmit: false,
-          isSummaryDownload: false,
           enableAdding,
           disableAdding,
           finalizeTimer,
           setFormSubmit,
-          downloadSummaryCSV,
-          disableDownloadSummaryCSV,
           setBoardId,
           setBoardTime,
           setTimerVisibility,
@@ -84,13 +79,10 @@ describe('Column component', () => {
           isTimerVisible: false,
           isFormSubmit: false,
           isTimerFinalized: false,
-          isSummaryDownload: false,
           enableAdding,
           disableAdding,
           finalizeTimer,
           setFormSubmit,
-          downloadSummaryCSV,
-          disableDownloadSummaryCSV,
           setBoardId,
           setBoardTime,
           setTimerVisibility,
@@ -132,13 +124,10 @@ describe('Column component', () => {
           isTimerFinalized: false,
           isTimerVisible: false,
           isFormSubmit: false,
-          isSummaryDownload: false,
           enableAdding,
           disableAdding,
           finalizeTimer,
           setFormSubmit,
-          downloadSummaryCSV,
-          disableDownloadSummaryCSV,
           setBoardId,
           setBoardTime,
           setTimerVisibility,

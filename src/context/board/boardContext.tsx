@@ -7,7 +7,6 @@ export const initialGlobalState = {
   boardStatus: '',
   boardTime: 0,
   isFormSubmit: false,
-  isSummaryDownload: false,
   isTimerVisible: false,
   isTimerFinalized: false,
   isAddingDisabled: true,
@@ -15,8 +14,6 @@ export const initialGlobalState = {
   disableAdding: () => {},
   finalizeTimer: () => {},
   setFormSubmit: () => {},
-  downloadSummaryCSV: () => {},
-  disableDownloadSummaryCSV: () => {},
   setBoardId: (id: string) => {},
   setBoardTime: (boardTime: number) => {},
   setTimerVisibility: (isTimerVisible: boolean) => {},
@@ -79,18 +76,6 @@ export const BoardProvider = ({ children }: BaseProps) => {
     });
   };
 
-  const downloadSummaryCSV = () => {
-    dispatch({
-      type: 'DOWNLOAD_BOARD_SUMMARY_CSV'
-    });
-  };
-
-  const disableDownloadSummaryCSV = () => {
-    dispatch({
-      type: 'DISABLE_DOWNLOAD_BOARD_SUMMARY_CSV'
-    });
-  };
-
   return (
     <BoardContext.Provider
       value={{
@@ -98,7 +83,6 @@ export const BoardProvider = ({ children }: BaseProps) => {
         isTimerFinalized: state.isTimerFinalized,
         isTimerVisible: state.isTimerVisible,
         isFormSubmit: state.isFormSubmit,
-        isSummaryDownload: state.isSummaryDownload,
         boardId: state.boardId,
         boardStatus: state.boardStatus,
         boardTime: state.boardTime,
@@ -109,9 +93,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
         setBoardId,
         setBoardTime,
         setBoardStatus,
-        setFormSubmit,
-        downloadSummaryCSV,
-        disableDownloadSummaryCSV
+        setFormSubmit
       }}
     >
       {children}

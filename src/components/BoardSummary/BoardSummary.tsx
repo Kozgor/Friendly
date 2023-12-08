@@ -1,32 +1,27 @@
 import {
-  useContext,
   useEffect,
   useMemo,
   useRef,
   useState
 } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { BoardContext } from '../../context/board/boardContext';
 import { IUserProfile } from '../../interfaces/user';
+import { PropsChildren } from '../../interfaces/interactivePanelChildren';
+import { RowDataItem } from '../../interfaces/boardSummaryRowData';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
 import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
+import { pathConstants } from '../../router/pathConstants';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
+import DownloadBoardSummaryCSVButton from './DownloadCSVButton';
+import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
 import './BoardSummary.scss';
 
 const BoardSummary = () => {
-  type RowDataItem = {
-    columnId: string | undefined;
-    cardComment: string;
-    cardTags: string;
-    cardReactions: any;
-    cardAuthor: string;
-  };
-
   const { getUserById } = userAPI();
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
@@ -35,14 +30,31 @@ const BoardSummary = () => {
   const { getBoardSummary } = boardSummaryAPI();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
-  const [columnDefs, setColumnDefs] = useState(boardSummaryDefsList);
-  const { isSummaryDownload, disableDownloadSummaryCSV } = useContext(BoardContext);
+  const [boardName, setBoardName] = useState<string>('');
+  const [isSummaryDownload, enableDownloadSummaryCSV] = useState<boolean>(false);
+
+  const downloadCSV = () => {
+    if (gridRef) {
+      gridRef.current?.api.exportDataAsCsv({
+        suppressQuotes: true
+      });
+    }
+  };
 
   const fetchBoardSummary = async (boardId: string) => {
     try {
-      const boardSummary= await getBoardSummary(boardId);
+      const boardSummary = await getBoardSummary(boardId);
 
-      return boardSummary;
+      if (boardSummary[0].columnId) {
+        enableDownloadSummaryCSV(true);
+        setRowData(boardSummary);
+        setBoardName(boardSummary[0].boardName);
+
+        return;
+      }
+
+      enableDownloadSummaryCSV(false);
+      setBoardName(boardSummary[0].boardName);
     } catch (error) {
       console.log(error);
     }
@@ -62,43 +74,40 @@ const BoardSummary = () => {
     }
   };
 
-  const downloadCSV = () => {
-    if (gridRef) {
-      gridRef.current?.api.exportDataAsCsv({
-        suppressQuotes: true
-      });
+  const childrenConfig: PropsChildren[] = [
+    {
+      element: `${pathConstants.BOARD}/${URLBoardId}`,
+      label: `${boardName} | Summary`,
+      position: 'left'
+    }, {
+      element: <DownloadBoardSummaryCSVButton
+        isDisabled={!isSummaryDownload}
+        onClick={downloadCSV}
+      />,
+      position: 'rigth'
     }
-  };
+  ];
 
   useEffect(() => {
     if (!URLBoardId.length) {
       getUserData();
     }
-    disableDownloadSummaryCSV();
-    if (isSummaryDownload) {
-      downloadCSV();
 
-      return;
-    }
-
-    fetchBoardSummary(URLBoardId).then(rowData => {
-      if (rowData) {
-        setRowData(rowData);
-      }
-    });
-  }, [URLBoardId, isSummaryDownload]);
+    fetchBoardSummary(URLBoardId);
+  }, [URLBoardId]);
 
   const getRowId = useMemo(() => (params: any) =>
     params.data.cardAuthor + params.data.cardComment, []);
 
   return (
     <div className='boardSummaryContainer'>
+      <InteractivePanel childrenConfig={childrenConfig} />
       <div id='summary-grid' className='ag-theme-alpine'>
         <AgGridReact
           animateRows={true}
           ref={gridRef}
           rowData={rowData}
-          columnDefs={columnDefs}
+          columnDefs={boardSummaryDefsList}
           rowSelection={'multiple'}
           getRowId={getRowId}
           defaultColDef={{ flex: 1 }}

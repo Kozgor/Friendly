@@ -9,8 +9,6 @@ const setBoardTime = jest.fn();
 const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
-const downloadSummaryCSV = jest.fn();
-const disableDownloadSummaryCSV = jest.fn();
 
 describe('BoardReducer', () => {
   const initialState: IGlobalState = {
@@ -21,13 +19,10 @@ describe('BoardReducer', () => {
     isTimerFinalized: false,
     isTimerVisible: false,
     isFormSubmit: false,
-    isSummaryDownload: false,
     enableAdding: enableAdding,
     disableAdding: disableAdding,
     finalizeTimer: finalizeTimer,
     setFormSubmit: setFormSubmit,
-    downloadSummaryCSV: downloadSummaryCSV,
-    disableDownloadSummaryCSV: disableDownloadSummaryCSV,
     setBoardId: setBoardId,
     setBoardTime: setBoardTime,
     setBoardStatus: setBoardStatus,
@@ -81,20 +76,6 @@ describe('BoardReducer', () => {
     const newState = BoardReducer(initialState, action);
 
     expect(newState.isFormSubmit).toBeTruthy();
-  });
-
-  it('should handle "DOWNLOAD_BOARD_SUMMARY_CSV"', () => {
-    const action = { type: 'DOWNLOAD_BOARD_SUMMARY_CSV' };
-    const newState = BoardReducer(initialState, action);
-
-    expect(newState.isSummaryDownload).toBeTruthy();
-  });
-
-  it('should handle "DISABLE_DOWNLOAD_BOARD_SUMMARY_CSV"', () => {
-    const action = { type: 'DISABLE_DOWNLOAD_BOARD_SUMMARY_CSV' };
-    const newState = BoardReducer(initialState, action);
-
-    expect(newState.isSummaryDownload).toBeFalsy();
   });
 
   it('should return the current state for an unknown action', () => {

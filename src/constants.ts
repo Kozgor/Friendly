@@ -14,6 +14,13 @@ export const navigationBarTitles = {
   navigatingListHeader: 'MY BOARDS'
 };
 
+export const panelTitles = {
+  newBoard: 'New Board',
+  defaultBoard: 'Default Board',
+  boardsManagement: 'Boards Management',
+  boardSummary: 'Summary'
+};
+
 export const possibleBoardStatuses = {
   created: 'created',
   active: 'active',

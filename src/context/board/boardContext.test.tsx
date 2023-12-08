@@ -22,12 +22,6 @@ describe('BoardProvider', () => {
               <button data-testid="set-board-id-button" onClick={() => context.setBoardId('testId')}>
                 Set Board ID
               </button>
-              <button data-testid="board-summary-csv-download" onClick={() => context.downloadSummaryCSV()}>
-                {context.isSummaryDownload && <span data-testid='download-csv-message'>Downloading summary csv available</span>}
-              </button>
-              <button data-testid="disable-board-summary-csv-download" onClick={() => context.disableDownloadSummaryCSV()}>
-                {!context.isSummaryDownload && <span data-testid='disable-download-csv-message'>Downloading summary csv disabled</span>}
-              </button>
               <span data-testid="board-id">{context.boardId}</span>
             </div>
           )}
@@ -60,24 +54,5 @@ describe('BoardProvider', () => {
 
     fireEvent.click(setBoardIdButton);
     expect(boardIdElement.textContent).toBe('testId');
-  });
-
-  it('Should set isSummaryDownload to true when downloadSummaryCSV function is called', () => {
-    const bordSummaryCSVDownloadButton = getByTestId('board-summary-csv-download');
-
-    fireEvent.click(bordSummaryCSVDownloadButton);
-
-    const downloadBoardSummaryMessage = getByTestId('download-csv-message');
-
-    expect(downloadBoardSummaryMessage).toBeInTheDocument();
-  });
-
-  it('Should set isSummaryDownload to false when disableDownloadSummaryCSV function is called', () => {
-    const disableBordSummaryCSVDownloadButton = getByTestId('disable-board-summary-csv-download');
-
-    fireEvent.click(disableBordSummaryCSVDownloadButton);
-
-    const disableDownloadBoardSummaryMessage = getByTestId('disable-download-csv-message');
-    expect(disableDownloadBoardSummaryMessage).toBeInTheDocument();
   });
 });

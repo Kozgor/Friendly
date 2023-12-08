@@ -48,8 +48,6 @@ describe('PageHeader component', () => {
   const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
-  const downloadSummaryCSV = jest.fn();
-  const disableDownloadSummaryCSV = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
     <BoardContext.Provider
@@ -61,13 +59,10 @@ describe('PageHeader component', () => {
         isTimerFinalized: false,
         isTimerVisible: true,
         isFormSubmit: false,
-        isSummaryDownload: false,
         enableAdding,
         disableAdding,
         finalizeTimer,
         setFormSubmit,
-        downloadSummaryCSV,
-        disableDownloadSummaryCSV,
         setBoardId,
         setBoardTime,
         setTimerVisibility,

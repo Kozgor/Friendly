@@ -20,12 +20,12 @@ export const boardSummaryDefsList = [{
     headerName: 'COMMENT',
     field: 'cardComment', filter:
     'agTextColumnFilter',
-    maxWidth: 538,
     filterParams: {
       caseSensitive: true,
       defaultOption: 'startsWith'
     },
-    floatingFilter: true
+    floatingFilter: true,
+    flex: 2
   }, {
     headerName: 'TAGS',
     field: 'cardTags',
@@ -45,10 +45,10 @@ export const boardSummaryDefsList = [{
     headerName: 'AUTHOR',
     field: 'cardAuthor',
     filter: 'agTextColumnFilter',
-    maxWidth: 168,
     filterParams: {
       caseSensitive: true,
       defaultOption: 'startsWith'
     },
-    floatingFilter: true
+    floatingFilter: true,
+    flex: 1
 }];

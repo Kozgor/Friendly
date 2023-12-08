@@ -28,8 +28,6 @@ describe('BoardStepper Component', () => {
   const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
-  const downloadSummaryCSV = jest.fn();
-  const disableDownloadSummaryCSV = jest.fn();
 
   const routesConfig = [
     {
@@ -47,14 +45,11 @@ describe('BoardStepper Component', () => {
         isTimerFinalized: false,
         isTimerVisible: false,
         isFormSubmit: false,
-        isSummaryDownload: false,
         enableAdding,
         disableAdding,
         finalizeTimer,
         setTimerVisibility,
         setFormSubmit,
-        downloadSummaryCSV,
-        disableDownloadSummaryCSV,
         setBoardId,
         setBoardTime,
         setBoardStatus

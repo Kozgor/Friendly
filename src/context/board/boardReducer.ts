@@ -44,16 +44,6 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         isFormSubmit: true
       };
-    case 'DOWNLOAD_BOARD_SUMMARY_CSV':
-      return {
-        ...state,
-        isSummaryDownload: true
-      };
-    case 'DISABLE_DOWNLOAD_BOARD_SUMMARY_CSV':
-      return {
-        ...state,
-        isSummaryDownload: false
-      };
     default:
       return state;
   }
