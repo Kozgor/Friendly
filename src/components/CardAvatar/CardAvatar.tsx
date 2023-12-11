@@ -31,7 +31,7 @@ const CardAvatar = (props: ICardAvatar) => {
             onClick={onToggle}
             sx={{
               cursor: 'pointer',
-              color: '#FFFFFF',
+              color: 'var(--friendly-palette-shades-50)',
               '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 }
             }}
           >

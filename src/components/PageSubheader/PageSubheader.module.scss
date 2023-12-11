@@ -1,10 +1,11 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .subheaderContainer {
   @include flexbox(row, flex-start, center, nowrap);
   width: 100%;
   height: 10vh;
-  background-color: #fff;
+  background-color: $friendly-palette-shades-50;
   padding: 0 38px;
 
   .subheaderContainerFirstTitle,
@@ -15,7 +16,7 @@
 
     h2 {
       font-weight: 400;
-      color: #191d23;
+      color: $friendly-palette-neutral-900;
       font-size: 36px;
     }
   }

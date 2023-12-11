@@ -101,7 +101,7 @@ const Dashboard = () => {
       {
         ...column,
         columnId: Math.random().toString(),
-        columnStyle: !column.columnStyle ? '#000' : column.columnStyle
+        columnStyle: !column.columnStyle ? 'var(--friendly-palette-shades-900)' : column.columnStyle
       }
     ]);
     clearInputs();

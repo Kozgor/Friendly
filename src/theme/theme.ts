@@ -74,8 +74,8 @@ const joyTheme = extendTheme({
           900: '#FFA62B'
         },
         shades: {
-          50: '#FFFFFF',
-          900: '#000000'
+          50: '#FFF',
+          900: '#000'
         }
       }
     }

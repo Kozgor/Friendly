@@ -9,7 +9,7 @@ const CardChip = (props: { tag: string }) => {
     [possibleCardTags[0]] : '#f5cd7780',
     [possibleCardTags[1]] : '#a3a4a5',
     [possibleCardTags[2]] : '#ffd7bf',
-    [possibleCardTags[3]] : '#8ab4bc'
+    [possibleCardTags[3]] : 'var(--friendly-palette-primary-400)'
   };
 
   const setChipSize = {

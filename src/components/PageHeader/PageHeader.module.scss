@@ -1,4 +1,5 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .header {
   width: 100%;
@@ -11,7 +12,7 @@
     width: 100%;
     height: 10vh;
     padding: 15px;
-    background-color: #f4f4f4;
+    background-color: $friendly-palette-neutral-50;
   }
 
   &__board-box {

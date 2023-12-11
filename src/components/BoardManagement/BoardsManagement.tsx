@@ -42,7 +42,7 @@ const BoardsManagement = () => {
       component="main"
       sx={{
         flexGrow: 0,
-        bgcolor: '#f4f4f4;',
+        bgcolor: 'var(--friendly-palette-neutral-50);',
         padding: '0 32px',
         marginLeft: 0,
         width: '100%',

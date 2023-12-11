@@ -90,9 +90,9 @@ const PageSubheader = () => {
             variant="solid"
             onClick={onBackward}
             sx={{
-              backgroundColor: '#ffa62b',
+              backgroundColor: 'var(--friendly-palette-accent-900)',
               '&:hover': {
-                backgroundColor: '#ffa62b'
+                backgroundColor: 'var(--friendly-palette-accent-900)'
               }
             }}
           >
@@ -114,9 +114,9 @@ const PageSubheader = () => {
             variant="solid"
             onClick={onForward}
             sx={{
-              backgroundColor: '#ffa62b',
+              backgroundColor: 'var(--friendly-palette-accent-900)',
               '&:hover': {
-                backgroundColor: '#ffa62b'
+                backgroundColor: 'var(--friendly-palette-accent-900)'
               }
             }}
           >

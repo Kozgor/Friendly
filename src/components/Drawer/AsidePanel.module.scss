@@ -1,9 +1,10 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .drawerHeader,
 .drawerSubHeader {
   @include flexbox(row, flex-start, center, nowrap);
-  color: #8ab4bc;
+  color: $friendly-palette-primary-400;
   padding-left: 24px;
   height: 56px;
 }
@@ -31,7 +32,7 @@
 .listItemIcon {
   margin-bottom: 5px;
   width: 32px;
-  color: white;
+  color: $friendly-palette-shades-50;
   align-self: center;
 }
 
