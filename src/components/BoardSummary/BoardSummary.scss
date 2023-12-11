@@ -1,5 +1,5 @@
-@import "../../theme/variables";
 @use "~ag-grid-community/styles" as ag;
+@import "../../theme/variables";
 @include ag.grid-styles;
 
 .boardSummaryContainer {
