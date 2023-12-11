@@ -1,4 +1,5 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .navbar {
   @include flexbox(row, space-between, center, nowrap);
@@ -9,7 +10,7 @@
 }
 
 .link {
-  color: gray;
+  color: $friendly-palette-neutral-500;
   text-decoration: none;
 }
 
@@ -21,23 +22,32 @@
 .theme,
 .timer,
 .participants {
-  // height: 30px;
   width: 400px;
   margin: 15px 0;
 
-  @include flexbox(row, space-between, center, nowrap);
+  @include flexbox(row, unset, center, nowrap);
+
+  .label {
+    width: 100px;
+
+    @include flexbox(row, flex-end, center, nowrap);
+  }
 
   .input {
     border: none;
-    border-bottom: 2px solid #a3a5a7;
-    background-color: #fff;
+    border-bottom: 2px solid $friendly-palette-neutral-50;
+    background-color: $friendly-palette-shades-50;
     box-shadow: none;
+    margin-left: 30px;
   }
 }
 
-.columnsBox {
-  padding-top: 5px;
+.participants {
+  width: 100%;
+  align-items: flex-start;
+}
 
+.columnsBox {
   .columns {
     margin-top: 10px;
 

@@ -123,7 +123,7 @@ const DefaultBoard = () => {
     const fetchUsers = async () => {
       try {
         const allUsers = await getAllUsers();
-        const allUserNames = allUsers?.map(user => user.email) || [];
+        const allUserNames = allUsers?.map(user => user.fullName) || [];
 
         setNames(allUserNames || []);
       } catch (error) {
@@ -166,7 +166,7 @@ const DefaultBoard = () => {
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map(setting => (
           <div key={setting.key} className={classes[setting.key]}>
-            <Typography htmlFor={setting.key} component='label'>{setting.label}</Typography>
+            <label className={classes.label} htmlFor={setting.key}>{setting.label}</label>
             {setting.key === 'timer' &&
               <Input
                 className={classes.input}
@@ -211,7 +211,7 @@ const DefaultBoard = () => {
                 data-testid={`boardSetting${setting.key}`}
                 sx={{
                   '--Input-radius': '0px',
-                  borderColor: '#A3A5A7',
+                  borderColor: 'var(--friendly-palette-neutral-500)',
                   '&::before': {
                     border: '1px solid var(--friendly-palette-primary-700)',
                     transform: 'scaleX(0)',
