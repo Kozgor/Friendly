@@ -38,7 +38,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
 
   const stepIconValues = {
     1: icons.map,
-    2: icons.backpack('#var(--friendly-palette-shades-50)'),
+    2: icons.backpack('var(--friendly-palette-shades-50)'),
     3: icons.pinMap,
     4: icons.bus('var(--friendly-palette-shades-50)'),
     5: null
