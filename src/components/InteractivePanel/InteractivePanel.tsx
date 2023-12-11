@@ -32,23 +32,23 @@ const InteractivePanel = (props : { childrenConfig: PropsChildren[] }) => {
 
   const setPanelChildren = () => {
     childrenConfig.forEach(child => {
-      const { element, position, label } = child;
+      const { element, label, path, position } = child;
 
       if (position === 'rigth') {
-        setContentRigtht(element);
+        setContentRigtht(element || path);
         setForwardLabel(label || '');
 
         return;
       }
 
       if (position === 'left') {
-        setContentLeft(element);
+        setContentLeft(element || path);
         setBackwardLabel(label || '');
 
         return;
       }
 
-      setContentCenter(element);
+      setContentCenter(element || path);
     });
   };
 

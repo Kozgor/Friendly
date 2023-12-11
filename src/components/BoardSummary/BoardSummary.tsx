@@ -22,12 +22,12 @@ import useBoardIdLocation from '../../utils/useBoardIdLocation';
 import './BoardSummary.scss';
 
 const BoardSummary = () => {
+  const { getBoardSummary } = boardSummaryAPI();
   const { getUserById } = userAPI();
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
   const URLBoardId= useBoardIdLocation();
   const navigate = useNavigate();
-  const { getBoardSummary } = boardSummaryAPI();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
   const [boardName, setBoardName] = useState<string>('');
@@ -45,16 +45,16 @@ const BoardSummary = () => {
     try {
       const boardSummary = await getBoardSummary(boardId);
 
-      if (boardSummary[0].columnId) {
+      setBoardName(boardSummary.boardName);
+
+      if (boardSummary.boardSummaryDataList.length) {
         enableDownloadSummaryCSV(true);
-        setRowData(boardSummary);
-        setBoardName(boardSummary[0].boardName);
+        setRowData(boardSummary.boardSummaryDataList);
 
         return;
       }
 
       enableDownloadSummaryCSV(false);
-      setBoardName(boardSummary[0].boardName);
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +76,7 @@ const BoardSummary = () => {
 
   const childrenConfig: PropsChildren[] = [
     {
-      element: `${pathConstants.BOARD}/${URLBoardId}`,
+      path: `${pathConstants.BOARD}/${URLBoardId}`,
       label: `${boardName} | Summary`,
       position: 'left'
     }, {
@@ -97,7 +97,7 @@ const BoardSummary = () => {
   }, [URLBoardId]);
 
   const getRowId = useMemo(() => (params: any) =>
-    params.data.cardAuthor + params.data.cardComment, []);
+    params.data.cardId, []);
 
   return (
     <div className='boardSummaryContainer'>

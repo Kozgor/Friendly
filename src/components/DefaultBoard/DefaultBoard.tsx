@@ -18,6 +18,7 @@ import { INITIAL_COLUMNS } from './DeafaultColumns';
 import { InputLabel } from '@mui/material';
 import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
+import { pathConstants } from '../../router/pathConstants';
 import { toast } from 'react-toastify';
 import { userAPI } from '../../api/UserAPI';
 
@@ -124,7 +125,7 @@ const DefaultBoard = () => {
 
   const childrenConfig: PropsChildren[] = [
     {
-      element: '/admin/new_board',
+      path: pathConstants.ADMIN_NEW_BOARD,
       position: 'left',
       label: panelTitles.defaultBoard
     },

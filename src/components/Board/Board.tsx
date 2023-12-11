@@ -156,11 +156,11 @@ const Board = () => {
 
   const childrenConfig: PropsChildren[] = [
     {
-      element: pathConstants.ADMIN,
+      path: pathConstants.ADMIN,
       label: boardSettings.name,
       position: 'left'
     }, {
-      element: `${pathConstants.BOARD_SUMMARY}/${URLBoardId}`,
+      path: `${pathConstants.BOARD_SUMMARY}/${URLBoardId}`,
       label: panelTitles.boardSummary,
       position: 'rigth'
     }
