@@ -106,7 +106,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
             color: 'primary.500',
             backgroundColor: 'transparent',
             backgroundImage: 'radial-gradient(currentColor 2px, transparent 2px)',
-            backgroundSize: '7px 7px',
+            backgroundSize: '7px',
             backgroundPosition: 'center left'
           }
         }}

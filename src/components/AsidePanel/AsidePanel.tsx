@@ -1,5 +1,6 @@
 import { Tab, TabList, Tabs } from '@mui/joy';
 import { useLocation, useNavigate } from 'react-router';
+import { map } from 'lodash';
 import styled from 'styled-components';
 import { useState } from 'react';
 
@@ -23,10 +24,8 @@ const AsidePanel = () => {
     const navigate = useNavigate();
     const URLPart = useLocation();
     const [activeTab, setActiveTab] = useState(URLPart.pathname.includes('default_board') ? adminTabList[0].path : URLPart.pathname);
-    const iconList = [
-        icons.bus(`var(--friendly-palette-${activeTab === adminTabList[0].path ? 'shades-50' : 'primary-400'})`),
-        icons.signSpot(`var(--friendly-palette-${activeTab === adminTabList[1].path ? 'shades-50' : 'primary-400'})`)
-    ];
+    const iconList = map(['bus', 'signSpot'], (value, index) =>
+        icons[value](`var(--friendly-palette-${activeTab === adminTabList[index].path ? 'shades-50' : 'primary-400'})`));
 
     const changeTabHandler = (event: any, value: any) => {
         navigate(value);

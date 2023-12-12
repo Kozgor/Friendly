@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import AsidePanel from '../Drawer/AsidePanel';
+import AsidePanel from '../AsidePanel/AsidePanel';
 import { BoardProvider } from '../../context/board/boardContext';
 import PageHeader from '../PageHeader/PageHeader';
 import { localStorageManager } from '../../utils/localStorageManager';
