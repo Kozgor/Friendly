@@ -48,10 +48,11 @@ const Board = () => {
   const { getBoardById } = boardAPI();
   const { getUserById } = userAPI();
   const localUser = getLocalUserData();
+  const isAdmin = localUser.role === 'admin';
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
-  const layoutHeight = '90vh';
+  const layoutHeight = isAdmin ? '80vh' : '90vh';
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -172,7 +173,7 @@ const Board = () => {
 
   return (
     <div className={classes['board-container']}>
-      <InteractivePanel childrenConfig={childrenConfig} />
+      {isAdmin && <InteractivePanel childrenConfig={childrenConfig} />}
       <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
         {isBoard &&
           boardSettings?.columns.map((column) => (

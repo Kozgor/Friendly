@@ -255,7 +255,7 @@ const FinalizedCard = (props: IColumnCard) => {
               }
             }}
           >
-            {icons.emojiFrown(`${isEmojiFrown ? '#var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
+            {icons.emojiFrown(`${isEmojiFrown ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
           </IconButton>
         </div>}
       </div>
