@@ -22,12 +22,12 @@ import classes from './MainLayout.module.scss';
 const MainLayout = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-  const { getLocalUserData, getLocalBoardDatails } = localStorageManager();
+  const { getLocalUserData } = localStorageManager();
   const user = getLocalUserData();
   const URLAdminPart = useAdminLocation();
   const URLPart = useLocation();
   const isAdmin = user.role === 'admin';
-  const layoutHeight = isAdmin ? '80vh': '90vh';
+  const layoutHeight = '90vh';
   const [adminTabListState, setAdminTabListState] = useState(adminTabList);
   const iconList = [
     icons.backpack(adminTabListState[0].active ? '#fff' : '#8ab4bc'),

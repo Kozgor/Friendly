@@ -1,5 +1,11 @@
 import ReactionsCellRenderer from './ReactionsCellRenderer';
 
+const reactionsFormatter = (params: any) => {
+  const { happy, unhappy } = params.value;
+
+  return String(`happy: ${happy}, unhappy: ${unhappy}`);
+};
+
 export const boardSummaryDefsList = [{
     headerName: 'COLUMN',
     field: 'columnId',
@@ -14,12 +20,12 @@ export const boardSummaryDefsList = [{
     headerName: 'COMMENT',
     field: 'cardComment', filter:
     'agTextColumnFilter',
-    maxWidth: 538,
     filterParams: {
       caseSensitive: true,
       defaultOption: 'startsWith'
     },
-    floatingFilter: true
+    floatingFilter: true,
+    flex: 2
   }, {
     headerName: 'TAGS',
     field: 'cardTags',
@@ -32,16 +38,17 @@ export const boardSummaryDefsList = [{
   }, {
     headerName: 'REACTIONS',
     field: 'cardReactions',
+    valueFormatter: reactionsFormatter,
     cellRenderer: ReactionsCellRenderer,
     maxWidth: 143
   }, {
     headerName: 'AUTHOR',
     field: 'cardAuthor',
     filter: 'agTextColumnFilter',
-    maxWidth: 168,
     filterParams: {
       caseSensitive: true,
       defaultOption: 'startsWith'
     },
-    floatingFilter: true
+    floatingFilter: true,
+    flex: 1
 }];

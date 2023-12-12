@@ -21,7 +21,6 @@ import {
   screen
 } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { ACTIVE_BOARD } from '../../mocks/board';
 import { BaseProps } from '../../interfaces/baseProps';
 import { BoardContext } from '../../context/board/boardContext';
 import { Provider } from 'react-redux';

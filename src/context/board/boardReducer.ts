@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { IAction } from '../../interfaces/action';
 import { IGlobalState } from '../../interfaces/globalState';
 
@@ -32,11 +33,6 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
       return {
         ...state,
         isTimerVisible: action.payload
-      };
-    case 'SET_BOARDNAME':
-      return {
-        ...state,
-        boardName: action.payload
       };
     case 'SET_BOARD_STATUS':
       return {

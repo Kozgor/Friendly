@@ -8,7 +8,6 @@ import App from './App';
 
 const saveLocalUserData = jest.fn();
 const removeLocalUserData = jest.fn();
-global.Request = jest.fn();
 
 jest.mock('./utils/localStorageManager', () => ({
   localStorageManager: () => ({

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 
 import Button from '@mui/joy/Button';
-import PageSubheader from '../PageSubheader/PageSubheader';
 import Timer from '../Timer/Timer';
 
 import { BoardContext } from '../../context/board/boardContext';
@@ -78,9 +77,6 @@ const PageHeader = () => {
           </Button>
         </div>
       </div>
-      {localUserData.role === 'admin' &&
-        <PageSubheader></PageSubheader>
-      }
     </header>
   );
 };
