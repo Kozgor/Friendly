@@ -171,7 +171,7 @@ const DefaultBoard = () => {
     >
       <div className={classes.navbar}>
         <InteractivePanel childrenConfig={childrenConfig}></InteractivePanel>
-        <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs">
+        <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs" sx={{ paddingLeft: '1.5rem' }}>
           <Link className={classes.link} to="/admin" data-testid="backLink">
             Back
           </Link>
