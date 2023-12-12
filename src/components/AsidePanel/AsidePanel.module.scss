@@ -1,0 +1,42 @@
+@import "../../mixins/flexbox";
+@import "../../theme/variables";
+
+.drawerHeader,
+.drawerSubHeader {
+  @include flexbox(row, flex-start, center, nowrap);
+  color: $friendly-palette-primary-400;
+  padding-left: 24px;
+  height: 56px;
+}
+
+.drawerHeader {
+  align-self: flex-start;
+  padding-left: 26px;
+}
+
+.drawerHeaderText {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 48px;
+  padding-left: 26px;
+  font-family: "Open Sans", sans-serif;
+  cursor: default;
+}
+
+.drawerSubHeaderText {
+  justify-self: center;
+  margin-left: 10px;
+  cursor: default;
+}
+
+.listItemIcon {
+  margin-bottom: 5px;
+  width: 32px;
+  color: $friendly-palette-shades-50;
+  align-self: center;
+}
+
+.listItemText {
+  width: 100%;
+  margin: 4px 0;
+}

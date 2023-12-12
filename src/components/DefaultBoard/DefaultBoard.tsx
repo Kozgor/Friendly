@@ -1,7 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
 
-import { BOARD_PUBLISH_MESSAGE, panelTitles } from '../../constants';
 import {
   Box,
   Breadcrumbs,
@@ -11,21 +10,22 @@ import {
 } from '@mui/joy';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { BOARD_PUBLISH_MESSAGE, panelTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
+import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { INITIAL_COLUMNS } from './DeafaultColumns';
-import { InputLabel } from '@mui/material';
-import { PropsChildren } from '../../interfaces/interactivePanelChildren';
-import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
-import { pathConstants } from '../../router/pathConstants';
-import { toast } from 'react-toastify';
-import { userAPI } from '../../api/UserAPI';
-
-import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
 import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import Participants from '../Participants/Participants';
+import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import Toastr from '../Toastr/Toastr';
+import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
+import { pathConstants } from '../../router/pathConstants';
+import { userAPI } from '../../api/UserAPI';
+
 import classes from './DefaultBoard.module.scss';
 
 const DefaultBoard = () => {
@@ -149,7 +149,7 @@ const DefaultBoard = () => {
     const fetchUsers = async () => {
       try {
         const allUsers = await getAllUsers();
-        const allUserNames = allUsers?.map(user => user.email) || [];
+        const allUserNames = allUsers?.map(user => user.fullName) || [];
 
         setNames(allUserNames || []);
       } catch (error) {
@@ -171,7 +171,7 @@ const DefaultBoard = () => {
     >
       <div className={classes.navbar}>
         <InteractivePanel childrenConfig={childrenConfig}></InteractivePanel>
-        <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs">
+        <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs" sx={{ paddingLeft: '1.5rem' }}>
           <Link className={classes.link} to="/admin" data-testid="backLink">
             Back
           </Link>
@@ -182,7 +182,7 @@ const DefaultBoard = () => {
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map(setting => (
           <div key={setting.key} className={classes[setting.key]}>
-            <InputLabel id={setting.key}>{setting.label}</InputLabel>
+            <label className={classes.label} htmlFor={setting.key}>{setting.label}</label>
             {setting.key === 'timer' &&
               <Input
                 className={classes.input}
@@ -197,6 +197,21 @@ const DefaultBoard = () => {
                 slotProps={{
                   input: { component: numericFormatAdapter }
                 }}
+                sx={{
+                  '--Input-radius': '0px',
+                  '&::before': {
+                    border: '1px solid var(--friendly-palette-primary-700)',
+                    transform: 'scaleX(0)',
+                    left: 0,
+                    right: 0,
+                    bottom: '-1px',
+                    top: 'unset',
+                    transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
+                  },
+                  '&:focus-within::before': {
+                    transform: 'scaleX(1)'
+                  }
+                }}
               />
             }
             {(setting.key === 'name') &&
@@ -210,6 +225,22 @@ const DefaultBoard = () => {
                 disabled={setting.disabled}
                 aria-label={`input for ${setting.label}`}
                 data-testid={`boardSetting${setting.key}`}
+                sx={{
+                  '--Input-radius': '0px',
+                  borderColor: 'var(--friendly-palette-neutral-500)',
+                  '&::before': {
+                    border: '1px solid var(--friendly-palette-primary-700)',
+                    transform: 'scaleX(0)',
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 'unset',
+                    transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
+                  },
+                  '&:focus-within::before': {
+                    transform: 'scaleX(1)'
+                  }
+                }}
               />
             }
             {setting.key === 'participants' &&

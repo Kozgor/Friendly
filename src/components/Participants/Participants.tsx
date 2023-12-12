@@ -1,36 +1,37 @@
 import {
+  Box,
   Checkbox,
-  FormControlLabel,
-  MenuItem
-} from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useEffect, useState } from 'react';
-import { IParticipants } from '../../interfaces/participants';
-import { SELECT_ALL } from '../../constants';
-import { isString } from 'lodash';
-import { localStorageManager } from '../../utils/localStorageManager';
+  Chip,
+  IconButton,
+  Option,
+  Typography
+} from '@mui/joy';
+import { CloseRounded, KeyboardArrowDown } from '@mui/icons-material';
+import Select, { selectClasses } from '@mui/joy/Select';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
+import { IParticipants } from '../../interfaces/participants';
+
 import classes from './Participants.module.scss';
 
 const Participants = (props: IParticipants) => {
   const { participants, collectParticipants } = props;
-  const { getLocalUserData } = localStorageManager();
-  const { email } = getLocalUserData();
-  const [personNames, setPersonNames] = useState<string[]>([email]);
-  const [selected, setSelected] = useState<string[]>([email]);
+  const [personNames, setPersonNames] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [checked, setChecked] = useState<boolean[]>([]);
+  const selectRef = useRef<HTMLButtonElement | null>(null);
 
-  const isChecked = personNames.length === participants.length;
-  const isIndeterminate = personNames.length !== participants.length && personNames.length > 0;
+  const isIndeterminate = useMemo(() => personNames.length !== participants.length && personNames.length > 0, [personNames, participants]);
+  const isChecked = useMemo(() => personNames.length === participants.length, [personNames, participants]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personNames>) => {
-    const { target: { value } } = event;
+  useEffect(() => {
+    setPersonNames([...participants]);
+    setSelected([...participants]);
+  }, [participants]);
 
-    setPersonNames(
-      isString(value) ? value.split(',') : value
-    );
+  const handleChange = (event: React.SyntheticEvent | null,
+    newValue: Array<string> | null) => {
+    setPersonNames(newValue || []);
     collectParticipants([...selected]);
   };
 
@@ -56,6 +57,15 @@ const Participants = (props: IParticipants) => {
     setSelected(updatesdList);
   };
 
+  const removeParticipate = (event: any) => {
+    event.stopPropagation();
+    const element = event.target.classList.contains('MuiSvgIcon-root') ? event.target : event.target.parentElement;
+    const filteredValues = personNames.filter(item => item !== element.id);
+    setSelected(filteredValues);
+    setPersonNames(filteredValues);
+    collectParticipants([...filteredValues]);
+  };
+
   useEffect(() => {
     if (!isChecked) {
       collectParticipants(selected);
@@ -65,44 +75,110 @@ const Participants = (props: IParticipants) => {
 
   return (
     <div className={classes.mainContainer}>
-      <FormControl className={classes.container}>
+      <section className={classes.container}>
+        <div className={classes.selectAll}>
+          <Checkbox
+            id='select-all-checkboxes'
+            data-testid='select-all-checkboxes'
+            checked={isChecked}
+            indeterminate={isIndeterminate}
+            onChange={handleSelectAll}
+            sx={{
+              marginRight: '10px'
+            }}
+          />
+          <label htmlFor="select-all-checkboxes">All Team</label>
+        </div>
         <Select
           multiple
           data-testid='select'
           value={personNames}
           onChange={handleChange}
-          renderValue={selected => selected.join(', ')}
-          className={classes.select}
-        >
-          <MenuItem>
-            <FormControlLabel
-              label={SELECT_ALL}
-              control={
-                <Checkbox
-                  data-testid='select-all-checkboxes'
-                  checked={isChecked}
-                  indeterminate={isIndeterminate}
-                  onChange={handleSelectAll}
-                />
+          ref={selectRef}
+          indicator={<KeyboardArrowDown />}
+          renderValue={selected => (
+            <Box sx={{ display: 'flex', gap: '0.55rem' }}>
+              {selected.map((selectedOption) => (
+                <Chip key={selectedOption.value} variant="soft" sx={{
+                  backgroundColor: 'var(--friendly-palette-primary-700)',
+                  color: 'var(--friendly-palette-shades-50)',
+                  '& .MuiChip-label': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    '& svg': {
+                      marginLeft: '5px'
+                    }
+                  }
+                }}>
+                  {selectedOption.value}
+                  <CloseRounded onClick={removeParticipate} id={selectedOption.value}
+                    sx={{
+                      color: 'var(--friendly-palette-primary-700)',
+                      backgroundColor: 'var(--friendly-palette-shades-50)',
+                      borderRadius: '50%'
+                    }} />
+                </Chip>
+              ))}
+            </Box>)}
+          sx={{
+            width: '100%',
+            height: '80px',
+            position: 'relative',
+            backgroundColor: 'var(--friendly-palette-shades-50)',
+            border: 'none',
+            '&:hover': {
+              backgroundColor: 'var(--friendly-palette-shades-50)'
+            },
+            [`& .${selectClasses.indicator}`]: {
+              transition: '0.2s',
+              marginTop: '7px',
+              [`&.${selectClasses.expanded}`]: {
+                transform: 'rotate(-180deg)'
               }
-            />
-          </MenuItem>
+            },
+            '& .MuiBox-root': {
+              flexFlow: 'row wrap'
+            }
+          }}
+          {...(personNames.length && {
+            endDecorator: (
+              <IconButton
+                size="sm"
+                variant="plain"
+                color="neutral"
+                onMouseDown={(event: any) => {
+                  event.stopPropagation();
+                }}
+                onClick={() => {
+                  setPersonNames([]);
+                }}
+                sx={{
+                  marginRight: '5px',
+                  position: 'absolute',
+                  top: '28px',
+                  right: '20px',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    color: 'var(--friendly-palette-neutral-500)'
+                  }
+                }}
+              >
+                <CloseRounded />
+              </IconButton>
+            )
+          })}
+        >
           {participants.map(name => (
-            <MenuItem
+            <Option
               key={name}
+              data-testid={`select-option-${name}`}
               value={name}
-            >
-              <Checkbox
-                data-testid={`select-checkbox-${name}`}
-                checked={personNames.indexOf(name) > -1}
-                onChange={() => handleSelect(name)}
-                />
-              <ListItemText primary={name} />
-            </MenuItem>
+              onClick={() => handleSelect(name)}
+            ><Typography level='body-md'>{name}</Typography></Option>
           ))}
         </Select>
-      </FormControl>
-    </div>
+      </section >
+    </div >
   );
 };
 

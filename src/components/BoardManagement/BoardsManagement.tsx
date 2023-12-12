@@ -1,16 +1,16 @@
-import { Box, CircularProgress } from '@mui/joy';
-import { THERE_ARE_NO_BOARDS_MESSAGE, panelTitles } from '../../constants';
+import { Box, CircularProgress, Divider } from '@mui/joy';
 import { useContext, useEffect, useState } from 'react';
+
+import { THERE_ARE_NO_BOARDS_MESSAGE, panelTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
-import { Divider } from '@mui/material';
+import BoardStepper from '../BoardStepper/BoardStepper';
 import { IBoardSettings } from '../../interfaces/boardSettings';
+import NoContent from '../NoContent/NoContent';
+import TitlePanel from '../TitlePanel/TitlePanel';
 import { boardAPI } from '../../api/BoardAPI';
 import { defaultTheme } from '../../theme/default';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
-import BoardStepper from '../BoardStepper/BoardStepper';
-import NoContent from '../NoContent/NoContent';
-import TitlePanel from '../TitlePanel/TitlePanel';
 import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
@@ -42,7 +42,9 @@ const BoardsManagement = () => {
       component="main"
       sx={{
         flexGrow: 0,
-        bgcolor: '#f4f4f4;',
+        bgcolor: 'var(--friendly-palette-neutral-50);',
+        padding: '0 32px',
+        marginLeft: 0,
         width: '100%',
         height: '90vh'
       }}

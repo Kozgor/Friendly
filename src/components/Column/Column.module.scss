@@ -1,4 +1,5 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .column {
   height: 100%;
@@ -8,7 +9,7 @@
   border-radius: 15px;
   margin: 0 15px;
   border: 1px solid #45505f;
-  background-color: #fff;
+  background-color: $friendly-palette-shades-50;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -23,7 +24,7 @@
     @include flexbox(column, center, center, nowrap);
 
     h2 {
-      color: #000;
+      color: $friendly-palette-shades-900;
       font-weight: 400;
       font-family: "Open Sans", sans-serif;
       cursor: context-menu;

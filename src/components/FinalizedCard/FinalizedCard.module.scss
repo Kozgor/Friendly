@@ -7,7 +7,7 @@
   @include flexbox(row, space-between, center, nowrap);
 
   .footerTags {
-    @include flexbox(row, start, center, nowrap);
+    @include flexbox(row, flex-start, center, nowrap);
     justify-self: flex-start;
 
     & div {
@@ -30,14 +30,14 @@
   position: relative;
   width: 100%;
 
-  @include flexbox(row, start, center, nowrap);
+  @include flexbox(row, flex-start, center, nowrap);
 
   .actionsButton:hover {
     background-color: unset;
   }
 
   .headerActionItems {
-    @include flexbox(row, end, center, nowrap);
+    @include flexbox(row, flex-end, center, nowrap);
   }
 
   .author {
@@ -50,7 +50,7 @@
 }
 
 .card {
-  @include flexbox(column, space-between, start, nowrap);
+  @include flexbox(column, space-between, flex-start, nowrap);
 
   .message {
     align-self: center;

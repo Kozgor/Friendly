@@ -1,8 +1,9 @@
 @use "~ag-grid-community/styles" as ag;
+@import "../../theme/variables";
 @include ag.grid-styles;
 
 .boardSummaryContainer {
-  background-color: #f4f4f4;
+  background-color: $friendly-palette-neutral-50;
   height: 90vh;
 
   #summary-grid {
@@ -12,20 +13,20 @@
   }
 
   .ag-theme-alpine {
-    --ag-header-background-color: white;
+    --ag-header-background-color: $friendly-palette-shades-50;
 
     .ag-root-wrapper {
       border: none;
     }
 
     .bi {
-      color: #191d23;
+      color: $friendly-palette-neutral-900;
     }
 
     .ag-cell-label-container {
       font-size: 14px;
       font-weight: 600;
-      color: #2d7887;
+      color: $friendly-palette-primary-800;
     }
 
     .ag-center-cols-container {

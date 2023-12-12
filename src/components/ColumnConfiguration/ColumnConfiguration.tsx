@@ -46,6 +46,11 @@ const ColumnConfiguration = (props: {
                 id: `${column?.columnId}`
               }
             }}
+            sx={{
+              border: 'none',
+              backgroundColor: 'var(--friendly-palette-shades-50)',
+              boxShadow: 'none'
+            }}
           />
         </h2>
         {/* <div className={classes['column__addIcon']}>
@@ -62,6 +67,11 @@ const ColumnConfiguration = (props: {
             }
           }}
           data-testid="subtitle"
+          sx={{
+            border: 'none',
+            backgroundColor: 'var(--friendly-palette-shades-50)',
+            boxShadow: 'none'
+          }}
         />
       </div>
     </div>

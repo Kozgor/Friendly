@@ -5,9 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.14.8",
-    "@mui/joy": "^5.0.0-beta.1",
-    "@mui/material": "^5.14.4",
+    "@mui/icons-material": "^5.14.19",
+    "@mui/joy": "^5.0.0-beta.16",
     "@reduxjs/toolkit": "^1.8.2",
     "@types/aria-query": "^5.0.1",
     "@types/node": "^16.18.39",

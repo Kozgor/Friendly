@@ -1,6 +1,7 @@
 export const adminTabList = [
-  { title: 'New Board', path: 'new_board', active: false },
-  { title: 'Boards Management', path: 'boards_management', active: false }
+  { title: 'New Board', path: '/admin/new_board', disabled: false },
+  { title: 'Boards Management', path: '/admin/boards_management', disabled: false }
+  // { title: 'Archive Boards', path: '/admin/archive_boards', disabled: true }
 ];
 
 export const boardStepperButtons = {
@@ -27,6 +28,7 @@ export const possibleBoardStatuses = {
   finalized: 'finalized',
   archived: 'archived'
 };
+
 export const STEPS_MAP = {
   first: 0,
   second: 1,

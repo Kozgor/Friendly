@@ -8,7 +8,7 @@ const ReactionsCellRenderer = (params: any) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-around',
-      color: '#2D7887',
+      color: 'var(--friendly-palette-primary-800)',
       fontWeight: '700',
       fontSize: '16px'
     }}>

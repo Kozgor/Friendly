@@ -1,9 +1,10 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .board-container {
   width: 100%;
   height: auto;
-  background-color: #f4f4f4;
+  background-color: $friendly-palette-neutral-50;
 
   @include flexbox(column, center, center, nowrap);
 }

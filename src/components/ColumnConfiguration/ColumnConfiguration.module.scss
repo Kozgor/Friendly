@@ -1,22 +1,23 @@
+@import "../../theme/variables";
+
 .column {
-  height: 380px;
+  height: 190px;
   width: 320px;
-  border: 2px solid gray;
+  border: 2px solid $friendly-palette-neutral-500;
   padding: 10px;
   position: relative;
   border-radius: 15px;
+  margin-bottom: 24px;
 
   &__header {
     text-align: center;
-    border: 1px solid gray;
+    border: 1px solid $friendly-palette-neutral-500;
     padding-top: 10px;
     border-radius: 10px;
   }
 
   &__subtitle {
     margin: 10px;
-    border: none !important; // find better solution
-    background-color: #fff !important;
   }
 
   &__addIcon {

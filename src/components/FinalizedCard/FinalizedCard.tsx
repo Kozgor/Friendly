@@ -90,7 +90,7 @@ const FinalizedCard = (props: IColumnCard) => {
         gap: 'unset',
         marginBottom: 2,
         minHeight: 210,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
         padding: '10px 24px 16px',
         boxShadow: '0px 8px 16px #0000001a'
@@ -233,29 +233,29 @@ const FinalizedCard = (props: IColumnCard) => {
               marginRight: '8px',
               minWidth: '26px',
               minHeight: '26px',
-              backgroundColor: isEmojiSmile ? '#ffa62b' : 'transparent',
-              borderColor: isEmojiSmile ? '#ffa62b' : '#a0abbb',
+              backgroundColor: isEmojiSmile ? 'var(--friendly-palette-accent-900)' : 'transparent',
+              borderColor: isEmojiSmile ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
               '&:hover': {
-                backgroundColor: isEmojiSmile ? '#ffa62b' : 'transparent'
+                backgroundColor: isEmojiSmile ? 'var(--friendly-palette-accent-900)' : 'transparent'
               }
             }}
           >
-            {icons.emojiSmile(`${isEmojiSmile ? '#ffffff' : '#484a4b'}`, '16px')}
+            {icons.emojiSmile(`${isEmojiSmile ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
           </IconButton>
           <IconButton
             variant='outlined'
             onClick={() => onClickReaction(false)}
             sx={{
-              backgroundColor: isEmojiFrown ? '#ffa62b' : 'transparent',
+              backgroundColor: isEmojiFrown ? 'var(--friendly-palette-accent-900)' : 'transparent',
               minWidth: '26px',
               minHeight: '26px',
-              borderColor: isEmojiFrown ? '#ffa62b' : '#a0abbb',
+              borderColor: isEmojiFrown ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
               '&:hover': {
-                backgroundColor: isEmojiFrown ? '#ffa62b' : 'transparent'
+                backgroundColor: isEmojiFrown ? 'var(--friendly-palette-accent-900)' : 'transparent'
               }
             }}
           >
-            {icons.emojiFrown(`${isEmojiFrown ? '#ffffff' : '#484a4b'}`, '16px')}
+            {icons.emojiFrown(`${isEmojiFrown ? '#var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
           </IconButton>
         </div>}
       </div>
