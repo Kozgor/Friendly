@@ -55,18 +55,21 @@ export const BoardProvider = ({ children }: BaseProps) => {
       payload: boardStatus
     });
   };
+
   const setBoardTime = (boardTime: number) => {
     dispatch({
       type: 'SET_BOARD_TIME',
       payload: boardTime
     });
   };
+
   const setTimerVisibility = (timerVisibility: boolean) => {
     dispatch({
       type: 'SET_TIMER_VISIBILITY',
       payload: timerVisibility
     });
   };
+
   const setFormSubmit = () => {
     dispatch({
       type: 'SUBMIT_FORM'

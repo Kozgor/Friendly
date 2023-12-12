@@ -6,7 +6,7 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router';
 
-import { NO_BOARDS_MESSAGE, possibleBoardStatuses } from '../../constants';
+import { NO_BOARDS_MESSAGE, panelTitles, possibleBoardStatuses } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { CircularProgress } from '@mui/joy';
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -15,6 +15,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { INITIAL_BOARD } from '../../mocks/board';
 
 import { ICurrentBoardDetails, IUserProfile } from '../../interfaces/user';
+import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import { boardAPI } from '../../api/BoardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
 import { isNull } from 'lodash';
@@ -22,10 +23,12 @@ import { localStorageManager } from '../../utils/localStorageManager';
 import { userAPI } from '../../api/UserAPI';
 
 import Column from '../Column/Column';
+import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import NoContent from '../NoContent/NoContent';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
 import classes from './Board.module.scss';
+import { pathConstants } from '../../router/pathConstants';
 
 const Board = () => {
   const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
@@ -48,7 +51,7 @@ const Board = () => {
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
-  const layoutHeight = localUser.role === 'admin' ? '80vh': '90vh';
+  const layoutHeight = '90vh';
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -151,12 +154,25 @@ const Board = () => {
     }
   };
 
+  const childrenConfig: PropsChildren[] = [
+    {
+      path: pathConstants.ADMIN,
+      label: boardSettings.name,
+      position: 'left'
+    }, {
+      path: `${pathConstants.BOARD_SUMMARY}/${URLBoardId}`,
+      label: panelTitles.boardSummary,
+      position: 'right'
+    }
+  ];
+
   useEffect(() => {
     fetchUserData();
   }, [boardStatus, URLBoardId]);
 
   return (
     <div className={classes['board-container']}>
+      <InteractivePanel childrenConfig={childrenConfig} />
       <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
         {isBoard &&
           boardSettings?.columns.map((column) => (

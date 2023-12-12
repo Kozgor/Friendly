@@ -13,7 +13,7 @@ const MainLayout = () => {
   const user = getLocalUserData();
   const URLAdminPart = useAdminLocation();
   const isAdmin = user.role === 'admin';
-  const layoutHeight = isAdmin ? '80vh' : '90vh';
+  const layoutHeight = '90vh';
 
   return (
     <div className={classes.mainLayoutContainer}>

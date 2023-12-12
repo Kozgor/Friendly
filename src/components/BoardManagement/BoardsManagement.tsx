@@ -1,16 +1,16 @@
+import { Box, CircularProgress, Divider } from '@mui/joy';
 import { useContext, useEffect, useState } from 'react';
 
-import { Box, CircularProgress, Divider } from '@mui/joy';
+import { THERE_ARE_NO_BOARDS_MESSAGE, panelTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
+import BoardStepper from '../BoardStepper/BoardStepper';
+import { IBoardSettings } from '../../interfaces/boardSettings';
+import NoContent from '../NoContent/NoContent';
+import TitlePanel from '../TitlePanel/TitlePanel';
 import { boardAPI } from '../../api/BoardAPI';
 import { defaultTheme } from '../../theme/default';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
-import { IBoardSettings } from '../../interfaces/boardSettings';
-import { THERE_ARE_NO_BOARDS_MESSAGE } from '../../constants';
-
-import BoardStepper from '../BoardStepper/BoardStepper';
-import NoContent from '../NoContent/NoContent';
 import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
@@ -46,9 +46,10 @@ const BoardsManagement = () => {
         padding: '0 32px',
         marginLeft: 0,
         width: '100%',
-        height: '80vh'
+        height: '90vh'
       }}
     >
+      <TitlePanel title={panelTitles.boardsManagement}></TitlePanel>
       <div className={classes.boardsManagementContainer}>
         {isLoading &&
           <div className={classes.boardsManagementLoader}>

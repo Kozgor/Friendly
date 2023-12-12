@@ -6,40 +6,55 @@ import {
 } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { IUserProfile } from '../../interfaces/user';
+import { PropsChildren } from '../../interfaces/interactivePanelChildren';
+import { RowDataItem } from '../../interfaces/boardSummaryRowData';
 import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
 import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
+import { pathConstants } from '../../router/pathConstants';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
+import DownloadBoardSummaryCSVButton from './DownloadCSVButton';
+import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
 import './BoardSummary.scss';
 
 const BoardSummary = () => {
-  type RowDataItem = {
-    columnId: string | undefined;
-    cardComment: string;
-    cardTags: string;
-    cardReactions: any;
-    cardAuthor: string;
-  };
-
+  const { getBoardSummary } = boardSummaryAPI();
   const { getUserById } = userAPI();
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
   const URLBoardId= useBoardIdLocation();
   const navigate = useNavigate();
-  const { getBoardSummary } = boardSummaryAPI();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
-  const [columnDefs, setColumnDefs] = useState(boardSummaryDefsList);
+  const [boardName, setBoardName] = useState<string>('');
+  const [isSummaryDownload, enableDownloadSummaryCSV] = useState<boolean>(false);
+
+  const downloadCSV = () => {
+    if (gridRef) {
+      gridRef.current?.api.exportDataAsCsv({
+        suppressQuotes: true
+      });
+    }
+  };
 
   const fetchBoardSummary = async (boardId: string) => {
     try {
-      const boardSummary= await getBoardSummary(boardId);
+      const boardSummary = await getBoardSummary(boardId);
 
-      return boardSummary;
+      setBoardName(boardSummary.boardName);
+
+      if (boardSummary.boardSummaryDataList.length) {
+        enableDownloadSummaryCSV(true);
+        setRowData(boardSummary.boardSummaryDataList);
+
+        return;
+      }
+
+      enableDownloadSummaryCSV(false);
     } catch (error) {
       console.log(error);
     }
@@ -59,29 +74,40 @@ const BoardSummary = () => {
     }
   };
 
+  const childrenConfig: PropsChildren[] = [
+    {
+      path: `${pathConstants.BOARD}/${URLBoardId}`,
+      label: `${boardName} | Summary`,
+      position: 'left'
+    }, {
+      element: <DownloadBoardSummaryCSVButton
+        isDisabled={!isSummaryDownload}
+        onClick={downloadCSV}
+      />,
+      position: 'right'
+    }
+  ];
+
   useEffect(() => {
     if (!URLBoardId.length) {
       getUserData();
     }
 
-    fetchBoardSummary(URLBoardId).then(rowData => {
-      if (rowData) {
-        setRowData(rowData);
-      }
-    });
+    fetchBoardSummary(URLBoardId);
   }, [URLBoardId]);
 
   const getRowId = useMemo(() => (params: any) =>
-    params.data.cardAuthor + params.data.cardComment, []);
+    params.data.cardId, []);
 
   return (
     <div className='boardSummaryContainer'>
+      <InteractivePanel childrenConfig={childrenConfig} />
       <div id='summary-grid' className='ag-theme-alpine'>
         <AgGridReact
           animateRows={true}
           ref={gridRef}
           rowData={rowData}
-          columnDefs={columnDefs}
+          columnDefs={boardSummaryDefsList}
           rowSelection={'multiple'}
           getRowId={getRowId}
           defaultColDef={{ flex: 1 }}

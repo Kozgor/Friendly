@@ -15,6 +15,13 @@ export const navigationBarTitles = {
   navigatingListHeader: 'MY BOARDS'
 };
 
+export const panelTitles = {
+  newBoard: 'New Board',
+  defaultBoard: 'Default Board',
+  boardsManagement: 'Boards Management',
+  boardSummary: 'Summary'
+};
+
 export const possibleBoardStatuses = {
   created: 'created',
   active: 'active',
@@ -38,6 +45,7 @@ export const boardStepperLabels = [
 ];
 
 export const BOARD_PUBLISH_MESSAGE = 'board was successfully published. Now your team can play with it';
+export const DOWNLOAD_CSV_REPORT = 'Download CSV Report';
 export const NO_BOARDS_MESSAGE = 'No boards found';
 export const SELECT_ALL = 'Select all';
 export const THERE_ARE_NO_BOARDS_MESSAGE = 'There are no boards';

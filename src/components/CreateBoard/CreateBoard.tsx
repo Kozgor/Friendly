@@ -1,6 +1,8 @@
+import { Box, Typography } from '@mui/joy';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { Box, Typography } from '@mui/joy';
+import TitlePanel from '../TitlePanel/TitlePanel';
+import { panelTitles } from '../../constants';
 
 import classes from './CreateBoard.module.scss';
 
@@ -9,9 +11,11 @@ const CreateBoard = () => {
   const openDefaultBoard = () => {
     navigate('/admin/new_board/default_board');
   };
+  const title = panelTitles.newBoard;
 
   return (
     <div className={classes.createBoardContainer}>
+      <TitlePanel title={title}></TitlePanel>
       <Box
         className={classes.createBoardBox}
         component="main"

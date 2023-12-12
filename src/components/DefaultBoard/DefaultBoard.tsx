@@ -10,18 +10,22 @@ import {
 } from '@mui/joy';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { BOARD_PUBLISH_MESSAGE } from '../../constants';
+import { toast } from 'react-toastify';
+
+import { BOARD_PUBLISH_MESSAGE, panelTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
+import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { INITIAL_COLUMNS } from './DeafaultColumns';
+import InteractivePanel from '../InteractivePanel/InteractivePanel';
+import Participants from '../Participants/Participants';
+import { PropsChildren } from '../../interfaces/interactivePanelChildren';
+import Toastr from '../Toastr/Toastr';
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
-import { toast } from 'react-toastify';
+import { pathConstants } from '../../router/pathConstants';
 import { userAPI } from '../../api/UserAPI';
 
-import ColumnConfiguration from '../ColumnConfiguration/ColumnConfiguration';
-import Participants from '../Participants/Participants';
-import Toastr from '../Toastr/Toastr';
 import classes from './DefaultBoard.module.scss';
 
 const DefaultBoard = () => {
@@ -119,6 +123,28 @@ const DefaultBoard = () => {
       });
   };
 
+  const childrenConfig: PropsChildren[] = [
+    {
+      path: pathConstants.ADMIN_NEW_BOARD,
+      position: 'left',
+      label: panelTitles.defaultBoard
+    },
+    {
+      element: <>
+        <Button
+          color="neutral"
+          variant="solid"
+          type="button"
+          aria-label="solid neutral button for publishing the board"
+          onClick={publishSettings}
+          data-testid="publishButton"
+        >
+          Publish
+        </Button></>,
+      position: 'right'
+    }
+  ];
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -140,28 +166,18 @@ const DefaultBoard = () => {
       sx={{
         flexGrow: 1,
         bgcolor: 'background.default',
-        padding: 3,
-        paddingRight: 5,
         marginLeft: 0
       }}
     >
       <div className={classes.navbar}>
+        <InteractivePanel childrenConfig={childrenConfig}></InteractivePanel>
         <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs">
           <Link className={classes.link} to="/admin" data-testid="backLink">
             Back
           </Link>
           <Typography component="h3" data-testid="defaultTitle">Default Board</Typography>
         </Breadcrumbs>
-        <Button
-          color="neutral"
-          variant="solid"
-          type="button"
-          aria-label="solid neutral button for publishing the board"
-          onClick={publishSettings}
-          data-testid="publishButton"
-        >
-          Publish
-        </Button>
+
       </div>
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map(setting => (

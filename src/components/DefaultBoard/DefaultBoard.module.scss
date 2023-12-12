@@ -2,7 +2,7 @@
 @import "../../theme/variables";
 
 .navbar {
-  @include flexbox(row, space-between, center, nowrap);
+  @include flexbox(column, center, space-between, nowrap);
 
   h3 {
     cursor: context-menu;
