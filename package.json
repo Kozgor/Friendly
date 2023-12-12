@@ -2,12 +2,10 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "peerDependencies": {
-    "@mui/material": "^5.14.4"
-  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.4",
     "@mui/icons-material": "^5.14.19",
     "@mui/joy": "^5.0.0-beta.16",
     "@reduxjs/toolkit": "^1.8.2",
