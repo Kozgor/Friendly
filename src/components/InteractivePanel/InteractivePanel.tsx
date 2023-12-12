@@ -34,7 +34,7 @@ const InteractivePanel = (props : { childrenConfig: PropsChildren[] }) => {
     childrenConfig.forEach(child => {
       const { element, label, path, position } = child;
 
-      if (position === 'rigth') {
+      if (position === 'right') {
         setContentRigtht(element || path);
         setForwardLabel(label || '');
 

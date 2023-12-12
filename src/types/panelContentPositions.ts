@@ -1,1 +1,1 @@
-export type PanelContentPositions = 'left' | 'center' | 'rigth';
+export type PanelContentPositions = 'left' | 'center' | 'right';

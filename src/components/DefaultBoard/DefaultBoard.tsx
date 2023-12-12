@@ -141,7 +141,7 @@ const DefaultBoard = () => {
         >
           Publish
         </Button></>,
-      position: 'rigth'
+      position: 'right'
     }
   ];
 

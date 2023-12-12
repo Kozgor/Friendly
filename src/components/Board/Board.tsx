@@ -162,7 +162,7 @@ const Board = () => {
     }, {
       path: `${pathConstants.BOARD_SUMMARY}/${URLBoardId}`,
       label: panelTitles.boardSummary,
-      position: 'rigth'
+      position: 'right'
     }
   ];
 

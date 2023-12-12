@@ -84,7 +84,7 @@ const BoardSummary = () => {
         isDisabled={!isSummaryDownload}
         onClick={downloadCSV}
       />,
-      position: 'rigth'
+      position: 'right'
     }
   ];
 
