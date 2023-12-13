@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+/* eslint-disable max-params */
 import axios from 'axios';
 
 import { find, isEmpty } from 'lodash';
@@ -7,20 +9,21 @@ import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
+import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { sortByDateStartOld } from '../../utils/sortByDate';
 
-import Button from '@mui/joy/Button';
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import NewCard from '../NewCard/NewCard';
-
+import NewCommentInput from '../NewCommentInput/NewCommentInput';
 import classes from './Column.module.scss';
+import moment from 'moment';
 
 const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
   const localUser= getLocalUserData();
-  const initialCard = {
+  const initialCard: IColumnCard = {
     _id: '',
     columnId: '',
     createdAt: '',
@@ -32,11 +35,12 @@ const Column = (props: IColumn) => {
     isEditable: true
   };
 
-  const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
+  const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState(() => sortByDateStartOld(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const isActiveBoard = boardStatus === 'active';
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
@@ -44,12 +48,6 @@ const Column = (props: IColumn) => {
       setFinalizedCards(sortByDateStartOld(columnCards));
     }
   }, [columnCards]);
-
-  const onCreateCard = () => {
-    setIsNewCard(true);
-    setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
-    setIsButtonDisabled(true);
-  };
 
   const onSaveHandler = (
     cards: IColumnCard[],
@@ -181,6 +179,26 @@ const Column = (props: IColumn) => {
     return isHappyUser;
   };
 
+  const sendNewComment = (
+    cardAuthor: string,
+    cardComment: string,
+    cardTags: CardTag[]
+  ) => {
+    const createdAt = moment().toISOString();
+    const newCard: IColumnCard = {
+      _id: initialCard._id,
+      columnId,
+      createdAt: createdAt,
+      cardComment,
+      cardAuthorId: localUser._id,
+      cardAuthor,
+      cardAuthorAvatar: localUser.avatar || 'Incognito',
+      cardTags,
+      isEditable: isAddButtonDisabled
+    };
+    handleAction('save', newCard);
+  };
+
   return (
     <section className={classes.column}>
       <div className={classes['column__header']}>
@@ -189,24 +207,10 @@ const Column = (props: IColumn) => {
         </h2>
         <p>{columnSubtitle}</p>
       </div>
-      {(boardStatus === 'active' && !isTimerFinalized) &&
-        <div className={classes['column__adding']}>
-          <Button
-            data-testid='addNewCommentButton'
-            disabled={isAddButtonDisabled}
-            role='button'
-            aria-label='Add new comment'
-            onClick={onCreateCard}
-          >
-            <i className='bi bi-plus'></i>
-            <h5>Add comment</h5>
-          </Button>
-        </div>
-      }
-      <div id='comments' className={classes['column__comments']}>
+      <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>
         {finalizedCards?.map(
           (card) =>
-            (isNewCard && card.isEditable && (
+            (card.isEditable && (
               <NewCard
                 key={editableCard._id}
                 _id={editableCard._id}
@@ -241,6 +245,17 @@ const Column = (props: IColumn) => {
             )
         )}
       </div>
+      {isActiveBoard &&
+        <div className={classes.cardCommentContainer}>
+          <NewCommentInput
+            userName={localUser.fullName}
+            userAvatar={localUser.avatar}
+            cardTags={possibleCardTags}
+            isDisabled={isAddButtonDisabled}
+            sendNewComment={sendNewComment}
+          />
+        </div>
+      }
     </section>
   );
 };

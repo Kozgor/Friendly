@@ -2,23 +2,22 @@
 @import "../../theme/variables";
 
 .column {
+  @include flexbox(row, center, flex-start, wrap);
   height: 100%;
   width: 430px;
   min-width: 430px;
-  padding: 30px 28px;
-  border-radius: 15px;
+  padding: 30px 28px 0;
   margin: 0 15px;
+  border-radius: 15px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   border: 1px solid #45505f;
+  border-bottom: none;
   background-color: $friendly-palette-shades-50;
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  -ms-overflow-style: none;
 
   &__header {
     padding: 0;
     width: 224px;
-    margin: auto;
     margin-bottom: 10px;
 
     @include flexbox(column, center, center, nowrap);
@@ -47,7 +46,41 @@
   }
 
   &__comments {
-    @include flexbox(column, unset, unset, nowrap);
+    &__min {
+      @include flexbox(column, unset, unset, nowrap);
+      width: 100%;
+      height: 59%;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+      -ms-overflow-style: none;
+    }
+
+    &__max {
+      @include flexbox(column, unset, unset, nowrap);
+      width: 100%;
+      height: calc(100% - 48px);
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+      -ms-overflow-style: none;
+    }
+  }
+
+  &__comments__min::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &__comments__max::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &__comments__min::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &__comments__max::-webkit-scrollbar {
+    width: 6px;
   }
 
   &__adding {
@@ -59,12 +92,11 @@
       margin-bottom: 0;
     }
   }
-}
 
-.column::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-
-.column::-webkit-scrollbar {
-  width: 6px;
+  .cardCommentContainer {
+    display: block;
+    align-self: flex-end;
+    width: 100%;
+    height: 121px;
+  }
 }

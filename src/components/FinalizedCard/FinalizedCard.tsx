@@ -88,6 +88,7 @@ const FinalizedCard = (props: IColumnCard) => {
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
+        width: '100%',
         marginBottom: 2,
         minHeight: 210,
         backgroundColor: 'var(--friendly-palette-shades-50)',
