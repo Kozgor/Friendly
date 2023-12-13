@@ -57,7 +57,7 @@ const NewCard = (props: IColumnCard) => {
   };
 
   const onSaveCard = () => {
-    const onSaveCreatedAt = !createdAt ? moment().toISOString(): createdAt;
+    const onSaveCreatedAt = !createdAt ? moment().toISOString() : createdAt;
     const onSaveCardId = !_id ? '' : _id;
 
     const newCard: IColumnCard = {
@@ -79,26 +79,12 @@ const NewCard = (props: IColumnCard) => {
       orientation='vertical'
       variant='outlined'
       sx={{
-        marginBottom: 2
+        marginBottom: 4
       }}
     >
       <div className={classes['card__header']}>
-        {cardTagsState && (
-          <div className={classes['card__header__tags']}>
-            <Autocomplete
-              data-testid='tags-default'
-              multiple
-              placeholder='Tags'
-              options={possibleCardTags}
-              getOptionLabel={(option) => option}
-              onChange={(event, newValue) => setCardTags([...newValue])}
-            />
-          </div>
-        )}
-      </div>
-      <div className={classes['card__body']}>
-        <div className={classes['card__body__user-section']}>
-          <div className={classes['card__body__user-section--avatar']}>
+        <div className={classes['card__header__user-section']}>
+          <div className={classes['card__header__user-section--avatar']}>
             <CardAvatar
               cardAuthor={cardAuthorState}
               cardAuthorAvatar={cardAuthorAvatarState}
@@ -106,8 +92,8 @@ const NewCard = (props: IColumnCard) => {
             ></CardAvatar>
           </div>
         </div>
-        <div className={classes['card__body__message-section']}>
-          <div className={classes['card__body__message-section--textarea']}>
+        <div className={classes['card__header__message-section']}>
+          <div className={classes['card__header__message-section--textarea']}>
             <Textarea
               data-testid='newCardTextarea'
               minRows={3}
@@ -119,9 +105,30 @@ const NewCard = (props: IColumnCard) => {
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                 setCardComment(event.target.value)
               }
+              sx={{
+                backgroundColor: 'var(--friendly-palette-shades-50)'
+              }}
             />
           </div>
         </div>
+      </div>
+      <div className={classes['card__body']}>
+        {cardTagsState && (
+          <div className={classes['card__body__tags']}>
+            <Autocomplete
+              data-testid='tags-default'
+              multiple
+              placeholder='Tags'
+              options={possibleCardTags}
+              getOptionLabel={(option) => option}
+              value={cardTagsState}
+              onChange={(event, newValue) => setCardTags([...newValue])}
+              sx={{
+                backgroundColor: 'var(--friendly-palette-shades-50)'
+              }}
+            />
+          </div>
+        )}
       </div>
       <div className={classes['card__footer']}>
         <div className={classes['card__footer--cancel-button']}>
