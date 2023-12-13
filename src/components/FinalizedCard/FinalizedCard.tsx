@@ -97,7 +97,12 @@ const FinalizedCard = (props: IColumnCard) => {
         backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
         padding: '10px 24px 16px',
-        boxShadow: '0px 8px 16px #0000001a'
+        boxShadow: '0px 8px 16px #0000001a',
+        userSelect: 'none', /* standard syntax */
+        'WebkitUserSelect': 'none', /* webkit (safari, chrome) browsers */
+        'MozUserSelect': 'none', /* mozilla browsers */
+        'KhtmlUserSelect': 'none', /* webkit (konqueror) browsers */
+        'MsUserSelect': 'none' /* IE10+ */
       }}
       onDoubleClick={editCard}
     >
