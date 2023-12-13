@@ -6,10 +6,10 @@ const CardChip = (props: { tag: string }) => {
   const { tag } = props;
 
   const setChipColor = {
-    [possibleCardTags[0]] : '#f5cd7780',
-    [possibleCardTags[1]] : '#a3a4a5',
-    [possibleCardTags[2]] : '#ffd7bf',
-    [possibleCardTags[3]] : 'var(--friendly-palette-primary-400)'
+    [possibleCardTags[0]] : 'var(--friendly-palette-accent-100)',
+    [possibleCardTags[1]] : 'var(--friendly-palette-neutral-100)',
+    [possibleCardTags[2]] : 'var(--friendly-palette-secondary-200)',
+    [possibleCardTags[3]] : 'var(--friendly-palette-primary-100)'
   };
 
   const setChipSize = {

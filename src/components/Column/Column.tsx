@@ -19,7 +19,7 @@ const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
-  const localUser= getLocalUserData();
+  const localUser = getLocalUserData();
   const initialCard = {
     _id: '',
     columnId: '',
@@ -187,7 +187,7 @@ const Column = (props: IColumn) => {
         <h2>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
           <span className={classes['column__header__couner']}>({columnCards.length})</span>}
         </h2>
-        <p>{columnSubtitle}</p>
+        <p className={classes['column__header__subtitle']}>{columnSubtitle}</p>
       </div>
       {(boardStatus === 'active' && !isTimerFinalized) &&
         <div className={classes['column__adding']}>

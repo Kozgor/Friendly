@@ -137,6 +137,7 @@ const Participants = (props: IParticipants) => {
               }
             },
             '& .MuiBox-root': {
+              width: '95%',
               flexFlow: 'row wrap'
             }
           }}

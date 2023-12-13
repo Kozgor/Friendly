@@ -30,8 +30,8 @@
       cursor: context-menu;
     }
 
-    p {
-      color: #666;
+    &__subtitle {
+      color: $friendly-palette-neutral-500;
       margin-bottom: 0;
       text-align: center;
       font-weight: 300;
@@ -52,7 +52,7 @@
 
   &__adding {
     @include flexbox(row, center, center, nowrap);
-    margin-bottom: 15px;
+    margin-bottom: 40px;
 
     h5 {
       margin-left: 10px;
