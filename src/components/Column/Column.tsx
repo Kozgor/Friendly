@@ -205,7 +205,7 @@ const Column = (props: IColumn) => {
         <h2>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
           <span className={classes['column__header__couner']}>({columnCards.length})</span>}
         </h2>
-        <p>{columnSubtitle}</p>
+        <p className={classes['column__header__subtitle']}>{columnSubtitle}</p>
       </div>
       <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>
         {finalizedCards?.map(
