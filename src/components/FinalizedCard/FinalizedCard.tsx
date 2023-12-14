@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable complexity */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   Button,
@@ -37,21 +37,21 @@ const FinalizedCard = (props: IColumnCard) => {
     isEditable,
     isDisabled
   } = props;
-  const [isShownAllText, setIsShownAllText] = useState(cardComment.length <= 30);
-  const [displayShowButton] = useState(cardComment.length > 120);
+
+  const textRef = useRef<HTMLParagraphElement | null>(null);
+  const [isShownAllText, setIsShownAllText] = useState(false);
+  const [displayShowButton, setDisplayShowButton] = useState(false);
   const [reactionState, setReactionState] = useState(cardReactions);
   const { updateColumnCardReaction } = columnAPI();
   const isShownAllTags = cardTags && cardTags?.length < 3;
   const isEmojiSmile = reactionState && !isNull(reactionState);
   const isEmojiFrown = !reactionState && !isNull(reactionState);
 
-  const showMoreText = () => {
-    setIsShownAllText(true);
-  };
-
-  const showLessText = () => {
-    setIsShownAllText(false);
-  };
+  useEffect(() => {
+    if (textRef.current) {
+      setDisplayShowButton(textRef.current.clientHeight! !== (textRef.current.scrollHeight! - 2)!);
+    }
+  }, []);
 
   const onClickReaction = (isHappyReaction: boolean) => {
     setReactionState(isHappyReaction);
@@ -91,12 +91,12 @@ const FinalizedCard = (props: IColumnCard) => {
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
-        marginBottom: 4,
+        marginBottom: '30px',
         minHeight: isShownAllText ? 140 : 'unset',
         height: isShownAllText ? 'unset' : 140,
         backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
-        padding: '10px 24px 16px',
+        padding: '10px',
         boxShadow: '0px 8px 16px #0000001a',
         userSelect: 'none', /* standard syntax */
         'WebkitUserSelect': 'none', /* webkit (safari, chrome) browsers */
@@ -115,9 +115,9 @@ const FinalizedCard = (props: IColumnCard) => {
       <div id='message' className={classes.message}>
         <Typography component='p' sx={{
           display: isShownAllText ? 'block' : '-webkit-box',
-          'WebkitLineClamp': cardTags?.length ? '2' : '3',
+          'WebkitLineClamp': '3',
           lineHeight: 1
-        }}>{cardComment}</Typography>
+        }} ref={textRef}>{cardComment}</Typography>
       </div >
       {
         displayShowButton && !isShownAllText && (
@@ -125,7 +125,7 @@ const FinalizedCard = (props: IColumnCard) => {
             data-testid='showMoreButton'
             variant='plain'
             className={classes.showButton}
-            onClick={showMoreText}
+            onClick={() => setIsShownAllText(true)}
             sx={{
               color: 'var(--friendly-palette-shades-900)',
               fontSize: 10,
@@ -149,7 +149,7 @@ const FinalizedCard = (props: IColumnCard) => {
             data-testid='showLessButton'
             variant='plain'
             className={classes.showButton}
-            onClick={showLessText}
+            onClick={() => setIsShownAllText(false)}
             sx={{
               color: 'var(--friendly-palette-shades-900)',
               fontSize: 10,
@@ -208,7 +208,7 @@ const FinalizedCard = (props: IColumnCard) => {
                         }
                       }}
                     >
-                      {`+${cardTags?.length - 2}`}
+                      <b>{`+${cardTags?.length - 2}`}</b>
                     </MenuButton>
                     <Menu>
                       {cardTags.slice(2).map((tag) => (
