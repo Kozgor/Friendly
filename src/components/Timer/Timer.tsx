@@ -11,7 +11,7 @@ import classes from './Timer.module.scss';
 const Timer = () => {
   const initialTimerState = {
     isTimerStarted: false,
-    isAddingDisabled: false,
+    isTimerPaused: false,
     isTimerCompleted: false,
     isTimerChanged: false
   };
@@ -27,7 +27,7 @@ const Timer = () => {
     countdownRef.current?.start();
     setTimer((prevState) => ({
       ...prevState,
-      isAddingDisabled: false
+      isTimerPaused: false
     }));
     enableAdding();
   };
@@ -36,7 +36,7 @@ const Timer = () => {
     countdownRef.current?.pause();
     setTimer((prevState) => ({
       ...prevState,
-      isAddingDisabled: true
+      isTimerPaused: true
     }));
     disableAdding();
   };
@@ -45,7 +45,7 @@ const Timer = () => {
     countdownRef.current?.stop();
     setTimer((prevState) => ({
       ...prevState,
-      isAddingDisabled: true
+      isTimerPaused: true
     }));
     disableAdding();
   };
@@ -108,7 +108,7 @@ const Timer = () => {
           aria-description="timer section"
           data-testid="timer"
         >
-          {!countdownTimer.isAddingDisabled && (
+          {!countdownTimer.isTimerPaused && (
             <button
               className={classes.timer__pause}
               onClick={pauseTimer}
@@ -119,7 +119,7 @@ const Timer = () => {
             </button>
           )}
 
-          {countdownTimer.isAddingDisabled && (
+          {countdownTimer.isTimerPaused && (
             <button
               className={classes.timer__start}
               onClick={playTimer}
