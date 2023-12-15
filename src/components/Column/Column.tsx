@@ -22,7 +22,7 @@ const Column = (props: IColumn) => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
-  const localUser= getLocalUserData();
+  const localUser = getLocalUserData();
   const initialCard: IColumnCard = {
     _id: '',
     columnId: '',

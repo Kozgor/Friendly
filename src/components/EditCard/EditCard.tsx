@@ -40,15 +40,11 @@ const NewCard = (props: IColumnCard) => {
   const localUser = getLocalUserData();
 
   const onHandleSwitchToggle = () => {
-    if (cardAuthorState === 'Incognito') {
-      setCardAuthor(localUser.fullName);
-      setCardAuthorAvatar(localUser.avatar || '');
+    const newCardAuthor = cardAuthorState === 'Incognito' ? localUser.fullName : 'Incognito';
+    const newCardAuthorAvatar = cardAuthorState === 'Incognito' ? localUser.avatar || '' : 'Incognito';
 
-      return;
-    }
-
-    setCardAuthor('Incognito');
-    setCardAuthorAvatar('Incognito');
+    setCardAuthor(newCardAuthor);
+    setCardAuthorAvatar(newCardAuthorAvatar);
   };
 
   const onCancelCard = () => {
