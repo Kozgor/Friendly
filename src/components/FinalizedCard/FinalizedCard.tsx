@@ -38,7 +38,7 @@ const FinalizedCard = (props: IColumnCard) => {
     isDisabled
   } = props;
 
-  const textRef = useRef<HTMLParagraphElement | null>(null);
+  const cardCommentRef = useRef<HTMLParagraphElement | null>(null);
   const [isShownAllText, setIsShownAllText] = useState(false);
   const [displayShowButton, setDisplayShowButton] = useState(false);
   const [reactionState, setReactionState] = useState(cardReactions);
@@ -48,8 +48,8 @@ const FinalizedCard = (props: IColumnCard) => {
   const isEmojiFrown = !reactionState && !isNull(reactionState);
 
   useEffect(() => {
-    if (textRef.current) {
-      setDisplayShowButton(textRef.current.clientHeight! !== (textRef.current.scrollHeight! - 2)!);
+    if (cardCommentRef.current) {
+      setDisplayShowButton(cardCommentRef.current.clientHeight! !== (cardCommentRef.current.scrollHeight! - 2)!);
     }
   }, []);
 
@@ -117,7 +117,7 @@ const FinalizedCard = (props: IColumnCard) => {
           display: isShownAllText ? 'block' : '-webkit-box',
           'WebkitLineClamp': '3',
           lineHeight: 1
-        }} ref={textRef}>{cardComment}</Typography>
+        }} ref={cardCommentRef}>{cardComment}</Typography>
       </div >
       {
         displayShowButton && !isShownAllText && (
