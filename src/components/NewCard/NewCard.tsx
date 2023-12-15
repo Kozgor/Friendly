@@ -79,7 +79,7 @@ const NewCard = (props: IColumnCard) => {
       orientation='vertical'
       variant='outlined'
       sx={{
-        marginBottom: 4,
+        marginBottom: '30px',
         userSelect: 'none', /* standard syntax */
         'WebkitUserSelect': 'none', /* webkit (safari, chrome) browsers */
         'MozUserSelect': 'none', /* mozilla browsers */
