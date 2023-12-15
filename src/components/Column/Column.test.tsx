@@ -9,6 +9,7 @@ describe('Column component', () => {
   let component: RenderResult;
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const startTimer = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
   const setBoardTime = jest.fn();
@@ -24,11 +25,13 @@ describe('Column component', () => {
           boardStatus: 'active',
           boardTime: 5,
           isAddingDisabled: false,
+          isTimerStarted: false,
           isTimerVisible: false,
           isTimerFinalized: false,
           isFormSubmit: false,
           enableAdding,
           disableAdding,
+          startTimer,
           finalizeTimer,
           setFormSubmit,
           setBoardId,
@@ -76,11 +79,13 @@ describe('Column component', () => {
           boardStatus: 'active',
           boardTime: 5,
           isAddingDisabled: true,
+          isTimerStarted: false,
           isTimerVisible: false,
           isFormSubmit: false,
           isTimerFinalized: false,
           enableAdding,
           disableAdding,
+          startTimer,
           finalizeTimer,
           setFormSubmit,
           setBoardId,
@@ -121,11 +126,13 @@ describe('Column component', () => {
           boardStatus: 'active',
           boardTime: 5,
           isAddingDisabled: false,
+          isTimerStarted: false,
           isTimerFinalized: false,
           isTimerVisible: false,
           isFormSubmit: false,
           enableAdding,
           disableAdding,
+          startTimer,
           finalizeTimer,
           setFormSubmit,
           setBoardId,

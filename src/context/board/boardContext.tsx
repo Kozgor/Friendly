@@ -8,16 +8,18 @@ export const initialGlobalState = {
   boardTime: 0,
   isFormSubmit: false,
   isTimerVisible: false,
+  isTimerStarted: false,
   isTimerFinalized: false,
   isAddingDisabled: true,
-  enableAdding: () => {},
-  disableAdding: () => {},
-  finalizeTimer: () => {},
-  setFormSubmit: () => {},
-  setBoardId: (id: string) => {},
-  setBoardTime: (boardTime: number) => {},
-  setTimerVisibility: (isTimerVisible: boolean) => {},
-  setBoardStatus: (status: string) => {}
+  enableAdding: () => { },
+  disableAdding: () => { },
+  startTimer: () => { },
+  finalizeTimer: () => { },
+  setFormSubmit: () => { },
+  setBoardId: (id: string) => { },
+  setBoardTime: (boardTime: number) => { },
+  setTimerVisibility: (isTimerVisible: boolean) => { },
+  setBoardStatus: (status: string) => { }
 };
 
 export const BoardContext = createContext(initialGlobalState);
@@ -76,10 +78,17 @@ export const BoardProvider = ({ children }: BaseProps) => {
     });
   };
 
+  const startTimer = () => {
+    dispatch({
+      type: 'START_TIMER'
+    });
+  };
+
   return (
     <BoardContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
+        isTimerStarted: state.isTimerStarted,
         isTimerFinalized: state.isTimerFinalized,
         isTimerVisible: state.isTimerVisible,
         isFormSubmit: state.isFormSubmit,
@@ -88,6 +97,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
         boardTime: state.boardTime,
         enableAdding,
         disableAdding,
+        startTimer,
         finalizeTimer,
         setTimerVisibility,
         setBoardId,

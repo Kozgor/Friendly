@@ -42,6 +42,7 @@ describe('PageHeader component', () => {
 
   const enableAdding = jest.fn();
   const disableAdding = jest.fn();
+  const startTimer = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
   const setBoardTime = jest.fn();
@@ -56,11 +57,13 @@ describe('PageHeader component', () => {
         boardStatus: 'active',
         boardTime: 5,
         isAddingDisabled: false,
+        isTimerStarted: false,
         isTimerFinalized: false,
         isTimerVisible: true,
         isFormSubmit: false,
         enableAdding,
         disableAdding,
+        startTimer,
         finalizeTimer,
         setFormSubmit,
         setBoardId,

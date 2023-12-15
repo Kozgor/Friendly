@@ -1,31 +1,33 @@
-import { useContext, useMemo, useRef, useState } from 'react';
-import { BoardContext } from '../../context/board/boardContext';
+import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import Button from '@mui/joy/Button';
 import Countdown from 'react-countdown';
 import moment from 'moment';
+
+import { BoardContext } from '../../context/board/boardContext';
+import { icons } from '../../theme/icons/icons';
 
 import classes from './Timer.module.scss';
 
 const Timer = () => {
   const initialTimerState = {
     isTimerStarted: false,
-    isTimerPaused: false,
+    isAddingDisabled: false,
     isTimerCompleted: false,
     isTimerChanged: false
   };
 
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
-  const { boardTime, enableAdding, disableAdding, finalizeTimer, setTimerVisibility } = useContext(BoardContext);
-  const timeMultiplier = 60000;
+  const { boardTime, enableAdding, disableAdding, finalizeTimer, setTimerVisibility, startTimer } = useContext(BoardContext);
+  const timeMultiplier = useMemo(() => 60000, []);
   const now = moment().toDate().getTime();
-  const date = now + (boardTime * timeMultiplier);
+  const date = useMemo(() => now + (boardTime * timeMultiplier), [boardTime, now, timeMultiplier]);
 
-  const startTimer = () => {
+  const playTimer = () => {
     countdownRef.current?.start();
     setTimer((prevState) => ({
       ...prevState,
-      isTimerPaused: false
+      isAddingDisabled: false
     }));
     enableAdding();
   };
@@ -34,7 +36,7 @@ const Timer = () => {
     countdownRef.current?.pause();
     setTimer((prevState) => ({
       ...prevState,
-      isTimerPaused: true
+      isAddingDisabled: true
     }));
     disableAdding();
   };
@@ -43,7 +45,7 @@ const Timer = () => {
     countdownRef.current?.stop();
     setTimer((prevState) => ({
       ...prevState,
-      isTimerPaused: true
+      isAddingDisabled: true
     }));
     disableAdding();
   };
@@ -55,9 +57,10 @@ const Timer = () => {
       isTimerChanged: true
     }));
     enableAdding();
+    startTimer();
   };
 
-  const onComplete = () => {
+  const onComplete = useCallback(() => {
     setTimer((prevState) => ({
       ...prevState,
       isTimerCompleted: true
@@ -65,7 +68,7 @@ const Timer = () => {
     disableAdding();
     finalizeTimer();
     setTimerVisibility(false);
-  };
+  }, []);
 
   const countdown = useMemo(
     () => (
@@ -78,19 +81,22 @@ const Timer = () => {
         aria-description="timer"
       ></Countdown>
     ),
-    [countdownTimer.isTimerChanged]
+    [countdownTimer.isTimerChanged, onComplete]
   );
 
   return (
     <>
       {!countdownTimer.isTimerStarted && (
         <Button
-          variant="solid"
-          color='neutral'
+          color='secondary'
           type="submit"
           aria-label="solid neutral button for enabling and starting timer"
           onClick={showTimer}
           data-testid="timerStartButton"
+          sx={{
+            backgroundColor: 'var(--friendly-palette-secondary-900)',
+            color: 'var(--friendly-palette-shades-50)'
+          }}
         >
           Start Timer
         </Button>
@@ -102,25 +108,25 @@ const Timer = () => {
           aria-description="timer section"
           data-testid="timer"
         >
-          {!countdownTimer.isTimerPaused && (
+          {!countdownTimer.isAddingDisabled && (
             <button
               className={classes.timer__pause}
               onClick={pauseTimer}
               aria-label="button for pausing timer"
               data-testid="pause"
             >
-              <i className="bi bi-pause-circle-fill"></i>
+              {icons.pauseCircle()}
             </button>
           )}
 
-          {countdownTimer.isTimerPaused && (
+          {countdownTimer.isAddingDisabled && (
             <button
               className={classes.timer__start}
-              onClick={startTimer}
+              onClick={playTimer}
               aria-label="button for starting timer"
               data-testid="continue"
             >
-              <i className="bi bi-play-fill"></i>
+              {icons.playCircle()}
             </button>
           )}
 
@@ -132,7 +138,7 @@ const Timer = () => {
             aria-label="button for resetting timer"
             data-testid="reset"
           >
-            <i className="bi bi-square-fill"></i>
+            {icons.stopCircle()}
           </button>
         </div>
       )}

@@ -1,40 +1,45 @@
 /* eslint-disable complexity */
+import { Button, CircularProgress, Modal, ModalDialog, Typography } from '@mui/joy';
 import {
   useContext,
   useEffect,
   useState
 } from 'react';
+import { CloseRounded } from '@mui/icons-material';
+import { isNull } from 'lodash';
 import { useNavigate } from 'react-router';
 
+import { ICurrentBoardDetails, IUserProfile } from '../../interfaces/user';
 import { NO_BOARDS_MESSAGE, panelTitles, possibleBoardStatuses } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
-import { CircularProgress } from '@mui/joy';
+import Column from '../Column/Column';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
 import { INITIAL_BOARD } from '../../mocks/board';
-
-import { ICurrentBoardDetails, IUserProfile } from '../../interfaces/user';
-import { PropsChildren } from '../../interfaces/interactivePanelChildren';
-import { boardAPI } from '../../api/BoardAPI';
-import { columnAPI } from '../../api/ColumnAPI';
-import { isNull } from 'lodash';
-import { localStorageManager } from '../../utils/localStorageManager';
-import { userAPI } from '../../api/UserAPI';
-
-import Column from '../Column/Column';
 import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import NoContent from '../NoContent/NoContent';
+import { PropsChildren } from '../../interfaces/interactivePanelChildren';
+import Timer from '../Timer/Timer';
+import { boardAPI } from '../../api/BoardAPI';
+import { columnAPI } from '../../api/ColumnAPI';
+import { localStorageManager } from '../../utils/localStorageManager';
+import { pathConstants } from '../../router/pathConstants';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
+import { userAPI } from '../../api/UserAPI';
 
 import classes from './Board.module.scss';
-import { pathConstants } from '../../router/pathConstants';
+import { icons } from '../../theme/icons/icons';
 
 const Board = () => {
   const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
   const [isLoading, setIsLoading] = useState(false);
   const [isBoardVisible, setIsBoardVisible] = useState(true);
   const {
+    isTimerVisible,
+    isTimerStarted,
+    disableAdding,
+    setFormSubmit,
     boardStatus,
     isFormSubmit,
     setBoardStatus,
@@ -46,13 +51,68 @@ const Board = () => {
   const { getLocalUserData, saveLocalBoardDetails } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
-  const { getUserById } = userAPI();
+  const { getUserById, submitComments } = userAPI();
   const localUser = getLocalUserData();
   const isAdmin = localUser.role === 'admin';
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
-  const URLBoardId= useBoardIdLocation();
+  const URLBoardId = useBoardIdLocation();
   const layoutHeight = isAdmin ? '80vh' : '90vh';
+  const [isSubmitButton, setIsSubmitButton] = useState(true);
+  const isBoardPage = location.pathname.startsWith('/board/');
+  const isShowTimer = isTimerVisible && isSubmitButton && isBoardPage;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const completeBoard = () => {
+    // submitComments(localUser._id);
+    disableAdding();
+    setFormSubmit();
+    setIsSubmitButton(false);
+    setTimerVisibility(false);
+    setIsModalOpen(false);
+  };
+
+  const completeBoardModal = (
+    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} >
+      <ModalDialog
+        aria-labelledby="basic-modal-dialog-title"
+        aria-describedby="basic-modal-dialog-description"
+        sx={{
+          width: '415px',
+          textAlign: 'center',
+          padding: '28px 19px',
+
+          position: 'relative'
+        }}
+      >
+        <CloseRounded sx={{
+          position: 'absolute',
+          top: '16px',
+          right: '19px',
+          cursor: 'pointer'
+        }} onClick={() => setIsModalOpen(false)} />
+        <Typography id="basic-modal-dialog-title" level="h3">
+          Ready to complete?
+        </Typography>
+        <Typography id="basic-modal-dialog-description" component='p' sx={{
+          color: 'var(--friendly-palette-neutral-400)',
+          fontSize: 14,
+          lineHeight: '19.07px',
+          marginBottom: '10px'
+        }}>
+          {`There is some time left to play with your ideas and thoughts.
+          After the board is completed you will not be able to add new or edit appended comments.`}
+        </Typography>
+        <div className={classes.modalButtons}>
+          <Button color='secondary' variant='solid' role='button' aria-label='Complete My Board button' onClick={completeBoard} sx={{
+            width: '175px',
+            backgroundColor: 'var(--friendly-palette-secondary-900)',
+            color: 'var(--friendly-palette-shades-50)'
+          }}>Complete My Board</Button>
+        </div>
+      </ModalDialog>
+    </Modal>
+  );
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
@@ -148,22 +208,50 @@ const Board = () => {
           return;
         }
       }
-    } catch (error){
+    } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const actionButtons = <>
+    {<Button color="accent" variant='solid' sx={{
+      backgroundColor: 'var(--friendly-palette-accent-900)',
+      color: 'var(--friendly-palette-accent-100)',
+      width: '36px',
+      marginRight: '14px'
+    }}>{icons.delete()}</Button>}
+    <Button data-testid="completeButton" color='secondary' variant='solid' role='button' onClick={() => setIsModalOpen(true)} sx={{
+      backgroundColor: 'var(--friendly-palette-secondary-900)',
+      color: 'var(--friendly-palette-shades-50)',
+      padding: '8.5px 18.5px',
+      border: '1px solid var(--friendly-palette-secondary-900)',
+      fontWeight: 600,
+      fontSize: 14
+    }}>Complete</Button>
+  </>;
+
   const childrenConfig: PropsChildren[] = [
     {
       path: pathConstants.ADMIN,
       label: boardSettings.name,
       position: 'left'
-    }, {
+    },
+    {
+      element: isShowTimer && <Timer />,
+      position: 'center'
+    },
+    {
       path: `${pathConstants.BOARD_SUMMARY}/${URLBoardId}`,
       label: panelTitles.boardSummary,
-      position: 'right'
+      position: 'right',
+      mode: 'finalizedBoard'
+    },
+    {
+      element: isTimerStarted && actionButtons,
+      position: 'right',
+      mode: 'soloBoard'
     }
   ];
 
@@ -172,36 +260,39 @@ const Board = () => {
   }, [boardStatus, URLBoardId]);
 
   return (
-    <div className={classes['board-container']}>
-      {isAdmin && <InteractivePanel childrenConfig={childrenConfig} />}
-      <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
-        {isBoard &&
-          boardSettings?.columns.map((column) => (
-            <Column
-              key={column.columnId}
-              columnId={column.columnId}
-              columnTitle={column.columnTitle}
-              columnSubtitle={column.columnSubtitle}
-              columnStyle={column.columnStyle}
-              columnAvatar={column.columnAvatar}
-              columnCards={column.columnCards}
-            />
-          ))
-        }
-        {isNoBoard &&
-          <NoContent message={NO_BOARDS_MESSAGE} />
-        }
-        {isLoading &&
-          <div>
-            <CircularProgress
-              color="primary"
-              size="md"
-              variant="soft"
-            />
-          </div>
-        }
+    <>
+      {completeBoardModal}
+      <div className={classes['board-container']}>
+        {isAdmin && <InteractivePanel childrenConfig={childrenConfig} />}
+        <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
+          {isBoard &&
+            boardSettings?.columns.map((column) => (
+              <Column
+                key={column.columnId}
+                columnId={column.columnId}
+                columnTitle={column.columnTitle}
+                columnSubtitle={column.columnSubtitle}
+                columnStyle={column.columnStyle}
+                columnAvatar={column.columnAvatar}
+                columnCards={column.columnCards}
+              />
+            ))
+          }
+          {isNoBoard &&
+            <NoContent message={NO_BOARDS_MESSAGE} />
+          }
+          {isLoading &&
+            <div>
+              <CircularProgress
+                color="primary"
+                size="md"
+                variant="soft"
+              />
+            </div>
+          }
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

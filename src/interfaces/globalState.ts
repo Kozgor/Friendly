@@ -3,11 +3,13 @@ export interface IGlobalState {
   boardStatus: string;
   boardTime: number;
   isAddingDisabled: boolean;
+  isTimerStarted: boolean;
   isTimerFinalized: boolean;
   isTimerVisible: boolean;
   isFormSubmit: boolean;
   enableAdding: () => void;
   disableAdding: () => void;
+  startTimer: () => void;
   finalizeTimer: () => void;
   setFormSubmit: () => void;
   setBoardId: (id: string) => void;

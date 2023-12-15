@@ -3,6 +3,7 @@ import { IGlobalState } from '../../interfaces/globalState';
 
 const enableAdding = jest.fn();
 const disableAdding = jest.fn();
+const startTimer = jest.fn();
 const finalizeTimer = jest.fn();
 const setBoardId = jest.fn();
 const setBoardTime = jest.fn();
@@ -15,18 +16,20 @@ describe('BoardReducer', () => {
     boardId: 'Test ID',
     boardStatus: 'active',
     boardTime: 5,
+    isTimerStarted: false,
     isAddingDisabled: false,
     isTimerFinalized: false,
     isTimerVisible: false,
     isFormSubmit: false,
-    enableAdding: enableAdding,
-    disableAdding: disableAdding,
-    finalizeTimer: finalizeTimer,
-    setFormSubmit: setFormSubmit,
-    setBoardId: setBoardId,
-    setBoardTime: setBoardTime,
-    setBoardStatus: setBoardStatus,
-    setTimerVisibility: setTimerVisibility
+    enableAdding,
+    disableAdding,
+    startTimer,
+    finalizeTimer,
+    setFormSubmit,
+    setBoardId,
+    setBoardTime,
+    setBoardStatus,
+    setTimerVisibility
   };
 
   it('should handle "ADDING_ENABLE" action', () => {
@@ -51,7 +54,7 @@ describe('BoardReducer', () => {
   });
 
   it('should handle "SET_BOARDID" action', () => {
-    const action = { type: 'SET_BOARDID', payload: 'New test ID'};
+    const action = { type: 'SET_BOARDID', payload: 'New test ID' };
     const newState = BoardReducer(initialState, action);
 
     expect(newState.boardId).toBe('New test ID');
