@@ -1,5 +1,5 @@
 import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import NewCard from './NewCard';
+import EditCard from './EditCard';
 
 import { REPLIES } from '../../mocks/cardReplies';
 
@@ -10,7 +10,7 @@ describe('Comment component', () => {
 
   beforeEach(() => {
     component = render(
-      <NewCard
+      <EditCard
         _id={REPLIES[commentNumber]._id}
         createdAt={REPLIES[commentNumber].createdAt}
         cardComment={REPLIES[commentNumber].cardComment}
@@ -33,13 +33,13 @@ describe('Comment component', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should display autocomplete for tags', () => {
-    const autocomplete = screen.getByTestId('tags-default');
+  test('should display select component for tags', () => {
+    const select = screen.getByTestId('select-tags-component');
 
-    expect(autocomplete).toBeInTheDocument();
+    expect(select).toBeInTheDocument();
   });
 
-  test('should display user avatar in a new card', () => {
+  test('should display user avatar in an edit card', () => {
     const avatar = screen.getByTestId('card-avatar');
 
     expect(avatar).toBeInTheDocument();
@@ -52,13 +52,13 @@ describe('Comment component', () => {
   });
 
   test('should display "Cancel" button' , () => {
-    const cancelButton = screen.getByTestId('newCardButtonCancel');
+    const cancelButton = screen.getByTestId('editCardButtonCancel');
 
     expect(cancelButton).toBeInTheDocument();
   });
 
   test('should display "Save" button', () => {
-    const saveButton = screen.getByTestId('newCardButtonSave');
+    const saveButton = screen.getByTestId('editCardButtonSave');
 
     expect(saveButton).toBeInTheDocument();
   });
@@ -76,7 +76,7 @@ describe('Comment component', () => {
   });
 
   test('should call cancel action when "Cancel" button is clicked', () => {
-    const cancelButton = screen.getByTestId('newCardButtonCancel');
+    const cancelButton = screen.getByTestId('editCardButtonCancel');
     fireEvent.click(cancelButton);
 
     expect(actionMock).toHaveBeenCalledWith('cancel', {
@@ -90,7 +90,7 @@ describe('Comment component', () => {
   });
 
   test('should call save action when "Save" button is clicked', () => {
-    const saveButton = screen.getByTestId('newCardButtonSave');
+    const saveButton = screen.getByTestId('editCardButtonSave');
     fireEvent.click(saveButton);
 
     waitFor(() => {

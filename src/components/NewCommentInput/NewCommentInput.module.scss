@@ -1,0 +1,76 @@
+@import "../../mixins/flexbox";
+@import "../../theme/variables";
+
+.commentInput {
+  @include flexbox(column, start, flex-start, nowrap);
+  width: calc(100% - 16px);
+  margin: 8px;
+  background-color: $friendly-palette-shades-50;
+  border-radius: 8px;
+
+  .commentInputTop {
+    @include flexbox(row, start, stretch, nowrap);
+    width: 100%;
+    height: 70%;
+
+    .commentInputAvatarContainer {
+      @include flexbox(column, start, flex-start, nowrap);
+      width: 15%;
+    }
+
+    .commentInputTextareaContainer {
+      @include flexbox(column, start, flex-start, nowrap);
+      width: 85%;
+
+      .commentInputTextarea {
+        font-family: "Open Sans", sans-serif;
+        width: 100%;
+        height: 110px;
+        font-size: 12px;
+        line-height: 16.34px;
+        font-weight: 300;
+      }
+    }
+  }
+
+  .commentInputBottom {
+    @include flexbox(row, start, flex-start, nowrap);
+    width: 100%;
+    height: 30%;
+
+    .commentTagsContainer {
+      @include flexbox(column, start, flex-start, nowrap);
+      width: 90%;
+
+      .commentTags {
+        width: 100%;
+
+        input {
+          background-color: transparent;
+        }
+
+        .tagsOutput {
+          @include flexbox(row, flex-start, center, nowrap);
+          justify-self: flex-start;
+
+          & div {
+            margin-left: 0;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    .commentInputSendContainer {
+      @include flexbox(column, start, flex-end, nowrap);
+      width: 10%;
+      padding-right: 6px;
+      font-family: "Open Sans", sans-serif;
+
+      .sendButtonIconComponent {
+        border-radius: 8px;
+        background-color: $friendly-palette-accent-900;
+      }
+    }
+  }
+}

@@ -9,6 +9,8 @@ export const boardStepperButtons = {
   archive: 'Archive'
 };
 
+export const cardTextareaPlaceholder = 'Start typing here...';
+
 export const navigationBarTitles = {
   drawerHeader: 'friendly',
   drawerSubheader: 'Home',
@@ -28,6 +30,8 @@ export const possibleBoardStatuses = {
   finalized: 'finalized',
   archived: 'archived'
 };
+
+export const tagsPlaceholder = 'Tags...';
 
 export const STEPS_MAP = {
   first: 0,
