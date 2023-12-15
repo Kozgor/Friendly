@@ -1,7 +1,7 @@
 import { RenderResult, render, screen } from '@testing-library/react';
-import CardChip from './CardChip';
-
 import { possibleCardTags } from '../../types/cardTags';
+
+import CardChip from './CardChip';
 
 describe('CardChip component', () => {
   let component: RenderResult;

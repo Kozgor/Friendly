@@ -1,0 +1,46 @@
+@import "../../mixins/flexbox";
+
+.editCardTop {
+  @include flexbox(row, flex-start, center, nowrap);
+
+  .editCardAvatarContainer {
+    @include flexbox(column, center, flex-start, nowrap);
+    width: 15%;
+  }
+
+  .editCardTextareaContainer {
+    display: block;
+    width: 85%;
+  }
+
+  .editCardTextarea {
+    width: 100%;
+  }
+
+  .editCardAvatar {
+    display: block;
+  }
+}
+
+.editCardBottomContainer {
+  @include flexbox(column, space-between, center, nowrap);
+  width: 100%;
+
+  .editCardBottom {
+    @include flexbox(row, space-between, center, nowrap);
+    width: 100%;
+  }
+
+  .editCardTags {
+    width: 80%;
+  }
+
+  .editCardButtons {
+    @include flexbox(row, flex-end, center, nowrap);
+    width: 20%;
+  }
+
+  .cardFooterCancelButton {
+    margin-right: 5px;
+  }
+}

@@ -3,14 +3,14 @@
 
 .header {
   width: 100%;
-  height: 10vh;
+  height: 8vh;
 
   @include flexbox(row, flex-end, center, wrap);
 
   .mainHeader {
-    @include flexbox(row, flex-end, center, wrap);
+    @include flexbox(row, flex-end, center, nowrap);
     width: 100%;
-    height: 10vh;
+    height: 100%;
     padding: 15px;
     background-color: $friendly-palette-neutral-50;
   }

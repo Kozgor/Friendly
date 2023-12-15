@@ -3,10 +3,11 @@
 
 .column {
   @include flexbox(row, center, flex-start, wrap);
+  position: relative;
   height: 100%;
   width: 430px;
   min-width: 430px;
-  padding: 30px 28px 0;
+  padding-top: 30px;
   margin: 0 15px;
   border-radius: 15px;
   border-bottom-left-radius: 0;
@@ -34,7 +35,7 @@
       margin-bottom: 0;
       text-align: center;
       font-weight: 300;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 27.24px;
       font-family: "Open Sans", sans-serif;
       cursor: context-menu;
@@ -49,7 +50,9 @@
     &__min {
       @include flexbox(column, unset, unset, nowrap);
       width: 100%;
-      height: 59%;
+      height: calc(100% - 48px);
+      padding-top: 25px;
+      padding-bottom: 100px;
       overflow-y: scroll;
       scrollbar-width: thin;
       scrollbar-color: transparent transparent;
@@ -60,6 +63,7 @@
       @include flexbox(column, unset, unset, nowrap);
       width: 100%;
       height: calc(100% - 48px);
+      padding-top: 25px;
       overflow-y: scroll;
       scrollbar-width: thin;
       scrollbar-color: transparent transparent;
@@ -76,11 +80,11 @@
   }
 
   &__comments__min::-webkit-scrollbar {
-    width: 6px;
+    width: 0;
   }
 
   &__comments__max::-webkit-scrollbar {
-    width: 6px;
+    width: 0;
   }
 
   &__adding {
@@ -94,9 +98,11 @@
   }
 
   .cardCommentContainer {
-    display: block;
+    @include flexbox(row, center, center, nowrap);
+    position: absolute;
     align-self: flex-end;
     width: 100%;
-    height: 121px;
+    background-color: rgba(25, 29, 35, 0.05);
+    height: auto;
   }
 }

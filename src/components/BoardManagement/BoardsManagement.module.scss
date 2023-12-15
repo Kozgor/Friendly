@@ -9,15 +9,15 @@
   @include flexbox(column, flex-start, unset, nowrap);
   width: 100%;
   height: 70vh;
+  margin: 0 32px;
 }
 
 .boardsManagementContainer {
-  @include flexbox(column, flex-start, stretch, nowrap);
+  @include flexbox(column, center, stretch, nowrap);
   margin-bottom: 10px;
   width: 100%;
   height: 75vh;
   margin-top: 20px;
-  margin-left: 32px;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -34,6 +34,7 @@
 
 .boardsManagementLoader {
   @include flexbox(column, center, center, nowrap);
+  align-self: center;
   width: 100%;
   height: 70vh;
 }

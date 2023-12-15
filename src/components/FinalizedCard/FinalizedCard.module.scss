@@ -2,9 +2,8 @@
 @import "../../theme/variables";
 
 .footer {
-  width: 100%;
-
   @include flexbox(row, space-between, center, nowrap);
+  width: 100%;
 
   .footerTags {
     @include flexbox(row, flex-start, center, nowrap);
@@ -34,10 +33,6 @@
     height: 25px;
     position: relative;
     top: -20px;
-
-    div {
-      box-shadow: 0 0 0 5px $friendly-palette-primary-200;
-    }
   }
 
   .message {

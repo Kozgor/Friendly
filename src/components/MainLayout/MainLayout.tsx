@@ -13,7 +13,7 @@ const MainLayout = () => {
   const user = getLocalUserData();
   const URLAdminPart = useAdminLocation();
   const isAdmin = user.role === 'admin';
-  const layoutHeight = '90vh';
+  const layoutHeight = '92vh';
 
   return (
     <div className={classes.mainLayoutContainer}>
@@ -21,7 +21,7 @@ const MainLayout = () => {
       <div className={classes.mainLayoutContent}>
         <BoardProvider>
           <PageHeader></PageHeader>
-          <main style={{ height: layoutHeight }}>
+          <main style={{ height: layoutHeight, width: '100%' }}>
             <Outlet></Outlet>
           </main>
         </BoardProvider>

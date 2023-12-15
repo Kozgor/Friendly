@@ -43,10 +43,10 @@ const BoardsManagement = () => {
       sx={{
         flexGrow: 0,
         bgcolor: 'var(--friendly-palette-neutral-50);',
-        padding: '0 32px',
+        padding: 0,
         marginLeft: 0,
         width: '100%',
-        height: '90vh'
+        height: '92vh'
       }}
     >
       <TitlePanel title={panelTitles.boardsManagement}></TitlePanel>

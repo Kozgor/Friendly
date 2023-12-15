@@ -13,7 +13,7 @@ import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { sortByDateStartOld } from '../../utils/sortByDate';
 
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
-import NewCard from '../NewCard/NewCard';
+import NewCard from '../EditCard/EditCard';
 import NewCommentInput from '../NewCommentInput/NewCommentInput';
 import classes from './Column.module.scss';
 import moment from 'moment';
@@ -202,9 +202,9 @@ const Column = (props: IColumn) => {
   return (
     <section className={classes.column}>
       <div className={classes['column__header']}>
-        <h2>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
+        <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
           <span className={classes['column__header__couner']}>({columnCards.length})</span>}
-        </h2>
+        </h4>
         <p className={classes['column__header__subtitle']}>{columnSubtitle}</p>
       </div>
       <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>

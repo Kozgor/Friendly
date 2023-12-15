@@ -52,7 +52,7 @@ const Board = () => {
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
-  const layoutHeight = isAdmin ? '80vh' : '90vh';
+  const layoutHeight = isAdmin ? '84vh' : '92vh';
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {

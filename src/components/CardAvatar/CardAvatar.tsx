@@ -7,18 +7,22 @@ import { getInitials } from '../../utils/userInitials';
 import { icons } from '../../theme/icons/icons';
 
 const CardAvatar = (props: ICardAvatar) => {
-  const { cardAuthor, cardAuthorAvatar, onToggle } = props;
+  const { cardAuthor, cardAuthorAvatar, isBorder, borderColor, onToggle } = props;
   const avatar = useMemo(() => {
     const isIncognito = (cardAuthor === 'Incognito' || cardAuthorAvatar === 'Incognito');
     const isInitials = (!cardAuthorAvatar || cardAuthorAvatar.length <= 2) && cardAuthor !== 'Incognito';
     const isAvatar = (cardAuthorAvatar && cardAuthorAvatar.length > 2) && cardAuthor !== 'Incognito';
+    const customBoxShadow = isBorder ? `0 0 0 5px ${borderColor}` : 'none';
 
     if (isIncognito) {
       return (
         <Avatar
           data-testid='incognito-avatar'
           onClick={onToggle}
-          sx={{ cursor: 'pointer', '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 } }}
+          sx={{
+            cursor: 'pointer',
+            boxShadow: customBoxShadow,
+            '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 } }}
         >
           {icons.incognito}
         </Avatar>
@@ -31,6 +35,7 @@ const CardAvatar = (props: ICardAvatar) => {
             onClick={onToggle}
             sx={{
               cursor: 'pointer',
+              boxShadow: customBoxShadow,
               color: 'var(--friendly-palette-shades-50)',
               '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 }
             }}
@@ -46,7 +51,10 @@ const CardAvatar = (props: ICardAvatar) => {
             onClick={onToggle}
             alt={cardAuthorAvatar}
             src={cardAuthorAvatar}
-            sx={{ cursor: 'pointer' }}
+            sx={{
+              cursor: 'pointer',
+              boxShadow: customBoxShadow
+            }}
         ></Avatar>
       );
     }
