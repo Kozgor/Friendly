@@ -10,6 +10,9 @@ const setBoardTime = jest.fn();
 const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
+const selectCard = jest.fn();
+const unselectCard = jest.fn();
+const resetSelectedCards = jest.fn();
 
 describe('BoardReducer', () => {
   const initialState: IGlobalState = {
@@ -21,6 +24,7 @@ describe('BoardReducer', () => {
     isTimerFinalized: false,
     isTimerVisible: false,
     isFormSubmit: false,
+    selectedCards: [],
     enableAdding,
     disableAdding,
     startTimer,
@@ -29,7 +33,10 @@ describe('BoardReducer', () => {
     setBoardId,
     setBoardTime,
     setBoardStatus,
-    setTimerVisibility
+    setTimerVisibility,
+    selectCard,
+    unselectCard,
+    resetSelectedCards
   };
 
   it('should handle "ADDING_ENABLE" action', () => {

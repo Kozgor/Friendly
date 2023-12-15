@@ -49,6 +49,9 @@ describe('PageHeader component', () => {
   const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
+  const selectCard = jest.fn();
+  const unselectCard = jest.fn();
+  const resetSelectedCards = jest.fn();
 
   const wrapper = ({ children }: BaseProps) => (
     <BoardContext.Provider
@@ -61,6 +64,7 @@ describe('PageHeader component', () => {
         isTimerFinalized: false,
         isTimerVisible: true,
         isFormSubmit: false,
+        selectedCards: [],
         enableAdding,
         disableAdding,
         startTimer,
@@ -69,7 +73,10 @@ describe('PageHeader component', () => {
         setBoardId,
         setBoardTime,
         setTimerVisibility,
-        setBoardStatus
+        setBoardStatus,
+        selectCard,
+        unselectCard,
+        resetSelectedCards
       }}
     >
       {children}

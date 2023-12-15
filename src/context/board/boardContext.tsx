@@ -1,8 +1,10 @@
 import { createContext, useReducer } from 'react';
 import { BaseProps } from '../../interfaces/baseProps';
 import BoardReducer from './boardReducer';
+import { IColumnCard } from '../../interfaces/columnCard';
+import { IGlobalState } from '../../interfaces/globalState';
 
-export const initialGlobalState = {
+export const initialGlobalState: IGlobalState = {
   boardId: '',
   boardStatus: '',
   boardTime: 0,
@@ -11,6 +13,7 @@ export const initialGlobalState = {
   isTimerStarted: false,
   isTimerFinalized: false,
   isAddingDisabled: true,
+  selectedCards: [],
   enableAdding: () => { },
   disableAdding: () => { },
   startTimer: () => { },
@@ -19,7 +22,10 @@ export const initialGlobalState = {
   setBoardId: (id: string) => { },
   setBoardTime: (boardTime: number) => { },
   setTimerVisibility: (isTimerVisible: boolean) => { },
-  setBoardStatus: (status: string) => { }
+  setBoardStatus: (status: string) => { },
+  selectCard: (card: IColumnCard) => { },
+  unselectCard: (cardId: string) => { },
+  resetSelectedCards: () => { }
 };
 
 export const BoardContext = createContext(initialGlobalState);
@@ -84,6 +90,26 @@ export const BoardProvider = ({ children }: BaseProps) => {
     });
   };
 
+  const selectCard = (card: IColumnCard) => {
+    dispatch({
+      type: 'SELECT_CARD',
+      payload: card
+    });
+  };
+
+  const unselectCard = (cardId: string) => {
+    dispatch({
+      type: 'UNSELECT_CARD',
+      payload: cardId
+    });
+  };
+
+  const resetSelectedCards = () => {
+    dispatch({
+      type: 'RESET_SELECTED_CARDS'
+    });
+  };
+
   return (
     <BoardContext.Provider
       value={{
@@ -95,6 +121,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
         boardId: state.boardId,
         boardStatus: state.boardStatus,
         boardTime: state.boardTime,
+        selectedCards: state.selectedCards,
         enableAdding,
         disableAdding,
         startTimer,
@@ -103,7 +130,10 @@ export const BoardProvider = ({ children }: BaseProps) => {
         setBoardId,
         setBoardTime,
         setBoardStatus,
-        setFormSubmit
+        setFormSubmit,
+        selectCard,
+        unselectCard,
+        resetSelectedCards
       }}
     >
       {children}

@@ -22,14 +22,15 @@ import NoContent from '../NoContent/NoContent';
 import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import Timer from '../Timer/Timer';
 import { boardAPI } from '../../api/BoardAPI';
+import { cardAPI } from '../../api/CardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
+import { icons } from '../../theme/icons/icons';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { pathConstants } from '../../router/pathConstants';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 import { userAPI } from '../../api/UserAPI';
 
 import classes from './Board.module.scss';
-import { icons } from '../../theme/icons/icons';
 
 const Board = () => {
   const [boardSettings, setBoardSettings] = useState<IBoardSettings>(INITIAL_BOARD);
@@ -38,6 +39,7 @@ const Board = () => {
   const {
     isTimerVisible,
     isTimerStarted,
+    isAddingDisabled,
     disableAdding,
     setFormSubmit,
     boardStatus,
@@ -45,13 +47,16 @@ const Board = () => {
     setBoardStatus,
     setBoardId,
     setBoardTime,
-    setTimerVisibility
+    setTimerVisibility,
+    selectedCards,
+    resetSelectedCards
   } = useContext(BoardContext);
   const navigate = useNavigate();
   const { getLocalUserData, saveLocalBoardDetails } = localStorageManager();
   const { getFinalColumnCards, getUserColumnCards } = columnAPI();
   const { getBoardById } = boardAPI();
   const { getUserById, submitComments } = userAPI();
+  const { removeCards } = cardAPI();
   const localUser = getLocalUserData();
   const isAdmin = localUser.role === 'admin';
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
@@ -64,12 +69,27 @@ const Board = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const completeBoard = () => {
-    // submitComments(localUser._id);
+    submitComments(localUser._id);
     disableAdding();
     setFormSubmit();
     setIsSubmitButton(false);
     setTimerVisibility(false);
     setIsModalOpen(false);
+  };
+
+  const deleteCards = () => {
+    if (!isAddingDisabled) {
+      removeCards(selectedCards).then(() => {
+        const newBoardSettings = { ...boardSettings };
+        newBoardSettings.columns.forEach(column => {
+          selectedCards.forEach(selectedCard => {
+            column.columnCards = column.columnCards.filter(card => card._id !== selectedCard._id);
+          });
+        });
+        setBoardSettings(newBoardSettings);
+        resetSelectedCards();
+      });
+    }
   };
 
   const completeBoardModal = (
@@ -215,22 +235,41 @@ const Board = () => {
     }
   };
 
-  const actionButtons = <>
-    {<Button color="accent" variant='solid' sx={{
-      backgroundColor: 'var(--friendly-palette-accent-900)',
-      color: 'var(--friendly-palette-accent-100)',
-      width: '36px',
-      marginRight: '14px'
-    }}>{icons.delete()}</Button>}
-    <Button data-testid="completeButton" color='secondary' variant='solid' role='button' onClick={() => setIsModalOpen(true)} sx={{
-      backgroundColor: 'var(--friendly-palette-secondary-900)',
-      color: 'var(--friendly-palette-shades-50)',
-      padding: '8.5px 18.5px',
-      border: '1px solid var(--friendly-palette-secondary-900)',
-      fontWeight: 600,
-      fontSize: 14
-    }}>Complete</Button>
-  </>;
+  const actionButtons =
+    <>
+      {selectedCards.length > 0 &&
+        <Button
+          color="accent"
+          variant='solid'
+          role='button'
+          onClick={deleteCards}
+          sx={{
+            backgroundColor: 'var(--friendly-palette-accent-900)',
+            color: 'var(--friendly-palette-accent-100)',
+            width: '36px',
+            marginRight: '14px'
+          }}
+        >
+          {icons.delete()}
+        </Button>}
+      <Button
+        data-testid="completeButton"
+        color='secondary'
+        variant='solid'
+        role='button'
+        onClick={() => setIsModalOpen(true)}
+        sx={{
+          backgroundColor: 'var(--friendly-palette-secondary-900)',
+          color: 'var(--friendly-palette-shades-50)',
+          padding: '8.5px 18.5px',
+          border: '1px solid var(--friendly-palette-secondary-900)',
+          fontWeight: 600,
+          fontSize: 14
+        }}
+      >
+        Complete
+      </Button>
+    </>;
 
   const childrenConfig: PropsChildren[] = [
     {

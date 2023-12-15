@@ -1,3 +1,5 @@
+import { IColumnCard } from './columnCard';
+
 export interface IGlobalState {
   boardId: string;
   boardStatus: string;
@@ -7,6 +9,7 @@ export interface IGlobalState {
   isTimerFinalized: boolean;
   isTimerVisible: boolean;
   isFormSubmit: boolean;
+  selectedCards: IColumnCard[];
   enableAdding: () => void;
   disableAdding: () => void;
   startTimer: () => void;
@@ -16,4 +19,7 @@ export interface IGlobalState {
   setBoardStatus: (status: string) => void;
   setBoardTime: (boardTime: number) => void;
   setTimerVisibility: (timerVisibility: boolean) => void;
+  selectCard: (card: IColumnCard) => void;
+  unselectCard: (cardId: string) => void;
+  resetSelectedCards: () => void;
 }

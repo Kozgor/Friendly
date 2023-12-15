@@ -49,6 +49,21 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         isFormSubmit: true
       };
+    case 'SELECT_CARD':
+      return {
+        ...state,
+        selectedCards: [...state.selectedCards, action.payload]
+      };
+    case 'UNSELECT_CARD':
+      return {
+        ...state,
+        selectedCards: state.selectedCards.filter(card => card._id !== action.payload)
+      };
+    case 'RESET_SELECTED_CARDS':
+      return {
+        ...state,
+        selectedCards: []
+      };
     default:
       return state;
   }

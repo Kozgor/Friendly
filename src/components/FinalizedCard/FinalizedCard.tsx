@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable complexity */
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   Button,
@@ -15,6 +15,7 @@ import {
 import { ArrowDropDown } from '@mui/icons-material';
 import { isNull } from 'lodash';
 
+import { BoardContext } from '../../context/board/boardContext';
 import CardAvatar from '../CardAvatar/CardAvatar';
 import CardTagChip from '../CardChip/CardChip';
 import { IColumnCard } from '../../interfaces/columnCard';
@@ -35,10 +36,12 @@ const FinalizedCard = (props: IColumnCard) => {
     cardReactions,
     createdAt,
     isEditable,
-    isDisabled
+    isDisabled,
+    columnId
   } = props;
 
   const cardCommentRef = useRef<HTMLParagraphElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const [isShownAllText, setIsShownAllText] = useState(false);
   const [displayShowButton, setDisplayShowButton] = useState(false);
   const [reactionState, setReactionState] = useState(cardReactions);
@@ -46,6 +49,7 @@ const FinalizedCard = (props: IColumnCard) => {
   const isShownAllTags = cardTags && cardTags?.length < 3;
   const isEmojiSmile = reactionState && !isNull(reactionState);
   const isEmojiFrown = !reactionState && !isNull(reactionState);
+  const { selectCard, selectedCards, unselectCard } = useContext(BoardContext);
 
   useEffect(() => {
     if (cardCommentRef.current) {
@@ -58,15 +62,23 @@ const FinalizedCard = (props: IColumnCard) => {
     updateColumnCardReaction(_id, cardActionAuthorId || '', isHappyReaction);
   };
 
-  const deleteCard = () => {
-    props.onAction?.('remove', {
-      _id: _id,
-      createdAt: createdAt,
-      cardAuthor: cardAuthor,
-      cardAuthorId: cardAuthorId,
-      cardAuthorAvatar: cardAuthorAvatar,
-      cardComment: cardComment
-    });
+  const toggleSelectCard = () => {
+    if (isEditable && cardRef.current) {
+      const selectedCard = {
+        _id,
+        createdAt,
+        cardAuthor,
+        cardAuthorId,
+        cardAuthorAvatar,
+        cardComment,
+        columnId
+      };
+      const isCardSelected = selectedCards.find(card => card._id === selectedCard._id);
+
+      cardRef.current.style.backgroundColor = isCardSelected ? 'var(--friendly-palette-shades-50)' : 'var(--friendly-palette-secondary-200)';
+      !isCardSelected && selectCard(selectedCard);
+      isCardSelected && unselectCard(_id);
+    }
   };
 
   const editCard = (event: any) => {
@@ -88,6 +100,7 @@ const FinalizedCard = (props: IColumnCard) => {
     <Card
       variant='outlined'
       className={classes.card}
+      ref={cardRef}
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
@@ -105,6 +118,7 @@ const FinalizedCard = (props: IColumnCard) => {
         'MsUserSelect': 'none' /* IE10+ */
       }}
       onDoubleClick={editCard}
+      onClick={toggleSelectCard}
     >
       <div className={classes.author}>
         <CardAvatar

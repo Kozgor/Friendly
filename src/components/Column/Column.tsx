@@ -1,28 +1,26 @@
-import axios from 'axios';
-
 import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
+import Button from '@mui/joy/Button';
+
 import { BoardContext } from '../../context/board/boardContext';
+import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
+import NewCard from '../NewCard/NewCard';
+import { cardAPI } from '../../api/CardAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
 import { sortByDateStartOld } from '../../utils/sortByDate';
 
-import Button from '@mui/joy/Button';
-import FinalizedCard from '../FinalizedCard/FinalizedCard';
-import NewCard from '../NewCard/NewCard';
-
 import classes from './Column.module.scss';
 
 const Column = (props: IColumn) => {
-  const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
   const initialCard = {
     _id: '',
-    columnId: '',
+    columnId: columnId,
     createdAt: '',
     cardComment: '',
     cardAuthorId: localUser._id,
@@ -31,6 +29,7 @@ const Column = (props: IColumn) => {
     cardTags: [],
     isEditable: true
   };
+  const { createCard, updateCard } = cardAPI();
 
   const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
   const [isNewCard, setIsNewCard] = useState(false);
@@ -57,17 +56,7 @@ const Column = (props: IColumn) => {
     cardIndex: number
   ) => {
     if (handledCard._id) {
-      axios
-        .put(`${FRIENDLY_DOMAIN}card/update-card`, {
-          _id: handledCard._id,
-          boardId: boardId,
-          columnId: columnId,
-          cardAuthorId: handledCard.cardAuthorId,
-          cardAuthor: handledCard.cardAuthor,
-          cardAuthorAvatar: handledCard.cardAuthorAvatar,
-          cardComment: handledCard.cardComment,
-          cardTags: handledCard.cardTags
-        })
+      updateCard(boardId, columnId, handledCard)
         .then(() => {
           setFinalizedCards(() => {
             cards.splice(cardIndex, 1, {
@@ -78,17 +67,7 @@ const Column = (props: IColumn) => {
           });
         });
     } else {
-      axios
-        .post(`${FRIENDLY_DOMAIN}card/create-card`, {
-          boardId,
-          columnId: columnId,
-          cardComment: handledCard.cardComment,
-          cardAuthor: handledCard.cardAuthor,
-          cardAuthorId: handledCard.cardAuthorId,
-          cardAuthorAvatar: handledCard.cardAuthorAvatar,
-          cardTags: handledCard.cardTags,
-          createdAt: handledCard.createdAt
-        })
+      createCard(boardId, columnId, handledCard)
         .then((res) => {
           setFinalizedCards((prevCards) => {
             const filteredCards = prevCards.filter((card) => !card.isEditable);
@@ -118,20 +97,6 @@ const Column = (props: IColumn) => {
     setIsButtonDisabled(isAddingDisabled);
   };
 
-  const onRemoveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
-    axios({
-      method: 'DELETE',
-      url: `${FRIENDLY_DOMAIN}card/remove-card`,
-      data: {
-        _id: handledCard._id
-      }
-    }).then(() => {
-      setFinalizedCards((prevCards) =>
-        prevCards.filter((card) => card._id !== handledCard._id)
-      );
-    });
-  };
-
   const handleAction = (actionType: string, handledCard: IColumnCard) => {
     const actionsMap: Record<
       string,
@@ -143,8 +108,7 @@ const Column = (props: IColumn) => {
     > = {
       save: onSaveHandler,
       edit: onEditHandler,
-      cancel: onCancelHandler,
-      remove: onRemoveHandler
+      cancel: onCancelHandler
     };
 
     const finCards = [...finalizedCards];

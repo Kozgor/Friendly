@@ -29,6 +29,9 @@ describe('BoardStepper Component', () => {
   const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
+  const selectCard = jest.fn();
+  const unselectCard = jest.fn();
+  const resetSelectedCards = jest.fn();
 
   const routesConfig = [
     {
@@ -47,6 +50,7 @@ describe('BoardStepper Component', () => {
         isTimerFinalized: false,
         isTimerVisible: false,
         isFormSubmit: false,
+        selectedCards: [],
         enableAdding,
         disableAdding,
         startTimer,
@@ -55,7 +59,10 @@ describe('BoardStepper Component', () => {
         setFormSubmit,
         setBoardId,
         setBoardTime,
-        setBoardStatus
+        setBoardStatus,
+        selectCard,
+        unselectCard,
+        resetSelectedCards
       }}
     >
       {children}
@@ -76,7 +83,7 @@ describe('BoardStepper Component', () => {
     component = render(
       <BoardStepper
         board={ACTIVE_BOARD}
-    />, { wrapper }
+      />, { wrapper }
     );
   });
 

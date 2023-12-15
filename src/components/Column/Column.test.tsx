@@ -16,6 +16,9 @@ describe('Column component', () => {
   const setTimerVisibility = jest.fn();
   const setBoardStatus = jest.fn();
   const setFormSubmit = jest.fn();
+  const selectCard = jest.fn();
+  const unselectCard = jest.fn();
+  const resetSelectedCards = jest.fn();
 
   beforeEach(() => {
     const wrapper = ({ children }: BaseProps) => (
@@ -29,6 +32,7 @@ describe('Column component', () => {
           isTimerVisible: false,
           isTimerFinalized: false,
           isFormSubmit: false,
+          selectedCards: [],
           enableAdding,
           disableAdding,
           startTimer,
@@ -37,7 +41,10 @@ describe('Column component', () => {
           setBoardId,
           setBoardTime,
           setTimerVisibility,
-          setBoardStatus
+          setBoardStatus,
+          selectCard,
+          unselectCard,
+          resetSelectedCards
         }}
       >
         {children}
@@ -83,6 +90,7 @@ describe('Column component', () => {
           isTimerVisible: false,
           isFormSubmit: false,
           isTimerFinalized: false,
+          selectedCards: [],
           enableAdding,
           disableAdding,
           startTimer,
@@ -91,7 +99,10 @@ describe('Column component', () => {
           setBoardId,
           setBoardTime,
           setTimerVisibility,
-          setBoardStatus
+          setBoardStatus,
+          selectCard,
+          unselectCard,
+          resetSelectedCards
         }}
       >
         {children}
@@ -130,6 +141,7 @@ describe('Column component', () => {
           isTimerFinalized: false,
           isTimerVisible: false,
           isFormSubmit: false,
+          selectedCards: [],
           enableAdding,
           disableAdding,
           startTimer,
@@ -138,7 +150,10 @@ describe('Column component', () => {
           setBoardId,
           setBoardTime,
           setTimerVisibility,
-          setBoardStatus
+          setBoardStatus,
+          selectCard,
+          unselectCard,
+          resetSelectedCards
         }}
       >
         {children}

@@ -24,7 +24,8 @@ const NewCard = (props: IColumnCard) => {
     cardComment,
     cardTags,
     isDisabled,
-    createdAt
+    createdAt,
+    columnId
   } = props;
   const [cardCommentState, setCardComment] = useState(cardComment);
   const [cardTagsState, setCardTags] = useState<CardTag[]>(cardTags || []);
@@ -47,12 +48,13 @@ const NewCard = (props: IColumnCard) => {
 
   const onCancelCard = () => {
     props.onAction?.('cancel', {
-      _id: props._id,
-      createdAt: props.createdAt,
-      cardAuthor: props.cardAuthor,
-      cardAuthorId: props.cardAuthorId,
-      cardAuthorAvatar: props.cardAuthorAvatar,
-      cardComment: props.cardComment
+      _id,
+      createdAt,
+      cardAuthor,
+      cardAuthorId,
+      cardAuthorAvatar,
+      cardComment,
+      columnId
     });
   };
 
@@ -67,7 +69,8 @@ const NewCard = (props: IColumnCard) => {
       cardAuthor: cardAuthorState,
       cardAuthorAvatar: cardAuthorAvatarState,
       cardAuthorId: cardAuthorId,
-      cardTags: cardTagsState
+      cardTags: cardTagsState,
+      columnId
     };
 
     props.onAction?.('save', newCard);

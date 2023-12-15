@@ -8,6 +8,9 @@ const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
 const getAllBoards = jest.fn();
+const selectCard = jest.fn();
+const unselectCard = jest.fn();
+const resetSelectedCards = jest.fn();
 
 jest.mock('../../api/BoardAPI', () => ({
   ...jest.requireActual('../../api/BoardAPI'),
@@ -43,6 +46,7 @@ const wrapper = ({ children }: BaseProps) => (
       isTimerFinalized: false,
       isTimerVisible: false,
       isFormSubmit: false,
+      selectedCards: [],
       enableAdding,
       disableAdding,
       startTimer,
@@ -51,7 +55,10 @@ const wrapper = ({ children }: BaseProps) => (
       setFormSubmit,
       setBoardId,
       setBoardTime,
-      setBoardStatus
+      setBoardStatus,
+      selectCard,
+      unselectCard,
+      resetSelectedCards
     }}
   >
     {children}
