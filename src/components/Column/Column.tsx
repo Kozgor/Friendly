@@ -1,31 +1,30 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-params */
-import axios from 'axios';
-
+import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { BoardContext } from '../../context/board/boardContext';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
+
+import { cardAPI } from '../../api/CardAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
-import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { sortByDateStartOld } from '../../utils/sortByDate';
 
+import EditCard from '../EditCard/EditCard';
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
-import NewCard from '../EditCard/EditCard';
 import NewCommentInput from '../NewCommentInput/NewCommentInput';
 import classes from './Column.module.scss';
 import moment from 'moment';
 
 const Column = (props: IColumn) => {
-  const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
   const initialCard: IColumnCard = {
     _id: '',
-    columnId: '',
+    columnId: columnId,
     createdAt: '',
     cardComment: '',
     cardAuthorId: localUser._id,
@@ -34,9 +33,9 @@ const Column = (props: IColumn) => {
     cardTags: [],
     isEditable: true
   };
+  const { createCard, updateCard } = cardAPI();
 
   const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
-  const [isNewCard, setIsNewCard] = useState(false);
   const [finalizedCards, setFinalizedCards] = useState(() => sortByDateStartOld(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -55,17 +54,7 @@ const Column = (props: IColumn) => {
     cardIndex: number
   ) => {
     if (handledCard._id) {
-      axios
-        .put(`${FRIENDLY_DOMAIN}card/update-card`, {
-          _id: handledCard._id,
-          boardId: boardId,
-          columnId: columnId,
-          cardAuthorId: handledCard.cardAuthorId,
-          cardAuthor: handledCard.cardAuthor,
-          cardAuthorAvatar: handledCard.cardAuthorAvatar,
-          cardComment: handledCard.cardComment,
-          cardTags: handledCard.cardTags
-        })
+      updateCard(boardId, columnId, handledCard)
         .then(() => {
           setFinalizedCards(() => {
             cards.splice(cardIndex, 1, {
@@ -76,17 +65,7 @@ const Column = (props: IColumn) => {
           });
         });
     } else {
-      axios
-        .post(`${FRIENDLY_DOMAIN}card/create-card`, {
-          boardId,
-          columnId: columnId,
-          cardComment: handledCard.cardComment,
-          cardAuthor: handledCard.cardAuthor,
-          cardAuthorId: handledCard.cardAuthorId,
-          cardAuthorAvatar: handledCard.cardAuthorAvatar,
-          cardTags: handledCard.cardTags,
-          createdAt: handledCard.createdAt
-        })
+      createCard(boardId, columnId, handledCard)
         .then((res) => {
           setFinalizedCards((prevCards) => {
             const filteredCards = prevCards.filter((card) => !card.isEditable);
@@ -116,20 +95,6 @@ const Column = (props: IColumn) => {
     setIsButtonDisabled(isAddingDisabled);
   };
 
-  const onRemoveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
-    axios({
-      method: 'DELETE',
-      url: `${FRIENDLY_DOMAIN}card/remove-card`,
-      data: {
-        _id: handledCard._id
-      }
-    }).then(() => {
-      setFinalizedCards((prevCards) =>
-        prevCards.filter((card) => card._id !== handledCard._id)
-      );
-    });
-  };
-
   const handleAction = (actionType: string, handledCard: IColumnCard) => {
     const actionsMap: Record<
       string,
@@ -141,13 +106,10 @@ const Column = (props: IColumn) => {
     > = {
       save: onSaveHandler,
       edit: onEditHandler,
-      cancel: onCancelHandler,
-      remove: onRemoveHandler
+      cancel: onCancelHandler
     };
 
     const finCards = [...finalizedCards];
-
-    setIsNewCard(actionType === 'edit');
 
     const editableIndex = finCards.findIndex(
       (card) => card._id === handledCard._id
@@ -211,7 +173,7 @@ const Column = (props: IColumn) => {
         {finalizedCards?.map(
           (card) =>
             (card.isEditable && (
-              <NewCard
+              <EditCard
                 key={editableCard._id}
                 _id={editableCard._id}
                 columnId={editableCard.columnId}

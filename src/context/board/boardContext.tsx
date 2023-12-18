@@ -1,23 +1,31 @@
 import { createContext, useReducer } from 'react';
 import { BaseProps } from '../../interfaces/baseProps';
 import BoardReducer from './boardReducer';
+import { IColumnCard } from '../../interfaces/columnCard';
+import { IGlobalState } from '../../interfaces/globalState';
 
-export const initialGlobalState = {
+export const initialGlobalState: IGlobalState = {
   boardId: '',
   boardStatus: '',
   boardTime: 0,
   isFormSubmit: false,
   isTimerVisible: false,
+  isTimerStarted: false,
   isTimerFinalized: false,
   isAddingDisabled: true,
-  enableAdding: () => {},
-  disableAdding: () => {},
-  finalizeTimer: () => {},
-  setFormSubmit: () => {},
-  setBoardId: (id: string) => {},
-  setBoardTime: (boardTime: number) => {},
-  setTimerVisibility: (isTimerVisible: boolean) => {},
-  setBoardStatus: (status: string) => {}
+  selectedCards: [],
+  enableAdding: () => { },
+  disableCommentCreation: () => { },
+  startTimer: () => { },
+  finalizeTimer: () => { },
+  setFormSubmit: () => { },
+  setBoardId: (id: string) => { },
+  setBoardTime: (boardTime: number) => { },
+  setTimerVisibility: (isTimerVisible: boolean) => { },
+  setBoardStatus: (status: string) => { },
+  selectCard: (card: IColumnCard) => { },
+  unselectCard: (cardId: string) => { },
+  resetSelectedCards: () => { }
 };
 
 export const BoardContext = createContext(initialGlobalState);
@@ -31,7 +39,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
     });
   };
 
-  const disableAdding = () => {
+  const disableCommentCreation = () => {
     dispatch({
       type: 'ADDING_DISABLE'
     });
@@ -76,24 +84,56 @@ export const BoardProvider = ({ children }: BaseProps) => {
     });
   };
 
+  const startTimer = () => {
+    dispatch({
+      type: 'START_TIMER'
+    });
+  };
+
+  const selectCard = (card: IColumnCard) => {
+    dispatch({
+      type: 'SELECT_CARD',
+      payload: card
+    });
+  };
+
+  const unselectCard = (cardId: string) => {
+    dispatch({
+      type: 'UNSELECT_CARD',
+      payload: cardId
+    });
+  };
+
+  const resetSelectedCards = () => {
+    dispatch({
+      type: 'RESET_SELECTED_CARDS'
+    });
+  };
+
   return (
     <BoardContext.Provider
       value={{
         isAddingDisabled: state.isAddingDisabled,
+        isTimerStarted: state.isTimerStarted,
         isTimerFinalized: state.isTimerFinalized,
         isTimerVisible: state.isTimerVisible,
         isFormSubmit: state.isFormSubmit,
         boardId: state.boardId,
         boardStatus: state.boardStatus,
         boardTime: state.boardTime,
+        selectedCards: state.selectedCards,
         enableAdding,
-        disableAdding,
+        disableCommentCreation,
+        startTimer,
         finalizeTimer,
         setTimerVisibility,
         setBoardId,
         setBoardTime,
         setBoardStatus,
-        setFormSubmit
+        setFormSubmit,
+        selectCard,
+        unselectCard,
+        resetSelectedCards
       }}
     >
       {children}

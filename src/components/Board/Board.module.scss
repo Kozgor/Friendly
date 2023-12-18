@@ -29,3 +29,8 @@
     }
   }
 }
+
+.modalButtons {
+  @include flexbox(row, flex-end, center, nowrap);
+  width: 100%;
+}

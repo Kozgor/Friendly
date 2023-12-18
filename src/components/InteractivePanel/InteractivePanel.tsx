@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router';
 
 import classes from './InteractivePanel.module.scss';
 
-const InteractivePanel = (props : { childrenConfig: PropsChildren[] }) => {
+const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
   const navigate = useNavigate();
   const { childrenConfig } = props;
-  const [contentLeft, setContentLeft] = useState<ReactNode|string>(null);
-  const [contentCenter, setContentCenter] = useState<ReactNode|string>(null);
-  const [contentRigth, setContentRigtht] = useState<ReactNode|string>(null);
+  const [contentLeft, setContentLeft] = useState<ReactNode | string>(null);
+  const [contentCenter, setContentCenter] = useState<ReactNode | string>(null);
+  const [contentRigth, setContentRigtht] = useState<ReactNode | string>(null);
   const [backwardLabel, setBackwardLabel] = useState<string>('');
   const [forwardLabel, setForwardLabel] = useState<string>('');
   const isBackward = isString(contentLeft);
@@ -32,9 +32,12 @@ const InteractivePanel = (props : { childrenConfig: PropsChildren[] }) => {
 
   const setPanelChildren = () => {
     childrenConfig.forEach(child => {
-      const { element, label, path, position } = child;
+      const { element, label, path, position, mode } = child;
 
       if (position === 'right') {
+        if (mode && mode !== 'soloBoard') {
+          return;
+        }
         setContentRigtht(element || path);
         setForwardLabel(label || '');
 
@@ -66,13 +69,13 @@ const InteractivePanel = (props : { childrenConfig: PropsChildren[] }) => {
                 variant="solid"
                 onClick={onBackward}
                 sx={{
-                    backgroundColor: '#ffa62b',
-                    '&:hover': {
-                    backgroundColor: '#ffa62b'
-                    }
+                  backgroundColor: 'var(--friendly-palette-accent-900)',
+                  '&:hover': {
+                    backgroundColor: 'var(--friendly-palette-accent-900)'
+                  }
                 }}
               >
-                {icons.turnLeft('#fff')}
+                {icons.turnLeft('var(--friendly-palette-shades-50)')}
               </IconButton>
             </span> : contentLeft
           }
@@ -94,14 +97,14 @@ const InteractivePanel = (props : { childrenConfig: PropsChildren[] }) => {
               variant="solid"
               onClick={onForward}
               sx={{
-                  backgroundColor: '#ffa62b',
-                  '&:hover': {
-                  backgroundColor: '#ffa62b'
-                  }
+                backgroundColor: 'var(--friendly-palette-accent-900)',
+                '&:hover': {
+                  backgroundColor: 'var(--friendly-palette-accent-900)'
+                }
               }}
-              >
-                {icons.turnRight('#fff')}
-              </IconButton>
+            >
+              {icons.turnRight('var(--friendly-palette-shades-50)')}
+            </IconButton>
           </span> : contentRigth
         }
       </div>

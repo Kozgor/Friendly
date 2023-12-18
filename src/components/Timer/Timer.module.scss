@@ -1,31 +1,32 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .timer {
   @include flexbox(row, space-between, center, nowrap);
 
-  &__pause {
-    width: 20px;
-    height: 20px;
-
-    @include flexbox(row, center, center, nowrap);
-  }
-
   &__time {
-    color: #636b74;
-    margin: 0 10px;
+    color: $friendly-palette-neutral-700;
+    margin: 0 15px;
+    border: 1px solid $friendly-palette-neutral-100;
+    border-radius: 100px;
+    padding: 8px 25px;
+    cursor: context-menu;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24.5px;
   }
 
   &__pause,
   &__start,
   &__reset {
-    border: none;
-    background-color: #f5f6f7;
-  }
-
-  &__reset {
-    width: 20px;
-    height: 20px;
-
     @include flexbox(row, center, center, nowrap);
+    background-color: $friendly-palette-shades-50;
+    border: none;
+
+    i::before {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
   }
 }

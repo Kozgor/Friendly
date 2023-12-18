@@ -1,5 +1,6 @@
 const enableAdding = jest.fn();
-const disableAdding = jest.fn();
+const disableCommentCreation = jest.fn();
+const startTimer = jest.fn();
 const finalizeTimer = jest.fn();
 const setBoardId = jest.fn();
 const setBoardTime = jest.fn();
@@ -7,6 +8,9 @@ const setTimerVisibility = jest.fn();
 const setBoardStatus = jest.fn();
 const setFormSubmit = jest.fn();
 const getAllBoards = jest.fn();
+const selectCard = jest.fn();
+const unselectCard = jest.fn();
+const resetSelectedCards = jest.fn();
 
 jest.mock('../../api/BoardAPI', () => ({
   ...jest.requireActual('../../api/BoardAPI'),
@@ -38,17 +42,23 @@ const wrapper = ({ children }: BaseProps) => (
       boardStatus: 'active',
       boardTime: 5,
       isAddingDisabled: false,
+      isTimerStarted: false,
       isTimerFinalized: false,
       isTimerVisible: false,
       isFormSubmit: false,
+      selectedCards: [],
       enableAdding,
-      disableAdding,
+      disableCommentCreation,
+      startTimer,
       finalizeTimer,
       setTimerVisibility,
       setFormSubmit,
       setBoardId,
       setBoardTime,
-      setBoardStatus
+      setBoardStatus,
+      selectCard,
+      unselectCard,
+      resetSelectedCards
     }}
   >
     {children}

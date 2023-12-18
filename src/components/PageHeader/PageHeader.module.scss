@@ -15,23 +15,6 @@
     background-color: $friendly-palette-neutral-50;
   }
 
-  &__board-box {
-    width: 60%;
-
-    @include flexbox(row, flex-end, center, nowrap);
-
-    &__name {
-      cursor: context-menu;
-      margin-bottom: 0;
-    }
-  }
-
-  &__board-actions {
-    width: 30%;
-
-    @include flexbox(row, space-between, center, nowrap);
-  }
-
   &__user-box {
     width: 40%;
 

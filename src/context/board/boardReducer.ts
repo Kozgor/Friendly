@@ -14,6 +14,11 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
         ...state,
         isAddingDisabled: true
       };
+    case 'START_TIMER':
+      return {
+        ...state,
+        isTimerStarted: true
+      };
     case 'FINALIZE_TIMER':
       return {
         ...state,
@@ -43,6 +48,21 @@ const BoardReducer = (state: IGlobalState, action: IAction) => {
       return {
         ...state,
         isFormSubmit: true
+      };
+    case 'SELECT_CARD':
+      return {
+        ...state,
+        selectedCards: [...state.selectedCards, action.payload]
+      };
+    case 'UNSELECT_CARD':
+      return {
+        ...state,
+        selectedCards: state.selectedCards.filter(card => card._id !== action.payload)
+      };
+    case 'RESET_SELECTED_CARDS':
+      return {
+        ...state,
+        selectedCards: []
       };
     default:
       return state;
