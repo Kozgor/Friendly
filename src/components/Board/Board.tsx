@@ -40,7 +40,7 @@ const Board = () => {
     isTimerVisible,
     isTimerStarted,
     isAddingDisabled,
-    disableAdding,
+    disableCommentCreation,
     setFormSubmit,
     boardStatus,
     isFormSubmit,
@@ -63,16 +63,16 @@ const Board = () => {
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
   const layoutHeight = isAdmin ? '84vh' : '92vh';
-  const [isSubmitButton, setIsSubmitButton] = useState(true);
-  const isBoardPage = location.pathname.startsWith('/board/');
-  const isShowTimer = isTimerVisible && isSubmitButton && isBoardPage;
+  const [isBoardSubmitButton, setIsBoardSubmitButton] = useState(true);
+  const isPageWithBoard = location.pathname.startsWith('/board/');
+  const isShowTimer = isTimerVisible && isBoardSubmitButton && isPageWithBoard;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const completeBoard = () => {
     submitComments(localUser._id);
-    disableAdding();
+    disableCommentCreation();
     setFormSubmit();
-    setIsSubmitButton(false);
+    setIsBoardSubmitButton(false);
     setTimerVisibility(false);
     setIsModalOpen(false);
   };
@@ -81,11 +81,13 @@ const Board = () => {
     if (!isAddingDisabled) {
       removeCards(selectedCards).then(() => {
         const newBoardSettings = { ...boardSettings };
+
         newBoardSettings.columns.forEach(column => {
           selectedCards.forEach(selectedCard => {
             column.columnCards = column.columnCards.filter(card => card._id !== selectedCard._id);
           });
         });
+
         setBoardSettings(newBoardSettings);
         resetSelectedCards();
       });

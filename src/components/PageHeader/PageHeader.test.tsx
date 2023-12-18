@@ -41,7 +41,7 @@ describe('PageHeader component', () => {
   });
 
   const enableAdding = jest.fn();
-  const disableAdding = jest.fn();
+  const disableCommentCreation = jest.fn();
   const startTimer = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
@@ -66,7 +66,7 @@ describe('PageHeader component', () => {
         isFormSubmit: false,
         selectedCards: [],
         enableAdding,
-        disableAdding,
+        disableCommentCreation,
         startTimer,
         finalizeTimer,
         setFormSubmit,

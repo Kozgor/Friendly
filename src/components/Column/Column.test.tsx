@@ -8,7 +8,7 @@ import { BoardContext } from '../../context/board/boardContext';
 describe('Column component', () => {
   let component: RenderResult;
   const enableAdding = jest.fn();
-  const disableAdding = jest.fn();
+  const disableCommentCreation = jest.fn();
   const startTimer = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
@@ -34,7 +34,7 @@ describe('Column component', () => {
           isFormSubmit: false,
           selectedCards: [],
           enableAdding,
-          disableAdding,
+          disableCommentCreation,
           startTimer,
           finalizeTimer,
           setFormSubmit,

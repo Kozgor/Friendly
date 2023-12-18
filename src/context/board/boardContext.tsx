@@ -15,7 +15,7 @@ export const initialGlobalState: IGlobalState = {
   isAddingDisabled: true,
   selectedCards: [],
   enableAdding: () => { },
-  disableAdding: () => { },
+  disableCommentCreation: () => { },
   startTimer: () => { },
   finalizeTimer: () => { },
   setFormSubmit: () => { },
@@ -39,7 +39,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
     });
   };
 
-  const disableAdding = () => {
+  const disableCommentCreation = () => {
     dispatch({
       type: 'ADDING_DISABLE'
     });
@@ -123,7 +123,7 @@ export const BoardProvider = ({ children }: BaseProps) => {
         boardTime: state.boardTime,
         selectedCards: state.selectedCards,
         enableAdding,
-        disableAdding,
+        disableCommentCreation,
         startTimer,
         finalizeTimer,
         setTimerVisibility,

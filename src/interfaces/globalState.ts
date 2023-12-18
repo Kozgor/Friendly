@@ -11,7 +11,7 @@ export interface IGlobalState {
   isFormSubmit: boolean;
   selectedCards: IColumnCard[];
   enableAdding: () => void;
-  disableAdding: () => void;
+  disableCommentCreation: () => void;
   startTimer: () => void;
   finalizeTimer: () => void;
   setFormSubmit: () => void;

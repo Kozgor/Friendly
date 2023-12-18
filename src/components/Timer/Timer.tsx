@@ -18,7 +18,7 @@ const Timer = () => {
 
   const [countdownTimer, setTimer] = useState(initialTimerState);
   const countdownRef = useRef<Countdown>(null);
-  const { boardTime, enableAdding, disableAdding, finalizeTimer, setTimerVisibility, startTimer } = useContext(BoardContext);
+  const { boardTime, enableAdding, disableCommentCreation, finalizeTimer, setTimerVisibility, startTimer } = useContext(BoardContext);
   const timeMultiplier = useMemo(() => 60000, []);
   const now = moment().toDate().getTime();
   const date = useMemo(() => now + (boardTime * timeMultiplier), [boardTime, now, timeMultiplier]);
@@ -38,7 +38,7 @@ const Timer = () => {
       ...prevState,
       isTimerPaused: true
     }));
-    disableAdding();
+    disableCommentCreation();
   };
 
   const resetTimer = () => {
@@ -47,7 +47,7 @@ const Timer = () => {
       ...prevState,
       isTimerPaused: true
     }));
-    disableAdding();
+    disableCommentCreation();
   };
 
   const showTimer = () => {
@@ -65,7 +65,7 @@ const Timer = () => {
       ...prevState,
       isTimerCompleted: true
     }));
-    disableAdding();
+    disableCommentCreation();
     finalizeTimer();
     setTimerVisibility(false);
   }, []);

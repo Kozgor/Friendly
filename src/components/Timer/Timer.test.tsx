@@ -14,7 +14,7 @@ describe('Timer component', () => {
   let component: RenderResult;
   let startButton: HTMLElement;
   const enableAdding = jest.fn();
-  const disableAdding = jest.fn();
+  const disableCommentCreation = jest.fn();
   const startTimer = jest.fn();
   const finalizeTimer = jest.fn();
   const setBoardId = jest.fn();
@@ -39,7 +39,7 @@ describe('Timer component', () => {
         isFormSubmit: false,
         selectedCards: [],
         enableAdding,
-        disableAdding,
+        disableCommentCreation,
         startTimer,
         finalizeTimer,
         setFormSubmit,
@@ -144,7 +144,7 @@ describe('Timer component', () => {
 
       await waitFor(
         () => {
-          expect(disableAdding).toHaveBeenCalled();
+          expect(disableCommentCreation).toHaveBeenCalled();
         },
         { timeout: 100 }
       );
@@ -157,7 +157,7 @@ describe('Timer component', () => {
 
       await waitFor(
         () => {
-          expect(disableAdding).toHaveBeenCalled();
+          expect(disableCommentCreation).toHaveBeenCalled();
         },
         { timeout: 100 }
       );

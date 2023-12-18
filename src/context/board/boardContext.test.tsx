@@ -15,7 +15,7 @@ describe('BoardProvider', () => {
               <button data-testid="enable-button" onClick={context.enableAdding}>
                 Enable Adding
               </button>
-              <button data-testid="disable-button" onClick={context.disableAdding}>
+              <button data-testid="disable-button" onClick={context.disableCommentCreation}>
                 Disable Adding
               </button>
               <span data-testid="is-adding-disabled">{context.isAddingDisabled.toString()}</span>
@@ -32,7 +32,7 @@ describe('BoardProvider', () => {
     getByTestId = renderResult.getByTestId;
   });
 
-  it('should update state when enableAdding and disableAdding functions are called', () => {
+  it('should update state when enableAdding and disableCommentCreation functions are called', () => {
     const enableButton = getByTestId('enable-button');
     const disableButton = getByTestId('disable-button');
     const isAddingDisabledElement = getByTestId('is-adding-disabled');
