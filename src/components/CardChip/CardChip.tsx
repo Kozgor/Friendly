@@ -2,7 +2,7 @@ import { Chip } from '@mui/joy';
 import { defaultTheme } from '../../theme/default';
 import { possibleCardTags } from '../../types/cardTags';
 
-const CardChip = (props: { tag: string }) => {
+const CardChip = (props: { tag: string}) => {
   const { tag } = props;
 
   const setChipColor = {
@@ -26,7 +26,7 @@ const CardChip = (props: { tag: string }) => {
       size='sm'
       sx={{
         textAlign: 'center',
-        minWidth: setChipSize[tag],
+        minWidth: setChipSize[tag] ?? '10px',
         height: '26px',
         variant: 'solid',
         fontSize: '10px',

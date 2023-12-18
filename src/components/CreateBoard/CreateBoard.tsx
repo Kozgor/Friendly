@@ -18,7 +18,6 @@ const CreateBoard = () => {
       <TitlePanel title={title}></TitlePanel>
       <Box
         className={classes.createBoardBox}
-        component="main"
       >
         <div
           className={classes.defaultBoard}

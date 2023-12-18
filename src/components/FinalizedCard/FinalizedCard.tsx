@@ -17,7 +17,7 @@ import { isNull } from 'lodash';
 
 import { BoardContext } from '../../context/board/boardContext';
 import CardAvatar from '../CardAvatar/CardAvatar';
-import CardTagChip from '../CardChip/CardChip';
+import CardChip from '../CardChip/CardChip';
 import { IColumnCard } from '../../interfaces/columnCard';
 import { columnAPI } from '../../api/ColumnAPI';
 import { icons } from '../../theme/icons/icons';
@@ -104,6 +104,9 @@ const FinalizedCard = (props: IColumnCard) => {
       sx={{
         '--Card-padding': '10px',
         gap: 'unset',
+        width: 'calc(100% - 16px)',
+        marginLeft: '8px',
+        marginRight: '8px',
         marginBottom: '30px',
         minHeight: isShownAllText ? 140 : 'unset',
         height: isShownAllText ? 'unset' : 140,
@@ -190,7 +193,7 @@ const FinalizedCard = (props: IColumnCard) => {
           {isShownAllTags && cardTags &&
             <div className={classes.tags}>
               {cardTags?.map((tag) => (
-                <CardTagChip datda-testid='tag' key={tag} tag={tag} />
+                <CardChip datda-testid='tag' key={tag} tag={tag} />
               ))}
             </div>
           }
@@ -198,8 +201,8 @@ const FinalizedCard = (props: IColumnCard) => {
             <div className={classes.tags}>
               {
                 <>
-                  <CardTagChip key={cardTags[0]} tag={cardTags[0]} />
-                  <CardTagChip key={cardTags[1]} tag={cardTags[1]} />
+                  <CardChip key={cardTags[0]} tag={cardTags[0]} />
+                  <CardChip key={cardTags[1]} tag={cardTags[1]} />
                   <Dropdown>
                     <MenuButton
                       variant='plain'

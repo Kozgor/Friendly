@@ -61,8 +61,8 @@ const Board = () => {
   const isAdmin = localUser.role === 'admin';
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
-  const URLBoardId = useBoardIdLocation();
-  const layoutHeight = isAdmin ? '80vh' : '90vh';
+  const URLBoardId= useBoardIdLocation();
+  const layoutHeight = isAdmin ? '84vh' : '92vh';
   const [isSubmitButton, setIsSubmitButton] = useState(true);
   const isBoardPage = location.pathname.startsWith('/board/');
   const isShowTimer = isTimerVisible && isSubmitButton && isBoardPage;

@@ -3,7 +3,7 @@
 .titleContainer {
   @include flexbox(row, space-between, center, nowrap);
   width: 100%;
-  height: 10vh;
+  height: 8vh;
   font-size: 26px;
   font-weight: 400;
   color: #191d23;

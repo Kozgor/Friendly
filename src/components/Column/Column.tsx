@@ -1,24 +1,28 @@
+/* eslint-disable max-lines */
+/* eslint-disable max-params */
+import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
-import Button from '@mui/joy/Button';
-
 import { BoardContext } from '../../context/board/boardContext';
-import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import { IColumn } from '../../interfaces/column';
 import { IColumnCard } from '../../interfaces/columnCard';
-import NewCard from '../NewCard/NewCard';
+
 import { cardAPI } from '../../api/CardAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
 import { sortByDateStartOld } from '../../utils/sortByDate';
 
+import EditCard from '../EditCard/EditCard';
+import FinalizedCard from '../FinalizedCard/FinalizedCard';
+import NewCommentInput from '../NewCommentInput/NewCommentInput';
 import classes from './Column.module.scss';
+import moment from 'moment';
 
 const Column = (props: IColumn) => {
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
-  const initialCard = {
+  const initialCard: IColumnCard = {
     _id: '',
     columnId: columnId,
     createdAt: '',
@@ -31,11 +35,11 @@ const Column = (props: IColumn) => {
   };
   const { createCard, updateCard } = cardAPI();
 
-  const { boardId, boardStatus, isAddingDisabled, isTimerFinalized } = useContext(BoardContext);
-  const [isNewCard, setIsNewCard] = useState(false);
+  const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
   const [finalizedCards, setFinalizedCards] = useState(() => sortByDateStartOld(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const isActiveBoard = boardStatus === 'active';
   const isAddButtonDisabled = isButtonDisabled || isAddingDisabled;
 
   useEffect(() => {
@@ -43,12 +47,6 @@ const Column = (props: IColumn) => {
       setFinalizedCards(sortByDateStartOld(columnCards));
     }
   }, [columnCards]);
-
-  const onCreateCard = () => {
-    setIsNewCard(true);
-    setFinalizedCards((prevCards) => [editableCard, ...prevCards]);
-    setIsButtonDisabled(true);
-  };
 
   const onSaveHandler = (
     cards: IColumnCard[],
@@ -113,8 +111,6 @@ const Column = (props: IColumn) => {
 
     const finCards = [...finalizedCards];
 
-    setIsNewCard(actionType === 'edit');
-
     const editableIndex = finCards.findIndex(
       (card) => card._id === handledCard._id
     );
@@ -145,33 +141,39 @@ const Column = (props: IColumn) => {
     return isHappyUser;
   };
 
+  const sendNewComment = (
+    cardAuthor: string,
+    cardComment: string,
+    cardTags: CardTag[]
+  ) => {
+    const createdAt = moment().toISOString();
+    const newCard: IColumnCard = {
+      _id: initialCard._id,
+      columnId,
+      createdAt: createdAt,
+      cardComment,
+      cardAuthorId: localUser._id,
+      cardAuthor,
+      cardAuthorAvatar: localUser.avatar || 'Incognito',
+      cardTags,
+      isEditable: isAddButtonDisabled
+    };
+    handleAction('save', newCard);
+  };
+
   return (
     <section className={classes.column}>
       <div className={classes['column__header']}>
-        <h2>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
+        <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
           <span className={classes['column__header__couner']}>({columnCards.length})</span>}
-        </h2>
+        </h4>
         <p className={classes['column__header__subtitle']}>{columnSubtitle}</p>
       </div>
-      {(boardStatus === 'active' && !isTimerFinalized) &&
-        <div className={classes['column__adding']}>
-          <Button
-            data-testid='addNewCommentButton'
-            disabled={isAddButtonDisabled}
-            role='button'
-            aria-label='Add new comment'
-            onClick={onCreateCard}
-          >
-            <i className='bi bi-plus'></i>
-            <h5>Add comment</h5>
-          </Button>
-        </div>
-      }
-      <div id='comments' className={classes['column__comments']}>
+      <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>
         {finalizedCards?.map(
           (card) =>
-            (isNewCard && card.isEditable && (
-              <NewCard
+            (card.isEditable && (
+              <EditCard
                 key={editableCard._id}
                 _id={editableCard._id}
                 columnId={editableCard.columnId}
@@ -205,6 +207,17 @@ const Column = (props: IColumn) => {
             )
         )}
       </div>
+      {isActiveBoard &&
+        <div className={classes.cardCommentContainer}>
+          <NewCommentInput
+            userName={localUser.fullName}
+            userAvatar={localUser.avatar}
+            cardTags={possibleCardTags}
+            isDisabled={isAddButtonDisabled}
+            sendNewComment={sendNewComment}
+          />
+        </div>
+      }
     </section>
   );
 };
