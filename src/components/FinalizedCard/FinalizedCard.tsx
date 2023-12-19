@@ -108,7 +108,6 @@ const FinalizedCard = (props: IColumnCard) => {
         marginLeft: '8px',
         marginRight: '8px',
         marginBottom: '30px',
-        minHeight: isShownAllText ? 140 : 'unset',
         height: isShownAllText ? 'unset' : 140,
         backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
@@ -133,7 +132,8 @@ const FinalizedCard = (props: IColumnCard) => {
         <Typography component='p' sx={{
           display: isShownAllText ? 'block' : '-webkit-box',
           'WebkitLineClamp': '3',
-          lineHeight: 1
+          lineHeight: 1,
+          height: 'auto'
         }} ref={cardCommentRef}>{cardComment}</Typography>
       </div >
       {
