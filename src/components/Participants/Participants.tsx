@@ -7,9 +7,8 @@ import {
   Typography
 } from '@mui/joy';
 import { CloseRounded, KeyboardArrowDown } from '@mui/icons-material';
+import { MouseEvent, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Select, { selectClasses } from '@mui/joy/Select';
-import { useEffect, useMemo, useRef, useState } from 'react';
-
 import { IParticipants } from '../../interfaces/participants';
 
 import classes from './Participants.module.scss';
@@ -25,27 +24,30 @@ const Participants = (props: IParticipants) => {
   const isChecked = useMemo(() => personNames.length === participants.length, [personNames, participants]);
 
   useEffect(() => {
-    setPersonNames([...participants]);
-    setSelected([...participants]);
+    setPersonNames(participants.map(participant => participant.fullName));
+    setSelected(participants.map(participant => participant.email));
+    collectParticipants(participants.map(participant => participant.email));
   }, [participants]);
 
-  const handleChange = (event: React.SyntheticEvent | null,
-    newValue: Array<string> | null) => {
-    setPersonNames(newValue || []);
+  const handleChange = (event: SyntheticEvent | null,
+    newValue: Array<string>) => {
+    setPersonNames(newValue);
     collectParticipants([...selected]);
   };
 
   const handleSelectAll = () => {
+    if (personNames.length !== participants.length) {
+      setPersonNames(participants.map(participant => participant.fullName));
+      setSelected(participants.map(participant => participant.email));
+      collectParticipants(participants.map(participant => participant.email));
+
+      return;
+    }
+
     setChecked(checked.map(() => !!checked.includes(false)));
     setSelected([]);
     setPersonNames([]);
     collectParticipants([]);
-
-    if (personNames.length !== participants.length) {
-      setSelected([...participants]);
-      setPersonNames([...participants]);
-      collectParticipants([...participants]);
-    }
   };
 
   const handleSelect = (name: string) => {
@@ -57,21 +59,20 @@ const Participants = (props: IParticipants) => {
     setSelected(updatesdList);
   };
 
-  const removeParticipate = (event: any) => {
-    event.stopPropagation();
-    const element = event.target.classList.contains('MuiSvgIcon-root') ? event.target : event.target.parentElement;
-    const filteredValues = personNames.filter(item => item !== element.id);
+  const removeParticipate = (value: string) => {
+    const filteredValues = personNames.filter(item => item !== value);
+
     setSelected(filteredValues);
     setPersonNames(filteredValues);
-    collectParticipants([...filteredValues]);
+    collectParticipants(filteredValues);
   };
 
-  useEffect(() => {
-    if (!isChecked) {
-      collectParticipants(selected);
-    }
-
-  }, [selected, checked]);
+  const onEndDecorator = () => {
+    setChecked(checked.map(() => !!checked.includes(false)));
+    setSelected([]);
+    setPersonNames([]);
+    collectParticipants([]);
+  };
 
   return (
     <div className={classes.mainContainer}>
@@ -111,7 +112,7 @@ const Participants = (props: IParticipants) => {
                   }
                 }}>
                   {selectedOption.value}
-                  <CloseRounded onClick={removeParticipate} id={selectedOption.value}
+                  <CloseRounded onClick={() => removeParticipate(selectedOption.value)}
                     sx={{
                       color: 'var(--friendly-palette-primary-700)',
                       backgroundColor: 'var(--friendly-palette-shades-50)',
@@ -147,12 +148,10 @@ const Participants = (props: IParticipants) => {
                 size="sm"
                 variant="plain"
                 color="neutral"
-                onMouseDown={(event: any) => {
+                onMouseDown={(event: MouseEvent<HTMLButtonElement>) => {
                   event.stopPropagation();
                 }}
-                onClick={() => {
-                  setPersonNames([]);
-                }}
+                onClick={onEndDecorator}
                 sx={{
                   marginRight: '5px',
                   position: 'absolute',
@@ -169,14 +168,20 @@ const Participants = (props: IParticipants) => {
             )
           })}
         >
-          {participants.map(name => (
-            <Option
-              key={name}
-              data-testid={`select-option-${name}`}
-              value={name}
-              onClick={() => handleSelect(name)}
-            ><Typography level='body-md'>{name}</Typography></Option>
-          ))}
+          {participants.map(participant => {
+            const { fullName, email } = participant;
+
+            return (
+              <Option
+                key={email}
+                data-testid={`select-option-${email}`}
+                value={fullName}
+                onClick={() => handleSelect(email)}
+              >
+                <Typography level='body-md'>{fullName}</Typography>
+              </Option>);
+            }
+          )}
         </Select>
       </section >
     </div >

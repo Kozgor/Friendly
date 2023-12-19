@@ -1,4 +1,4 @@
 export interface IParticipants {
-    participants: string[];
+    participants: any[];
     collectParticipants: (participants: (string | null)[]) => void;
   }
