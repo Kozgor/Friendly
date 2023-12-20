@@ -75,12 +75,6 @@ describe('Admin component', () => {
       expect(breadcrumbs).toHaveAttribute('aria-label', 'breadcrumbs');
     });
 
-    test('should contain "backLink"', () => {
-      const backLink = screen.getByTestId('backLink');
-
-      expect(backLink).toBeInTheDocument();
-    });
-
     test('should contain "Default Board" title', () => {
       const defaultTitle = screen.getByTestId('defaultTitle');
 

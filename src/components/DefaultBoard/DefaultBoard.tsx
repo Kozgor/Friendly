@@ -3,14 +3,10 @@ import moment from 'moment';
 
 import {
   Box,
-  Breadcrumbs,
   Button,
-  Input,
-  Typography
+  Input
 } from '@mui/joy';
-import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 import { BOARD_PUBLISH_MESSAGE, panelTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
@@ -24,6 +20,8 @@ import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import Toastr from '../Toastr/Toastr';
 import { numericFormatAdapter } from '../../utils/numericFormatAdapter';
 import { pathConstants } from '../../router/pathConstants';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
 import classes from './DefaultBoard.module.scss';
@@ -176,13 +174,6 @@ const DefaultBoard = () => {
     >
       <div className={classes.navbar}>
         <InteractivePanel childrenConfig={childrenConfig}></InteractivePanel>
-        <Breadcrumbs aria-label="breadcrumbs" separator="<" data-testid="breadcrumbs" sx={{ paddingLeft: '1.5rem' }}>
-          <Link className={classes.link} to="/admin" data-testid="backLink">
-            Back
-          </Link>
-          <Typography component="h3" data-testid="defaultTitle">Default Board</Typography>
-        </Breadcrumbs>
-
       </div>
       <form className={classes.boardSettings}>
         {boardSettingsCollection.map(setting => (
