@@ -321,7 +321,7 @@ const Board = () => {
     <>
       {completeBoardModal}
       <div className={classes['board-container']}>
-        {isAdmin && <InteractivePanel childrenConfig={adminInteractivePanelConfig} />}
+        {(isAdmin && isBoard) && <InteractivePanel childrenConfig={adminInteractivePanelConfig} />}
         {(!isAdmin && isBoard) && <InteractivePanel childrenConfig={userInteractivePanelConfig} />}
         <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
           {isBoard &&
