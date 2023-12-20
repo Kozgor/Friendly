@@ -63,7 +63,7 @@ const Board = () => {
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const URLBoardId= useBoardIdLocation();
-  const layoutHeight = isAdmin ? '84vh' : '92vh';
+  const layoutHeight = isBoard ? '84vh' : '92vh';
   const [isBoardSubmitButton, setIsBoardSubmitButton] = useState(true);
   const isPageWithBoard = location.pathname.startsWith('/board/');
   const isShowTimer = isTimerVisible && isBoardSubmitButton && isPageWithBoard;
@@ -274,7 +274,7 @@ const Board = () => {
       </Button>}
     </>;
 
-  const childrenConfig: PropsChildren[] = [
+  const adminInteractivePanelConfig: PropsChildren[] = [
     {
       path: pathConstants.ADMIN,
       label: boardSettings.name,
@@ -297,6 +297,22 @@ const Board = () => {
     }
   ];
 
+  const userInteractivePanelConfig: PropsChildren[] = [
+    {
+      label: boardSettings.name,
+      position: 'left'
+    },
+    {
+      element: isShowTimer && <Timer />,
+      position: 'center'
+    },
+    {
+      element: isTimerStarted && actionButtons,
+      position: 'right',
+      mode: 'soloBoard'
+    }
+  ];
+
   useEffect(() => {
     fetchUserData();
   }, [boardStatus, URLBoardId]);
@@ -305,7 +321,8 @@ const Board = () => {
     <>
       {completeBoardModal}
       <div className={classes['board-container']}>
-        {isAdmin && <InteractivePanel childrenConfig={childrenConfig} />}
+        {isAdmin && <InteractivePanel childrenConfig={adminInteractivePanelConfig} />}
+        {(!isAdmin && isBoard) && <InteractivePanel childrenConfig={userInteractivePanelConfig} />}
         <div className={classes.board} style={{ height: layoutHeight }} data-testid='board'>
           {isBoard &&
             boardSettings?.columns.map((column) => (

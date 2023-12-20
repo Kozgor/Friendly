@@ -34,7 +34,7 @@ const DefaultBoard = () => {
   const { setBoardId } = useContext(BoardContext);
   const { getAllUsers } = userAPI();
   const [isCreatingBoard, setIsCreatingBoard] = useState(false);
-  const [names, setNames] = useState<string[]>([]);
+  const [participantsList, setParticipantsList] = useState<any[]>([]);
   const [columns, setColumns] = useState<IColumn[]>(INITIAL_COLUMNS);
   const initialSettingsValue = {
     name: 'RETROSPECTIVE',
@@ -149,9 +149,14 @@ const DefaultBoard = () => {
     const fetchUsers = async () => {
       try {
         const allUsers = await getAllUsers();
-        const allUserNames = allUsers?.map(user => user.fullName) || [];
+        if (allUsers) {
+          const participants = allUsers.map(participant => ({
+            fullName: participant.fullName,
+            email: participant.email
+          }));
 
-        setNames(allUserNames || []);
+          setParticipantsList(participants);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -245,7 +250,7 @@ const DefaultBoard = () => {
             }
             {setting.key === 'participants' &&
               <Participants
-                participants={names}
+                participants={participantsList}
                 collectParticipants={setting.onChange}
               />
             }

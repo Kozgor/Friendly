@@ -1,7 +1,5 @@
 /* eslint-disable max-lines */
 /* eslint-disable complexity */
-import { useContext, useEffect, useRef, useState } from 'react';
-
 import {
   Button,
   Card,
@@ -12,16 +10,23 @@ import {
   MenuItem,
   Typography
 } from '@mui/joy';
+import {
+  MouseEvent,
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
-import { isNull } from 'lodash';
-
 import { BoardContext } from '../../context/board/boardContext';
-import CardAvatar from '../CardAvatar/CardAvatar';
-import CardChip from '../CardChip/CardChip';
 import { IColumnCard } from '../../interfaces/columnCard';
 import { columnAPI } from '../../api/ColumnAPI';
 import { icons } from '../../theme/icons/icons';
+import { isNull } from 'lodash';
 
+import CardAvatar from '../CardAvatar/CardAvatar';
+import CardChip from '../CardChip/CardChip';
 import classes from './FinalizedCard.module.scss';
 
 const FinalizedCard = (props: IColumnCard) => {
@@ -60,6 +65,15 @@ const FinalizedCard = (props: IColumnCard) => {
   const onClickReaction = (isHappyReaction: boolean) => {
     setReactionState(isHappyReaction);
     updateColumnCardReaction(_id, cardActionAuthorId || '', isHappyReaction);
+  };
+
+  const onShowMoreTags: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+  };
+
+  const onShowMoreText = (event: MouseEvent<HTMLButtonElement>, isFullVisibility: boolean) => {
+    event.stopPropagation();
+    setIsShownAllText(isFullVisibility);
   };
 
   const toggleSelectCard = () => {
@@ -108,7 +122,6 @@ const FinalizedCard = (props: IColumnCard) => {
         marginLeft: '8px',
         marginRight: '8px',
         marginBottom: '30px',
-        minHeight: isShownAllText ? 140 : 'unset',
         height: isShownAllText ? 'unset' : 140,
         backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
@@ -133,7 +146,8 @@ const FinalizedCard = (props: IColumnCard) => {
         <Typography component='p' sx={{
           display: isShownAllText ? 'block' : '-webkit-box',
           'WebkitLineClamp': '3',
-          lineHeight: 1
+          lineHeight: 1,
+          height: 'auto'
         }} ref={cardCommentRef}>{cardComment}</Typography>
       </div >
       {
@@ -142,7 +156,7 @@ const FinalizedCard = (props: IColumnCard) => {
             data-testid='showMoreButton'
             variant='plain'
             className={classes.showButton}
-            onClick={() => setIsShownAllText(true)}
+            onClick={(event: MouseEvent<HTMLButtonElement>) => onShowMoreText(event, true)}
             sx={{
               color: 'var(--friendly-palette-shades-900)',
               fontSize: 10,
@@ -166,7 +180,7 @@ const FinalizedCard = (props: IColumnCard) => {
             data-testid='showLessButton'
             variant='plain'
             className={classes.showButton}
-            onClick={() => setIsShownAllText(false)}
+            onClick={(event: MouseEvent<HTMLButtonElement>) => onShowMoreText(event, false)}
             sx={{
               color: 'var(--friendly-palette-shades-900)',
               fontSize: 10,
@@ -207,6 +221,7 @@ const FinalizedCard = (props: IColumnCard) => {
                     <MenuButton
                       variant='plain'
                       size='sm'
+                      onClick={event => onShowMoreTags(event)}
                       sx={{
                         padding: '6px 8px',
                         backgroundColor: 'var(--friendly-palette-neutral-50)',
