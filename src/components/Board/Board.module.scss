@@ -6,14 +6,16 @@
   height: auto;
   background-color: $friendly-palette-neutral-50;
 
-  @include flexbox(column, center, center, nowrap);
+  @include flexbox(column, space-between, center, nowrap);
 }
 
 .board {
   width: 100%;
   padding-top: 20px;
+  padding-left: 38px;
+  padding-right: 38px;
 
-  @include flexbox(row, center, center, nowrap);
+  @include flexbox(row, space-between, center, nowrap);
 
   .addingColumn {
     width: 360px;

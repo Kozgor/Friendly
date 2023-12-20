@@ -61,7 +61,7 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
 
   return (
     <div className={classes.interactivePanelContainer}>
-      <div className={classes.interactivePanelElement}>
+      <div className={classes.interactivePanelElementLeft}>
         <span className={classes.panelLeftElement}>
           {isBackward ?
             <span>
@@ -84,10 +84,10 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
           {backwardLabel}
         </span>
       </div>
-      <div className={classes.interactivePanelElement}>
+      <div className={classes.interactivePanelElementCenter}>
         {contentCenter}
       </div>
-      <div className={classes.interactivePanelElement}>
+      <div className={classes.interactivePanelElementRight}>
         <span className={classes.panelRightLabel}>
           {forwardLabel}
         </span>

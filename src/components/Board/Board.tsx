@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 import { Button, CircularProgress, Modal, ModalDialog, Typography } from '@mui/joy';
 import {
@@ -254,7 +255,7 @@ const Board = () => {
         >
           {icons.delete()}
         </Button>}
-      <Button
+      {isTimerVisible && <Button
         data-testid="completeButton"
         color='secondary'
         variant='solid'
@@ -270,7 +271,7 @@ const Board = () => {
         }}
       >
         Complete
-      </Button>
+      </Button>}
     </>;
 
   const childrenConfig: PropsChildren[] = [
