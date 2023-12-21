@@ -13,7 +13,7 @@
 }
 
 .boardsManagementContainer {
-  @include flexbox(column, center, stretch, nowrap);
+  @include flexbox(column, center, center, unset);
   margin-bottom: 10px;
   width: 100%;
   height: 75vh;

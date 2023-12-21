@@ -46,7 +46,9 @@ const BoardsManagement = () => {
         padding: 0,
         marginLeft: 0,
         width: '100%',
-        height: '92vh'
+        height: '92vh',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
       <TitlePanel title={panelTitles.boardsManagement}></TitlePanel>
