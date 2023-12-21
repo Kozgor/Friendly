@@ -198,6 +198,7 @@ const NewCard = (props: IColumnCard) => {
             </div>
             <div className={classes.cardFooterSaveButton}>
               <IconButton
+                className={classes.cardFooterSaveButtonComponent}
                 data-testid='editCardButtonSave'
                 variant='solid'
                 onClick={onSaveCard}

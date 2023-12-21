@@ -255,7 +255,7 @@ const Board = () => {
         >
           {icons.delete()}
         </Button>}
-      <Button
+      {isTimerVisible && <Button
         data-testid="completeButton"
         color='secondary'
         variant='solid'
@@ -271,7 +271,7 @@ const Board = () => {
         }}
       >
         Complete
-      </Button>
+      </Button>}
     </>;
 
   const adminInteractivePanelConfig: PropsChildren[] = [

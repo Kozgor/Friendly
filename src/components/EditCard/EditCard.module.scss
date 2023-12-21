@@ -1,4 +1,5 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .editCardTop {
   @include flexbox(row, flex-start, center, nowrap);
@@ -38,6 +39,10 @@
   .editCardButtons {
     @include flexbox(row, flex-end, center, nowrap);
     width: 20%;
+
+    .cardFooterSaveButtonComponent {
+      background-color: $friendly-palette-accent-900;
+    }
   }
 
   .cardFooterCancelButton {
