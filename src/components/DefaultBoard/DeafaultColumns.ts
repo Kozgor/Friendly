@@ -1,24 +1,26 @@
+import { columnConfigurationPlaceholders } from '../../constants';
+
 export const INITIAL_COLUMNS = [
   {
       columnId: 'start',
-      columnTitle: 'START',
-      columnSubtitle: '',
+      columnTitle: columnConfigurationPlaceholders.inputTitle.start,
+      columnSubtitle: columnConfigurationPlaceholders.textareaSubtitle,
       columnAvatar: '',
       columnStyle: '',
       columnCards: []
   },
   {
       columnId: 'stop',
-      columnTitle: 'STOP',
-      columnSubtitle: '',
+      columnTitle: columnConfigurationPlaceholders.inputTitle.stop,
+      columnSubtitle: columnConfigurationPlaceholders.textareaSubtitle,
       columnAvatar: '',
       columnStyle: '',
       columnCards: []
   },
   {
       columnId: 'continue',
-      columnTitle: 'CONTINUE',
-      columnSubtitle: '',
+      columnTitle: columnConfigurationPlaceholders.inputTitle.continue,
+      columnSubtitle: columnConfigurationPlaceholders.textareaSubtitle,
       columnAvatar: '',
       columnStyle: '',
       columnCards: []

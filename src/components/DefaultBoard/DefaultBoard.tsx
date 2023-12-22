@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import axios from 'axios';
 import moment from 'moment';
 
@@ -68,7 +69,7 @@ const DefaultBoard = () => {
 
   const boardSettingsCollection = [{
     key: 'name',
-    label: 'Board Name:',
+    label: 'Board Name',
     type: 'input',
     value: boardSettings.name,
     disabled: false,
@@ -76,7 +77,7 @@ const DefaultBoard = () => {
     placeholder: 'Please enter board name...'
   }, {
     key: 'timer',
-    label: 'Timer (min):',
+    label: 'Timer (min)',
     type: 'number',
     value: boardSettings.timer,
     disabled: false,
@@ -84,7 +85,7 @@ const DefaultBoard = () => {
     placeholder: 'Please enter board timer...'
   }, {
     key: 'participants',
-    label: 'Participants:',
+    label: 'Participants',
     type: 'select',
     value: boardSettings.participants,
     disabled: false,
@@ -130,12 +131,16 @@ const DefaultBoard = () => {
     {
       element: <>
         <Button
-          color="neutral"
+          color='secondary'
           variant="solid"
           type="button"
           aria-label="solid neutral button for publishing the board"
           onClick={publishSettings}
           data-testid="publishButton"
+          sx={{
+            backgroundColor: 'var(--friendly-palette-secondary-900)',
+            color: 'var(--friendly-palette-shades-50)'
+          }}
         >
           Publish
         </Button></>,
@@ -164,104 +169,120 @@ const DefaultBoard = () => {
   }, []);
 
   return (
-    <Box
-      component="section"
-      sx={{
-        flexGrow: 1,
-        bgcolor: 'background.default',
-        marginLeft: 0
-      }}
-    >
-      <div className={classes.navbar}>
-        <InteractivePanel childrenConfig={childrenConfig}></InteractivePanel>
-      </div>
-      <form className={classes.boardSettings}>
-        {boardSettingsCollection.map(setting => (
-          <div key={setting.key} className={classes[setting.key]}>
-            <label className={classes.label} htmlFor={setting.key}>{setting.label}</label>
-            {setting.key === 'timer' &&
-              <Input
-                className={classes.input}
-                id={setting.key}
-                type={setting.type}
-                placeholder={setting.placeholder}
-                value={setting.value}
-                onChange={setting.onChange}
-                disabled={setting.disabled}
-                aria-label={`input for ${setting.label}`}
-                data-testid={`boardSetting${setting.key}`}
-                slotProps={{
-                  input: { component: numericFormatAdapter }
-                }}
-                sx={{
-                  '--Input-radius': '0px',
-                  '&::before': {
-                    border: '1px solid var(--friendly-palette-primary-700)',
-                    transform: 'scaleX(0)',
-                    left: 0,
-                    right: 0,
-                    bottom: '-1px',
-                    top: 'unset',
-                    transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
-                  },
-                  '&:focus-within::before': {
-                    transform: 'scaleX(1)'
-                  }
-                }}
-              />
+    <div className={classes.boardSettingContainer}>
+      <InteractivePanel childrenConfig={childrenConfig}></InteractivePanel>
+      <Box
+        component="section"
+        sx={{
+          flexGrow: 1,
+          bgcolor: 'var(--friendly-palette-neutral-50)',
+          marginLeft: 0,
+          height: 'calc(100% - 22px)'
+        }}
+      >
+        <div className={classes.boardSettings}>
+          <form className={classes.boardSettingsForm}>
+            {boardSettingsCollection.map(setting => (
+              <div key={setting.key} className={classes[setting.key]}>
+                <div className={classes.boardSettingLabels}>
+                  <label
+                    className={classes.label}
+                    htmlFor={setting.key}
+                  >
+                    {setting.label}
+                  </label>
+                </div>
+                <div className={classes.boardSettingInputs}>
+                {setting.key === 'timer' &&
+                  <Input
+                    className={classes.input}
+                    id={setting.key}
+                    type={setting.type}
+                    placeholder={setting.placeholder}
+                    value={setting.value}
+                    onChange={setting.onChange}
+                    disabled={setting.disabled}
+                    aria-label={`input for ${setting.label}`}
+                    data-testid={`boardSetting${setting.key}`}
+                    slotProps={{
+                      input: { component: numericFormatAdapter }
+                    }}
+                    sx={{
+                      '--Input-radius': '0px',
+                      '&::before': {
+                        border: '1px solid var(--friendly-palette-primary-700)',
+                        transform: 'scaleX(0)',
+                        left: 0,
+                        right: 0,
+                        bottom: '-1px',
+                        top: 'unset',
+                        transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
+                      },
+                      '&:focus-within::before': {
+                        transform: 'scaleX(1)'
+                      }
+                    }}
+                  />
+                }
+                {(setting.key === 'name') &&
+                  <Input
+                    className={classes.input}
+                    id={setting.key}
+                    type={setting.type}
+                    placeholder={setting.placeholder}
+                    value={setting.value}
+                    onChange={setting.onChange}
+                    disabled={setting.disabled}
+                    aria-label={`input for ${setting.label}`}
+                    data-testid={`boardSetting${setting.key}`}
+                    sx={{
+                      '--Input-radius': '0px',
+                      borderColor: 'var(--friendly-palette-neutral-500)',
+                      '&::before': {
+                        border: '1px solid var(--friendly-palette-primary-700)',
+                        transform: 'scaleX(0)',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        top: 'unset',
+                        transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
+                      },
+                      '&:focus-within::before': {
+                        transform: 'scaleX(1)'
+                      }
+                    }}
+                  />
+                }
+                {setting.key === 'participants' &&
+                  <div className={classes.input}>
+                    <Participants
+                      participants={participantsList}
+                      collectParticipants={setting.onChange}
+                    />
+                  </div>
+                }
+                </div>
+              </div>))
             }
-            {(setting.key === 'name') &&
-              <Input
-                className={classes.input}
-                id={setting.key}
-                type={setting.type}
-                placeholder={setting.placeholder}
-                value={setting.value}
-                onChange={setting.onChange}
-                disabled={setting.disabled}
-                aria-label={`input for ${setting.label}`}
-                data-testid={`boardSetting${setting.key}`}
-                sx={{
-                  '--Input-radius': '0px',
-                  borderColor: 'var(--friendly-palette-neutral-500)',
-                  '&::before': {
-                    border: '1px solid var(--friendly-palette-primary-700)',
-                    transform: 'scaleX(0)',
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    top: 'unset',
-                    transition: 'transform 1s cubic-bezier(0.1,0.9,0.2,1)'
-                  },
-                  '&:focus-within::before': {
-                    transform: 'scaleX(1)'
-                  }
-                }}
-              />
-            }
-            {setting.key === 'participants' &&
-              <Participants
-                participants={participantsList}
-                collectParticipants={setting.onChange}
-              />
-            }
+          </form>
+
+          <div className={classes.columnsBoxContainer}>
+            <p className={classes.columnsBoxTitle}>Columns</p>
+            <section className={classes.columnsBoxComponents} data-testid="boardColumns">
+              {initialSettingsValue.columns.map(column => (
+                <div key={column.columnId} className={classes.columnBoxComponent}>
+                  <ColumnConfiguration
+                    columnId={column.columnId}
+                    columns={columns}
+                    onUpdateColumns={columnsUpdateHandler}
+                  />
+                </div>
+              ))}
+            </section>
           </div>
-        ))}
-        <div className={classes.columnsBox}>
-          <p>Columns:</p>
-          <section className={classes.columns} data-testid="boardColumns">
-            {initialSettingsValue.columns.map(column => (
-              <ColumnConfiguration
-                key={column.columnId}
-                columnId={column.columnId}
-                columns={columns}
-                onUpdateColumns={columnsUpdateHandler}
-              />
-            ))}
-          </section>
         </div>
-      </form>
-    </Box>
+      </Box>
+    </div>
   );
 };
 

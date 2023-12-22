@@ -11,6 +11,15 @@ export const boardStepperButtons = {
 
 export const cardTextareaPlaceholder = 'Start typing here...';
 
+export const columnConfigurationPlaceholders = {
+  inputTitle: {
+    start: 'Start',
+    continue: 'Continue',
+    stop: 'Stop'
+  },
+  textareaSubtitle: 'Something short and simple here'
+};
+
 export const navigationBarTitles = {
   drawerHeader: 'friendly',
   drawerSubheader: 'Home',
