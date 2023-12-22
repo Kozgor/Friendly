@@ -48,48 +48,41 @@ const Column = (props: IColumn) => {
     }
   }, [columnCards]);
 
-  const onSaveHandler = (
-    cards: IColumnCard[],
-    handledCard: IColumnCard,
-    cardIndex: number
-  ) => {
+  const onSaveHandler = (cards: IColumnCard[], handledCard: IColumnCard) => {
     if (handledCard._id) {
       updateCard(boardId, columnId, handledCard)
         .then(() => {
-          setFinalizedCards(() => {
-            cards.splice(cardIndex, 1, {
-              ...handledCard,
-              isEditable: false
-            });
-            return cards;
-          });
+          setFinalizedCards((prevCards) =>
+            prevCards.map((card) =>
+              card._id === handledCard._id ? { ...handledCard, isEditable: false } : card
+            )
+          );
         });
     } else {
       createCard(boardId, columnId, handledCard)
         .then((res) => {
-          setFinalizedCards((prevCards) => {
-            const filteredCards = prevCards.filter((card) => !card.isEditable);
-            return [...filteredCards, { ...handledCard, _id: res.data._id }];
-          });
+          setFinalizedCards((prevCards) => [...prevCards, { ...handledCard, _id: res.data._id }]);
         });
     }
   };
 
   const onEditHandler = (
     cards: IColumnCard[],
-    handledCard: IColumnCard,
-    cardIndex: number
+    handledCard: IColumnCard
   ) => {
-    setFinalizedCards(() => {
-      cards.splice(cardIndex, 1, { ...handledCard, isEditable: true });
-      return cards;
+    setFinalizedCards((prevCards: IColumnCard[]) => {
+      const updatedCards = prevCards.map(
+        card => card._id === handledCard._id ? { ...card, isEditable: true } : { ...card, isEditable: false }
+      );
+
+      return updatedCards;
     });
   };
 
   const onCancelHandler = (cards: IColumnCard[]) => {
     setFinalizedCards((prevCards) =>
       editableCard._id
-        ? cards.map((card) => ({ ...card, isEditable: false }))
+        ? cards.map(card => ({ ...card, isEditable: false }))
         : prevCards.filter((card) => !card.isEditable)
     );
     setIsButtonDisabled(isAddingDisabled);
@@ -148,9 +141,9 @@ const Column = (props: IColumn) => {
   ) => {
     const createdAt = moment().toISOString();
     const newCard: IColumnCard = {
-      _id: initialCard._id,
+      _id: '',
       columnId,
-      createdAt: createdAt,
+      createdAt,
       cardComment,
       cardAuthorId: localUser._id,
       cardAuthor,
@@ -158,8 +151,15 @@ const Column = (props: IColumn) => {
       cardTags,
       isEditable: isAddButtonDisabled
     };
-    handleAction('save', newCard);
+
+    createCard(boardId, columnId, newCard)
+      .then((res) => {
+        const updatedCard = { ...newCard, _id: res.data._id };
+
+        setFinalizedCards((prevCards) => [...prevCards, updatedCard]);
+      });
   };
+
 
   return (
     <section className={classes.column}>

@@ -32,12 +32,9 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
 
   const setPanelChildren = () => {
     childrenConfig.forEach(child => {
-      const { element, label, path, position, mode } = child;
+      const { element, label, path, position } = child;
 
       if (position === 'right') {
-        if (mode && mode !== 'soloBoard') {
-          return;
-        }
         setContentRigtht(element || path);
         setForwardLabel(label || '');
 

@@ -4,6 +4,7 @@ import { Button, CircularProgress, Modal, ModalDialog, Typography } from '@mui/j
 import {
   useContext,
   useEffect,
+  useMemo,
   useState
 } from 'react';
 import { CloseRounded } from '@mui/icons-material';
@@ -38,19 +39,19 @@ const Board = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isBoardVisible, setIsBoardVisible] = useState(true);
   const {
-    isTimerVisible,
-    isTimerStarted,
-    isAddingDisabled,
-    disableCommentCreation,
-    setFormSubmit,
     boardStatus,
+    isAddingDisabled,
     isFormSubmit,
-    setBoardStatus,
+    isTimerStarted,
+    isTimerVisible,
+    selectedCards,
+    disableCommentCreation,
+    resetSelectedCards,
     setBoardId,
     setBoardTime,
-    setTimerVisibility,
-    selectedCards,
-    resetSelectedCards
+    setFormSubmit,
+    setBoardStatus,
+    setTimerVisibility
   } = useContext(BoardContext);
   const navigate = useNavigate();
   const { getLocalUserData, saveLocalBoardDetails } = localStorageManager();
@@ -59,40 +60,26 @@ const Board = () => {
   const { getUserById, submitComments } = userAPI();
   const { removeCards } = cardAPI();
   const localUser = getLocalUserData();
+  const URLBoardId= useBoardIdLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isAdmin = localUser.role === 'admin';
+  const isActiveWithTimer = boardStatus === 'active' && isTimerStarted;
+  const isFinalizedForSummary = boardStatus === 'finalized' && isAdmin;
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
-  const URLBoardId= useBoardIdLocation();
   const layoutHeight = isBoard ? '84vh' : '92vh';
-  const [isBoardSubmitButton, setIsBoardSubmitButton] = useState(true);
   const isPageWithBoard = location.pathname.startsWith('/board/');
-  const isShowTimer = isTimerVisible && isBoardSubmitButton && isPageWithBoard;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isShowTimer = isTimerVisible && isPageWithBoard;
+
+  const isShowTimerMemoized = useMemo(() => isShowTimer, [isShowTimer]);
+  const isTimerStartedMemoized = useMemo(() => isTimerStarted, [isTimerStarted]);
 
   const completeBoard = () => {
     submitComments(localUser._id);
     disableCommentCreation();
     setFormSubmit();
-    setIsBoardSubmitButton(false);
     setTimerVisibility(false);
     setIsModalOpen(false);
-  };
-
-  const deleteCards = () => {
-    if (!isAddingDisabled) {
-      removeCards(selectedCards).then(() => {
-        const newBoardSettings = { ...boardSettings };
-
-        newBoardSettings.columns.forEach(column => {
-          selectedCards.forEach(selectedCard => {
-            column.columnCards = column.columnCards.filter(card => card._id !== selectedCard._id);
-          });
-        });
-
-        setBoardSettings(newBoardSettings);
-        resetSelectedCards();
-      });
-    }
   };
 
   const completeBoardModal = (
@@ -104,7 +91,6 @@ const Board = () => {
           width: '415px',
           textAlign: 'center',
           padding: '28px 19px',
-
           position: 'relative'
         }}
       >
@@ -157,7 +143,7 @@ const Board = () => {
     }
   };
 
-  const setupBoard = async (id: string, status?: string) => {
+  const setupBoard = async (id?: string, status?: string) => {
     try {
       const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
 
@@ -238,6 +224,34 @@ const Board = () => {
     }
   };
 
+  const deleteCards = async () => {
+    if (!isAddingDisabled) {
+      try {
+        const removeCard = await removeCards(selectedCards);
+
+        if (removeCard.status === 200) {
+          const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
+          const columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
+
+          if (board) {
+            board.columns.forEach((column: IColumn) => {
+              const { columnId } = column;
+
+              if (columnsCards && columnsCards[columnId]) {
+                column.columnCards = columnsCards[columnId];
+              }
+            });
+
+            resetSelectedCards();
+            setBoardSettings(board);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const actionButtons =
     <>
       {selectedCards.length > 0 &&
@@ -255,7 +269,7 @@ const Board = () => {
         >
           {icons.delete()}
         </Button>}
-      {isTimerVisible && <Button
+      {!isAddingDisabled && <Button
         data-testid="completeButton"
         color='secondary'
         variant='solid'
@@ -274,6 +288,14 @@ const Board = () => {
       </Button>}
     </>;
 
+  const setInteractiveButtonElement: PropsChildren = {
+    path: isFinalizedForSummary ? `${pathConstants.BOARD_SUMMARY}/${URLBoardId}` : null,
+    element: (isShowTimerMemoized && isTimerStartedMemoized) ? actionButtons : null,
+    label: isFinalizedForSummary ? panelTitles.boardSummary : null,
+    position: 'right',
+    mode: isFinalizedForSummary ? 'activeBoard' : 'finalizedBoard'
+  };
+
   const adminInteractivePanelConfig: PropsChildren[] = [
     {
       path: pathConstants.ADMIN,
@@ -284,17 +306,7 @@ const Board = () => {
       element: isShowTimer && <Timer />,
       position: 'center'
     },
-    {
-      path: `${pathConstants.BOARD_SUMMARY}/${URLBoardId}`,
-      label: panelTitles.boardSummary,
-      position: 'right',
-      mode: 'finalizedBoard'
-    },
-    {
-      element: isTimerStarted && actionButtons,
-      position: 'right',
-      mode: 'soloBoard'
-    }
+    setInteractiveButtonElement
   ];
 
   const userInteractivePanelConfig: PropsChildren[] = [
@@ -307,13 +319,14 @@ const Board = () => {
       position: 'center'
     },
     {
-      element: isTimerStarted && actionButtons,
+      element: isActiveWithTimer && actionButtons,
       position: 'right',
-      mode: 'soloBoard'
+      mode: 'activeBoard'
     }
   ];
 
   useEffect(() => {
+    disableCommentCreation();
     fetchUserData();
   }, [boardStatus, URLBoardId]);
 
@@ -341,7 +354,7 @@ const Board = () => {
             <NoContent message={NO_BOARDS_MESSAGE} />
           }
           {isLoading &&
-            <div>
+            <div className={classes.boardsManagementLoader}>
               <CircularProgress
                 color="primary"
                 size="md"
