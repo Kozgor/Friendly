@@ -16,11 +16,15 @@
   background-color: $friendly-palette-shades-50;
 
   &__header {
+    @include flexbox(column, flex-start, center, nowrap);
     padding: 0;
     width: 224px;
     margin-bottom: 10px;
-
-    @include flexbox(column, center, center, nowrap);
+    height: 75px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    -ms-overflow-style: none;
 
     h2 {
       color: $friendly-palette-shades-900;
@@ -45,11 +49,19 @@
     }
   }
 
+  &__header::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &__header::-webkit-scrollbar {
+    width: 6px;
+  }
+
   &__comments {
     &__min {
       @include flexbox(column, unset, unset, nowrap);
       width: 100%;
-      height: calc(100% - 48px);
+      height: calc(100% - 90px);
       padding-top: 25px;
       padding-bottom: 100px;
       overflow-y: scroll;
@@ -101,7 +113,7 @@
     position: absolute;
     align-self: flex-end;
     width: 100%;
-    background-color: rgba(25, 29, 35, 0.05);
+    background-color: rgba(221, 221, 222, 0.8);
     height: auto;
   }
 }
