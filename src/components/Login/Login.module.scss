@@ -1,11 +1,45 @@
 @import "../../mixins/flexbox";
+@import "../../theme/variables";
 
 .loginContainer {
-  @include flexbox(column, center, center, nowrap);
+  @include flexbox(row, unset, center, nowrap);
   width: 100%;
   height: 100vh;
+  padding: 28px 32px 28px 0;
+  background-color: #f4f4f4;
+
+  .specialWord {
+    background: linear-gradient(to left, $friendly-palette-primary-200, $friendly-palette-primary-900);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
   .signForm {
-    margin-top: 10px;
+    @include flexbox(row, unset, center, nowrap);
+    margin-top: 15px;
+    background-color: $friendly-palette-shades-50;
+    border-radius: 4px;
+  }
+
+  .icon {
+    width: 50%;
+    height: 100%;
+    background: url("./../../../public/loginIcon.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px;
+  }
+
+  .divider {
+    width: 2px;
+    height: 36px;
+    color: $friendly-palette-neutral-200;
+  }
+
+  .form-control {
+    @include flexbox(row, unset, center, nowrap);
+    position: relative;
+    margin: 15px 24px 0;
   }
 }
