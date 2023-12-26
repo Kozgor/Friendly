@@ -1,21 +1,25 @@
 import { IDownloadBoardSummaryCSVButton } from '../../interfaces/dowloadBoardSummaryCSVButton';
-import { IconButton } from '@mui/joy';
+import { Button, IconButton } from '@mui/joy';
 import { icons } from '../../theme/icons/icons';
 
 export const DownloadBoardSummaryCSVButton = (props: IDownloadBoardSummaryCSVButton) => {
   const { isDisabled, onClick } = props;
-  const iconSize = 36;
+  const iconSize = 16;
+  const fontSize = '16px';
 
   return (
-    <IconButton
+    <Button
       color='neutral'
       onClick={onClick}
-      size='md'
-      variant='plain'
+      size='sm'
+      variant='outlined'
       disabled={isDisabled}
-    >
-      {icons.download('#303439', iconSize)}
-    </IconButton>
+      startDecorator={icons.download('#303439', iconSize)}
+      sx={{
+        fontSize
+      }}
+    >Download CSV Report
+    </Button>
   );
 };
 
