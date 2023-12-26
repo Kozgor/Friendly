@@ -127,6 +127,7 @@ const FinalizedCard = (props: IColumnCard) => {
         border: 'none',
         padding: '10px',
         boxShadow: '0px 8px 16px #0000001a',
+        minHeight: '140px',
         userSelect: 'none', /* standard syntax */
         'WebkitUserSelect': 'none', /* webkit (safari, chrome) browsers */
         'MozUserSelect': 'none', /* mozilla browsers */
