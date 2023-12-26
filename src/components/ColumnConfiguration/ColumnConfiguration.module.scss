@@ -22,7 +22,8 @@
   }
 
   .columnHeaderTitle {
-    width: 100px;
+    min-width: 100px;
+    width: 100%;
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 24px;
@@ -31,7 +32,8 @@
   }
 
   .columnHeaderSubtitle {
-    width: 100px;
+    min-width: 100px;
+    width: 100%;
     font-family: "Open Sans", sans-serif;
     font-weight: 300;
     font-size: 20px;

@@ -51,7 +51,7 @@
 .columnsBoxContainer {
   @include flexbox(column, flex-start, flex-start, nowrap);
   width: 100%;
-  height: calc(40% - 34px);
+  height: calc(56% - 34px);
 
   .columnsBoxTitle {
     @include flexbox(row, flex-end, center, nowrap);
