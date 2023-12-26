@@ -79,7 +79,7 @@
     &__max {
       @include flexbox(column, unset, unset, nowrap);
       width: 100%;
-      height: calc(100% - 48px);
+      height: calc(100% - 90px);
       padding-top: 25px;
       overflow-y: scroll;
       scrollbar-width: thin;

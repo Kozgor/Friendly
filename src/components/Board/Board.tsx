@@ -67,7 +67,7 @@ const Board = () => {
   const isFinalizedForSummary = boardStatus === possibleBoardStatuses.finalized && isAdmin;
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
-  const layoutHeight = (isBoard && isAdmin) ? '84vh' : '92vh';
+  const layoutHeight = (isBoard || (isAdmin && isBoard)) ? '84vh' : '92vh';
   const isPageWithBoard = location.pathname.startsWith('/board/');
   const isShowTimer = isTimerVisible && isPageWithBoard;
 

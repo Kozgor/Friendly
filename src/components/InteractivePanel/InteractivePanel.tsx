@@ -82,7 +82,10 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
           }
         </span>
         {isSummaryPage ?
-          (<Tooltip title={backwardLabel}>
+          (<Tooltip
+            title={backwardLabel}
+            disableHoverListener={backwardLabel.length < (17 + SUMMARY_LABEL_TAIL.length)}
+          >
             <span className={classes.panelLeftLabel}>{truncateSummaryLabel(backwardLabel)}</span>
           </Tooltip>) :
           <span className={classes.panelLeftLabel}>{backwardLabel}</span>
