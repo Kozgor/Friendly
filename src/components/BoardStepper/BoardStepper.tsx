@@ -40,19 +40,19 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
     1: icons.map,
     2: icons.backpack('var(--friendly-palette-shades-50)'),
     3: icons.pinMap,
-    4: icons.bus('var(--friendly-palette-shades-50)'),
-    5: null
+    4: icons.bus('var(--friendly-palette-shades-50)')
+    // 5: null
   };
 
   const isStatusActive = currentBoardStatus === possibleBoardStatuses.active;
   const isStatusFinalized = currentBoardStatus === possibleBoardStatuses.finalized;
-  const isStatusArchived = currentBoardStatus === possibleBoardStatuses.archived;
+  // ToDo: add so steps when the time comes const isStatusArchived = currentBoardStatus === possibleBoardStatuses.archived;
 
   const isStepCompletedMap = {
     [STEPS_MAP.first]: true,
-    [STEPS_MAP.second]: isStatusArchived || isStatusFinalized,
-    [STEPS_MAP.third]: isStatusArchived || isStatusFinalized,
-    [STEPS_MAP.fourth]: isStatusArchived
+    [STEPS_MAP.second]: isStatusFinalized, // isStatusArchived || isStatusFinalized
+    [STEPS_MAP.third]: isStatusFinalized // [STEPS_MAP.third]: isStatusArchived || isStatusFinalized
+    // ToDo: add so steps when the time comes [STEPS_MAP.fourth]: isStatusArchived
   };
 
   const onFinalizeBoard = async () => {
