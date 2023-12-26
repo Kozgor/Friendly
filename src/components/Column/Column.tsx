@@ -10,7 +10,7 @@ import { IColumnCard } from '../../interfaces/columnCard';
 import { cardAPI } from '../../api/CardAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { possibleBoardStatuses } from '../../constants';
-import { sortByDateStartOld } from '../../utils/sortByDate';
+import { sortByDateStartNew } from '../../utils/sortByDate';
 
 import EditCard from '../EditCard/EditCard';
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
@@ -36,7 +36,7 @@ const Column = (props: IColumn) => {
   const { createCard, updateCard } = cardAPI();
 
   const { boardId, boardStatus, isAddingDisabled } = useContext(BoardContext);
-  const [finalizedCards, setFinalizedCards] = useState(() => sortByDateStartOld(columnCards));
+  const [finalizedCards, setFinalizedCards] = useState(() => sortByDateStartNew(columnCards));
   const [editableCard, setEditableCard] = useState<IColumnCard>(initialCard);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const isActiveBoard = boardStatus === 'active';
@@ -44,7 +44,7 @@ const Column = (props: IColumn) => {
 
   useEffect(() => {
     if (columnCards) {
-      setFinalizedCards(sortByDateStartOld(columnCards));
+      setFinalizedCards(sortByDateStartNew(columnCards));
     }
   }, [columnCards]);
 
@@ -61,7 +61,7 @@ const Column = (props: IColumn) => {
     } else {
       createCard(boardId, columnId, handledCard)
         .then((res) => {
-          setFinalizedCards((prevCards) => [...prevCards, { ...handledCard, _id: res.data._id }]);
+          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res.data._id }, ...prevCards ]);
         });
     }
   };
@@ -156,7 +156,7 @@ const Column = (props: IColumn) => {
       .then((res) => {
         const updatedCard = { ...newCard, _id: res.data._id };
 
-        setFinalizedCards((prevCards) => [...prevCards, updatedCard]);
+        setFinalizedCards((prevCards) => [updatedCard, ...prevCards]);
       });
   };
 
