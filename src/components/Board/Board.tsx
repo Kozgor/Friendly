@@ -64,7 +64,7 @@ const Board = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAdmin = localUser.role === 'admin';
   const isActiveWithTimer = boardStatus === possibleBoardStatuses.active && isTimerStarted;
-  const isFinalizedForSummary = boardStatus === possibleBoardStatuses.active && isAdmin;
+  const isFinalizedForSummary = boardStatus === possibleBoardStatuses.finalized && isAdmin;
   const isBoard = (isBoardVisible && !isFormSubmit && !isLoading);
   const isNoBoard = (!isLoading && !isBoardVisible || isFormSubmit);
   const layoutHeight = isBoard ? '84vh' : '92vh';
