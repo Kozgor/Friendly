@@ -164,10 +164,14 @@ const Column = (props: IColumn) => {
   return (
     <section className={classes.column}>
       <div className={classes['column__header']}>
-        <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
-          <span className={classes['column__header__couner']}>({columnCards.length})</span>}
-        </h4>
-        <p className={classes['column__header__subtitle']}>{columnSubtitle}</p>
+        <div className={classes['column__header__title']}>
+          <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
+            <span className={classes['column__header__couner']}>({columnCards.length})</span>}
+          </h4>
+        </div>
+        <div className={classes['column__header__subtitle']}>
+          <p>{columnSubtitle}</p>
+        </div>
       </div>
       <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>
         {finalizedCards?.map(
