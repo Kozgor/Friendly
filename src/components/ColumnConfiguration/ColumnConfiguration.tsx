@@ -17,32 +17,24 @@ const ColumnConfiguration = (props: {
   const inputTitleRef = useRef<HTMLDivElement>(null);
   const textareaSubtitleRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isColumnTitleInput) {
-      if (inputTitleRef.current) {
-        const inputElement = inputTitleRef.current?.querySelector('input');
+  const setColumnInputFocus = () => {
+    let currentInputElement;
 
-        if (inputElement) {
-          inputElement.focus();
-        }
-      }
-    }
+    (isColumnTitleInput && inputTitleRef.current) ?
+      currentInputElement = inputTitleRef.current?.querySelector('input') : null;
 
-    if (isColumnSubtitleTextarea) {
-      if (textareaSubtitleRef.current) {
-        const textareaElement = textareaSubtitleRef.current?.querySelector('textarea');
+    (isColumnSubtitleTextarea && textareaSubtitleRef.current) ?
+      currentInputElement = textareaSubtitleRef.current?.querySelector('textarea') : null;
 
-        if (textareaElement) {
-          textareaElement.focus();
-        }
-      }
-    }
-  }, [isColumnTitleInput, isColumnSubtitleTextarea]);
+    currentInputElement?.focus();
+  };
 
-  const subtitleHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const columnInputHandler = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>, currentInputField: string
+  ) => {
     const updatedColumns = columns.map((column) => {
       if (column.columnId === event.target.id) {
-        column.columnSubtitle = event.target.value;
+        column[currentInputField] = event.target.value;
       }
 
       return column;
@@ -51,17 +43,9 @@ const ColumnConfiguration = (props: {
     onUpdateColumns(updatedColumns);
   };
 
-  const titleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const updatedColumns = props.columns.map((column) => {
-      if (column.columnId === event.target.id) {
-        column.columnTitle = event.target.value;
-      }
-
-      return column;
-    });
-
-    onUpdateColumns(updatedColumns);
-  };
+  useEffect(() => {
+    setColumnInputFocus();
+  }, [isColumnTitleInput, isColumnSubtitleTextarea]);
 
   return (
     <div className={classes.column}>
@@ -80,7 +64,7 @@ const ColumnConfiguration = (props: {
                 ref={inputTitleRef}
                 placeholder={columnConfigurationPlaceholders.inputTitle[columnId]}
                 value={column?.columnTitle}
-                onChange={titleHandler}
+                onChange={(event) => columnInputHandler(event, 'columnTitle')}
                 slotProps={{
                   input: {
                     id: `${column?.columnId}`,
@@ -109,7 +93,7 @@ const ColumnConfiguration = (props: {
             ref={textareaSubtitleRef}
             placeholder={columnConfigurationPlaceholders.textareaSubtitle}
             value={column?.columnSubtitle}
-            onChange={subtitleHandler}
+            onChange={(event) => columnInputHandler(event, 'columnSubtitle')}
             maxRows={1}
             slotProps={{
               textarea: {
