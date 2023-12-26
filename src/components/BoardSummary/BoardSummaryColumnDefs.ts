@@ -15,7 +15,7 @@ export const boardSummaryDefsList = [{
   }, {
     headerName: 'COMMENT',
     field: 'cardComment',
-    filter:'agTextColumnFilter',
+    filter: 'agTextColumnFilter',
     floatingFilter: true,
     flex: 2
   }, {
