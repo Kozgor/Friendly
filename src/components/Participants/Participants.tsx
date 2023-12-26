@@ -140,7 +140,8 @@ const Participants = (props: IParticipants) => {
             </Box>)}
           sx={{
             width: '100%',
-            height: '80px',
+            height: 'auto',
+            minHeight: '1rem',
             position: 'relative',
             backgroundColor: 'var(--friendly-palette-shades-50)',
             border: 'none',

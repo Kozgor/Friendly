@@ -1,15 +1,14 @@
 @import "../../mixins/flexbox";
 
-.container {
-  @include flexbox(column, space-between, flex-start, nowrap);
-}
-
-.selectAll {
-  @include flexbox(row, unset, center, nowrap);
-  margin-bottom: 10px;
-}
-
 .mainContainer {
-  width: 90%;
-  margin-left: 30px;
+  width: 100%;
+
+  .container {
+    @include flexbox(column, space-between, flex-start, nowrap);
+  }
+
+  .selectAll {
+    @include flexbox(row, unset, center, nowrap);
+    margin-bottom: 10px;
+  }
 }
