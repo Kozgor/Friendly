@@ -34,12 +34,14 @@
   }
 
   &__header__subtitle {
+    display: block;
+    max-height: 55px;
     color: $friendly-palette-neutral-500;
     margin-bottom: 0;
     padding: 0 8px;
     text-align: center;
     font-weight: 300;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 27.24px;
     font-family: "Open Sans", sans-serif;
     cursor: context-menu;

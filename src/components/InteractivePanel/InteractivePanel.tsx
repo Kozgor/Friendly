@@ -1,8 +1,10 @@
+import { IconButton, Tooltip } from '@mui/joy';
 import { ReactNode, useEffect, useState } from 'react';
-import { IconButton } from '@mui/joy';
 import { PropsChildren } from '../../interfaces/interactivePanelChildren';
+import { SUMMARY_LABEL_TAIL } from '../../constants';
 import { icons } from '../../theme/icons/icons';
 import { isString } from 'lodash';
+import { truncateInteractivePanelLabel } from '../../utils/truncateInteractivePanelLabel';
 import { useNavigate } from 'react-router';
 
 import classes from './InteractivePanel.module.scss';
@@ -10,6 +12,7 @@ import classes from './InteractivePanel.module.scss';
 const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
   const navigate = useNavigate();
   const { childrenConfig } = props;
+  const { truncateSummaryLabel } = truncateInteractivePanelLabel();
   const [contentLeft, setContentLeft] = useState<ReactNode | string>(null);
   const [contentCenter, setContentCenter] = useState<ReactNode | string>(null);
   const [contentRigth, setContentRigtht] = useState<ReactNode | string>(null);
@@ -17,6 +20,7 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
   const [forwardLabel, setForwardLabel] = useState<string>('');
   const isBackward = isString(contentLeft);
   const isFarward = isString(contentRigth);
+  const isSummaryPage = backwardLabel.indexOf(SUMMARY_LABEL_TAIL) > 0;
 
   const onBackward = () => {
     if (isBackward) {
@@ -77,9 +81,12 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
             </span> : contentLeft
           }
         </span>
-        <span className={classes.panelLeftLabel}>
-          {backwardLabel}
-        </span>
+        {isSummaryPage ?
+          (<Tooltip title={backwardLabel}>
+            <span className={classes.panelLeftLabel}>{truncateSummaryLabel(backwardLabel)}</span>
+          </Tooltip>) :
+          <span className={classes.panelLeftLabel}>{backwardLabel}</span>
+        }
       </div>
       <div className={classes.interactivePanelElementCenter}>
         {contentCenter}

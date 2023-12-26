@@ -18,6 +18,13 @@
   width: 33%;
 }
 
+.panelLeftLabel,
+.panelRightLabel {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .interactivePanelElementLeft {
   justify-content: flex-start;
 
@@ -31,5 +38,7 @@
 
   .panelRightLabel {
     margin-right: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

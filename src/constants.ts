@@ -62,3 +62,4 @@ export const DOWNLOAD_CSV_REPORT = 'Download CSV Report';
 export const NO_BOARDS_MESSAGE = 'No boards found';
 export const SELECT_ALL = 'Select all';
 export const THERE_ARE_NO_BOARDS_MESSAGE = 'There are no boards';
+export const SUMMARY_LABEL_TAIL = '| Summary';

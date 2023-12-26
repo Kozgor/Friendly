@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { Avatar } from '@mui/joy';
+import { Avatar, Tooltip } from '@mui/joy';
 import { ICardAvatar } from '../../interfaces/cardAvatar';
 import { defaultTheme } from '../../theme/default';
 import { getInitials } from '../../utils/userInitials';
@@ -16,46 +16,52 @@ const CardAvatar = (props: ICardAvatar) => {
 
     if (isIncognito) {
       return (
-        <Avatar
-          data-testid='incognito-avatar'
-          onClick={onToggle}
-          sx={{
-            cursor: 'pointer',
-            boxShadow: customBoxShadow,
-            '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 } }}
-        >
-          {icons.incognito}
-        </Avatar>
-        );
-      }
-      if (isInitials) {
-        return (
+        <Tooltip title={cardAuthor}>
           <Avatar
-            data-testid='initials-avatar'
+            data-testid='incognito-avatar'
             onClick={onToggle}
             sx={{
               cursor: 'pointer',
               boxShadow: customBoxShadow,
-              color: 'var(--friendly-palette-shades-50)',
-              '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 }
-            }}
+              '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 } }}
           >
-            {getInitials(cardAuthor)}
+            {icons.incognito}
           </Avatar>
+        </Tooltip>
+        );
+      }
+      if (isInitials) {
+        return (
+          <Tooltip title={cardAuthor}>
+            <Avatar
+              data-testid='initials-avatar'
+              onClick={onToggle}
+              sx={{
+                cursor: 'pointer',
+                boxShadow: customBoxShadow,
+                color: 'var(--friendly-palette-shades-50)',
+                '&.MuiAvatar-variantSoft': { backgroundColor: defaultTheme.color1 }
+              }}
+            >
+              {getInitials(cardAuthor)}
+            </Avatar>
+          </Tooltip>
         );
       }
       if (isAvatar) {
         return (
-          <Avatar
-            data-testid='card-avatar'
-            onClick={onToggle}
-            alt={cardAuthorAvatar}
-            src={cardAuthorAvatar}
-            sx={{
-              cursor: 'pointer',
-              boxShadow: customBoxShadow
-            }}
-        ></Avatar>
+          <Tooltip title={cardAuthor}>
+            <Avatar
+              data-testid='card-avatar'
+              onClick={onToggle}
+              alt={cardAuthorAvatar}
+              src={cardAuthorAvatar}
+              sx={{
+                cursor: 'pointer',
+                boxShadow: customBoxShadow
+              }}
+            ></Avatar>
+          </Tooltip>
       );
     }
 
