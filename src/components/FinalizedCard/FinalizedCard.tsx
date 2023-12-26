@@ -122,12 +122,12 @@ const FinalizedCard = (props: IColumnCard) => {
         marginLeft: '8px',
         marginRight: '8px',
         marginBottom: '30px',
-        height: isShownAllText ? 'unset' : 140,
         backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
         padding: '10px',
         boxShadow: '0px 8px 16px #0000001a',
-        minHeight: '140px',
+        minHeight: isShownAllText ? 'unset' : 140,
+        maxHeight: 'unset',
         userSelect: 'none', /* standard syntax */
         'WebkitUserSelect': 'none', /* webkit (safari, chrome) browsers */
         'MozUserSelect': 'none', /* mozilla browsers */
