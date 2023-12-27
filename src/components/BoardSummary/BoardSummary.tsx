@@ -49,7 +49,6 @@ const BoardSummary = () => {
 
       if (boardSummary.boardSummaryDataList.length) {
         enableDownloadSummaryCSV(true);
-        console.log(boardSummary.boardSummaryDataList);
         setRowData(boardSummary.boardSummaryDataList);
 
         return;
