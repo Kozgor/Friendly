@@ -2,21 +2,21 @@ import { Chip } from '@mui/joy';
 import { defaultTheme } from '../../theme/default';
 import { possibleCardTags } from '../../types/cardTags';
 
-const CardChip = (props: { tag: string}) => {
+const CardChip = (props: { tag: string }) => {
   const { tag } = props;
 
   const setChipColor = {
-    [possibleCardTags[0]] : 'var(--friendly-palette-accent-100)',
-    [possibleCardTags[1]] : 'var(--friendly-palette-neutral-100)',
-    [possibleCardTags[2]] : 'var(--friendly-palette-secondary-200)',
-    [possibleCardTags[3]] : 'var(--friendly-palette-primary-100)'
+    [possibleCardTags[0]]: 'var(--friendly-palette-accent-100)',
+    [possibleCardTags[1]]: 'var(--friendly-palette-neutral-100)',
+    [possibleCardTags[2]]: 'var(--friendly-palette-secondary-100)',
+    [possibleCardTags[3]]: 'var(--friendly-palette-primary-100)'
   };
 
   const setChipSize = {
-    [possibleCardTags[0]] : '78px',
-    [possibleCardTags[1]] : '68px',
-    [possibleCardTags[2]] : '50px',
-    [possibleCardTags[3]] : '62px'
+    [possibleCardTags[0]]: '78px',
+    [possibleCardTags[1]]: '68px',
+    [possibleCardTags[2]]: '50px',
+    [possibleCardTags[3]]: '62px'
   };
 
   return (

@@ -58,7 +58,7 @@ const FinalizedCard = (props: IColumnCard) => {
 
   useEffect(() => {
     if (cardCommentRef.current) {
-      setDisplayShowButton(cardCommentRef.current.clientHeight! !== (cardCommentRef.current.scrollHeight! - 2)!);
+      setDisplayShowButton((cardCommentRef.current.scrollHeight! - (cardCommentRef.current.clientHeight! + 2)) > 1);
     }
   }, []);
 
