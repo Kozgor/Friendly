@@ -1,5 +1,4 @@
 import { Chip } from '@mui/joy';
-import { defaultTheme } from '../../theme/default';
 import { possibleCardTags } from '../../types/cardTags';
 
 const CardChip = (props: { tag: string }) => {
@@ -31,7 +30,7 @@ const CardChip = (props: { tag: string }) => {
         variant: 'solid',
         fontSize: '10px',
         fontWeight: '400',
-        color: defaultTheme.color7,
+        color: '#1b1c1d',
         backgroundColor: setChipColor[tag],
         '&.MuiChip-root': {
           padding: 0

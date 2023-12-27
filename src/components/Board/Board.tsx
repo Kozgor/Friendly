@@ -356,7 +356,7 @@ const Board = () => {
           {isLoading &&
             <div className={classes.boardsManagementLoader}>
               <CircularProgress
-                color="primary"
+                color="secondary"
                 size="md"
                 variant="soft"
               />

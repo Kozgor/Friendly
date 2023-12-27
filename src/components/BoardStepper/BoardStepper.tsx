@@ -2,10 +2,12 @@
 import moment from 'moment';
 
 import {
-  Button, Typography, Stack,
+  Button,
+  Stack,
   StepButton,
+  StepIndicator,
   Stepper,
-  StepIndicator
+  Typography
 } from '@mui/joy';
 import Step, { stepClasses } from '@mui/joy/Step';
 
@@ -21,7 +23,6 @@ import {
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { boardAPI } from '../../api/BoardAPI';
-import { defaultTheme } from '../../theme/default';
 import { icons } from '../../theme/icons/icons';
 
 import classes from './BoardStepper.module.scss';
@@ -132,13 +133,13 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                 onClick={index === STEPS_MAP.third && isStatusActive ?
                   onFinalizeBoard : () => { }}
                 sx={{
-                  backgroundColor: defaultTheme.color2,
+                  backgroundColor: 'var(--friendly-palette-secondary-900)',
                   '&:hover': {
-                    backgroundColor: defaultTheme.color2
+                    backgroundColor: 'var(--friendly-palette-secondary-900)'
                   },
                   '&:disabled': {
-                    backgroundColor: defaultTheme.color2,
-                    color: defaultTheme.color3,
+                    backgroundColor: 'var(--friendly-palette-secondary-900)',
+                    color: '#eeeeee',
                     opacity: 0.5
                   }
                 }}
