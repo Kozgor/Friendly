@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { IColumnCard } from '../interfaces/columnCard';
+import { ICardReactions, IColumnCard } from '../interfaces/columnCard';
 
 export const columnAPI = () => {
   const FRIENDLY_DOMAIN = process.env.REACT_APP_FRIENDLY_DOMAIN;
@@ -25,13 +25,9 @@ export const columnAPI = () => {
     }
   };
 
-  const updateColumnCardReaction = async (_id: string, userId: string, isHappyReaction: boolean) => {
+  const updateColumnCardReaction = async (reactions: ICardReactions) => {
     try {
-      const updatedCardWithReactions = await axios.put(`${FRIENDLY_DOMAIN}card/update-card-reactions`, {
-        _id,
-        userId,
-        isHappyReaction
-      });
+      const updatedCardWithReactions = await axios.put(`${FRIENDLY_DOMAIN}card/update-card-reactions`, reactions);
 
       return updatedCardWithReactions.data;
     } catch (error) {

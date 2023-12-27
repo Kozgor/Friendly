@@ -19,14 +19,15 @@ import {
   useState
 } from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
-import { BoardContext } from '../../context/board/boardContext';
-import { IColumnCard } from '../../interfaces/columnCard';
-import { columnAPI } from '../../api/ColumnAPI';
-import { icons } from '../../theme/icons/icons';
-import { isNull } from 'lodash';
 
+import { ICardReactions, IColumnCard } from '../../interfaces/columnCard';
+import { BoardContext } from '../../context/board/boardContext';
 import CardAvatar from '../CardAvatar/CardAvatar';
 import CardChip from '../CardChip/CardChip';
+import { columnAPI } from '../../api/ColumnAPI';
+import { icons } from '../../theme/icons/icons';
+
+
 import classes from './FinalizedCard.module.scss';
 
 const FinalizedCard = (props: IColumnCard) => {
@@ -49,11 +50,9 @@ const FinalizedCard = (props: IColumnCard) => {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const [isShownAllText, setIsShownAllText] = useState(false);
   const [displayShowButton, setDisplayShowButton] = useState(false);
-  const [reactionState, setReactionState] = useState(cardReactions);
+  const [reactionState, setReactionState] = useState<ICardReactions | null>(cardReactions!);
   const { updateColumnCardReaction } = columnAPI();
   const isShownAllTags = cardTags && cardTags?.length < 3;
-  const isEmojiSmile = reactionState && !isNull(reactionState);
-  const isEmojiFrown = !reactionState && !isNull(reactionState);
   const { selectCard, selectedCards, unselectCard } = useContext(BoardContext);
 
   useEffect(() => {
@@ -62,9 +61,16 @@ const FinalizedCard = (props: IColumnCard) => {
     }
   }, []);
 
-  const onClickReaction = (isHappyReaction: boolean) => {
-    setReactionState(isHappyReaction);
-    updateColumnCardReaction(_id, cardActionAuthorId || '', isHappyReaction);
+  const onClickReaction = (receivedReaction: 'happy' | 'unhappy') => {
+    setReactionState((prevState => ({
+      ...prevState!,
+      reaction: receivedReaction === prevState?.reaction ? null : receivedReaction
+    })));
+    updateColumnCardReaction({
+      _id,
+      userId: cardActionAuthorId || '',
+      reaction: receivedReaction === reactionState?.reaction ? null : receivedReaction
+    });
   };
 
   const onShowMoreTags: MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -256,37 +262,37 @@ const FinalizedCard = (props: IColumnCard) => {
             </div>
           }
         </div>
-        {isDisabled && <div className={classes.footerReactons}>
+        {isDisabled && <div className={classes.footerReactions}>
           <IconButton
             variant='outlined'
-            onClick={() => onClickReaction(true)}
+            onClick={() => onClickReaction('happy')}
             sx={{
               marginRight: '8px',
               minWidth: '26px',
               minHeight: '26px',
-              backgroundColor: isEmojiSmile ? 'var(--friendly-palette-accent-900)' : 'transparent',
-              borderColor: isEmojiSmile ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
+              backgroundColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : 'transparent',
+              borderColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
               '&:hover': {
-                backgroundColor: isEmojiSmile ? 'var(--friendly-palette-accent-900)' : 'transparent'
+                backgroundColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : 'transparent'
               }
             }}
           >
-            {icons.emojiSmile(`${isEmojiSmile ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
+            {icons.emojiSmile(`${reactionState?.reaction === 'happy' ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
           </IconButton>
           <IconButton
             variant='outlined'
-            onClick={() => onClickReaction(false)}
+            onClick={() => onClickReaction('unhappy')}
             sx={{
-              backgroundColor: isEmojiFrown ? 'var(--friendly-palette-accent-900)' : 'transparent',
+              backgroundColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : 'transparent',
               minWidth: '26px',
               minHeight: '26px',
-              borderColor: isEmojiFrown ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
+              borderColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
               '&:hover': {
-                backgroundColor: isEmojiFrown ? 'var(--friendly-palette-accent-900)' : 'transparent'
+                backgroundColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : 'transparent'
               }
             }}
           >
-            {icons.emojiFrown(`${isEmojiFrown ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
+            {icons.emojiFrown(`${reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
           </IconButton>
         </div>}
       </div>
