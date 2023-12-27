@@ -107,6 +107,7 @@ const FinalizedCard = (props: IColumnCard) => {
         cardComment: cardComment,
         cardTags: cardTags
       });
+      unselectCard(_id);
     }
   };
 
