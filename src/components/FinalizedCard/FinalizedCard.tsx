@@ -131,7 +131,7 @@ const FinalizedCard = (props: IColumnCard) => {
         backgroundColor: 'var(--friendly-palette-shades-50)',
         border: 'none',
         padding: '10px',
-        boxShadow: '0px 8px 16px #0000001a',
+        boxShadow: '0px 8px 16px var(--friendly-palette-neutral-200)',
         minHeight: isShownAllText ? 'unset' : 140,
         maxHeight: 'unset',
         userSelect: 'none', /* standard syntax */
@@ -271,13 +271,14 @@ const FinalizedCard = (props: IColumnCard) => {
               minWidth: '26px',
               minHeight: '26px',
               backgroundColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : 'transparent',
-              borderColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
+              borderColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : 'var(--friendly-palette-neutral-200)',
               '&:hover': {
                 backgroundColor: reactionState?.reaction === 'happy' ? 'var(--friendly-palette-accent-900)' : 'transparent'
               }
             }}
           >
-            {icons.emojiSmile(`${reactionState?.reaction === 'happy' ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
+            {icons.emojiSmile(`${reactionState?.reaction === 'happy' ?
+              'var(--friendly-palette-shades-50)' : 'var(--friendly-palette-neutral-700)'}`, '16px')}
           </IconButton>
           <IconButton
             variant='outlined'
@@ -286,13 +287,14 @@ const FinalizedCard = (props: IColumnCard) => {
               backgroundColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : 'transparent',
               minWidth: '26px',
               minHeight: '26px',
-              borderColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : '#a0abbb',
+              borderColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : 'var(--friendly-palette-neutral-200)',
               '&:hover': {
                 backgroundColor: reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-accent-900)' : 'transparent'
               }
             }}
           >
-            {icons.emojiFrown(`${reactionState?.reaction === 'unhappy' ? 'var(--friendly-palette-shades-50)' : '#484a4b'}`, '16px')}
+            {icons.emojiFrown(`${reactionState?.reaction === 'unhappy' ?
+              'var(--friendly-palette-shades-50)' : 'var(--friendly-palette-neutral-700)'}`, '16px')}
           </IconButton>
         </div>}
       </div>
