@@ -25,12 +25,14 @@ const PageHeader = () => {
         <div className={classes['header__user-box']}>
           <span>Hello, {localUserData.fullName}</span>|
           <Button
-            className={classes['header__user-box__sign-out']}
             variant='soft'
             onClick={onSignOut}
             aria-label='plain primary button for signing out'
             role='button'
             data-testid='signOut'
+            sx={{
+              ml: '10px'
+            }}
           >
             Sign Out
           </Button>
