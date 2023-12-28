@@ -5,13 +5,12 @@
   @include flexbox(row, center, flex-start, wrap);
   position: relative;
   height: 100%;
-  width: 450px;
-  min-width: 430px;
+  width: 32%;
   padding-top: 30px;
   border-radius: 15px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  border: 1px solid #45505f;
+  border: 1px solid $friendly-palette-neutral-800;
   border-bottom: none;
   background-color: $friendly-palette-shades-50;
 

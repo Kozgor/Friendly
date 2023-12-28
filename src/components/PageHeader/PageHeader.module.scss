@@ -21,14 +21,10 @@
     @include flexbox(row, flex-end, center, nowrap);
 
     span {
-      color: #45505f;
+      color: $friendly-palette-neutral-800;
       line-height: 40px;
       cursor: context-menu;
       margin-right: 5px;
-    }
-
-    &__sign-out {
-      margin-left: 10px;
     }
   }
 }

@@ -59,7 +59,7 @@ const NewCommentInput = (props: INewCommentInput) => {
 
   return (
     <div className={classes.commentInput}>
-      <form style={{width: '100%'}}
+      <form style={{ width: '100%' }}
         onSubmit={onSendNewComment}
       >
         <Card
@@ -75,119 +75,134 @@ const NewCommentInput = (props: INewCommentInput) => {
           }}
         >
 
-            <div className={classes.commentInputTop}>
-              <div className={classes.commentInputAvatarContainer}>
-                <div className={classes.commentInputAvatar}>
-                  <CardAvatar
-                    isBorder={true}
-                    borderColor={'var(--friendly-palette-primary-200)'}
-                    cardAuthor={cardAuthorState}
-                    cardAuthorAvatar={cardAuthorAvatarState}
-                    data-testid='newCommentAvatar'
-                    onToggle={onHandleSwitchToggle}
-                  ></CardAvatar>
-                </div>
-              </div>
-              <div className={classes.commentInputTextareaContainer}>
-                <div className={classes.commentInputTextarea}>
-                  <Textarea
-                    data-testid='newCardTextarea'
-                    minRows={3}
-                    maxRows={3}
-                    variant='plain'
-                    size='sm'
-                    required
-                    placeholder={cardTextareaPlaceholder}
-                    value={cardCommentState}
-                    onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                      setCardCommentState(event.target.value)
-                    }
-                    sx={{
-                      '&.MuiTextarea-root': {
-                        backgroundColor: 'var(--friendly-palette-shades-50)',
-                        fontFamily: '"Open Sans", sans-serif'
-                      },
-                      height: '56px'
-                    }}
-                  />
-                </div>
+          <div className={classes.commentInputTop}>
+            <div className={classes.commentInputAvatarContainer}>
+              <div className={classes.commentInputAvatar}>
+                <CardAvatar
+                  isBorder={true}
+                  borderColor={'var(--friendly-palette-primary-200)'}
+                  cardAuthor={cardAuthorState}
+                  cardAuthorAvatar={cardAuthorAvatarState}
+                  data-testid='newCommentAvatar'
+                  onToggle={onHandleSwitchToggle}
+                ></CardAvatar>
               </div>
             </div>
-            <div className={classes.commentInputBottom}>
-              <div className={classes.commentTagsContainer}>
-                <div className={classes.commentTags}>
-                  <Select
-                    value={cardTagsState}
-                    multiple
-                    onChange={handleSelectChange}
-                    placeholder={tagsPlaceholder}
-                    size='sm'
-                    data-testid='newCardSelectComponent'
-                    renderValue={selected =>
-                      (<Box sx={{ display: 'flex', gap: '0.25rem' }}>
-                        {selected.map((selectedOption, index) => {
-                          if (isString(selectedOption.label)) {
-                            return (<CardChip key={index} tag={selectedOption.label} />);
-                          }
-
-                          return null;
-                        })}
-                      </Box>)
-                    }
-                    sx={{
-                      width: '100%',
-                      fontSize: '12px',
-                      lineHeight: '16px',
-                      fontWeigth: '400',
+            <div className={classes.commentInputTextareaContainer}>
+              <div className={classes.commentInputTextarea}>
+                <Textarea
+                  data-testid='newCardTextarea'
+                  minRows={3}
+                  maxRows={3}
+                  variant='plain'
+                  size='sm'
+                  required
+                  placeholder={cardTextareaPlaceholder}
+                  value={cardCommentState}
+                  onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                    setCardCommentState(event.target.value)
+                  }
+                  sx={{
+                    '&.MuiTextarea-root': {
                       backgroundColor: 'var(--friendly-palette-shades-50)',
-                      boxShadow: 'none',
-                      border: 'none',
-                      padding: 0,
-                      fontFamily: '"Open Sans", sans-serif',
-                      '&:hover': {
-                        backgroundColor: 'var(--friendly-palette-shades-50)'
-                      }
-                    }}
-                    slotProps={{
-                      indicator: {
-                        'style': {
-                          display: 'none'
-                        }
-                      }
-                    }}
-                  >{cardTags.map(tag =>
-                    (<Option key={tag} value={tag}>{tag}</Option>)
-                  )}
-                  </Select>
-                </div>
-              </div>
-              <div className={classes.commentInputSendContainer}>
-                <div className={classes.commentInputSendButton}>
-                  <IconButton
-                    type='submit'
-                    variant='solid'
-                    color='success'
-                    disabled={isDisabled}
-                    data-testid='newCardSendButton'
-                    className={classes.sendButtonIconComponent}
-                    sx={{
-                      '&.Mui-disabled': {
-                        opacity: '.5'
-                      },
-                      '&.MuiIconButton-root': {
-                        minWidth: '28px',
-                        minHeight: '28px'
-                      }
-                    }}
-                    >
-                      {icons.cursor('var(--friendly-palette-accent-300')}
-                  </IconButton>
-                </div>
+                      fontFamily: '"Open Sans", sans-serif'
+                    },
+                    height: '56px'
+                  }}
+                />
               </div>
             </div>
+          </div>
+          <div className={classes.commentInputBottom}>
+            <div className={classes.commentTagsContainer}>
+              <div className={classes.commentTags}>
+                <Select
+                  value={cardTagsState}
+                  multiple
+                  onChange={handleSelectChange}
+                  placeholder={tagsPlaceholder}
+                  size='sm'
+                  data-testid='newCardSelectComponent'
+                  renderValue={selected =>
+                  (<Box sx={{ display: 'flex', gap: '0.25rem' }}>
+                    {selected.map((selectedOption, index) => {
+                      if (isString(selectedOption.label)) {
+                        return (<CardChip key={index} tag={selectedOption.label} />);
+                      }
+
+                      return null;
+                    })}
+                  </Box>)
+                  }
+                  sx={{
+                    width: '100%',
+                    fontSize: '12px',
+                    lineHeight: '16px',
+                    fontWeigth: '400',
+                    backgroundColor: 'var(--friendly-palette-shades-50)',
+                    boxShadow: 'none',
+                    border: 'none',
+                    padding: 0,
+                    fontFamily: '"Open Sans", sans-serif',
+                    '&:hover': {
+                      backgroundColor: 'var(--friendly-palette-shades-50)'
+                    }
+                  }}
+                  slotProps={{
+                    indicator: {
+                      'style': {
+                        display: 'none'
+                      }
+                    }
+                  }}
+                >{cardTags.map(tag =>
+                (<Option key={tag} value={tag} sx={{
+                  '&.Mui-selected': {
+                    backgroundColor: 'var(--friendly-palette-primary-600)',
+                    color: 'var(--friendly-palette-shades-50)'
+                  },
+                  '&.MuiOption-root': {
+                    '&:hover': {
+                      backgroundColor: 'var(--friendly-palette-primary-100)',
+                      color: 'var(--friendly-palette-neutral-900)'
+                    },
+                    '&.MuiOption-highlighted': {
+                      backgroundColor: 'var(--friendly-palette-primary-100)',
+                      color: 'var(--friendly-palette-neutral-900)'
+                    }
+                  }
+                }}>{tag}</Option>)
+                )}
+                </Select>
+              </div>
+            </div>
+            <div className={classes.commentInputSendContainer}>
+              <div className={classes.commentInputSendButton}>
+                <IconButton
+                  type='submit'
+                  variant='solid'
+                  color='success'
+                  disabled={isDisabled}
+                  data-testid='newCardSendButton'
+                  className={classes.sendButtonIconComponent}
+                  sx={{
+                    '&.Mui-disabled': {
+                      opacity: '.5'
+                    },
+                    '&.MuiIconButton-root': {
+                      minWidth: '28px',
+                      minHeight: '28px'
+                    }
+                  }}
+                >
+                  {icons.cursor('var(--friendly-palette-accent-300')}
+                </IconButton>
+              </div>
+            </div>
+          </div>
         </Card>
       </form>
-    </div>
+    </div >
   );
 };
 
