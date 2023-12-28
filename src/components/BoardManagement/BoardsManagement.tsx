@@ -41,7 +41,7 @@ const BoardsManagement = () => {
       component="main"
       sx={{
         flexGrow: 0,
-        bgcolor: 'var(--friendly-palette-neutral-50);',
+        bgcolor: 'var(--friendly-palette-neutral-50)',
         padding: 0,
         marginLeft: 0,
         width: '100%',
@@ -69,8 +69,7 @@ const BoardsManagement = () => {
                 <BoardStepper board={board} />
                 {(index + 1) !== boards.length && <Divider
                   sx={{
-                    backgroundColor: '#1b1c1d',
-                    opacity: '0.8',
+                    backgroundColor: 'var(--friendly-palette-neutral-700)',
                     width: 'calc(70% - 8px)'
                   }}
                 />}

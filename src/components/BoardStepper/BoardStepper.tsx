@@ -118,7 +118,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
               isStepCompletedMap[index])}
             indicator={!((index === STEPS_MAP.third && isStatusActive) ||
               index === STEPS_MAP.fifth) && <StepIndicator variant="solid" sx={{
-                background: isStepCompletedMap[index] ? 'var(--friendly-palette-neutral-700)' : 'rgb(255, 166, 43)',
+                background: isStepCompletedMap[index] ? 'var(--friendly-palette-neutral-700)' : 'var(--friendly-palette-accent-900)',
                 borderRadius: '4px',
                 height: '36px',
                 minWidth: '40px',
@@ -139,8 +139,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                   },
                   '&:disabled': {
                     backgroundColor: 'var(--friendly-palette-secondary-900)',
-                    color: '#eeeeee',
-                    opacity: 0.5
+                    color: 'var(--friendly-palette-neutral-50)'
                   }
                 }}
               >

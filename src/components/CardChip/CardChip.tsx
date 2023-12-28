@@ -30,7 +30,7 @@ const CardChip = (props: { tag: string }) => {
         variant: 'solid',
         fontSize: '10px',
         fontWeight: '400',
-        color: '#1b1c1d',
+        color: 'var(--friendly-palette-neutral-700)',
         backgroundColor: setChipColor[tag],
         '&.MuiChip-root': {
           padding: 0
