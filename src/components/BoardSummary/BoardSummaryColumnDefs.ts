@@ -8,7 +8,7 @@ const reactionsFormatter = (params: any) => {
 
 export const boardSummaryDefsList = [{
   headerName: 'COLUMN',
-  field: 'columnId',
+  field: 'columnTitle',
   filter: 'agTextColumnFilter',
   maxWidth: 170
 }, {
