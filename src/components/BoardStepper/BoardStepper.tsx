@@ -2,10 +2,12 @@
 import moment from 'moment';
 
 import {
-  Button, Typography, Stack,
+  Button,
+  Stack,
   StepButton,
+  StepIndicator,
   Stepper,
-  StepIndicator
+  Typography
 } from '@mui/joy';
 import Step, { stepClasses } from '@mui/joy/Step';
 
@@ -21,7 +23,6 @@ import {
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import { boardAPI } from '../../api/BoardAPI';
-import { defaultTheme } from '../../theme/default';
 import { icons } from '../../theme/icons/icons';
 
 import classes from './BoardStepper.module.scss';
@@ -117,7 +118,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
               isStepCompletedMap[index])}
             indicator={!((index === STEPS_MAP.third && isStatusActive) ||
               index === STEPS_MAP.fifth) && <StepIndicator variant="solid" sx={{
-                background: isStepCompletedMap[index] ? 'var(--friendly-palette-neutral-700)' : 'rgb(255, 166, 43)',
+                background: isStepCompletedMap[index] ? 'var(--friendly-palette-neutral-700)' : 'var(--friendly-palette-accent-900)',
                 borderRadius: '4px',
                 height: '36px',
                 minWidth: '40px',
@@ -132,14 +133,13 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
                 onClick={index === STEPS_MAP.third && isStatusActive ?
                   onFinalizeBoard : () => { }}
                 sx={{
-                  backgroundColor: defaultTheme.color2,
+                  backgroundColor: 'var(--friendly-palette-secondary-900)',
                   '&:hover': {
-                    backgroundColor: defaultTheme.color2
+                    backgroundColor: 'var(--friendly-palette-secondary-900)'
                   },
                   '&:disabled': {
-                    backgroundColor: defaultTheme.color2,
-                    color: defaultTheme.color3,
-                    opacity: 0.5
+                    backgroundColor: 'var(--friendly-palette-secondary-900)',
+                    color: 'var(--friendly-palette-neutral-50)'
                   }
                 }}
               >

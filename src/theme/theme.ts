@@ -35,7 +35,8 @@ const joyTheme = extendTheme({
           600: '#5E6165',
           700: '#474A4F',
           800: '#303439',
-          900: '#191D23'
+          900: '#191D23',
+          solidBg: '#191D23'
         },
         primary: {
           50: '#F3F8F8',
@@ -47,7 +48,8 @@ const joyTheme = extendTheme({
           600: '#5C96A2',
           700: '#458795',
           800: '#2D7887',
-          900: '#16697A'
+          900: '#16697A',
+          solidBg: '#16697A'
         },
         secondary: {
           50: '#FFF7F2',
@@ -59,7 +61,8 @@ const joyTheme = extendTheme({
           600: '#FF904D',
           700: '#FF8033',
           800: '#FF701A',
-          900: '#FF6000'
+          900: '#FF6000',
+          solidBg: '#FF6000'
         },
         accent: {
           50: '#FFFBF4',
@@ -71,11 +74,13 @@ const joyTheme = extendTheme({
           600: '#FFC16B',
           700: '#FFB855',
           800: '#FFAF40',
-          900: '#FFA62B'
+          900: '#FFA62B',
+          solidBg: '#FFA62B'
         },
         shades: {
           50: '#FFF',
-          900: '#000'
+          900: '#000',
+          solidBg: '#FFF'
         }
       }
     }

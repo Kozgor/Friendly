@@ -26,7 +26,7 @@ const BoardSummary = () => {
   const { getUserById } = userAPI();
   const { getLocalUserData } = localStorageManager();
   const localUser = getLocalUserData();
-  const URLBoardId= useBoardIdLocation();
+  const URLBoardId = useBoardIdLocation();
   const navigate = useNavigate();
   const gridRef = useRef<AgGridReact>(null);
   const [rowData, setRowData] = useState<RowDataItem[]>([]);
@@ -69,7 +69,7 @@ const BoardSummary = () => {
 
         return;
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -110,7 +110,9 @@ const BoardSummary = () => {
           columnDefs={boardSummaryDefsList}
           rowSelection={'multiple'}
           getRowId={getRowId}
-          defaultColDef={{ flex: 1 }}
+          defaultColDef={{
+            flex: 1, floatingFilter: true, suppressMenu: true
+          }}
           icons={{ filter: '<i class="bi bi-filter"></i>' }}
         />
       </div>

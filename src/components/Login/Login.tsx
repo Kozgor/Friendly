@@ -117,7 +117,7 @@ function Login() {
         <CardContent sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
           <Typography component='h2' sx={{
             fontWeight: 700,
-            fontSize: 64,
+            fontSize: 54,
             lineHeight: 0.8,
             background: 'linear-gradient(to left, var(--friendly-palette-secondary-200), var(--friendly-palette-secondary-900))',
             'WebkitTextFillColor': 'transparent',
@@ -130,8 +130,9 @@ function Login() {
               <Fragment key={input.key}><div className={classes['form-control']}>
                 <FormLabel htmlFor={input.key} sx={{
                   position: 'absolute',
-                  top: '-10px',
-                  left: '10px'
+                  top: '-7px',
+                  left: '12px',
+                  fontSize: '10px'
                 }}>{input.key}</FormLabel>
                 <Input
                   id={input.key}
@@ -144,7 +145,7 @@ function Login() {
                   data-testid={`loginInput${input.key}`}
                   sx={{
                     height: 30,
-                    fontSize: '10px',
+                    fontSize: '14px',
                     width: 200,
                     backgroundColor: 'transparent',
                     border: 'none',
@@ -172,11 +173,11 @@ function Login() {
               sx={{
                 backgroundColor: 'var(--friendly-palette-secondary-900)',
                 color: 'var(--friendly-palette-shades-50)',
-                mr: '24px',
-                fontSize: 16
+                mr: '24px'
               }}
             >
-              {isLoginRequest ? <CircularProgress data-testid="submitProgress" /> : 'Let\'s Go'}
+              {isLoginRequest ? <CircularProgress data-testid="submitProgress" color='secondary' />
+                : 'Let\'s Go'}
             </Button>
           </form>
         </CardContent>

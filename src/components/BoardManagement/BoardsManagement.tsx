@@ -8,7 +8,6 @@ import { IBoardSettings } from '../../interfaces/boardSettings';
 import NoContent from '../NoContent/NoContent';
 import TitlePanel from '../TitlePanel/TitlePanel';
 import { boardAPI } from '../../api/BoardAPI';
-import { defaultTheme } from '../../theme/default';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
 import classes from './BoardsManagement.module.scss';
@@ -42,7 +41,7 @@ const BoardsManagement = () => {
       component="main"
       sx={{
         flexGrow: 0,
-        bgcolor: 'var(--friendly-palette-neutral-50);',
+        bgcolor: 'var(--friendly-palette-neutral-50)',
         padding: 0,
         marginLeft: 0,
         width: '100%',
@@ -57,7 +56,7 @@ const BoardsManagement = () => {
           <div className={classes.boardsManagementLoader}>
             <CircularProgress
               data-testid='circular-progress'
-              color='primary'
+              color='secondary'
               size='md'
               variant='soft'
             />
@@ -70,8 +69,7 @@ const BoardsManagement = () => {
                 <BoardStepper board={board} />
                 {(index + 1) !== boards.length && <Divider
                   sx={{
-                    backgroundColor: defaultTheme.color7,
-                    opacity: '0.8',
+                    backgroundColor: 'var(--friendly-palette-neutral-700)',
                     width: 'calc(70% - 8px)'
                   }}
                 />}
