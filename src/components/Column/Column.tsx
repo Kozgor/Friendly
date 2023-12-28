@@ -158,7 +158,7 @@ const Column = (props: IColumn) => {
 
 
   return (
-    <section className={`${classes.column}`}>
+    <section className={classes.column}>
       <div className={classes['column__header']}>
         <div className={classes['column__header__title']}>
           <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
