@@ -5,7 +5,7 @@ import { CardTag } from '../types/cardTags';
 export interface ICardReactions {
   _id: string;
   userId: string;
-  isHappyReaction: boolean;
+  reaction: 'happy' | 'unhappy' | null
 }
 
 export interface IColumnCard {
@@ -18,7 +18,7 @@ export interface IColumnCard {
   cardAuthorAvatar?: string;
   cardActionAuthorId?: string;
   cardTags?: CardTag[];
-  cardReactions?: boolean|null;
+  cardReactions?: ICardReactions | null;
   cardReplies?: ICardReply[];
   isEditable?: boolean;
   isDisabled?: boolean;

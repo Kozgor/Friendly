@@ -3,9 +3,10 @@
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
+
+import { ICardReactions, IColumnCard } from '../../interfaces/columnCard';
 import { BoardContext } from '../../context/board/boardContext';
 import { IColumn } from '../../interfaces/column';
-import { IColumnCard } from '../../interfaces/columnCard';
 
 import { cardAPI } from '../../api/CardAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
@@ -15,6 +16,7 @@ import { sortByDateStartNew } from '../../utils/sortByDate';
 import EditCard from '../EditCard/EditCard';
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
 import NewCommentInput from '../NewCommentInput/NewCommentInput';
+
 import classes from './Column.module.scss';
 import moment from 'moment';
 
@@ -61,7 +63,7 @@ const Column = (props: IColumn) => {
     } else {
       createCard(boardId, columnId, handledCard)
         .then((res) => {
-          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res.data._id }, ...prevCards ]);
+          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res.data._id }, ...prevCards]);
         });
     }
   };
@@ -120,18 +122,12 @@ const Column = (props: IColumn) => {
     setIsButtonDisabled(actionType === 'edit');
   };
 
-  const filterReactionsByUserId = (cardReactions: any): boolean | null => {
-    let isHappyUser = null;
-
+  const filterReactionsByUserId = (cardReactions: ICardReactions[]): ICardReactions | null => {
     if (isEmpty(cardReactions?.length)) {
-      find(cardReactions, (reaction => {
-        if (reaction.userId === localUser._id) {
-          isHappyUser = reaction.isHappyReaction;
-        }
-      }));
+      return find(cardReactions, (reaction => reaction.userId === localUser._id)) || null;
     }
 
-    return isHappyUser;
+    return null;
   };
 
   const sendNewComment = (

@@ -15,7 +15,7 @@
     }
   }
 
-  .footerReactons {
+  .footerReactions {
     @include flexbox(row, space-between, center, nowrap);
 
     .reactionIcon {
