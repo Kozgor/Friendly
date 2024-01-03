@@ -10,8 +10,9 @@ export const columnAPI = () => {
       const userColumns = await axios.post(`${FRIENDLY_DOMAIN}columns/user-comments`, { boardId, cardAuthorId });
 
       return userColumns.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -20,8 +21,9 @@ export const columnAPI = () => {
       const finalColumns = await axios.post(`${FRIENDLY_DOMAIN}columns/users-comments`, { boardId });
 
       return finalColumns.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -30,8 +32,9 @@ export const columnAPI = () => {
       const updatedCardWithReactions = await axios.put(`${FRIENDLY_DOMAIN}card/update-card-reactions`, reactions);
 
       return updatedCardWithReactions.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 

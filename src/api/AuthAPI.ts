@@ -11,8 +11,9 @@ export const authAPI = () => {
       });
 
       return login.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 

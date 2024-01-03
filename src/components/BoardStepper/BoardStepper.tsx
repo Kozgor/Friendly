@@ -12,9 +12,11 @@ import {
 import Step, { stepClasses } from '@mui/joy/Step';
 
 import { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import {
+  FINALIZED_BOARD_ERROR_MESSAGE,
   STEPS_MAP,
   boardStepperButtons,
   boardStepperLabels,
@@ -22,11 +24,12 @@ import {
 } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import { IBoardSettings } from '../../interfaces/boardSettings';
+import Toastr from '../Toastr/Toastr';
 import { boardAPI } from '../../api/BoardAPI';
 import { icons } from '../../theme/icons/icons';
+import { localStorageManager } from '../../utils/localStorageManager';
 
 import classes from './BoardStepper.module.scss';
-import { localStorageManager } from '../../utils/localStorageManager';
 
 const BoardStepper = (props: { board: IBoardSettings }) => {
   const { board } = props;
@@ -58,12 +61,22 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
 
   const onFinalizeBoard = async () => {
     if (board._id) {
-      const finalizedBoard = await finalizeBoard(board._id);
+      try {
+        const finalizedBoard = await finalizeBoard(board._id);
 
-      setCurrentBoardStatus(possibleBoardStatuses.finalized);
-      setBoardStatus(possibleBoardStatuses.finalized);
+        setCurrentBoardStatus(possibleBoardStatuses.finalized);
+        setBoardStatus(possibleBoardStatuses.finalized);
 
-      return finalizedBoard;
+        return finalizedBoard;
+      } catch (error) {
+        console.log(error);
+        toast.error(
+          <Toastr
+            itemName={board.name}
+            message={FINALIZED_BOARD_ERROR_MESSAGE}
+          />
+        );
+      }
     }
   };
 

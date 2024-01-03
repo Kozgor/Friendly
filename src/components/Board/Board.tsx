@@ -9,10 +9,23 @@ import {
 } from 'react';
 import { CloseRounded } from '@mui/icons-material';
 import { isNull } from 'lodash';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 
+import {
+  BOARD_ERROR_FINISH_MESSAGE,
+  BOARD_SUCCESS_FINISH_MESSAGE,
+  DELETE_CARDS_ERROR_MESSAGE,
+  DELETING_ERROR,
+  GET_BOARD_BY_ID_ERROR_MESSAGE,
+  GET_FINALIZED_CARDS_TO_BOARD_ERROR_MESSAGE,
+  GET_USER_BY_ID_ERROR_MESSAGE,
+  GET_USER_CARDS_TO_BOARD_ERROR_MESSAGE,
+  NO_BOARDS_MESSAGE,
+  panelTitles,
+  possibleBoardStatuses
+} from '../../constants';
 import { ICurrentBoardDetails, IUserProfile } from '../../interfaces/user';
-import { NO_BOARDS_MESSAGE, panelTitles, possibleBoardStatuses } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import Column from '../Column/Column';
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -23,6 +36,7 @@ import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import NoContent from '../NoContent/NoContent';
 import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import Timer from '../Timer/Timer';
+import Toastr from '../Toastr/Toastr';
 import { boardAPI } from '../../api/BoardAPI';
 import { cardAPI } from '../../api/CardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
@@ -60,7 +74,7 @@ const Board = () => {
   const { getUserById, submitComments } = userAPI();
   const { removeCards } = cardAPI();
   const localUser = getLocalUserData();
-  const URLBoardId= useBoardIdLocation();
+  const URLBoardId = useBoardIdLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAdmin = localUser.role === 'admin';
   const isActiveWithTimer = boardStatus === possibleBoardStatuses.active && isTimerStarted;
@@ -75,7 +89,22 @@ const Board = () => {
   const isTimerStartedMemoized = useMemo(() => isTimerStarted, [isTimerStarted]);
 
   const completeBoard = () => {
-    submitComments(localUser._id);
+    submitComments(localUser._id).then(() => {
+      toast.success(
+        <Toastr
+          itemName={boardSettings.name}
+          message={BOARD_SUCCESS_FINISH_MESSAGE}
+        />
+      );
+    }).catch(error => {
+      console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={BOARD_ERROR_FINISH_MESSAGE}
+        />
+      );
+    });
     disableCommentCreation();
     setFormSubmit();
     setTimerVisibility(false);
@@ -130,6 +159,12 @@ const Board = () => {
       return columnsData;
     } catch (error) {
       console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={GET_USER_CARDS_TO_BOARD_ERROR_MESSAGE}
+        />
+      );
     }
   };
 
@@ -140,6 +175,12 @@ const Board = () => {
       return columnsData;
     } catch (error) {
       console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={GET_FINALIZED_CARDS_TO_BOARD_ERROR_MESSAGE}
+        />
+      );
     }
   };
 
@@ -187,8 +228,14 @@ const Board = () => {
         setIsBoardVisible(false);
         setTimerVisibility(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={GET_BOARD_BY_ID_ERROR_MESSAGE}
+        />
+      );
     }
   };
 
@@ -219,6 +266,12 @@ const Board = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error(
+        <Toastr
+          itemName={localUser.fullName}
+          message={GET_USER_BY_ID_ERROR_MESSAGE}
+        />
+      );
     } finally {
       setIsLoading(false);
     }
@@ -244,10 +297,23 @@ const Board = () => {
 
             resetSelectedCards();
             setBoardSettings(board);
+          } else {
+            toast.error(
+              <Toastr
+                itemName={boardSettings.name}
+                message={GET_BOARD_BY_ID_ERROR_MESSAGE}
+              />
+            );
           }
         }
       } catch (error) {
         console.log(error);
+        toast.error(
+          <Toastr
+            itemName={DELETING_ERROR}
+            message={DELETE_CARDS_ERROR_MESSAGE}
+          />
+        );
       }
     }
   };

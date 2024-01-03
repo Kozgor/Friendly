@@ -19,14 +19,16 @@ import {
   useState
 } from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 import { ICardReactions, IColumnCard } from '../../interfaces/columnCard';
+import { UPDATE_CARD_REACTIONS_ERROR_MESSAGE, UPDATING_ERROR } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import CardAvatar from '../CardAvatar/CardAvatar';
 import CardChip from '../CardChip/CardChip';
+import Toastr from '../Toastr/Toastr';
 import { columnAPI } from '../../api/ColumnAPI';
 import { icons } from '../../theme/icons/icons';
-
 
 import classes from './FinalizedCard.module.scss';
 
@@ -66,11 +68,21 @@ const FinalizedCard = (props: IColumnCard) => {
       ...prevState!,
       reaction: receivedReaction === prevState?.reaction ? null : receivedReaction
     })));
-    updateColumnCardReaction({
-      _id,
-      userId: cardActionAuthorId || '',
-      reaction: receivedReaction === reactionState?.reaction ? null : receivedReaction
-    });
+    try {
+      updateColumnCardReaction({
+        _id,
+        userId: cardActionAuthorId || '',
+        reaction: receivedReaction === reactionState?.reaction ? null : receivedReaction
+      });
+    } catch (err) {
+      console.log(err);
+      toast.error(
+        <Toastr
+          itemName={UPDATING_ERROR}
+          message={UPDATE_CARD_REACTIONS_ERROR_MESSAGE}
+        />
+      );
+    }
   };
 
   const onShowMoreTags: MouseEventHandler<HTMLButtonElement> = (event) => {

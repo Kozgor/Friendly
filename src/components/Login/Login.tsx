@@ -19,6 +19,7 @@ import { useStoreUser } from '../../utils/storeUserManager';
 import { authAPI } from '../../api/AuthAPI';
 
 import classes from './Login.module.scss';
+import { LOGIN_EMPTY_FIELDS_MESSAGE, LOGIN_ERROR, LOGIN_WRONG_FIELDS_DATA_MESSAGE } from '../../constants';
 
 function Login() {
   const { login } = authAPI();
@@ -84,8 +85,8 @@ function Login() {
         setIsLoginRequest(false);
         toast.error(
           <Toastr
-            itemName='Login error'
-            message='Empty login or password'
+            itemName={LOGIN_ERROR}
+            message={LOGIN_WRONG_FIELDS_DATA_MESSAGE}
           />
         );
 
@@ -94,8 +95,8 @@ function Login() {
     } else {
       toast.error(
         <Toastr
-          itemName='Login error'
-          message='Wrong login or password'
+          itemName={LOGIN_ERROR}
+          message={LOGIN_EMPTY_FIELDS_MESSAGE}
         />
       );
     }

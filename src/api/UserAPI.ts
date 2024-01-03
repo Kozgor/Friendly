@@ -10,8 +10,9 @@ export const userAPI = () => {
       const submitComments = await axios.get(`${FRIENDLY_DOMAIN}user/get-all-users`);
 
       return submitComments.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -20,8 +21,9 @@ export const userAPI = () => {
       const user = await axios.post(`${FRIENDLY_DOMAIN}user/get-user`, { _id: userId });
 
       return user.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -30,8 +32,9 @@ export const userAPI = () => {
       const submitComments = await axios.put(`${FRIENDLY_DOMAIN}user/submit-comments`, { _id: userId });
 
       return submitComments.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 

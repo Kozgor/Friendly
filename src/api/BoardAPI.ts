@@ -10,8 +10,9 @@ export const boardAPI = () => {
       const activeBoard = await axios.get(`${FRIENDLY_DOMAIN}boards/active`);
 
       return activeBoard.data ? activeBoard.data : undefined;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -20,8 +21,9 @@ export const boardAPI = () => {
       const finalizedBoard = await axios.get(`${FRIENDLY_DOMAIN}boards/finalized`);
 
       return finalizedBoard.data ? finalizedBoard.data : undefined;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -32,8 +34,9 @@ export const boardAPI = () => {
       });
 
       return board.data ? board.data : undefined;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -42,8 +45,9 @@ export const boardAPI = () => {
       const boards = await axios.post(`${FRIENDLY_DOMAIN}boards/get-boards`);
 
       return boards.data ? boards.data : undefined;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -54,8 +58,9 @@ export const boardAPI = () => {
       });
 
       return finalizeBoard.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -66,8 +71,20 @@ export const boardAPI = () => {
       });
 
       return archiveBoard.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
+    }
+  };
+
+  const createNewBoard = async (boardSettings: IBoardSettings): Promise<IBoardSettings> => {
+    try {
+      const board = await axios.post(`${FRIENDLY_DOMAIN}boards/new-board`, boardSettings);
+
+      return board.data;
+    } catch (error: any) {
+      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -77,6 +94,7 @@ export const boardAPI = () => {
     getBoardById,
     getAllBoards,
     finalizeBoard,
-    archiveBoard
+    archiveBoard,
+    createNewBoard
   };
 };

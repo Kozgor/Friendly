@@ -12,11 +12,14 @@ import { boardSummaryAPI } from '../../api/BoardSummaryAPI';
 import { boardSummaryDefsList } from './BoardSummaryColumnDefs';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { pathConstants } from '../../router/pathConstants';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../api/UserAPI';
 
+import { GET_BOARD_SUMMARY_ERROR_MESSAGE, GET_USER_BY_ID_ERROR_MESSAGE } from '../../constants';
 import DownloadBoardSummaryCSVButton from './DownloadCSVButton';
 import InteractivePanel from '../InteractivePanel/InteractivePanel';
+import Toastr from '../Toastr/Toastr';
 import useBoardIdLocation from '../../utils/useBoardIdLocation';
 
 import './BoardSummary.scss';
@@ -57,6 +60,12 @@ const BoardSummary = () => {
       enableDownloadSummaryCSV(false);
     } catch (error) {
       console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardName}
+          message={GET_BOARD_SUMMARY_ERROR_MESSAGE}
+        />
+      );
     }
   };
 
@@ -71,6 +80,12 @@ const BoardSummary = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error(
+        <Toastr
+          itemName={localUser.fullName}
+          message={GET_USER_BY_ID_ERROR_MESSAGE}
+        />
+      );
     }
   };
 

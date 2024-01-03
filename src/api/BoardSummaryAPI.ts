@@ -8,8 +8,9 @@ export const boardSummaryAPI = () => {
       const boardSummary = await axios.post(`${FRIENDLY_DOMAIN}board_summary/get-board-summary`, { boardId });
 
       return boardSummary.data || null;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      throw new Error(error);
     }
   };
 
