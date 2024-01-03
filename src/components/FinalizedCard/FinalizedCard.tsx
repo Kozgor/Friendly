@@ -75,7 +75,6 @@ const FinalizedCard = (props: IColumnCard) => {
         reaction: receivedReaction === reactionState?.reaction ? null : receivedReaction
       });
     } catch (err) {
-      console.log(err);
       toast.error(
         <Toastr
           itemName={UPDATING_ERROR}

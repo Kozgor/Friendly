@@ -16,7 +16,7 @@ import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
-  const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
+  const [boards, setBoards] = useState<IBoardSettings[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { getAllBoards } = boardAPI();
 
@@ -24,11 +24,10 @@ const BoardsManagement = () => {
     setIsLoading(true);
 
     try {
-      const boards: IBoardSettings[] | undefined = await getAllBoards();
+      const boards: IBoardSettings[] = await getAllBoards();
 
-      boards ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
+      boards && boards.length ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
     } catch (error) {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={'Error'}

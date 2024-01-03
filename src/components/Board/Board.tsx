@@ -97,7 +97,6 @@ const Board = () => {
         />
       );
     }).catch(error => {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={boardSettings.name}
@@ -154,17 +153,17 @@ const Board = () => {
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
-      const columnsData = await getUserColumnCards(boardId, userId);
+      const columnsData: IColumnCard[] = await getUserColumnCards(boardId, userId);
 
-      return columnsData;
+      return columnsData || [];
     } catch (error) {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={boardSettings.name}
           message={GET_USER_CARDS_TO_BOARD_ERROR_MESSAGE}
         />
       );
+      return [];
     }
   };
 
@@ -172,24 +171,24 @@ const Board = () => {
     try {
       const columnsData = await getFinalColumnCards(boardId);
 
-      return columnsData;
+      return columnsData || [];
     } catch (error) {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={boardSettings.name}
           message={GET_FINALIZED_CARDS_TO_BOARD_ERROR_MESSAGE}
         />
       );
+      return [];
     }
   };
 
   const setupBoard = async (id?: string, status?: string) => {
     try {
-      const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
+      const board: IBoardSettings = await getBoardById(URLBoardId);
 
       if ((board && board?.status === status) || (board && localUser.role === 'admin')) {
-        let columnsCards: IColumnCard[] | undefined;
+        let columnsCards: IColumnCard[];
         const currentBoard: ICurrentBoardDetails = {
           currentBoardId: board._id,
           currentBoardName: board.name
@@ -229,7 +228,6 @@ const Board = () => {
         setTimerVisibility(false);
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={boardSettings.name}
@@ -243,7 +241,7 @@ const Board = () => {
     setIsLoading(true);
 
     try {
-      const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
+      const userProfile: IUserProfile = await getUserById(localUser._id);
 
       if (!URLBoardId && userProfile && userProfile.boards) {
         navigate(`/board/${userProfile.boards.finalized || userProfile.boards.active}`);
@@ -264,8 +262,7 @@ const Board = () => {
           return;
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       toast.error(
         <Toastr
           itemName={localUser.fullName}
@@ -282,32 +279,29 @@ const Board = () => {
       try {
         const removeCard = await removeCards(selectedCards);
 
-        if (removeCard.status === 200) {
-          const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
-          const columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
+        const board: IBoardSettings = await getBoardById(URLBoardId);
+        const columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
 
-          if (board) {
-            board.columns.forEach((column: IColumn) => {
-              const { columnId } = column;
+        if (board) {
+          board.columns.forEach((column: IColumn) => {
+            const { columnId } = column;
 
-              if (columnsCards && columnsCards[columnId]) {
-                column.columnCards = columnsCards[columnId];
-              }
-            });
+            if (columnsCards && columnsCards[columnId]) {
+              column.columnCards = columnsCards[columnId];
+            }
+          });
 
-            resetSelectedCards();
-            setBoardSettings(board);
-          } else {
-            toast.error(
-              <Toastr
-                itemName={boardSettings.name}
-                message={GET_BOARD_BY_ID_ERROR_MESSAGE}
-              />
-            );
-          }
+          resetSelectedCards();
+          setBoardSettings(board);
+        } else {
+          toast.error(
+            <Toastr
+              itemName={boardSettings.name}
+              message={GET_BOARD_BY_ID_ERROR_MESSAGE}
+            />
+          );
         }
       } catch (error) {
-        console.log(error);
         toast.error(
           <Toastr
             itemName={DELETING_ERROR}

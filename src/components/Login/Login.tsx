@@ -12,14 +12,14 @@ import {
   Input,
   Typography
 } from '@mui/joy';
+
+import { LOGIN_EMPTY_FIELDS_MESSAGE, LOGIN_ERROR, LOGIN_WRONG_FIELDS_DATA_MESSAGE } from '../../constants';
 import Toastr from '../Toastr/Toastr';
+import { authAPI } from '../../api/AuthAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { useStoreUser } from '../../utils/storeUserManager';
 
-import { authAPI } from '../../api/AuthAPI';
-
 import classes from './Login.module.scss';
-import { LOGIN_EMPTY_FIELDS_MESSAGE, LOGIN_ERROR, LOGIN_WRONG_FIELDS_DATA_MESSAGE } from '../../constants';
 
 function Login() {
   const { login } = authAPI();
@@ -68,20 +68,19 @@ function Login() {
         saveLocalUserData(user);
 
         if (user.role === 'user') {
-          if (user.boards.active) {
-            navigate(`/board/${user.boards.active}`);
+          if (user.boards?.active) {
+            navigate(`/board/${user.boards?.active}`);
 
             return;
           }
 
-          navigate(`/board/${user.boards.finalized}`);
+          navigate(`/board/${user.boards?.finalized}`);
 
           return;
         }
 
         navigate('/admin/');
       } catch (error) {
-        console.log(error);
         setIsLoginRequest(false);
         toast.error(
           <Toastr

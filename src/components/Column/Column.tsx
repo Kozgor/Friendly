@@ -71,7 +71,7 @@ const Column = (props: IColumn) => {
     } else {
       createCard(boardId, columnId, handledCard)
         .then((res) => {
-          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res.data._id }, ...prevCards]);
+          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res._id }, ...prevCards]);
         }).catch(err => {
           console.log(err);
           toast.error(
@@ -166,7 +166,7 @@ const Column = (props: IColumn) => {
 
     createCard(boardId, columnId, newCard)
       .then((res) => {
-        const updatedCard = { ...newCard, _id: res.data._id };
+        const updatedCard = { ...newCard, _id: res._id };
 
         setFinalizedCards((prevCards) => [updatedCard, ...prevCards]);
       }).catch(err => {

@@ -114,7 +114,6 @@ const DefaultBoard = () => {
       );
       setBoardId(board._id!);
     } catch (err) {
-      console.log(err);
       toast.error(
         <Toastr
           itemName={CREATION_ERROR}
@@ -164,7 +163,6 @@ const DefaultBoard = () => {
           setParticipantsList(participants);
         }
       } catch (error) {
-        console.error(error);
         toast.error(
           <Toastr
             itemName={'Error'}

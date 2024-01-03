@@ -59,7 +59,6 @@ const BoardSummary = () => {
 
       enableDownloadSummaryCSV(false);
     } catch (error) {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={boardName}
@@ -71,7 +70,7 @@ const BoardSummary = () => {
 
   const getUserData = async () => {
     try {
-      const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
+      const userProfile: IUserProfile = await getUserById(localUser._id);
 
       if (!URLBoardId && userProfile && userProfile.boards?.finalized) {
         navigate(`/board_summary/${userProfile.boards.finalized}`);
@@ -79,7 +78,6 @@ const BoardSummary = () => {
         return;
       }
     } catch (error) {
-      console.log(error);
       toast.error(
         <Toastr
           itemName={localUser.fullName}

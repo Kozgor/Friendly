@@ -69,7 +69,6 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
 
         return finalizedBoard;
       } catch (error) {
-        console.log(error);
         toast.error(
           <Toastr
             itemName={board.name}
