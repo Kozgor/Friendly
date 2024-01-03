@@ -1,0 +1,8 @@
+{
+  "name": "Friendly",
+  "entryPoints": ["src"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "exclude": ["**/index.tsx", "**/*.test.tsx"],
+  "includeVersion": true
+}
