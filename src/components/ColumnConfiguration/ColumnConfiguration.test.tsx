@@ -1,4 +1,4 @@
-import { RenderResult, fireEvent, render, screen } from '@testing-library/react';
+import { RenderResult, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import ColumnConfiguration from './ColumnConfiguration';
 import { IColumn } from '../../interfaces/column';
@@ -51,12 +51,31 @@ describe('ColumnConfiguration component', () => {
     expect(subtitle).toBeInTheDocument();
   });
 
+  test('should change title value', () => {
+    const title = screen.getByTestId('title');
+
+    waitFor(() => {
+      fireEvent.click(title);
+
+      const titleInput = screen.getByTestId('title-input') as HTMLInputElement;
+
+      fireEvent.change(titleInput, { target: {value: 'Title' } });
+
+      expect(columns.find(col => col.columnId === 'start')?.columnSubtitle).toBe('Title');
+    });
+  });
+
   test('should change subtitle value', () => {
     const subtitle = screen.getByTestId('subtitle');
-    const subtitleInput = subtitle.querySelector('textarea') as HTMLTextAreaElement;
 
-    fireEvent.change(subtitleInput, { target: {value: 'Subtitle' } });
+    waitFor(() => {
+      fireEvent.click(subtitle);
 
-    expect(columns.find(col => col.columnId === 'start')?.columnSubtitle).toBe('Subtitle');
+      const subtitleTextarea = screen.getByTestId('subtitle-textarea') as HTMLTextAreaElement;
+
+      fireEvent.change(subtitleTextarea, { target: {value: 'Subtitle' } });
+
+      expect(columns.find(col => col.columnId === 'start')?.columnSubtitle).toBe('Subtitle');
+    });
   });
 });

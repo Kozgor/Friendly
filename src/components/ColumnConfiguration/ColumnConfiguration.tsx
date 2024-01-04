@@ -64,6 +64,7 @@ const ColumnConfiguration = (props: {
                 ref={inputTitleRef}
                 placeholder={columnConfigurationPlaceholders.inputTitle[columnId]}
                 value={column?.columnTitle}
+                data-testid='title-input'
                 onChange={(event) => columnInputHandler(event, 'columnTitle')}
                 slotProps={{
                   input: {
@@ -85,6 +86,7 @@ const ColumnConfiguration = (props: {
         {!isColumnSubtitleTextarea ? (
           <p
             className={classes.columnHeaderSubtitle}
+            data-testid='subtitle'
             onClick={() => setIsColumnSubtitleTextarea(!isColumnSubtitleTextarea)}
           >
             {column?.columnSubtitle}
@@ -101,7 +103,7 @@ const ColumnConfiguration = (props: {
                 onBlur: () => setIsColumnSubtitleTextarea(!isColumnSubtitleTextarea)
               }
             }}
-            data-testid="subtitle"
+            data-testid='subtitle-textarea'
             sx={{
               border: 'none',
               backgroundColor: 'var(--friendly-palette-shades-50)',
