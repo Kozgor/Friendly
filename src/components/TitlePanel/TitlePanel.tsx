@@ -5,7 +5,9 @@ const TitlePanel = (props: ITitlePanelChildren) => {
   const { title } = props;
 
   return(
-    <div className={classes.titleContainer}>
+    <div
+      data-testid='title-container'
+      className={classes.titleContainer}>
       {title}
     </div>
   );

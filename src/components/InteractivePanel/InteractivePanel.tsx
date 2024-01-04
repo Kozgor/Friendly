@@ -14,12 +14,12 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
   const { childrenConfig } = props;
   const { truncateSummaryLabel } = truncateInteractivePanelLabel();
   const [contentLeft, setContentLeft] = useState<ReactNode | string>(null);
-  const [contentCenter, setContentCenter] = useState<ReactNode | string>(null);
+  const [contentCenter, setContentCenter] = useState<ReactNode>(null);
   const [contentRigth, setContentRigtht] = useState<ReactNode | string>(null);
   const [backwardLabel, setBackwardLabel] = useState<string>('');
   const [forwardLabel, setForwardLabel] = useState<string>('');
   const isBackward = isString(contentLeft);
-  const isFarward = isString(contentRigth);
+  const isForward = isString(contentRigth);
   const isSummaryPage = backwardLabel.indexOf(SUMMARY_LABEL_TAIL) > 0;
 
   const onBackward = () => {
@@ -29,7 +29,7 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
   };
 
   const onForward = () => {
-    if (isFarward) {
+    if (isForward) {
       navigate(contentRigth);
     }
   };
@@ -52,7 +52,7 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
         return;
       }
 
-      setContentCenter(element || path);
+      setContentCenter(element);
     });
   };
 
@@ -69,6 +69,7 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
               <IconButton
                 variant="solid"
                 onClick={onBackward}
+                data-testId='panel-left-element'
                 sx={{
                   backgroundColor: 'var(--friendly-palette-accent-900)',
                   '&:hover': {
@@ -84,25 +85,27 @@ const InteractivePanel = (props: { childrenConfig: PropsChildren[] }) => {
         {isSummaryPage ?
           (<Tooltip
             title={backwardLabel}
+            data-testId='panel-left-label-tooltip'
             disableHoverListener={backwardLabel.length < (17 + SUMMARY_LABEL_TAIL.length)}
           >
-            <span className={classes.panelLeftLabel}>{truncateSummaryLabel(backwardLabel)}</span>
+            <span data-testId='panel-left-label-truncated' className={classes.panelLeftLabel}>{truncateSummaryLabel(backwardLabel)}</span>
           </Tooltip>) :
-          <span className={classes.panelLeftLabel}>{backwardLabel}</span>
+          <span data-testId='panel-left-label' className={classes.panelLeftLabel}>{backwardLabel}</span>
         }
       </div>
-      <div className={classes.interactivePanelElementCenter}>
+      <div data-testId='panel-center-element' className={classes.interactivePanelElementCenter}>
         {contentCenter}
       </div>
       <div className={classes.interactivePanelElementRight}>
-        <span className={classes.panelRightLabel}>
+        <span data-testId='panel-right-label' className={classes.panelRightLabel}>
           {forwardLabel}
         </span>
-        {isFarward ?
+        {isForward ?
           <span>
             <IconButton
               variant="solid"
               onClick={onForward}
+              data-testId='panel-right-element'
               sx={{
                 backgroundColor: 'var(--friendly-palette-accent-900)',
                 '&:hover': {
