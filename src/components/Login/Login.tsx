@@ -1,3 +1,4 @@
+import * as DOMPurify from 'dompurify';
 import { ChangeEvent, Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,12 +55,14 @@ function Login() {
 
   const handleSignInSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const sanitizeEmail = DOMPurify.sanitize(email);
+    const sanitizePassword = DOMPurify.sanitize(password);
 
-    if (email.length && password.length) {
+    if (sanitizeEmail.length && sanitizePassword.length) {
       setIsLoginRequest(true);
 
       try {
-        const user = await login(email, password);
+        const user = await login(sanitizeEmail, sanitizePassword);
 
         setEmail('');
         setPassword('');

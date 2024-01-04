@@ -1,3 +1,4 @@
+import * as DOMPurify from 'dompurify';
 import {
   Box,
   Card,
@@ -47,7 +48,7 @@ const NewCommentInput = (props: INewCommentInput) => {
     if (cardCommentState.length) {
       sendNewComment(
         cardAuthorState,
-        cardCommentState,
+        DOMPurify.sanitize(cardCommentState),
         cardTagsState
       );
       setCardCommentState('');
