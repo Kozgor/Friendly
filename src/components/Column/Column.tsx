@@ -182,18 +182,21 @@ const Column = (props: IColumn) => {
 
 
   return (
-    <section className={classes.column}>
+    <section className={classes.column} aria-description='column'>
       <div className={classes['column__header']}>
-        <div className={classes['column__header__title']}>
+        <div className={classes['column__header__title']} aria-description='column title'>
           <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
-            <span className={classes['column__header__couner']}>({columnCards.length})</span>}
+            <span className={classes['column__header__counter']}>({columnCards.length})</span>}
           </h4>
         </div>
-        <div className={classes['column__header__subtitle']}>
+        <div className={classes['column__header__subtitle']} aria-description='column subtitle'>
           <p>{columnSubtitle}</p>
         </div>
       </div>
-      <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>
+      <div
+        id='comments'
+        className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}
+        aria-description='column comments'>
         {finalizedCards?.map(
           (card) =>
             (card.isEditable && (

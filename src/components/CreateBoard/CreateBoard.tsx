@@ -18,6 +18,7 @@ const CreateBoard = () => {
       <TitlePanel title={title}></TitlePanel>
       <Box
         className={classes.createBoardBox}
+        aria-description='create default board'
       >
         <div
           className={classes.defaultBoard}
@@ -25,7 +26,7 @@ const CreateBoard = () => {
           data-testid='defaultBoard'
         >
         </div>
-        <Typography level='title-lg' data-testid='default-board'>Default Board</Typography>
+        <Typography level='title-lg' data-testid='default-board' aria-label='Default Board'>Default Board</Typography>
       </Box>
       <Outlet />
     </div>

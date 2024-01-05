@@ -70,7 +70,7 @@ const Participants = (props: IParticipants) => {
     selectedParticipants.includes(name) ? updatesdList = selectedParticipants.filter(item => item !== name) :
       updatesdList = [...selectedParticipants, name];
 
-      setSelectedParticipants(updatesdList);
+    setSelectedParticipants(updatesdList);
   };
 
   const removeParticipate = (label: React.ReactNode | string, value: string) => {
@@ -94,6 +94,7 @@ const Participants = (props: IParticipants) => {
             id='select-all-checkboxes'
             data-testid='select-all-checkboxes'
             checked={isAllParticipantsChecked}
+            aria-checked={isAllParticipantsChecked}
             indeterminate={isParticipantsIndeterminate}
             onChange={handleSelectAllParticipants}
             sx={{
@@ -199,7 +200,7 @@ const Participants = (props: IParticipants) => {
               >
                 <Typography level='body-md'>{fullName}</Typography>
               </Option>);
-            }
+          }
           )}
         </Select>
       </section >

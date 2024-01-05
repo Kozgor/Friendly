@@ -48,69 +48,73 @@ const ColumnConfiguration = (props: {
   }, [isColumnTitleInput, isColumnSubtitleTextarea]);
 
   return (
-    <div className={classes.column}>
+    <div className={classes.column} aria-description='column configuration'>
       <div className={classes.columnHeader}>
-        <div>
-          <h2 data-testid='title'>
-            {!isColumnTitleInput ? (
-              <p
-                className={classes.columnHeaderTitle}
-                onClick={() => { setIsColumnTitleInput(!isColumnTitleInput); } }
-              >
-                {column?.columnTitle}
-              </p>
-            ) :
-              <Input
-                ref={inputTitleRef}
-                placeholder={columnConfigurationPlaceholders.inputTitle[columnId]}
-                value={column?.columnTitle}
-                onChange={(event) => columnInputHandler(event, 'columnTitle')}
-                slotProps={{
-                  input: {
-                    id: `${column?.columnId}`,
-                    onBlur: () => setIsColumnTitleInput(!isColumnTitleInput)
-                  }
-                }}
-                sx={{
-                  border: 'none',
-                  backgroundColor: 'var(--friendly-palette-shades-50)',
-                  boxShadow: 'none',
-                  width: 'calc (100% - 20px)'
-                }}
-              />
-            }
-          </h2>
-        </div>
-        <div>
-        {!isColumnSubtitleTextarea ? (
-          <p
-            className={classes.columnHeaderSubtitle}
-            onClick={() => setIsColumnSubtitleTextarea(!isColumnSubtitleTextarea)}
-          >
-            {column?.columnSubtitle}
-          </p>) :
-          <Textarea
-            ref={textareaSubtitleRef}
-            placeholder={columnConfigurationPlaceholders.textareaSubtitle}
-            value={column?.columnSubtitle}
-            onChange={(event) => columnInputHandler(event, 'columnSubtitle')}
-            maxRows={1}
-            slotProps={{
-              textarea: {
-                id: `${column?.columnId}`,
-                onBlur: () => setIsColumnSubtitleTextarea(!isColumnSubtitleTextarea)
-              }
-            }}
-            data-testid="subtitle"
-            sx={{
-              border: 'none',
-              backgroundColor: 'var(--friendly-palette-shades-50)',
-              boxShadow: 'none',
-              width: 'calc (100% - 20px)'
-            }}
-          />
-        }
-        </div>
+        <h2 data-testid='title' aria-description='column title'>
+          {!isColumnTitleInput ? (
+            <p
+              className={classes.columnHeaderTitle}
+              onClick={() => { setIsColumnTitleInput(!isColumnTitleInput); }}
+            >
+              {column?.columnTitle}
+            </p>
+          ) :
+            <Input
+              ref={inputTitleRef}
+              type='text'
+              placeholder={columnConfigurationPlaceholders.inputTitle[columnId]}
+              aria-placeholder={columnConfigurationPlaceholders.inputTitle[columnId]}
+              value={column?.columnTitle}
+              aria-valuetext={column?.columnTitle}
+              onChange={(event) => columnInputHandler(event, 'columnTitle')}
+              slotProps={{
+                input: {
+                  id: `${column?.columnId}`,
+                  onBlur: () => setIsColumnTitleInput(!isColumnTitleInput)
+                }
+              }}
+              data-testid='title input'
+              sx={{
+                border: 'none',
+                backgroundColor: 'var(--friendly-palette-shades-50)',
+                boxShadow: 'none',
+                width: 'calc (100% - 20px)'
+              }}
+            />
+          }
+        </h2>
+        <p data-testid='subtitle' aria-description='column subtitle'>
+          {!isColumnSubtitleTextarea ? (
+            <p
+              className={classes.columnHeaderSubtitle}
+              onClick={() => setIsColumnSubtitleTextarea(!isColumnSubtitleTextarea)}
+            >
+              {column?.columnSubtitle}
+            </p>) :
+            <Textarea
+              ref={textareaSubtitleRef}
+              placeholder={columnConfigurationPlaceholders.textareaSubtitle}
+              aria-placeholder={columnConfigurationPlaceholders.textareaSubtitle}
+              value={column?.columnSubtitle}
+              aria-valuetext={column?.columnSubtitle}
+              onChange={(event) => columnInputHandler(event, 'columnSubtitle')}
+              maxRows={1}
+              slotProps={{
+                textarea: {
+                  id: `${column?.columnId}`,
+                  onBlur: () => setIsColumnSubtitleTextarea(!isColumnSubtitleTextarea)
+                }
+              }}
+              data-testid="subtitle textarea"
+              sx={{
+                border: 'none',
+                backgroundColor: 'var(--friendly-palette-shades-50)',
+                boxShadow: 'none',
+                width: 'calc (100% - 20px)'
+              }}
+            />
+          }
+        </p>
       </div>
     </div>
   );

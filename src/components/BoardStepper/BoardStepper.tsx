@@ -96,7 +96,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
   };
 
   return (
-    <Stack sx={{
+    <Stack aria-description='board stepper' sx={{
       width: '70%',
       marginTop: '40px',
       marginBottom: '40px'
@@ -107,7 +107,7 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
             <Typography level='body-md' fontSize='xl'>Board:</Typography>
           </div>
           <div className={classes.boardNameContainerRight}>
-            <Typography level='h4'> {board.name} ({formatedDate})</Typography>
+            <Typography level='h4' aria-description='board name'> {board.name} ({formatedDate})</Typography>
           </div>
         </div>
       </div>
@@ -125,11 +125,13 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
         }}
       >
         {Object.values(stepIconValues).map((_: any, index: number) => (
-          <Step key={index} completed={isStepCompletedMap[index]} active={index === STEPS_MAP.second}
+          <Step aria-description='step' key={index} completed={isStepCompletedMap[index]} active={index === STEPS_MAP.second}
             disabled={(index === STEPS_MAP.fifth && !isStatusFinalized) || ((index === STEPS_MAP.fourth && isStatusActive) ||
               isStepCompletedMap[index])}
+            aria-disabled={(index === STEPS_MAP.fifth && !isStatusFinalized) || ((index === STEPS_MAP.fourth && isStatusActive) ||
+              isStepCompletedMap[index])}
             indicator={!((index === STEPS_MAP.third && isStatusActive) ||
-              index === STEPS_MAP.fifth) && <StepIndicator variant="solid" sx={{
+              index === STEPS_MAP.fifth) && <StepIndicator aria-description='step indicator' variant="solid" sx={{
                 background: isStepCompletedMap[index] ? 'var(--friendly-palette-neutral-700)' : 'var(--friendly-palette-accent-900)',
                 borderRadius: '4px',
                 height: '36px',
@@ -141,7 +143,10 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
             {(index === STEPS_MAP.third && isStatusActive) ||
               index === STEPS_MAP.fifth ?
               (<Button
+                role='button'
+                aria-label={index === STEPS_MAP.third ? boardStepperButtons.finalize : boardStepperButtons.archive}
                 disabled={index === STEPS_MAP.fifth && !isStatusFinalized}
+                aria-disabled={index === STEPS_MAP.fifth && !isStatusFinalized}
                 onClick={index === STEPS_MAP.third && isStatusActive ?
                   onFinalizeBoard : () => { }}
                 sx={{
@@ -157,8 +162,10 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
               >
                 {index === STEPS_MAP.third ? boardStepperButtons.finalize : boardStepperButtons.archive}
               </Button>) :
-              (<StepButton
+              (<StepButton role="button" aria-label={boardStepperLabels[index]}
                 disabled={(index === STEPS_MAP.fourth && isStatusActive) ||
+                  isStepCompletedMap[index]}
+                aria-disabled={(index === STEPS_MAP.fourth && isStatusActive) ||
                   isStepCompletedMap[index]}
                 onClick={openSpecificBoard}
                 sx={{ cursor: (index === STEPS_MAP.fourth && isStatusActive) || isStepCompletedMap[index] ? 'default' : 'pointer' }}>
@@ -175,7 +182,6 @@ const BoardStepper = (props: { board: IBoardSettings }) => {
           </Step>
         ))}
       </Stepper>
-
     </Stack>
   );
 };

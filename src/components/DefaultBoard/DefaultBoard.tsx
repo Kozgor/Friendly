@@ -188,14 +188,15 @@ const DefaultBoard = () => {
           height: 'calc(100% - 22px)'
         }}
       >
-        <div className={classes.boardSettings}>
-          <form className={classes.boardSettingsForm}>
+        <div className={classes.boardSettings} aria-description='board settings'>
+          <form role='form' className={classes.boardSettingsForm}>
             {boardSettingsCollection.map(setting => (
               <div key={setting.key} className={classes[setting.key]}>
                 <div className={classes.boardSettingLabels}>
                   <label
                     className={classes.label}
                     htmlFor={setting.key}
+                    aria-label={setting.label}
                   >
                     {setting.label}
                   </label>
@@ -207,9 +208,12 @@ const DefaultBoard = () => {
                       id={setting.key}
                       type={setting.type}
                       placeholder={setting.placeholder}
+                      aria-placeholder={setting.placeholder}
                       value={setting.value}
+                      aria-valuetext={`${setting.value}`}
                       onChange={setting.onChange}
                       disabled={setting.disabled}
+                      aria-disabled={setting.disabled}
                       aria-label={`input for ${setting.label}`}
                       data-testid={`boardSetting${setting.key}`}
                       slotProps={{
@@ -238,9 +242,12 @@ const DefaultBoard = () => {
                       id={setting.key}
                       type={setting.type}
                       placeholder={setting.placeholder}
+                      aria-placeholder={setting.placeholder}
                       value={setting.value}
+                      aria-valuetext={`${setting.value}`}
                       onChange={setting.onChange}
                       disabled={setting.disabled}
+                      aria-disabled={setting.disabled}
                       aria-label={`input for ${setting.label}`}
                       data-testid={`boardSetting${setting.key}`}
                       sx={{
@@ -274,7 +281,7 @@ const DefaultBoard = () => {
             }
           </form>
 
-          <div className={classes.columnsBoxContainer}>
+          <div className={classes.columnsBoxContainer} aria-description='columns configuration container'>
             <p className={classes.columnsBoxTitle}>Columns</p>
             <section className={classes.columnsBoxComponents} data-testid="boardColumns">
               {initialSettingsValue.columns.map(column => (

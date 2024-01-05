@@ -117,6 +117,7 @@ const BoardSummary = () => {
       <InteractivePanel childrenConfig={childrenConfig} />
       <div id='summary-grid' className='ag-theme-alpine'>
         <AgGridReact
+          aria-description='summary table'
           animateRows={true}
           ref={gridRef}
           rowData={rowData}

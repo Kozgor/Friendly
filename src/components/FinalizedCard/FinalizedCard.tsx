@@ -131,6 +131,7 @@ const FinalizedCard = (props: IColumnCard) => {
   return (
     <Card
       variant='outlined'
+      aria-description='card'
       className={classes.card}
       ref={cardRef}
       sx={{
@@ -172,6 +173,7 @@ const FinalizedCard = (props: IColumnCard) => {
       {
         displayShowButton && !isShownAllText && (
           <Button
+            role="button"
             data-testid='showMoreButton'
             variant='plain'
             className={classes.showButton}
@@ -196,6 +198,7 @@ const FinalizedCard = (props: IColumnCard) => {
       {
         displayShowButton && isShownAllText && (
           <Button
+            role="button"
             data-testid='showLessButton'
             variant='plain'
             className={classes.showButton}

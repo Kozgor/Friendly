@@ -45,6 +45,7 @@ const AsidePanel = () => {
             role="tabpanel"
             aria-label="Vertical panel"
             orientation="vertical"
+            aria-orientation='vertical'
             onChange={changeTabHandler}
             value={activeTab}
         >
@@ -75,6 +76,7 @@ const AsidePanel = () => {
                 <Tab
                     aria-label={`${navigationBarTitles.navigatingListHeader} tab`}
                     role="tab"
+                    aria-disabled='true'
                     disabled sx={{
                         fontSize: '13px',
                         fontWeight: 500,
@@ -97,6 +99,7 @@ const AsidePanel = () => {
                             borderBottomLeftRadius: 0
                         }}
                         disabled={listItem.disabled}
+                        aria-disabled={listItem.disabled}
                     >
                         <span className={classes.listItemIcon}>
                             {iconList[index]}

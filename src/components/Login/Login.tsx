@@ -107,7 +107,7 @@ function Login() {
   };
 
   return (
-    <div className={classes.loginContainer}>
+    <div className={classes.loginContainer} aria-description='login container'>
       <Card
         sx={{
           width: '50%',
@@ -118,7 +118,7 @@ function Login() {
         }}
       >
         <CardContent sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-          <Typography component='h2' sx={{
+          <Typography aria-label='start your friendly journey now' component='h2' sx={{
             fontWeight: 700,
             fontSize: 54,
             lineHeight: 0.8,
@@ -128,7 +128,7 @@ function Login() {
           }}>
             <p>start your</p><p><span className={classes.specialWord}>friendly</span> journey</p><p>now</p>
           </Typography>
-          <form className={classes.signForm} data-testid="loginForm" onSubmit={handleSignInSubmit}>
+          <form role="form" className={classes.signForm} data-testid="loginForm" onSubmit={handleSignInSubmit}>
             {signInputsList.map((input, index) => (
               <Fragment key={input.key}><div className={classes['form-control']}>
                 <FormLabel htmlFor={input.key} sx={{
@@ -142,9 +142,12 @@ function Login() {
                   variant="outlined"
                   color="neutral"
                   value={input.value}
+                  aria-valuetext={input.value}
                   onChange={input.onChange}
                   slotProps={{ input: input.inputParams }}
+                  aria-placeholder={input.inputParams.placeholder}
                   disabled={isLoginRequest}
+                  aria-disabled={isLoginRequest}
                   data-testid={`loginInput${input.key}`}
                   name={input.key}
                   sx={{
@@ -172,7 +175,7 @@ function Login() {
               variant="soft"
               type="submit"
               color="secondary"
-              aria-label="submit the form"
+              aria-label="Sign In"
               data-testid="submitBtn"
               name="submitButton"
               role="button"

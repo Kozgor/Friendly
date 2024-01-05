@@ -148,11 +148,9 @@ const Dashboard = () => {
     </Modal>
   );
   return (
-    <>
-      <Stack className={classes.main} direction="row" spacing={2}>
-        <Outlet />
-      </Stack>
-    </>
+    <Stack className={classes.main} direction="row" spacing={2}>
+      <Outlet />
+    </Stack>
   );
 };
 
