@@ -146,6 +146,7 @@ function Login() {
                   slotProps={{ input: input.inputParams }}
                   disabled={isLoginRequest}
                   data-testid={`loginInput${input.key}`}
+                  name={input.key}
                   sx={{
                     height: 30,
                     fontSize: '14px',
@@ -173,6 +174,8 @@ function Login() {
               color="secondary"
               aria-label="submit the form"
               data-testid="submitBtn"
+              name="submitButton"
+              role="button"
               sx={{
                 backgroundColor: 'var(--friendly-palette-secondary-900)',
                 color: 'var(--friendly-palette-shades-50)',

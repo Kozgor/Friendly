@@ -21,7 +21,7 @@ const MainLayout = () => {
       <div className={classes.mainLayoutContent}>
         <BoardProvider>
           <PageHeader></PageHeader>
-          <main style={{ height: layoutHeight, width: '100%' }}>
+          <main role='main' style={{ height: layoutHeight, width: '100%' }}>
             <Outlet></Outlet>
           </main>
         </BoardProvider>

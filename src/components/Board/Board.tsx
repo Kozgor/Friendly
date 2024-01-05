@@ -111,10 +111,11 @@ const Board = () => {
   };
 
   const completeBoardModal = (
-    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} >
+    <Modal aria-modal={isModalOpen} open={isModalOpen} onClose={() => setIsModalOpen(false)} >
       <ModalDialog
-        aria-labelledby="basic-modal-dialog-title"
-        aria-describedby="basic-modal-dialog-description"
+        role="dialog"
+        aria-labelledby="modal-dialog-title"
+        aria-describedby="modal-dialog-description"
         sx={{
           width: '415px',
           textAlign: 'center',
@@ -128,10 +129,10 @@ const Board = () => {
           right: '19px',
           cursor: 'pointer'
         }} onClick={() => setIsModalOpen(false)} />
-        <Typography id="basic-modal-dialog-title" level="h3">
+        <Typography id="modal-dialog-title" level="h3">
           Ready to complete?
         </Typography>
-        <Typography id="basic-modal-dialog-description" component='p' sx={{
+        <Typography id="modal-dialog-description" component='p' sx={{
           color: 'var(--friendly-palette-neutral-400)',
           fontSize: 14,
           lineHeight: '19.07px',

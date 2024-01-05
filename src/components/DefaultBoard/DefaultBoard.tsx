@@ -131,8 +131,9 @@ const DefaultBoard = () => {
       label: panelTitles.defaultBoard
     },
     {
-      element: <>
+      element:
         <Button
+          role='button'
           color='secondary'
           variant="solid"
           type="button"
@@ -145,7 +146,7 @@ const DefaultBoard = () => {
           }}
         >
           Publish
-        </Button></>,
+        </Button>,
       position: 'right'
     }
   ];

@@ -32,7 +32,7 @@ const AsidePanel = () => {
         setActiveTab(value);
     };
 
-    return <Aside>
+    return <Aside role='Aside panel'>
         <div className={classes.drawerHeader}>
             <span className={classes.drawerHeaderIcon}>{icons.listUl}</span>
             <span className={classes.drawerHeaderText}>{navigationBarTitles.drawerHeader}</span>
@@ -42,40 +42,45 @@ const AsidePanel = () => {
             <span className={classes.drawerSubHeaderText}>{navigationBarTitles.drawerSubheader}</span>
         </div>
         <Tabs
+            role="tabpanel"
             aria-label="Vertical panel"
             orientation="vertical"
             onChange={changeTabHandler}
             value={activeTab}
         >
-            <TabList sx={{
-                width: '100%', backgroundColor: 'var(--friendly-palette-primary-900)',
-                padding: '8px 14px 8px 0',
-                '& .MuiTab-root': {
-                    color: 'var(--friendly-palette-shades-50)',
-                    '&:not(.Mui-selected, [aria-selected="true"], .Mui-disabled)': {
-                        color: 'var(--friendly-palette-primary-400)',
-                        '&:hover': {
-                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                            color: 'var(--friendly-palette-primary-400)'
+            <TabList role="tablist" aria-label="tablist"
+                sx={{
+                    width: '100%', backgroundColor: 'var(--friendly-palette-primary-900)',
+                    padding: '8px 14px 8px 0',
+                    '& .MuiTab-root': {
+                        color: 'var(--friendly-palette-shades-50)',
+                        '&:not(.Mui-selected, [aria-selected="true"], .Mui-disabled)': {
+                            color: 'var(--friendly-palette-primary-400)',
+                            '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                                color: 'var(--friendly-palette-primary-400)'
+                            }
+                        },
+                        '&::after': {
+                            width: 0,
+                            display: 'none'
                         }
                     },
-                    '&::after': {
-                        width: 0,
-                        display: 'none'
-                    }
-                },
-                '& .MuiTab-root.Mui-disabled': {
-                    color: 'var(--friendly-palette-shades-50)'
-                },
-                '& .MuiTab-root.Mui-selected': { backgroundColor: 'var(--friendly-palette-secondary-900)' }
-            }
-            } >
-                <Tab disabled sx={{
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    fontFamily: 'Open Sans, sans-serif',
-                    paddingLeft: '26px'
-                }}>
+                    '& .MuiTab-root.Mui-disabled': {
+                        color: 'var(--friendly-palette-shades-50)'
+                    },
+                    '& .MuiTab-root.Mui-selected': { backgroundColor: 'var(--friendly-palette-secondary-900)' }
+                }
+                } >
+                <Tab
+                    aria-label={`${navigationBarTitles.navigatingListHeader} tab`}
+                    role="tab"
+                    disabled sx={{
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        fontFamily: 'Open Sans, sans-serif',
+                        paddingLeft: '26px'
+                    }}>
                     {navigationBarTitles.navigatingListHeader}
                 </Tab>
                 {adminTabList.map((listItem, index) => (
@@ -83,6 +88,8 @@ const AsidePanel = () => {
                         key={listItem.title}
                         data-testid={listItem.path}
                         value={listItem.path}
+                        aria-label={`${listItem.title} tab`}
+                        role="tab"
                         sx={{
                             padding: '8px 16px',
                             borderRadius: '15px',

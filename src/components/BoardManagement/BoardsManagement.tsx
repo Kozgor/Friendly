@@ -46,6 +46,7 @@ const BoardsManagement = () => {
   return (
     <Box
       component="main"
+      role='main'
       sx={{
         flexGrow: 0,
         bgcolor: 'var(--friendly-palette-neutral-50)',

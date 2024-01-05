@@ -109,18 +109,19 @@ const Dashboard = () => {
   };
 
   const modal = (
-    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <Modal aria-modal={isModalOpen} open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <ModalDialog
-        aria-labelledby="basic-modal-dialog-title"
-        aria-describedby="basic-modal-dialog-description"
+        role="dialog"
+        aria-labelledby="modal-dialog-title"
+        aria-describedby="modal-dialog-description"
       >
-        <Typography id="basic-modal-dialog-title" level="h2">
+        <Typography id="modal-dialog-title" level="h2">
           Add new column
         </Typography>
-        <Typography id="basic-modal-dialog-description">
+        <Typography id="modal-dialog-description">
           Fill in all inputs.
         </Typography>
-        <form>
+        <form role='form' id='addColumnForm'>
           <Stack spacing={2}>
             {columnInputsCollection.map((columnInput) => (
               <FormControl
