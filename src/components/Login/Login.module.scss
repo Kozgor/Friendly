@@ -43,3 +43,82 @@
     margin: 15px 24px 0;
   }
 }
+
+@media all and (max-width: 1200px) {
+  .loginContainer {
+    padding: 20px 24px 20px 0;
+
+    .form-control {
+      margin: 15px 15px 0;
+    }
+  }
+}
+
+@media all and (max-width: 992px) {
+  .loginContainer {
+    padding: 10px 14px 10px 0;
+
+    .title {
+      font-size: 50px;
+    }
+
+    .form-control {
+      margin: 15px 0 0;
+
+      .input {
+        width: 160px;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .loginContainer {
+    padding: 5px 5px 5px 0;
+
+    .title {
+      font-size: 36px;
+    }
+
+    .signForm {
+      flex-direction: column;
+      padding-bottom: 15px;
+
+      .form-control {
+        margin: 15px 0 0;
+
+        .input {
+          width: 240px;
+        }
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .signButton {
+        margin: 5px auto 0;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 576px) {
+  .loginContainer {
+    padding: 0;
+    flex-direction: column-reverse;
+
+    .title {
+      font-size: 28px;
+    }
+
+    .signForm {
+      width: 100%;
+      margin-top: 0;
+    }
+
+    .icon {
+      width: 100%;
+    }
+  }
+}

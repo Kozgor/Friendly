@@ -115,7 +115,7 @@ function Login() {
         }}
       >
         <CardContent sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-          <Typography component='h2' sx={{
+          <Typography component='h2' className={classes.title} sx={{
             fontWeight: 700,
             fontSize: 54,
             lineHeight: 0.8,
@@ -135,6 +135,7 @@ function Login() {
                   fontSize: '10px'
                 }}>{input.key}</FormLabel>
                 <Input
+                  className={classes.input}
                   id={input.key}
                   variant="outlined"
                   color="neutral"
@@ -165,6 +166,7 @@ function Login() {
                 }</Fragment>
             ))}
             <Button
+              className={classes.signButton}
               variant="soft"
               type="submit"
               color="secondary"
