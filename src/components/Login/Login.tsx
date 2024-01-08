@@ -1,3 +1,4 @@
+import * as DOMPurify from 'dompurify';
 import { ChangeEvent, Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,11 +13,12 @@ import {
   Input,
   Typography
 } from '@mui/joy';
+
+import { LOGIN_EMPTY_FIELDS_MESSAGE, LOGIN_ERROR, LOGIN_WRONG_FIELDS_DATA_MESSAGE } from '../../constants';
 import Toastr from '../Toastr/Toastr';
+import { authAPI } from '../../api/AuthAPI';
 import { localStorageManager } from '../../utils/localStorageManager';
 import { useStoreUser } from '../../utils/storeUserManager';
-
-import { authAPI } from '../../api/AuthAPI';
 
 import classes from './Login.module.scss';
 
@@ -53,12 +55,14 @@ function Login() {
 
   const handleSignInSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const sanitizeEmail = DOMPurify.sanitize(email);
+    const sanitizePassword = DOMPurify.sanitize(password);
 
-    if (email.length && password.length) {
+    if (sanitizeEmail.length && sanitizePassword.length) {
       setIsLoginRequest(true);
 
       try {
-        const user = await login(email, password);
+        const user = await login(sanitizeEmail, sanitizePassword);
 
         setEmail('');
         setPassword('');
@@ -67,25 +71,24 @@ function Login() {
         saveLocalUserData(user);
 
         if (user.role === 'user') {
-          if (user.boards.active) {
-            navigate(`/board/${user.boards.active}`);
+          if (user.boards?.active) {
+            navigate(`/board/${user.boards?.active}`);
 
             return;
           }
 
-          navigate(`/board/${user.boards.finalized}`);
+          navigate(`/board/${user.boards?.finalized}`);
 
           return;
         }
 
         navigate('/admin/');
       } catch (error) {
-        console.log(error);
         setIsLoginRequest(false);
         toast.error(
           <Toastr
-            itemName='Login error'
-            message='Empty login or password'
+            itemName={LOGIN_ERROR}
+            message={LOGIN_WRONG_FIELDS_DATA_MESSAGE}
           />
         );
 
@@ -94,8 +97,8 @@ function Login() {
     } else {
       toast.error(
         <Toastr
-          itemName='Login error'
-          message='Wrong login or password'
+          itemName={LOGIN_ERROR}
+          message={LOGIN_EMPTY_FIELDS_MESSAGE}
         />
       );
     }
@@ -104,7 +107,7 @@ function Login() {
   };
 
   return (
-    <div className={classes.loginContainer}>
+    <div className={classes.loginContainer} aria-description='login container'>
       <Card
         sx={{
           width: '50%',
@@ -115,7 +118,7 @@ function Login() {
         }}
       >
         <CardContent sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-          <Typography component='h2' sx={{
+          <Typography aria-label='start your friendly journey now' component='h2' sx={{
             fontWeight: 700,
             fontSize: 54,
             lineHeight: 0.8,
@@ -125,7 +128,7 @@ function Login() {
           }}>
             <p>start your</p><p><span className={classes.specialWord}>friendly</span> journey</p><p>now</p>
           </Typography>
-          <form className={classes.signForm} data-testid="loginForm" onSubmit={handleSignInSubmit}>
+          <form role="form" className={classes.signForm} data-testid="loginForm" onSubmit={handleSignInSubmit}>
             {signInputsList.map((input, index) => (
               <Fragment key={input.key}><div className={classes['form-control']}>
                 <FormLabel htmlFor={input.key} sx={{
@@ -139,10 +142,14 @@ function Login() {
                   variant="outlined"
                   color="neutral"
                   value={input.value}
+                  aria-valuetext={input.value}
                   onChange={input.onChange}
                   slotProps={{ input: input.inputParams }}
+                  aria-placeholder={input.inputParams.placeholder}
                   disabled={isLoginRequest}
+                  aria-disabled={isLoginRequest}
                   data-testid={`loginInput${input.key}`}
+                  name={input.key}
                   sx={{
                     height: 30,
                     fontSize: '14px',
@@ -168,8 +175,10 @@ function Login() {
               variant="soft"
               type="submit"
               color="secondary"
-              aria-label="submit the form"
+              aria-label="Sign In"
               data-testid="submitBtn"
+              name="submitButton"
+              role="button"
               sx={{
                 backgroundColor: 'var(--friendly-palette-secondary-900)',
                 color: 'var(--friendly-palette-shades-50)',

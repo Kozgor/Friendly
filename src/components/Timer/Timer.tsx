@@ -88,6 +88,7 @@ const Timer = () => {
     <>
       {!countdownTimer.isTimerStarted && (
         <Button
+          role="button"
           color='secondary'
           type="submit"
           aria-label="solid neutral button for enabling and starting timer"
@@ -107,12 +108,14 @@ const Timer = () => {
           className={classes.timer}
           aria-description="timer section"
           data-testid="timer"
+          role='timer'
         >
           {!countdownTimer.isTimerPaused && (
             <button
+              role="button"
               className={classes.timer__pause}
               onClick={pauseTimer}
-              aria-label="button for pausing timer"
+              aria-label="pause timer button"
               data-testid="pause"
             >
               {icons.pauseCircle()}
@@ -121,9 +124,10 @@ const Timer = () => {
 
           {countdownTimer.isTimerPaused && (
             <button
+              role="button"
               className={classes.timer__start}
               onClick={playTimer}
-              aria-label="button for starting timer"
+              aria-label="continue timer button"
               data-testid="continue"
             >
               {icons.playCircle()}
@@ -133,9 +137,10 @@ const Timer = () => {
           {countdown}
 
           <button
+            role="button"
             className={classes.timer__reset}
             onClick={resetTimer}
-            aria-label="button for resetting timer"
+            aria-label="resetting timer button"
             data-testid="reset"
           >
             {icons.stopCircle()}

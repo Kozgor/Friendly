@@ -1,12 +1,14 @@
 import { Box, CircularProgress, Divider } from '@mui/joy';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import { THERE_ARE_NO_BOARDS_MESSAGE, panelTitles } from '../../constants';
+import { GET_ALL_BOARDS_ERROR_MESSAGE, THERE_ARE_NO_BOARDS_MESSAGE, panelTitles } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import BoardStepper from '../BoardStepper/BoardStepper';
 import { IBoardSettings } from '../../interfaces/boardSettings';
 import NoContent from '../NoContent/NoContent';
 import TitlePanel from '../TitlePanel/TitlePanel';
+import Toastr from '../Toastr/Toastr';
 import { boardAPI } from '../../api/BoardAPI';
 import { sortByDateStartNew } from '../../utils/sortByDate';
 
@@ -14,7 +16,7 @@ import classes from './BoardsManagement.module.scss';
 
 const BoardsManagement = () => {
   const { boardId } = useContext(BoardContext);
-  const [boards, setBoards] = useState<IBoardSettings[] | undefined>([]);
+  const [boards, setBoards] = useState<IBoardSettings[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { getAllBoards } = boardAPI();
 
@@ -22,11 +24,16 @@ const BoardsManagement = () => {
     setIsLoading(true);
 
     try {
-      const boards: IBoardSettings[] | undefined = await getAllBoards();
+      const boards: IBoardSettings[] = await getAllBoards();
 
-      boards ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
+      boards && boards.length ? setBoards(sortByDateStartNew(boards)) : setBoards([]);
     } catch (error) {
-      console.log(error);
+      toast.error(
+        <Toastr
+          itemName={'Error'}
+          message={GET_ALL_BOARDS_ERROR_MESSAGE}
+        />
+      );
     }
 
     setIsLoading(false);
@@ -39,6 +46,7 @@ const BoardsManagement = () => {
   return (
     <Box
       component="main"
+      role='main'
       sx={{
         flexGrow: 0,
         bgcolor: 'var(--friendly-palette-neutral-50)',

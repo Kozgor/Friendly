@@ -4,7 +4,7 @@ const ReactionsCellRenderer = (params: any) => {
   const { happy, unhappy } = params.value;
 
   return (
-    <span style={{
+    <span aria-description='reactions' style={{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-around',
@@ -12,7 +12,7 @@ const ReactionsCellRenderer = (params: any) => {
       fontWeight: '700',
       fontSize: '16px'
     }}>
-      <span style={{
+      <span aria-description='like reaction' style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -21,7 +21,7 @@ const ReactionsCellRenderer = (params: any) => {
         {happy}
         {icons.emojiSmile('#484a4b', '16px')}
       </span>
-      <span style={{
+      <span aria-description='unlike reaction' style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',

@@ -16,6 +16,7 @@ const CardAvatar = (props: ICardAvatar) => {
     if (isIncognito) {
       return (
         <Avatar
+          aria-description='incognito avatar'
           data-testid='incognito-avatar'
           onClick={onToggle}
           sx={{
@@ -29,8 +30,9 @@ const CardAvatar = (props: ICardAvatar) => {
     }
     if (isInitials) {
       return (
-        <Tooltip title={cardAuthor}>
+        <Tooltip role="tooltip" title={cardAuthor}>
           <Avatar
+            aria-description='initials avatar'
             data-testid='initials-avatar'
             onClick={onToggle}
             sx={{
@@ -47,8 +49,9 @@ const CardAvatar = (props: ICardAvatar) => {
     }
     if (isAvatar) {
       return (
-        <Tooltip title={cardAuthor}>
+        <Tooltip role="tooltip" title={cardAuthor}>
           <Avatar
+            aria-description='user avatar'
             data-testid='card-avatar'
             onClick={onToggle}
             alt={cardAuthorAvatar}

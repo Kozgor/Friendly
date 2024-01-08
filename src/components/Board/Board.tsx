@@ -9,10 +9,23 @@ import {
 } from 'react';
 import { CloseRounded } from '@mui/icons-material';
 import { isNull } from 'lodash';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 
+import {
+  BOARD_ERROR_FINISH_MESSAGE,
+  BOARD_SUCCESS_FINISH_MESSAGE,
+  DELETE_CARDS_ERROR_MESSAGE,
+  DELETING_ERROR,
+  GET_BOARD_BY_ID_ERROR_MESSAGE,
+  GET_FINALIZED_CARDS_TO_BOARD_ERROR_MESSAGE,
+  GET_USER_BY_ID_ERROR_MESSAGE,
+  GET_USER_CARDS_TO_BOARD_ERROR_MESSAGE,
+  NO_BOARDS_MESSAGE,
+  panelTitles,
+  possibleBoardStatuses
+} from '../../constants';
 import { ICurrentBoardDetails, IUserProfile } from '../../interfaces/user';
-import { NO_BOARDS_MESSAGE, panelTitles, possibleBoardStatuses } from '../../constants';
 import { BoardContext } from '../../context/board/boardContext';
 import Column from '../Column/Column';
 import { IBoardSettings } from '../../interfaces/boardSettings';
@@ -23,6 +36,7 @@ import InteractivePanel from '../InteractivePanel/InteractivePanel';
 import NoContent from '../NoContent/NoContent';
 import { PropsChildren } from '../../interfaces/interactivePanelChildren';
 import Timer from '../Timer/Timer';
+import Toastr from '../Toastr/Toastr';
 import { boardAPI } from '../../api/BoardAPI';
 import { cardAPI } from '../../api/CardAPI';
 import { columnAPI } from '../../api/ColumnAPI';
@@ -60,7 +74,7 @@ const Board = () => {
   const { getUserById, submitComments } = userAPI();
   const { removeCards } = cardAPI();
   const localUser = getLocalUserData();
-  const URLBoardId= useBoardIdLocation();
+  const URLBoardId = useBoardIdLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAdmin = localUser.role === 'admin';
   const isActiveWithTimer = boardStatus === possibleBoardStatuses.active && isTimerStarted;
@@ -75,7 +89,21 @@ const Board = () => {
   const isTimerStartedMemoized = useMemo(() => isTimerStarted, [isTimerStarted]);
 
   const completeBoard = () => {
-    submitComments(localUser._id);
+    submitComments(localUser._id).then(() => {
+      toast.success(
+        <Toastr
+          itemName={boardSettings.name}
+          message={BOARD_SUCCESS_FINISH_MESSAGE}
+        />
+      );
+    }).catch(error => {
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={BOARD_ERROR_FINISH_MESSAGE}
+        />
+      );
+    });
     disableCommentCreation();
     setFormSubmit();
     setTimerVisibility(false);
@@ -83,10 +111,11 @@ const Board = () => {
   };
 
   const completeBoardModal = (
-    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} >
+    <Modal aria-modal={isModalOpen} open={isModalOpen} onClose={() => setIsModalOpen(false)} >
       <ModalDialog
-        aria-labelledby="basic-modal-dialog-title"
-        aria-describedby="basic-modal-dialog-description"
+        role="dialog"
+        aria-labelledby="modal-dialog-title"
+        aria-describedby="modal-dialog-description"
         sx={{
           width: '415px',
           textAlign: 'center',
@@ -100,10 +129,10 @@ const Board = () => {
           right: '19px',
           cursor: 'pointer'
         }} onClick={() => setIsModalOpen(false)} />
-        <Typography id="basic-modal-dialog-title" level="h3">
+        <Typography id="modal-dialog-title" level="h3">
           Ready to complete?
         </Typography>
-        <Typography id="basic-modal-dialog-description" component='p' sx={{
+        <Typography id="modal-dialog-description" component='p' sx={{
           color: 'var(--friendly-palette-neutral-400)',
           fontSize: 14,
           lineHeight: '19.07px',
@@ -125,11 +154,17 @@ const Board = () => {
 
   const fetchUserColumnCards = async (boardId: string, userId: string) => {
     try {
-      const columnsData = await getUserColumnCards(boardId, userId);
+      const columnsData: IColumnCard[] = await getUserColumnCards(boardId, userId);
 
-      return columnsData;
+      return columnsData || [];
     } catch (error) {
-      console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={GET_USER_CARDS_TO_BOARD_ERROR_MESSAGE}
+        />
+      );
+      return [];
     }
   };
 
@@ -137,18 +172,24 @@ const Board = () => {
     try {
       const columnsData = await getFinalColumnCards(boardId);
 
-      return columnsData;
+      return columnsData || [];
     } catch (error) {
-      console.log(error);
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={GET_FINALIZED_CARDS_TO_BOARD_ERROR_MESSAGE}
+        />
+      );
+      return [];
     }
   };
 
   const setupBoard = async (id?: string, status?: string) => {
     try {
-      const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
+      const board: IBoardSettings = await getBoardById(URLBoardId);
 
       if ((board && board?.status === status) || (board && localUser.role === 'admin')) {
-        let columnsCards: IColumnCard[] | undefined;
+        let columnsCards: IColumnCard[];
         const currentBoard: ICurrentBoardDetails = {
           currentBoardId: board._id,
           currentBoardName: board.name
@@ -187,8 +228,13 @@ const Board = () => {
         setIsBoardVisible(false);
         setTimerVisibility(false);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(
+        <Toastr
+          itemName={boardSettings.name}
+          message={GET_BOARD_BY_ID_ERROR_MESSAGE}
+        />
+      );
     }
   };
 
@@ -196,7 +242,7 @@ const Board = () => {
     setIsLoading(true);
 
     try {
-      const userProfile: IUserProfile | undefined = await getUserById(localUser._id);
+      const userProfile: IUserProfile = await getUserById(localUser._id);
 
       if (!URLBoardId && userProfile && userProfile.boards) {
         navigate(`/board/${userProfile.boards.finalized || userProfile.boards.active}`);
@@ -217,8 +263,13 @@ const Board = () => {
           return;
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(
+        <Toastr
+          itemName={localUser.fullName}
+          message={GET_USER_BY_ID_ERROR_MESSAGE}
+        />
+      );
     } finally {
       setIsLoading(false);
     }
@@ -229,25 +280,35 @@ const Board = () => {
       try {
         const removeCard = await removeCards(selectedCards);
 
-        if (removeCard.status === 200) {
-          const board: IBoardSettings | undefined = await getBoardById(URLBoardId);
-          const columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
+        const board: IBoardSettings = await getBoardById(URLBoardId);
+        const columnsCards = await fetchUserColumnCards(URLBoardId, localUser._id);
 
-          if (board) {
-            board.columns.forEach((column: IColumn) => {
-              const { columnId } = column;
+        if (board) {
+          board.columns.forEach((column: IColumn) => {
+            const { columnId } = column;
 
-              if (columnsCards && columnsCards[columnId]) {
-                column.columnCards = columnsCards[columnId];
-              }
-            });
+            if (columnsCards && columnsCards[columnId]) {
+              column.columnCards = columnsCards[columnId];
+            }
+          });
 
-            resetSelectedCards();
-            setBoardSettings(board);
-          }
+          resetSelectedCards();
+          setBoardSettings(board);
+        } else {
+          toast.error(
+            <Toastr
+              itemName={boardSettings.name}
+              message={GET_BOARD_BY_ID_ERROR_MESSAGE}
+            />
+          );
         }
       } catch (error) {
-        console.log(error);
+        toast.error(
+          <Toastr
+            itemName={DELETING_ERROR}
+            message={DELETE_CARDS_ERROR_MESSAGE}
+          />
+        );
       }
     }
   };

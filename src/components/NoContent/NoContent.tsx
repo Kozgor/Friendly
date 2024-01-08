@@ -4,7 +4,7 @@ const NoContent = (props: { message: string }) => {
   const { message } = props;
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center' }}>
+    <Box aria-description={message} sx={{ width: '100%', textAlign: 'center' }}>
       <h2>{message}</h2>
     </Box>
   );

@@ -77,6 +77,8 @@ const NewCard = (props: IColumnCard) => {
 
   return (
     <Card
+      aria-description='editable card'
+      aria-orientation='vertical'
       orientation='vertical'
       variant='outlined'
       sx={{
@@ -111,8 +113,11 @@ const NewCard = (props: IColumnCard) => {
               maxRows={4}
               variant='outlined'
               placeholder={cardTextareaPlaceholder}
+              aria-placeholder={cardTextareaPlaceholder}
               value={cardCommentState}
+              aria-valuetext={cardCommentState}
               disabled={isDisabled}
+              aria-disabled={isDisabled}
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                 setCardComment(event.target.value)
               }
@@ -137,20 +142,22 @@ const NewCard = (props: IColumnCard) => {
               <Select
                 value={cardTagsState}
                 multiple
+                aria-multiselectable='true'
                 onChange={(event, newValue) => setCardTags([...newValue])}
                 placeholder={tagsPlaceholder}
+                aria-placeholder={tagsPlaceholder}
                 size='sm'
                 data-testid='select-tags-component'
                 renderValue={selected =>
-                  (<Box sx={{ display: 'flex', gap: '0.25rem' }}>
-                    {selected.map((selectedOption, index) => {
-                      if (isString(selectedOption.label)) {
-                        return (<CardChip key={index} tag={selectedOption.label} />);
-                      }
+                (<Box sx={{ display: 'flex', gap: '0.25rem' }}>
+                  {selected.map((selectedOption, index) => {
+                    if (isString(selectedOption.label)) {
+                      return (<CardChip key={index} tag={selectedOption.label} />);
+                    }
 
-                      return null;
-                    })}
-                  </Box>)
+                    return null;
+                  })}
+                </Box>)
                 }
                 sx={{
                   fontSize: '12px',
@@ -173,7 +180,7 @@ const NewCard = (props: IColumnCard) => {
                   }
                 }}
               >{possibleCardTags.map(tag =>
-                (<Option key={tag} value={tag}>{tag}</Option>)
+                (<Option role='option' key={tag} value={tag}>{tag}</Option>)
               )}
               </Select>
             </div>
@@ -186,6 +193,7 @@ const NewCard = (props: IColumnCard) => {
                 color='neutral'
                 onClick={onCancelCard}
                 disabled={!cardCommentState && isDisabled}
+                aria-disabled={!cardCommentState && isDisabled}
                 sx={{
                   '&.MuiIconButton-root': {
                     minWidth: '28px',
@@ -203,6 +211,7 @@ const NewCard = (props: IColumnCard) => {
                 variant='solid'
                 onClick={onSaveCard}
                 disabled={!cardCommentState || isDisabled}
+                aria-disabled={!cardCommentState || isDisabled}
                 sx={{
                   '&.MuiIconButton-root': {
                     minWidth: '28px',

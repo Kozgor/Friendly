@@ -1,3 +1,4 @@
+import * as DOMPurify from 'dompurify';
 import {
   Box,
   Card,
@@ -47,7 +48,7 @@ const NewCommentInput = (props: INewCommentInput) => {
     if (cardCommentState.length) {
       sendNewComment(
         cardAuthorState,
-        cardCommentState,
+        DOMPurify.sanitize(cardCommentState),
         cardTagsState
       );
       setCardCommentState('');
@@ -58,7 +59,7 @@ const NewCommentInput = (props: INewCommentInput) => {
   };
 
   return (
-    <div className={classes.commentInput}>
+    <div className={classes.commentInput} aria-description='comment box'>
       <form style={{ width: '100%' }}
         onSubmit={onSendNewComment}
       >
@@ -97,8 +98,11 @@ const NewCommentInput = (props: INewCommentInput) => {
                   variant='plain'
                   size='sm'
                   required
+                  aria-required='true'
                   placeholder={cardTextareaPlaceholder}
+                  aria-placeholder={cardTextareaPlaceholder}
                   value={cardCommentState}
+                  aria-valuetext={cardCommentState}
                   onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                     setCardCommentState(event.target.value)
                   }
@@ -119,8 +123,10 @@ const NewCommentInput = (props: INewCommentInput) => {
                 <Select
                   value={cardTagsState}
                   multiple
+                  aria-multiselectable='true'
                   onChange={handleSelectChange}
                   placeholder={tagsPlaceholder}
+                  aria-placeholder={tagsPlaceholder}
                   size='sm'
                   data-testid='newCardSelectComponent'
                   renderValue={selected =>
@@ -156,7 +162,7 @@ const NewCommentInput = (props: INewCommentInput) => {
                     }
                   }}
                 >{cardTags.map(tag =>
-                (<Option key={tag} value={tag} sx={{
+                (<Option role="option" key={tag} value={tag} sx={{
                   '&.Mui-selected': {
                     backgroundColor: 'var(--friendly-palette-primary-600)',
                     color: 'var(--friendly-palette-shades-50)'
@@ -183,6 +189,7 @@ const NewCommentInput = (props: INewCommentInput) => {
                   variant='solid'
                   color='success'
                   disabled={isDisabled}
+                  aria-disabled={isDisabled}
                   data-testid='newCardSendButton'
                   className={classes.sendButtonIconComponent}
                   sx={{

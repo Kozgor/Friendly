@@ -1,5 +1,6 @@
-import { IDownloadBoardSummaryCSVButton } from '../../interfaces/dowloadBoardSummaryCSVButton';
-import { Button, IconButton } from '@mui/joy';
+import { Button } from '@mui/joy';
+
+import { IDownloadBoardSummaryCSVButton } from '../../interfaces/downloadBoardSummaryCSVButton';
 import { icons } from '../../theme/icons/icons';
 
 export const DownloadBoardSummaryCSVButton = (props: IDownloadBoardSummaryCSVButton) => {
@@ -9,11 +10,14 @@ export const DownloadBoardSummaryCSVButton = (props: IDownloadBoardSummaryCSVBut
 
   return (
     <Button
+      role="button"
+      aria-label="Download CSV Report"
       color='neutral'
       onClick={onClick}
       size='sm'
       variant='outlined'
       disabled={isDisabled}
+      aria-disabled={isDisabled}
       startDecorator={icons.download('#303439', iconSize)}
       sx={{
         fontSize

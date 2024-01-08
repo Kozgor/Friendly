@@ -20,6 +20,7 @@ const CardChip = (props: { tag: string }) => {
 
   return (
     <Chip
+      aria-aria-description='tag'
       data-testid='card-chip'
       key={tag}
       size='sm'

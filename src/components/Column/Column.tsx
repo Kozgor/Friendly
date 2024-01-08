@@ -3,22 +3,22 @@
 import { CardTag, possibleCardTags } from '../../types/cardTags';
 import { find, isEmpty } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
+import moment from 'moment';
+import { toast } from 'react-toastify';
 
+import { CREATE_CARD_ERROR_MESSAGE, CREATION_ERROR, UPDATE_CARD_ERROR_MESSAGE, UPDATING_ERROR, possibleBoardStatuses } from '../../constants';
 import { ICardReactions, IColumnCard } from '../../interfaces/columnCard';
 import { BoardContext } from '../../context/board/boardContext';
-import { IColumn } from '../../interfaces/column';
-
-import { cardAPI } from '../../api/CardAPI';
-import { localStorageManager } from '../../utils/localStorageManager';
-import { possibleBoardStatuses } from '../../constants';
-import { sortByDateStartNew } from '../../utils/sortByDate';
-
 import EditCard from '../EditCard/EditCard';
 import FinalizedCard from '../FinalizedCard/FinalizedCard';
+import { IColumn } from '../../interfaces/column';
 import NewCommentInput from '../NewCommentInput/NewCommentInput';
+import Toastr from '../Toastr/Toastr';
+import { cardAPI } from '../../api/CardAPI';
+import { localStorageManager } from '../../utils/localStorageManager';
+import { sortByDateStartNew } from '../../utils/sortByDate';
 
 import classes from './Column.module.scss';
-import moment from 'moment';
 
 const Column = (props: IColumn) => {
   const { columnCards, columnId, columnTitle, columnSubtitle } = props;
@@ -59,11 +59,27 @@ const Column = (props: IColumn) => {
               card._id === handledCard._id ? { ...handledCard, isEditable: false } : card
             )
           );
+        }).catch(err => {
+          console.log(err);
+          toast.error(
+            <Toastr
+              itemName={UPDATING_ERROR}
+              message={UPDATE_CARD_ERROR_MESSAGE}
+            />
+          );
         });
     } else {
       createCard(boardId, columnId, handledCard)
         .then((res) => {
-          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res.data._id }, ...prevCards]);
+          setFinalizedCards((prevCards) => [{ ...handledCard, _id: res._id }, ...prevCards]);
+        }).catch(err => {
+          console.log(err);
+          toast.error(
+            <Toastr
+              itemName={CREATION_ERROR}
+              message={CREATE_CARD_ERROR_MESSAGE}
+            />
+          );
         });
     }
   };
@@ -150,26 +166,37 @@ const Column = (props: IColumn) => {
 
     createCard(boardId, columnId, newCard)
       .then((res) => {
-        const updatedCard = { ...newCard, _id: res.data._id };
+        const updatedCard = { ...newCard, _id: res._id };
 
         setFinalizedCards((prevCards) => [updatedCard, ...prevCards]);
+      }).catch(err => {
+        console.log(err);
+        toast.error(
+          <Toastr
+            itemName={CREATION_ERROR}
+            message={CREATE_CARD_ERROR_MESSAGE}
+          />
+        );
       });
   };
 
 
   return (
-    <section className={classes.column}>
+    <section className={classes.column} aria-description='column'>
       <div className={classes['column__header']}>
-        <div className={classes['column__header__title']}>
+        <div className={classes['column__header__title']} aria-description='column title'>
           <h4>{columnTitle} {boardStatus === possibleBoardStatuses.finalized &&
-            <span className={classes['column__header__couner']}>({columnCards.length})</span>}
+            <span className={classes['column__header__counter']}>({columnCards.length})</span>}
           </h4>
         </div>
-        <div className={classes['column__header__subtitle']}>
+        <div className={classes['column__header__subtitle']} aria-description='column subtitle'>
           <p>{columnSubtitle}</p>
         </div>
       </div>
-      <div id='comments' className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}>
+      <div
+        id='comments'
+        className={isActiveBoard ? classes['column__comments__min'] : classes['column__comments__max']}
+        aria-description='column comments'>
         {finalizedCards?.map(
           (card) =>
             (card.isEditable && (
