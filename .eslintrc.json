@@ -4,7 +4,7 @@
     "es2021": true,
     "jest": true
   },
-  "ignorePatterns": ["coverage/", "node_modules/", "docs/"],
+  "ignorePatterns": ["coverage/", "node_modules/", "docs/", "build/"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
